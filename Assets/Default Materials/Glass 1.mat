@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Glass 1
+  m_Shader: {fileID: 4800000, guid: 75afb6a229a3993469d2bfb4852aff72, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _CloudDensityThreshold: 0.833
+    - _CloudHazeSoftness: 0.68
+    - _CloudPatternScale: 2
+    - _RimIntensity: 0.62
+    - _RimPower: 6.68
+    - _RimThreshold: 0.177
+    - _Smoothness: 0.98
+    - _SpecularFalloff: 0.0356
+    - _SpecularSize: 0.141
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 0.29803923}
+    - _CloudColor: {r: 1, g: 1, b: 1, a: 0}
+    - _GlassTint: {r: 0.9, g: 0.9, b: 1, a: 0.5176471}
+    - _RimColor: {r: 0.4113207, g: 0.4113207, b: 0.4113207, a: 0.16078432}
+    - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Spot1Pos: {r: 0.4, g: 0.6, b: 0.2, a: 0}
+    - _Spot2Pos: {r: 0.7, g: 0.3, b: 0.15, a: 0}
+    - _Spot3Pos: {r: 0.2, g: 0.3, b: 0.3, a: 0}
+  m_BuildTextureStacks: []

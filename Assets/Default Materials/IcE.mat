@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: IcE
+  m_Shader: {fileID: 4800000, guid: bd7f5ca6bd822db42aca3275ab1f24d7, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _ChromaticAberration: 0.015
+    - _CrackCutoff: 0.543
+    - _CrackDepth: 0.0023
+    - _CrackGlow: 1.65
+    - _CrackIntensity: 1.7
+    - _CrackParallax: 0.1
+    - _CrackScale: 30.88
+    - _CrackThickness: 0.268
+    - _FrostBumpScale: 0.256
+    - _FrostScale: 420.2
+    - _IceGlossiness: 1
+    - _LightFeather: 0.5
+    - _LightStep: -1
+    - _RefractionStrength: 0.1
+    - _RimPower: 1.3
+    - _ScatterPower: 3.68
+    - _Smoothness: 0.95
+    - _SpecularFeather: 0.025
+    - _SpecularSize: 0.956
+    m_Colors:
+    - _BaseColor: {r: 0.19433957, g: 0.8736219, b: 1, a: 0.92156863}
+    - _CrackColor: {r: 0, g: 0.6796117, b: 1, a: 1}
+    - _RimColor: {r: 0.8, g: 0.95, b: 1, a: 1}
+    - _ScatterColor: {r: 0.6, g: 0.88, b: 1, a: 1}
+    - _ShadowColor: {r: 0.19999996, g: 0.39999998, b: 0.75, a: 0.7}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

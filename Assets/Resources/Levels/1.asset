@@ -1,0 +1,518 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 1
+  m_EditorClassIdentifier: 
+  hearts: 3
+  LevelNumber: 1
+  rows: 12
+  columns: 8
+  height: 9
+  width: 8
+  bottomGridSize: 0.55
+  categoryMaterial: {fileID: 2100000, guid: 4dab332f1e8966849ad5f29ef65bffcb, type: 2}
+  words:
+  - TIGER
+  - NEPAL
+  - LAVENDER
+  - ZEBRA
+  - CANADA
+  - ROSE
+  - ELEPHANT
+  - INDIA
+  - LOTUS
+  - COW
+  - CAT
+  - JAPAN
+  - ORCHID
+  excludedChar:
+  - {x: 11, y: 2}
+  - {x: 5, y: 6}
+  - {x: 8, y: 3}
+  - {x: 2, y: 2}
+  - {x: 2, y: 5}
+  - {x: 7, y: 5}
+  - {x: 10, y: 4}
+  - {x: 4, y: 3}
+  - {x: 1, y: 4}
+  - {x: 6, y: 1}
+  - {x: 6, y: 4}
+  - {x: 3, y: 1}
+  - {x: 9, y: 3}
+  - {x: 9, y: 5}
+  - {x: 0, y: 3}
+  hiddenChar: []
+  freezedChar: []
+  wordCategory:
+  - Key: Animal
+    Value:
+    - TIGER
+    - ZEBRA
+    - ELEPHANT
+    - COW
+    - CAT
+  - Key: Country
+    Value:
+    - NEPAL
+    - CANADA
+    - INDIA
+    - JAPAN
+  - Key: Flower
+    Value:
+    - LAVENDER
+    - ROSE
+    - LOTUS
+    - ORCHID
+  cellCategory:
+  - Key: {x: 11, y: 1}
+    Value: Flower
+  - Key: {x: 11, y: 2}
+    Value: Flower
+  - Key: {x: 11, y: 3}
+    Value: Flower
+  - Key: {x: 11, y: 4}
+    Value: Flower
+  - Key: {x: 11, y: 5}
+    Value: Flower
+  - Key: {x: 11, y: 6}
+    Value: Flower
+  - Key: {x: 5, y: 7}
+    Value: Flower
+  - Key: {x: 8, y: 4}
+    Value: Flower
+  - Key: {x: 5, y: 4}
+    Value: Flower
+  - Key: {x: 5, y: 5}
+    Value: Flower
+  - Key: {x: 5, y: 6}
+    Value: Flower
+  - Key: {x: 8, y: 0}
+    Value: Flower
+  - Key: {x: 8, y: 3}
+    Value: Flower
+  - Key: {x: 8, y: 2}
+    Value: Flower
+  - Key: {x: 8, y: 1}
+    Value: Flower
+  - Key: {x: 2, y: 0}
+    Value: Flower
+  - Key: {x: 2, y: 1}
+    Value: Flower
+  - Key: {x: 2, y: 2}
+    Value: Flower
+  - Key: {x: 2, y: 3}
+    Value: Flower
+  - Key: {x: 2, y: 4}
+    Value: Flower
+  - Key: {x: 2, y: 5}
+    Value: Flower
+  - Key: {x: 2, y: 6}
+    Value: Flower
+  - Key: {x: 2, y: 7}
+    Value: Flower
+  - Key: {x: 10, y: 0}
+    Value: Country
+  - Key: {x: 10, y: 1}
+    Value: Country
+  - Key: {x: 10, y: 2}
+    Value: Country
+  - Key: {x: 10, y: 3}
+    Value: Country
+  - Key: {x: 10, y: 4}
+    Value: Country
+  - Key: {x: 7, y: 3}
+    Value: Country
+  - Key: {x: 7, y: 4}
+    Value: Country
+  - Key: {x: 7, y: 5}
+    Value: Country
+  - Key: {x: 7, y: 6}
+    Value: Country
+  - Key: {x: 7, y: 7}
+    Value: Country
+  - Key: {x: 4, y: 1}
+    Value: Country
+  - Key: {x: 4, y: 2}
+    Value: Country
+  - Key: {x: 4, y: 3}
+    Value: Country
+  - Key: {x: 4, y: 4}
+    Value: Country
+  - Key: {x: 4, y: 5}
+    Value: Country
+  - Key: {x: 4, y: 6}
+    Value: Country
+  - Key: {x: 1, y: 1}
+    Value: Country
+  - Key: {x: 1, y: 2}
+    Value: Country
+  - Key: {x: 1, y: 3}
+    Value: Country
+  - Key: {x: 1, y: 4}
+    Value: Country
+  - Key: {x: 1, y: 5}
+    Value: Country
+  - Key: {x: 0, y: 2}
+    Value: Animal
+  - Key: {x: 0, y: 3}
+    Value: Animal
+  - Key: {x: 0, y: 4}
+    Value: Animal
+  - Key: {x: 0, y: 5}
+    Value: Animal
+  - Key: {x: 0, y: 6}
+    Value: Animal
+  - Key: {x: 6, y: 0}
+    Value: Animal
+  - Key: {x: 6, y: 1}
+    Value: Animal
+  - Key: {x: 6, y: 2}
+    Value: Animal
+  - Key: {x: 6, y: 3}
+    Value: Animal
+  - Key: {x: 6, y: 4}
+    Value: Animal
+  - Key: {x: 6, y: 5}
+    Value: Animal
+  - Key: {x: 6, y: 6}
+    Value: Animal
+  - Key: {x: 6, y: 7}
+    Value: Animal
+  - Key: {x: 3, y: 1}
+    Value: Animal
+  - Key: {x: 3, y: 3}
+    Value: Animal
+  - Key: {x: 3, y: 2}
+    Value: Animal
+  - Key: {x: 3, y: 4}
+    Value: Animal
+  - Key: {x: 3, y: 5}
+    Value: Animal
+  - Key: {x: 9, y: 7}
+    Value: Animal
+  - Key: {x: 9, y: 1}
+    Value: Animal
+  - Key: {x: 9, y: 6}
+    Value: Animal
+  - Key: {x: 9, y: 5}
+    Value: Animal
+  - Key: {x: 9, y: 3}
+    Value: Animal
+  - Key: {x: 9, y: 2}
+    Value: Animal
+  cellTexts:
+  - Key: {x: 11, y: 1}
+    Value: O
+  - Key: {x: 11, y: 2}
+    Value: R
+  - Key: {x: 11, y: 3}
+    Value: C
+  - Key: {x: 11, y: 4}
+    Value: H
+  - Key: {x: 11, y: 5}
+    Value: I
+  - Key: {x: 11, y: 6}
+    Value: D
+  - Key: {x: 5, y: 7}
+    Value: E
+  - Key: {x: 8, y: 4}
+    Value: S
+  - Key: {x: 5, y: 4}
+    Value: R
+  - Key: {x: 5, y: 5}
+    Value: O
+  - Key: {x: 5, y: 6}
+    Value: S
+  - Key: {x: 8, y: 0}
+    Value: L
+  - Key: {x: 8, y: 3}
+    Value: U
+  - Key: {x: 8, y: 2}
+    Value: T
+  - Key: {x: 8, y: 1}
+    Value: O
+  - Key: {x: 2, y: 0}
+    Value: L
+  - Key: {x: 2, y: 1}
+    Value: A
+  - Key: {x: 2, y: 2}
+    Value: V
+  - Key: {x: 2, y: 3}
+    Value: E
+  - Key: {x: 2, y: 4}
+    Value: N
+  - Key: {x: 2, y: 5}
+    Value: D
+  - Key: {x: 2, y: 6}
+    Value: E
+  - Key: {x: 2, y: 7}
+    Value: R
+  - Key: {x: 10, y: 0}
+    Value: J
+  - Key: {x: 10, y: 1}
+    Value: A
+  - Key: {x: 10, y: 2}
+    Value: P
+  - Key: {x: 10, y: 3}
+    Value: A
+  - Key: {x: 10, y: 4}
+    Value: N
+  - Key: {x: 7, y: 3}
+    Value: I
+  - Key: {x: 7, y: 4}
+    Value: N
+  - Key: {x: 7, y: 5}
+    Value: D
+  - Key: {x: 7, y: 6}
+    Value: I
+  - Key: {x: 7, y: 7}
+    Value: A
+  - Key: {x: 4, y: 1}
+    Value: C
+  - Key: {x: 4, y: 2}
+    Value: A
+  - Key: {x: 4, y: 3}
+    Value: N
+  - Key: {x: 4, y: 4}
+    Value: A
+  - Key: {x: 4, y: 5}
+    Value: D
+  - Key: {x: 4, y: 6}
+    Value: A
+  - Key: {x: 1, y: 1}
+    Value: N
+  - Key: {x: 1, y: 2}
+    Value: E
+  - Key: {x: 1, y: 3}
+    Value: P
+  - Key: {x: 1, y: 4}
+    Value: A
+  - Key: {x: 1, y: 5}
+    Value: L
+  - Key: {x: 0, y: 2}
+    Value: T
+  - Key: {x: 0, y: 3}
+    Value: I
+  - Key: {x: 0, y: 4}
+    Value: G
+  - Key: {x: 0, y: 5}
+    Value: E
+  - Key: {x: 0, y: 6}
+    Value: R
+  - Key: {x: 6, y: 0}
+    Value: E
+  - Key: {x: 6, y: 1}
+    Value: L
+  - Key: {x: 6, y: 2}
+    Value: E
+  - Key: {x: 6, y: 3}
+    Value: P
+  - Key: {x: 6, y: 4}
+    Value: H
+  - Key: {x: 6, y: 5}
+    Value: A
+  - Key: {x: 6, y: 6}
+    Value: N
+  - Key: {x: 6, y: 7}
+    Value: T
+  - Key: {x: 3, y: 1}
+    Value: Z
+  - Key: {x: 3, y: 3}
+    Value: B
+  - Key: {x: 3, y: 2}
+    Value: E
+  - Key: {x: 3, y: 4}
+    Value: R
+  - Key: {x: 3, y: 5}
+    Value: A
+  - Key: {x: 9, y: 7}
+    Value: T
+  - Key: {x: 9, y: 1}
+    Value: C
+  - Key: {x: 9, y: 6}
+    Value: A
+  - Key: {x: 9, y: 5}
+    Value: C
+  - Key: {x: 9, y: 3}
+    Value: W
+  - Key: {x: 9, y: 2}
+    Value: O
+  categoryColors:
+  - Key: Animal
+    Value: {fileID: 2100000, guid: 4dab332f1e8966849ad5f29ef65bffcb, type: 2}
+  - Key: Flower
+    Value: {fileID: 2100000, guid: becfb789e99d486438cc9c834cce52d5, type: 2}
+  - Key: Country
+    Value: {fileID: 2100000, guid: 153da79a40522cc47ba2648c0d78b685, type: 2}
+  wordPositions:
+  - Key: TIGER
+    Value:
+    - {x: 0, y: 2}
+    - {x: 0, y: 3}
+    - {x: 0, y: 4}
+    - {x: 0, y: 5}
+    - {x: 0, y: 6}
+  - Key: NEPAL
+    Value:
+    - {x: 1, y: 1}
+    - {x: 1, y: 2}
+    - {x: 1, y: 3}
+    - {x: 1, y: 4}
+    - {x: 1, y: 5}
+  - Key: LAVENDER
+    Value:
+    - {x: 2, y: 0}
+    - {x: 2, y: 1}
+    - {x: 2, y: 2}
+    - {x: 2, y: 3}
+    - {x: 2, y: 4}
+    - {x: 2, y: 5}
+    - {x: 2, y: 6}
+    - {x: 2, y: 7}
+  - Key: ZEBRA
+    Value:
+    - {x: 3, y: 1}
+    - {x: 3, y: 2}
+    - {x: 3, y: 3}
+    - {x: 3, y: 4}
+    - {x: 3, y: 5}
+  - Key: CANADA
+    Value:
+    - {x: 4, y: 1}
+    - {x: 4, y: 2}
+    - {x: 4, y: 3}
+    - {x: 4, y: 4}
+    - {x: 4, y: 5}
+    - {x: 4, y: 6}
+  - Key: ROSE
+    Value:
+    - {x: 5, y: 4}
+    - {x: 5, y: 5}
+    - {x: 5, y: 6}
+    - {x: 5, y: 7}
+  - Key: ELEPHANT
+    Value:
+    - {x: 6, y: 0}
+    - {x: 6, y: 1}
+    - {x: 6, y: 2}
+    - {x: 6, y: 3}
+    - {x: 6, y: 4}
+    - {x: 6, y: 5}
+    - {x: 6, y: 6}
+    - {x: 6, y: 7}
+  - Key: INDIA
+    Value:
+    - {x: 7, y: 3}
+    - {x: 7, y: 4}
+    - {x: 7, y: 5}
+    - {x: 7, y: 6}
+    - {x: 7, y: 7}
+  - Key: LOTUS
+    Value:
+    - {x: 8, y: 0}
+    - {x: 8, y: 1}
+    - {x: 8, y: 2}
+    - {x: 8, y: 3}
+    - {x: 8, y: 4}
+  - Key: COW
+    Value:
+    - {x: 9, y: 1}
+    - {x: 9, y: 2}
+    - {x: 9, y: 3}
+  - Key: CAT
+    Value:
+    - {x: 9, y: 5}
+    - {x: 9, y: 6}
+    - {x: 9, y: 7}
+  - Key: JAPAN
+    Value:
+    - {x: 10, y: 0}
+    - {x: 10, y: 1}
+    - {x: 10, y: 2}
+    - {x: 10, y: 3}
+    - {x: 10, y: 4}
+  - Key: ORCHID
+    Value:
+    - {x: 11, y: 1}
+    - {x: 11, y: 2}
+    - {x: 11, y: 3}
+    - {x: 11, y: 4}
+    - {x: 11, y: 5}
+    - {x: 11, y: 6}
+  charDirection:
+  - Key: {x: 2, y: 4}
+    Value:
+      Key: N
+      Value: 
+  - Key: {x: 2, y: 3}
+    Value:
+      Key: D
+      Value: 
+  - Key: {x: 2, y: 2}
+    Value:
+      Key: U
+      Value: "\u2190"
+  - Key: {x: 4, y: 3}
+    Value:
+      Key: W
+      Value: "\u2190"
+  - Key: {x: 7, y: 0}
+    Value:
+      Key: H
+      Value: "\u2191"
+  - Key: {x: 3, y: 5}
+    Value:
+      Key: L
+      Value: "\u2193"
+  - Key: {x: 1, y: 6}
+    Value:
+      Key: S
+      Value: "\u2193"
+  - Key: {x: 5, y: 6}
+    Value:
+      Key: N
+      Value: 
+  - Key: {x: 6, y: 6}
+    Value:
+      Key: Z
+      Value: 
+  - Key: {x: 7, y: 6}
+    Value:
+      Key: V
+      Value: "\u2193"
+  - Key: {x: 4, y: 6}
+    Value:
+      Key: A
+      Value: 
+  charStorage:
+  - Key: {x: 7, y: 1}
+    Value:
+      Key: RDIC
+      Value: "\u2190"
+  chainedLetters:
+  - Key: {x: 2, y: 2}
+    Value:
+    - {x: 2, y: 3}
+    - {x: 2, y: 4}
+  - Key: {x: 4, y: 3}
+    Value: []
+  - Key: {x: 7, y: 0}
+    Value: []
+  - Key: {x: 3, y: 5}
+    Value: []
+  - Key: {x: 1, y: 6}
+    Value: []
+  - Key: {x: 7, y: 6}
+    Value:
+    - {x: 6, y: 6}
+    - {x: 5, y: 6}
+    - {x: 4, y: 6}
