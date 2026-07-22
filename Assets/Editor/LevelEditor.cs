@@ -22,6 +22,7 @@ public class LevelEditor : EditorWindow
     private string inputCategory;
 
     private Color gridCellColor;
+    private Color unassignedCellColor; // Color for cells with letters but no category assigned
     private Material categoryMaterial;
 
     private HashSet<string> words = new();
@@ -66,7 +67,8 @@ public class LevelEditor : EditorWindow
 
     private void OnEnable()
     {
-        gridCellColor = new Color(0.3f, .3f, .3f);
+        gridCellColor = new Color(0.3f, 0.3f, 0.3f);
+        unassignedCellColor = new Color(0.2f, 0.4f, 0.55f); // Distinct dark slate blue
         wantsMouseMove = true;
         window = new SerializedObject(this);
         categoryList = window.FindProperty("categoriesDropdown");
@@ -160,7 +162,6 @@ public class LevelEditor : EditorWindow
         EditorGridSerializationCheck();
         EditorGUILayout.EndScrollView();
         ShowExcludedLetters();
-       
     }
 
     private void LevelSettings()
@@ -311,50 +312,6 @@ public class LevelEditor : EditorWindow
         columns = EditorGUILayout.IntSlider("Columns", columns, 1, 50);
         GUILayout.Space(5);
 
-        EditorGUILayout.BeginHorizontal();
-        inputCategory = EditorGUILayout.TextField("New Category", inputCategory);
-
-        if (GUILayout.Button("Add to Dropdown"))
-        {
-            AddCategoryToFile(inputCategory);
-        }
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        EditorGUI.BeginChangeCheck();
-        window.Update();
-
-        EditorGUILayout.PropertyField(categoryList);
-
-        window.ApplyModifiedProperties();
-        if (EditorGUI.EndChangeCheck())
-        {
-            if (!string.IsNullOrEmpty(categoriesDropdown) && categoryColors.ContainsKey(categoriesDropdown))
-            {
-                categoryMaterial = categoryColors[categoriesDropdown];
-            }
-            else
-            {
-                categoryMaterial = null;
-            }
-        }
-        if (GUILayout.Button("Remove from Dropdown"))
-        {
-            DeleteCategory(categoriesDropdown);
-        }
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
-        EditorGUI.BeginChangeCheck();
-        categoryMaterial = EditorGUILayout.ObjectField("Category Material", categoryMaterial, typeof(Material), false) as Material;
-        if (EditorGUI.EndChangeCheck())
-        {
-            if (!string.IsNullOrEmpty(categoriesDropdown))
-            {
-                categoryColors[categoriesDropdown] = categoryMaterial;
-            }
-        }
-        EditorGUILayout.EndHorizontal();
 
         if (string.IsNullOrEmpty(categoriesDropdown) || !categoryColors.ContainsKey(categoriesDropdown))
         {
@@ -436,9 +393,20 @@ public class LevelEditor : EditorWindow
 
                 if (isPrimary)
                 {
-                    if (cellCategory.ContainsKey(gridPos) && !string.IsNullOrEmpty(cellCategory[gridPos]) && categoryColors.ContainsKey(cellCategory[gridPos]))
+                    bool hasCategory = cellCategory.ContainsKey(gridPos) &&
+                                       !string.IsNullOrEmpty(cellCategory[gridPos]) &&
+                                       categoryColors.ContainsKey(cellCategory[gridPos]);
+
+                    bool hasText = cellTexts.ContainsKey(gridPos) && !string.IsNullOrEmpty(cellTexts[gridPos]);
+
+                    if (hasCategory)
                     {
                         cellBgColor = excludedChar.Contains(gridPos) ? Color.white * 0.64f : categoryColors[cellCategory[gridPos]].color;
+                    }
+                    else if (hasText)
+                    {
+                        // Cell has a letter but no assigned category/color
+                        cellBgColor = unassignedCellColor;
                     }
                 }
 
@@ -509,11 +477,36 @@ public class LevelEditor : EditorWindow
     {
         Event e = Event.current;
 
-        if (e.type == EventType.MouseDown && e.button == 0)
+        // Left Click or Click-and-Drag to paint Category & Color
+        if ((e.type == EventType.MouseDown || e.type == EventType.MouseDrag) && e.button == 0)
         {
-            GUIUtility.keyboardControl = 0;
-            GUI.FocusControl(null);
+            if (TryGetGridPosFromMouse(e.mousePosition, gridArea, rows, columns, out Vector2Int gridPos))
+            {
+                GUIUtility.keyboardControl = 0;
+                GUI.FocusControl(null);
 
+                // Check if the target cell actually contains a letter before painting
+                if (cellTexts.ContainsKey(gridPos) && !string.IsNullOrEmpty(cellTexts[gridPos]))
+                {
+                    if (!string.IsNullOrEmpty(categoriesDropdown) && categoryColors.ContainsKey(categoriesDropdown))
+                    {
+                        if (!cellCategory.ContainsKey(gridPos) || cellCategory[gridPos] != categoriesDropdown)
+                        {
+                            cellCategory[gridPos] = categoriesDropdown;
+                            e.Use();
+                            Repaint();
+                        }
+                    }
+                    else if (e.type == EventType.MouseDown)
+                    {
+                        Debug.LogWarning("Select a valid category with an assigned color before painting.");
+                    }
+                }
+            }
+        }
+        // Right Click to toggle Excluded Character
+        else if (e.type == EventType.MouseDown && e.button == 1)
+        {
             if (TryGetGridPosFromMouse(e.mousePosition, gridArea, rows, columns, out Vector2Int gridPos))
             {
                 if (excludedChar.Contains(gridPos))
@@ -548,15 +541,7 @@ public class LevelEditor : EditorWindow
                 }
                 else if (char.IsLetter(e.character))
                 {
-                    if (!string.IsNullOrEmpty(categoriesDropdown) && categoryColors.ContainsKey(categoriesDropdown))
-                    {
-                        cellTexts[gridPos] = e.character.ToString().ToUpper();
-                        cellCategory[gridPos] = categoriesDropdown;
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Apply color to category or select a valid category first.");
-                    }
+                    cellTexts[gridPos] = e.character.ToString().ToUpper();
                     e.Use();
                     Repaint();
                 }
@@ -694,7 +679,52 @@ public class LevelEditor : EditorWindow
 
     private void ShowExcludedLetters()
     {
-        GUILayout.Space(15);
+        GUILayout.Space(10);
+        EditorGUILayout.BeginHorizontal();
+        inputCategory = EditorGUILayout.TextField("New Category", inputCategory);
+
+        if (GUILayout.Button("Add to Dropdown"))
+        {
+            AddCategoryToFile(inputCategory);
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUI.BeginChangeCheck();
+        window.Update();
+
+        EditorGUILayout.PropertyField(categoryList);
+
+        window.ApplyModifiedProperties();
+        if (EditorGUI.EndChangeCheck())
+        {
+            if (!string.IsNullOrEmpty(categoriesDropdown) && categoryColors.ContainsKey(categoriesDropdown))
+            {
+                categoryMaterial = categoryColors[categoriesDropdown];
+            }
+            else
+            {
+                categoryMaterial = null;
+            }
+        }
+        if (GUILayout.Button("Remove from Dropdown"))
+        {
+            DeleteCategory(categoriesDropdown);
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUI.BeginChangeCheck();
+        categoryMaterial = EditorGUILayout.ObjectField("Category Material", categoryMaterial, typeof(Material), false) as Material;
+        if (EditorGUI.EndChangeCheck())
+        {
+            if (!string.IsNullOrEmpty(categoriesDropdown))
+            {
+                categoryColors[categoriesDropdown] = categoryMaterial;
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+        GUILayout.Space(5);
         EditorGUILayout.BeginHorizontal();
 
         // Orders grid positions starting from the highest row index (bottom row) down to 0 (top row),
