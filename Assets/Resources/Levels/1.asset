@@ -18,7 +18,7 @@ MonoBehaviour:
   columns: 8
   height: 9
   width: 8
-  bottomGridSize: 0.55
+  bottomGridSize: 0.725
   categoryMaterial: {fileID: 2100000, guid: 4dab332f1e8966849ad5f29ef65bffcb, type: 2}
   words:
   - TIGER
@@ -50,8 +50,6 @@ MonoBehaviour:
   - {x: 9, y: 3}
   - {x: 9, y: 5}
   - {x: 0, y: 3}
-  hiddenChar: []
-  freezedChar: []
   wordCategory:
   - Key: Animal
     Value:
@@ -448,71 +446,3 @@ MonoBehaviour:
     - {x: 11, y: 4}
     - {x: 11, y: 5}
     - {x: 11, y: 6}
-  charDirection:
-  - Key: {x: 2, y: 4}
-    Value:
-      Key: N
-      Value: 
-  - Key: {x: 2, y: 3}
-    Value:
-      Key: D
-      Value: 
-  - Key: {x: 2, y: 2}
-    Value:
-      Key: U
-      Value: "\u2190"
-  - Key: {x: 4, y: 3}
-    Value:
-      Key: W
-      Value: "\u2190"
-  - Key: {x: 7, y: 0}
-    Value:
-      Key: H
-      Value: "\u2191"
-  - Key: {x: 3, y: 5}
-    Value:
-      Key: L
-      Value: "\u2193"
-  - Key: {x: 1, y: 6}
-    Value:
-      Key: S
-      Value: "\u2193"
-  - Key: {x: 5, y: 6}
-    Value:
-      Key: N
-      Value: 
-  - Key: {x: 6, y: 6}
-    Value:
-      Key: Z
-      Value: 
-  - Key: {x: 7, y: 6}
-    Value:
-      Key: V
-      Value: "\u2193"
-  - Key: {x: 4, y: 6}
-    Value:
-      Key: A
-      Value: 
-  charStorage:
-  - Key: {x: 7, y: 1}
-    Value:
-      Key: RDIC
-      Value: "\u2190"
-  chainedLetters:
-  - Key: {x: 2, y: 2}
-    Value:
-    - {x: 2, y: 3}
-    - {x: 2, y: 4}
-  - Key: {x: 4, y: 3}
-    Value: []
-  - Key: {x: 7, y: 0}
-    Value: []
-  - Key: {x: 3, y: 5}
-    Value: []
-  - Key: {x: 1, y: 6}
-    Value: []
-  - Key: {x: 7, y: 6}
-    Value:
-    - {x: 6, y: 6}
-    - {x: 5, y: 6}
-    - {x: 4, y: 6}

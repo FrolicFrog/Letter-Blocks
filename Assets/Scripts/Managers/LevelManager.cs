@@ -71,32 +71,18 @@ public class LevelManager : Manager<LevelManager>
         cellCategory = _LevelData.cellCategory.ToDictionary(item => item.Key, item => item.Value);
         cellTexts = _LevelData.cellTexts.ToDictionary(item => item.Key, item => item.Value);
         categoryColors = _LevelData.categoryColors.ToDictionary(item => item.Key, item => item.Value);
-        hiddenChar = _LevelData.hiddenChar.ToHashSet();
-        freezedChar = _LevelData.freezedChar.ToDictionary(item => item.Key, item => item.Value);
-
-        foreach (var item in CurLvlData.charDirection)
-        {
-            charDirection[item.Key] = item.Value;
-        }
 
         foreach (var item in CurLvlData.wordPositions)
         {
             wordPositions[item.Key] = item.Value;
         }
-        foreach (var item in CurLvlData.chainedLetters)
-        {
-            chainedLetters[item.Key] = item.Value;
-        }
+  
         foreach (var item in CurLvlData.wordCategory)
         {
             wordCategory[item.Key] = item.Value;
         }
 
-        foreach (var item in CurLvlData.charStorage)
-        {
-            charStorage[item.Key] = item.Value;
-            Debug.Log(item.Value.Key);
-        }
+
 
         foreach (var item in colorSprite)
         {
