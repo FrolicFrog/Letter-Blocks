@@ -17,25 +17,31 @@ public class LevelEditor : EditorWindow
     private float gap = 2f;
     private float horizontalMargin = 20f;
 
+    public List<string> tray = new List<string> { "Tray 1" };
     [StringDropdown("Data/Categories.txt")]
     public string categoriesDropdown;
+    [StringDropdown(listFieldName = nameof(tray))]
+    public string trayDropdown;
+
+
     private string inputCategory;
 
     private Color gridCellColor;
-    private Color unassignedCellColor; // Color for cells with letters but no category assigned
-    private Material categoryMaterial;
+    private Color unassignedCellColor; // Color for cells with letters but no category/tray assigned
+    private Material categoryMaterial, trayMaterial;
 
     private HashSet<string> words = new();
     private HashSet<Vector2Int> excludedChar = new();
 
-    private Dictionary<Vector2Int, string> cellCategory = new();
-    private Dictionary<Vector2Int, string> cellTexts = new();
-    private Dictionary<string, Material> categoryColors = new();
+    private Dictionary<Vector2Int, string> cellCategory = new(), trayName = new();
+    private Dictionary<Vector2Int, string> cellTexts = new(), trayCells = new();
+    private Dictionary<string, Material> categoryColors = new(), trayColors = new();
     private Dictionary<string, List<Vector2Int>> wordPositions = new();
     private Dictionary<string, List<string>> wordCategory = new();
 
+
     SerializedObject window;
-    SerializedProperty categoryList;
+    SerializedProperty categoryList, trayList;
     private EditorSection levelSection;
     private LevelData CachedLvlData = null;
     private LevelData CurLvlData
@@ -72,6 +78,7 @@ public class LevelEditor : EditorWindow
         wantsMouseMove = true;
         window = new SerializedObject(this);
         categoryList = window.FindProperty("categoriesDropdown");
+        trayList = window.FindProperty("trayDropdown");
 
         EnsureCategoryFileExists();
     }
@@ -177,6 +184,7 @@ public class LevelEditor : EditorWindow
             {
                 bottomGridSize = 0.6f;
                 categoryMaterial = null;
+                trayMaterial = null;
                 hearts = 3;
                 words.Clear();
                 excludedChar.Clear();
@@ -184,7 +192,13 @@ public class LevelEditor : EditorWindow
                 cellTexts.Clear();
                 categoryColors.Clear();
                 wordPositions.Clear();
+                trayCells.Clear();
+                trayName.Clear();
+                trayColors.Clear();
                 wordCategory.Clear();
+                tray.Clear();
+                tray.Add("Tray 1");
+                trayDropdown = "Tray 1";
                 CachedLvlData = null;
             }
 
@@ -244,12 +258,16 @@ public class LevelEditor : EditorWindow
         currentData.hearts = hearts;
         currentData.words = words.ToList();
         currentData.excludedChar = excludedChar.ToList();
-
+        currentData.tray = new List<string>(tray);
         currentData.categoryMaterial = categoryMaterial;
 
         currentData.cellCategory = cellCategory.Select(kvp => new KeyValueGroup<Vector2Int, string>(kvp.Key, kvp.Value)).ToList();
         currentData.cellTexts = cellTexts.Select(kvp => new KeyValueGroup<Vector2Int, string>(kvp.Key, kvp.Value)).ToList();
         currentData.categoryColors = categoryColors.Select(kvp => new KeyValueGroup<string, Material>(kvp.Key, kvp.Value)).ToList();
+        currentData.trayColors = trayColors.Select(kvp => new KeyValueGroup<string, Material>(kvp.Key, kvp.Value)).ToList();
+
+        currentData.trayName = trayName.Select(kvp => new KeyValueGroup<Vector2Int, string>(kvp.Key, kvp.Value)).ToList();
+        currentData.trayCells = trayCells.Select(kvp => new KeyValueGroup<Vector2Int, string>(kvp.Key, kvp.Value)).ToList();
 
         var list = new List<KeyValueGroup<string, List<Vector2Int>>>();
         foreach (var kvp in wordPositions)
@@ -274,7 +292,6 @@ public class LevelEditor : EditorWindow
     {
         if (CurLvlData == null) return;
         CurLvlNum = CurLvlData.LevelNumber;
-
         rows = CurLvlData.rows;
         columns = CurLvlData.columns;
         height = CurLvlData.height;
@@ -283,11 +300,12 @@ public class LevelEditor : EditorWindow
         hearts = CurLvlData.hearts;
         words = CurLvlData.words.ToHashSet();
         excludedChar = CurLvlData.excludedChar.ToHashSet();
-
+        tray = new List<string>(CurLvlData.tray);
         categoryMaterial = CurLvlData.categoryMaterial;
         cellCategory = CurLvlData.cellCategory.ToDictionary(item => item.Key, item => item.Value);
         cellTexts = CurLvlData.cellTexts.ToDictionary(item => item.Key, item => item.Value);
         categoryColors = CurLvlData.categoryColors.ToDictionary(item => item.Key, item => item.Value);
+        trayColors = CurLvlData.trayColors.ToDictionary(item => item.Key, item => item.Value);
         wordPositions = new Dictionary<string, List<Vector2Int>>();
 
         foreach (var item in CurLvlData.wordPositions)
@@ -300,7 +318,19 @@ public class LevelEditor : EditorWindow
         {
             wordCategory[item.Key] = item.Value;
         }
+
+        if (CurLvlData.trayName != null)
+            trayName = CurLvlData.trayName.ToDictionary(item => item.Key, item => item.Value);
+        else
+            trayName.Clear();
+
+        if (CurLvlData.trayCells != null)
+            trayCells = CurLvlData.trayCells.ToDictionary(item => item.Key, item => item.Value);
+        else
+            trayCells.Clear();
+
         categoryMaterial = (!string.IsNullOrEmpty(categoriesDropdown) && categoryColors.ContainsKey(categoriesDropdown)) ? categoryColors[categoriesDropdown] : null;
+        trayMaterial = (!string.IsNullOrEmpty(trayDropdown) && trayColors.ContainsKey(trayDropdown)) ? trayColors[trayDropdown] : null;
     }
 
     void GridSystem()
@@ -311,7 +341,6 @@ public class LevelEditor : EditorWindow
         rows = EditorGUILayout.IntSlider("Rows", rows, 1, 50);
         columns = EditorGUILayout.IntSlider("Columns", columns, 1, 50);
         GUILayout.Space(5);
-
 
         if (string.IsNullOrEmpty(categoriesDropdown) || !categoryColors.ContainsKey(categoriesDropdown))
         {
@@ -333,8 +362,8 @@ public class LevelEditor : EditorWindow
             DrawGrid(primaryGridArea, rows, columns, true);
         }
 
-        HandleMouseClicks(primaryGridArea);
-        HandleKeyStrokes(primaryGridArea);
+        HandleMouseClicks(primaryGridArea, rows, columns, true);
+        HandleKeyStrokes(primaryGridArea, rows, columns, true);
 
         GUILayout.Space(30);
 
@@ -342,6 +371,51 @@ public class LevelEditor : EditorWindow
         bottomGridSize = EditorGUILayout.Slider("Bottom Grid Size", bottomGridSize, 0.05f, 1f);
         height = EditorGUILayout.IntSlider("Bottom Grid Rows", height, 1, 20);
         width = EditorGUILayout.IntSlider("Bottom Grid Columns", width, 1, 20);
+
+        window.Update();
+        GUILayout.BeginHorizontal();
+
+        EditorGUI.BeginChangeCheck();
+        EditorGUILayout.PropertyField(trayList);
+        if (EditorGUI.EndChangeCheck())
+        {
+            window.ApplyModifiedProperties();
+            if (!string.IsNullOrEmpty(trayDropdown) && trayColors.ContainsKey(trayDropdown))
+            {
+                trayMaterial = trayColors[trayDropdown];
+            }
+            else
+            {
+                trayMaterial = null;
+            }
+        }
+        else
+        {
+            window.ApplyModifiedProperties();
+        }
+
+        if (GUILayout.Button("New Tray"))
+        {
+            int trayCount = tray.Count + 1;
+            while (tray.Contains("Tray " + trayCount)) trayCount++;
+            string newTrayName = "Tray " + trayCount;
+            tray.Add(newTrayName);
+            trayDropdown = newTrayName;
+            trayMaterial = null;
+            GUI.FocusControl(null);
+        }
+        GUILayout.EndHorizontal();
+
+        EditorGUI.BeginChangeCheck();
+        trayMaterial = EditorGUILayout.ObjectField("Tray Material", trayMaterial, typeof(Material), false) as Material;
+        if (EditorGUI.EndChangeCheck())
+        {
+            if (!string.IsNullOrEmpty(trayDropdown))
+            {
+                trayColors[trayDropdown] = trayMaterial;
+                Repaint();
+            }
+        }
 
         totalGapWidth = (width - 1) * gap;
         totalGapHeight = (height - 1) * gap;
@@ -356,6 +430,17 @@ public class LevelEditor : EditorWindow
         {
             DrawGrid(bottomGridArea, height, width, false);
         }
+
+        HandleMouseClicks(bottomGridArea, height, width, false);
+        HandleKeyStrokes(bottomGridArea, height, width, false);
+    }
+
+    private Color GetMaterialColor(Material mat)
+    {
+        if (mat == null) return gridCellColor;
+        if (mat.HasProperty("_BaseColor")) return mat.GetColor("_BaseColor");
+        if (mat.HasProperty("_Color")) return mat.GetColor("_Color");
+        return mat.color;
     }
 
     private void DrawGrid(Rect gridArea, int gridRows, int gridCols, bool isPrimary)
@@ -380,6 +465,9 @@ public class LevelEditor : EditorWindow
             fontSize = 16
         };
 
+        // Track bounding boxes for bottom grid tray names
+        Dictionary<string, Rect> trayBounds = new Dictionary<string, Rect>();
+
         for (int r = 0; r < gridRows; r++)
         {
             for (int c = 0; c < gridCols; c++)
@@ -393,19 +481,54 @@ public class LevelEditor : EditorWindow
 
                 if (isPrimary)
                 {
-                    bool hasCategory = cellCategory.ContainsKey(gridPos) &&
-                                       !string.IsNullOrEmpty(cellCategory[gridPos]) &&
-                                       categoryColors.ContainsKey(cellCategory[gridPos]);
+                    bool hasCategory = cellCategory.TryGetValue(gridPos, out string cat) &&
+                                       !string.IsNullOrEmpty(cat) &&
+                                       categoryColors.TryGetValue(cat, out Material catMat) &&
+                                       catMat != null;
 
-                    bool hasText = cellTexts.ContainsKey(gridPos) && !string.IsNullOrEmpty(cellTexts[gridPos]);
+                    bool hasText = cellTexts.TryGetValue(gridPos, out string txt) && !string.IsNullOrEmpty(txt);
 
                     if (hasCategory)
                     {
-                        cellBgColor = excludedChar.Contains(gridPos) ? Color.white * 0.64f : categoryColors[cellCategory[gridPos]].color;
+                        cellBgColor = excludedChar.Contains(gridPos)
+                            ? Color.white * 0.64f
+                            : GetMaterialColor(categoryColors[cat]);
                     }
                     else if (hasText)
                     {
-                        // Cell has a letter but no assigned category/color
+                        cellBgColor = unassignedCellColor;
+                    }
+                }
+                else
+                {
+                    bool hasTray = trayName.TryGetValue(gridPos, out string tName) &&
+                                   !string.IsNullOrEmpty(tName) &&
+                                   trayColors.TryGetValue(tName, out Material tMat) &&
+                                   tMat != null;
+
+                    bool hasText = trayCells.TryGetValue(gridPos, out string txt) && !string.IsNullOrEmpty(txt);
+
+                    if (hasTray)
+                    {
+                        cellBgColor = GetMaterialColor(trayColors[tName]);
+
+                        // Accumulate bounding box for the tray overlay label
+                        if (trayBounds.ContainsKey(tName))
+                        {
+                            Rect currentRect = trayBounds[tName];
+                            float xMin = Mathf.Min(currentRect.xMin, cellRect.xMin);
+                            float yMin = Mathf.Min(currentRect.yMin, cellRect.yMin);
+                            float xMax = Mathf.Max(currentRect.xMax, cellRect.xMax);
+                            float yMax = Mathf.Max(currentRect.yMax, cellRect.yMax);
+                            trayBounds[tName] = new Rect(xMin, yMin, xMax - xMin, yMax - yMin);
+                        }
+                        else
+                        {
+                            trayBounds[tName] = cellRect;
+                        }
+                    }
+                    else if (hasText)
+                    {
                         cellBgColor = unassignedCellColor;
                     }
                 }
@@ -417,18 +540,54 @@ public class LevelEditor : EditorWindow
                 string cellText = $"{r},{c}";
                 GUIStyle activeStyle = defaultLabelStyle;
 
+                bool cellHasText = isPrimary ? cellTexts.ContainsKey(gridPos) : trayCells.ContainsKey(gridPos);
+
                 if (isPrimary && cellTexts.ContainsKey(gridPos))
                 {
                     cellText = cellTexts[gridPos];
                     activeStyle = boldLabelStyle;
                 }
+                else if (!isPrimary && trayCells.ContainsKey(gridPos))
+                {
+                    cellText = trayCells[gridPos];
+                    activeStyle = boldLabelStyle;
+                }
 
                 Color previousContentColor = GUI.contentColor;
-                GUI.contentColor = isPrimary && cellTexts.ContainsKey(gridPos) ? GetContrastColor(cellBgColor) : Color.white;
+                GUI.contentColor = cellHasText ? GetContrastColor(cellBgColor) : Color.white;
 
                 GUI.Label(cellRect, cellText, activeStyle);
 
                 GUI.contentColor = previousContentColor;
+            }
+        }
+
+        // Overlay pass: Draw Tray Name tag anchored to the top edge of all combined cells for each tray
+        if (!isPrimary && trayBounds.Count > 0)
+        {
+            GUIStyle overlayTrayStyle = new GUIStyle(EditorStyles.boldLabel)
+            {
+                alignment = TextAnchor.UpperCenter,
+                fontSize = 11,
+                fontStyle = FontStyle.Bold
+            };
+
+            foreach (var kvp in trayBounds)
+            {
+                string tName = kvp.Key;
+                Rect combinedRect = kvp.Value;
+
+                // Anchor label to the top edge of the tray region so it doesn't overlap centered cell letters
+                Rect tagRect = new Rect(combinedRect.x, combinedRect.y + 2f, combinedRect.width, 16f);
+
+                // Draw Drop Shadow
+                Rect shadowRect = new Rect(tagRect.x + 1, tagRect.y + 1, tagRect.width, tagRect.height);
+                overlayTrayStyle.normal.textColor = new Color(0f, 0f, 0f, 0.85f);
+                GUI.Label(shadowRect, tName, overlayTrayStyle);
+
+                // Draw Main Label
+                overlayTrayStyle.normal.textColor = Color.white;
+                GUI.Label(tagRect, tName, overlayTrayStyle);
             }
         }
     }
@@ -473,46 +632,75 @@ public class LevelEditor : EditorWindow
         return false;
     }
 
-    private void HandleMouseClicks(Rect gridArea)
+    private void HandleMouseClicks(Rect gridArea, int gridRows, int gridCols, bool isPrimary)
     {
         Event e = Event.current;
 
-        // Left Click or Click-and-Drag to paint Category & Color
+        // Left Click or Click-and-Drag to paint Category / Tray
         if ((e.type == EventType.MouseDown || e.type == EventType.MouseDrag) && e.button == 0)
         {
-            if (TryGetGridPosFromMouse(e.mousePosition, gridArea, rows, columns, out Vector2Int gridPos))
+            if (TryGetGridPosFromMouse(e.mousePosition, gridArea, gridRows, gridCols, out Vector2Int gridPos))
             {
                 GUIUtility.keyboardControl = 0;
                 GUI.FocusControl(null);
 
-                // Check if the target cell actually contains a letter before painting
-                if (cellTexts.ContainsKey(gridPos) && !string.IsNullOrEmpty(cellTexts[gridPos]))
+                if (isPrimary)
                 {
-                    if (!string.IsNullOrEmpty(categoriesDropdown) && categoryColors.ContainsKey(categoriesDropdown))
+                    if (cellTexts.ContainsKey(gridPos) && !string.IsNullOrEmpty(cellTexts[gridPos]))
                     {
-                        if (!cellCategory.ContainsKey(gridPos) || cellCategory[gridPos] != categoriesDropdown)
+                        if (!string.IsNullOrEmpty(categoriesDropdown) && categoryColors.ContainsKey(categoriesDropdown))
                         {
-                            cellCategory[gridPos] = categoriesDropdown;
-                            e.Use();
-                            Repaint();
+                            if (!cellCategory.ContainsKey(gridPos) || cellCategory[gridPos] != categoriesDropdown)
+                            {
+                                cellCategory[gridPos] = categoriesDropdown;
+                                e.Use();
+                                Repaint();
+                            }
+                        }
+                        else if (e.type == EventType.MouseDown)
+                        {
+                            Debug.LogWarning("Select a valid category with an assigned color before painting.");
                         }
                     }
-                    else if (e.type == EventType.MouseDown)
+                }
+                else
+                {
+                    if (trayCells.ContainsKey(gridPos) && !string.IsNullOrEmpty(trayCells[gridPos]))
                     {
-                        Debug.LogWarning("Select a valid category with an assigned color before painting.");
+                        if (!string.IsNullOrEmpty(trayDropdown) && trayColors.ContainsKey(trayDropdown))
+                        {
+                            if (!trayName.ContainsKey(gridPos) || trayName[gridPos] != trayDropdown)
+                            {
+                                trayName[gridPos] = trayDropdown;
+                                e.Use();
+                                Repaint();
+                            }
+                        }
+                        else if (e.type == EventType.MouseDown)
+                        {
+                            Debug.LogWarning("Select a valid tray with an assigned material before painting.");
+                        }
                     }
                 }
             }
         }
-        // Right Click to toggle Excluded Character
+        // Right Click to toggle Excluded Character (Primary) or Clear Tray Assignment (Bottom)
         else if (e.type == EventType.MouseDown && e.button == 1)
         {
-            if (TryGetGridPosFromMouse(e.mousePosition, gridArea, rows, columns, out Vector2Int gridPos))
+            if (TryGetGridPosFromMouse(e.mousePosition, gridArea, gridRows, gridCols, out Vector2Int gridPos))
             {
-                if (excludedChar.Contains(gridPos))
-                    excludedChar.Remove(gridPos);
+                if (isPrimary)
+                {
+                    if (excludedChar.Contains(gridPos))
+                        excludedChar.Remove(gridPos);
+                    else
+                        excludedChar.Add(gridPos);
+                }
                 else
-                    excludedChar.Add(gridPos);
+                {
+                    if (trayName.ContainsKey(gridPos))
+                        trayName.Remove(gridPos);
+                }
 
                 e.Use();
                 Repaint();
@@ -520,28 +708,56 @@ public class LevelEditor : EditorWindow
         }
     }
 
-    private void HandleKeyStrokes(Rect gridArea)
+    private void HandleKeyStrokes(Rect gridArea, int gridRows, int gridCols, bool isPrimary)
     {
         Event e = Event.current;
 
         if (e.type == EventType.KeyDown)
         {
-            if (TryGetGridPosFromMouse(e.mousePosition, gridArea, rows, columns, out Vector2Int gridPos))
+            if (TryGetGridPosFromMouse(e.mousePosition, gridArea, gridRows, gridCols, out Vector2Int gridPos))
             {
                 if (e.keyCode == KeyCode.Backspace)
                 {
-                    if (cellTexts.ContainsKey(gridPos))
+                    if (isPrimary)
                     {
-                        cellTexts.Remove(gridPos);
-                        cellCategory.Remove(gridPos);
-                        excludedChar.Remove(gridPos);
-                        e.Use();
-                        Repaint();
+                        if (cellTexts.ContainsKey(gridPos))
+                        {
+                            cellTexts.Remove(gridPos);
+                            cellCategory.Remove(gridPos);
+                            excludedChar.Remove(gridPos);
+                            e.Use();
+                            Repaint();
+                        }
+                    }
+                    else
+                    {
+                        if (trayCells.ContainsKey(gridPos))
+                        {
+                            trayCells.Remove(gridPos);
+                            trayName.Remove(gridPos);
+                            e.Use();
+                            Repaint();
+                        }
                     }
                 }
                 else if (char.IsLetter(e.character))
                 {
-                    cellTexts[gridPos] = e.character.ToString().ToUpper();
+                    if (isPrimary)
+                    {
+                        cellTexts[gridPos] = e.character.ToString().ToUpper();
+                        if (!string.IsNullOrEmpty(categoriesDropdown) && categoryColors.ContainsKey(categoriesDropdown) && categoryColors[categoriesDropdown] != null)
+                        {
+                            cellCategory[gridPos] = categoriesDropdown;
+                        }
+                    }
+                    else
+                    {
+                        trayCells[gridPos] = e.character.ToString().ToUpper();
+                        if (!string.IsNullOrEmpty(trayDropdown) && trayColors.ContainsKey(trayDropdown) && trayColors[trayDropdown] != null)
+                        {
+                            trayName[gridPos] = trayDropdown;
+                        }
+                    }
                     e.Use();
                     Repaint();
                 }
@@ -675,6 +891,12 @@ public class LevelEditor : EditorWindow
         foreach (var pos in outOfBoundsTexts) cellTexts.Remove(pos);
 
         excludedChar.RemoveWhere(pos => pos.x >= rows || pos.y >= columns);
+
+        var outOfBoundsTrayName = trayName.Keys.Where(pos => pos.x >= height || pos.y >= width).ToList();
+        foreach (var pos in outOfBoundsTrayName) trayName.Remove(pos);
+
+        var outOfBoundsTrayCells = trayCells.Keys.Where(pos => pos.x >= height || pos.y >= width).ToList();
+        foreach (var pos in outOfBoundsTrayCells) trayCells.Remove(pos);
     }
 
     private void ShowExcludedLetters()
@@ -721,6 +943,7 @@ public class LevelEditor : EditorWindow
             if (!string.IsNullOrEmpty(categoriesDropdown))
             {
                 categoryColors[categoriesDropdown] = categoryMaterial;
+                Repaint();
             }
         }
         EditorGUILayout.EndHorizontal();

@@ -34,6 +34,9 @@ MonoBehaviour:
   - CAT
   - JAPAN
   - ORCHID
+  tray:
+  - Tray 1
+  - Tray 2
   excludedChar:
   - {x: 11, y: 2}
   - {x: 5, y: 6}
@@ -344,6 +347,44 @@ MonoBehaviour:
     Value: W
   - Key: {x: 9, y: 2}
     Value: O
+  trayCells:
+  - Key: {x: 3, y: 0}
+    Value: J
+  - Key: {x: 3, y: 1}
+    Value: A
+  - Key: {x: 3, y: 2}
+    Value: I
+  - Key: {x: 4, y: 0}
+    Value: G
+  - Key: {x: 4, y: 1}
+    Value: U
+  - Key: {x: 4, y: 2}
+    Value: R
+  - Key: {x: 1, y: 3}
+    Value: H
+  - Key: {x: 1, y: 4}
+    Value: Q
+  - Key: {x: 1, y: 5}
+    Value: F
+  trayName:
+  - Key: {x: 3, y: 0}
+    Value: Tray 1
+  - Key: {x: 3, y: 1}
+    Value: Tray 1
+  - Key: {x: 3, y: 2}
+    Value: Tray 1
+  - Key: {x: 4, y: 0}
+    Value: Tray 1
+  - Key: {x: 4, y: 1}
+    Value: Tray 1
+  - Key: {x: 4, y: 2}
+    Value: Tray 1
+  - Key: {x: 1, y: 3}
+    Value: Tray 2
+  - Key: {x: 1, y: 4}
+    Value: Tray 2
+  - Key: {x: 1, y: 5}
+    Value: Tray 2
   categoryColors:
   - Key: Animal
     Value: {fileID: 2100000, guid: 4dab332f1e8966849ad5f29ef65bffcb, type: 2}
@@ -351,6 +392,11 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: becfb789e99d486438cc9c834cce52d5, type: 2}
   - Key: Country
     Value: {fileID: 2100000, guid: 153da79a40522cc47ba2648c0d78b685, type: 2}
+  trayColors:
+  - Key: Tray 1
+    Value: {fileID: 2100000, guid: becfb789e99d486438cc9c834cce52d5, type: 2}
+  - Key: Tray 2
+    Value: {fileID: 2100000, guid: b2149924252d7a34ebdbfa037b6e419d, type: 2}
   wordPositions:
   - Key: TIGER
     Value:
@@ -446,3 +492,4 @@ MonoBehaviour:
     - {x: 11, y: 4}
     - {x: 11, y: 5}
     - {x: 11, y: 6}
+  trayPositions: []

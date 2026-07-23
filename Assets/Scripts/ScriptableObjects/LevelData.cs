@@ -8,11 +8,10 @@ public class LevelData : ScriptableObject
     public int LevelNumber,rows,columns,height,width;
     public float bottomGridSize=.6f;
     public Material categoryMaterial;
-    public List<string> words = new();
+    public List<string> words = new(),tray = new();
     public List<Vector2Int> excludedChar = new();
     public List<KeyValueGroup<string,List<string>>> wordCategory = new();
-    public List<KeyValueGroup<Vector2Int, string>> cellCategory = new(), cellTexts = new();
-    public List<KeyValueGroup<string,Material>> categoryColors =new();
-    public List<KeyValueGroup<string,List<Vector2Int>>> wordPositions = new();
-
+    public List<KeyValueGroup<Vector2Int, string>> cellCategory = new(), cellTexts = new(),trayCells = new(),trayName=new();
+    public List<KeyValueGroup<string,Material>> categoryColors =new(),trayColors = new();
+    public List<KeyValueGroup<string,List<Vector2Int>>> wordPositions = new(),trayPositions = new();
 }

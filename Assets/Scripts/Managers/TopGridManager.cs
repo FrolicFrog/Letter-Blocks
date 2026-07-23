@@ -47,11 +47,7 @@ public class TopGridManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        queueSlots = new();
-        for (int i = 0; i < queueParent.childCount; i++)
-        {
-            queueSlots.Add(queueParent.GetChild(i));
-        }
+      
     }
     private void OnEnable()
     {
