@@ -16,9 +16,9 @@ MonoBehaviour:
   LevelNumber: 1
   rows: 12
   columns: 8
-  height: 9
+  height: 8
   width: 8
-  bottomGridSize: 0.725
+  bottomGridSize: 0.73
   categoryMaterial: {fileID: 2100000, guid: 4dab332f1e8966849ad5f29ef65bffcb, type: 2}
   words:
   - TIGER
@@ -33,7 +33,8 @@ MonoBehaviour:
   - COW
   - CAT
   - JAPAN
-  - ORCHID
+  - ORC
+  - ID
   tray:
   - Tray 1
   - Tray 2
@@ -72,7 +73,8 @@ MonoBehaviour:
     - LAVENDER
     - ROSE
     - LOTUS
-    - ORCHID
+    - ORC
+    - ID
   cellCategory:
   - Key: {x: 11, y: 1}
     Value: Flower
@@ -81,7 +83,7 @@ MonoBehaviour:
   - Key: {x: 11, y: 3}
     Value: Flower
   - Key: {x: 11, y: 4}
-    Value: Flower
+    Value: Animal
   - Key: {x: 11, y: 5}
     Value: Flower
   - Key: {x: 11, y: 6}
@@ -348,42 +350,74 @@ MonoBehaviour:
   - Key: {x: 9, y: 2}
     Value: O
   trayCells:
-  - Key: {x: 3, y: 0}
-    Value: J
-  - Key: {x: 3, y: 1}
+  - Key: {x: 1, y: 1}
     Value: A
-  - Key: {x: 3, y: 2}
-    Value: I
-  - Key: {x: 4, y: 0}
-    Value: G
-  - Key: {x: 4, y: 1}
-    Value: U
-  - Key: {x: 4, y: 2}
-    Value: R
-  - Key: {x: 1, y: 3}
-    Value: H
+  - Key: {x: 1, y: 2}
+    Value: A
+  - Key: {x: 2, y: 1}
+    Value: C
+  - Key: {x: 2, y: 2}
+    Value: B
   - Key: {x: 1, y: 4}
-    Value: Q
+    Value: B
+  - Key: {x: 2, y: 4}
+    Value: V
+  - Key: {x: 2, y: 5}
+    Value: B
   - Key: {x: 1, y: 5}
-    Value: F
+    Value: Y
+  - Key: {x: 1, y: 3}
+    Value: B
+  - Key: {x: 2, y: 3}
+    Value: B
+  - Key: {x: 6, y: 2}
+    Value: X
+  - Key: {x: 6, y: 3}
+    Value: C
+  - Key: {x: 5, y: 2}
+    Value: C
+  - Key: {x: 5, y: 3}
+    Value: V
+  - Key: {x: 7, y: 2}
+    Value: V
+  - Key: {x: 6, y: 1}
+    Value: X
+  - Key: {x: 7, y: 1}
+    Value: X
   trayName:
-  - Key: {x: 3, y: 0}
+  - Key: {x: 1, y: 1}
     Value: Tray 1
-  - Key: {x: 3, y: 1}
+  - Key: {x: 1, y: 2}
     Value: Tray 1
-  - Key: {x: 3, y: 2}
+  - Key: {x: 2, y: 1}
     Value: Tray 1
-  - Key: {x: 4, y: 0}
+  - Key: {x: 2, y: 2}
     Value: Tray 1
-  - Key: {x: 4, y: 1}
+  - Key: {x: 1, y: 4}
     Value: Tray 1
-  - Key: {x: 4, y: 2}
+  - Key: {x: 2, y: 4}
+    Value: Tray 1
+  - Key: {x: 2, y: 5}
+    Value: Tray 1
+  - Key: {x: 1, y: 5}
     Value: Tray 1
   - Key: {x: 1, y: 3}
+    Value: Tray 1
+  - Key: {x: 2, y: 3}
+    Value: Tray 1
+  - Key: {x: 6, y: 2}
     Value: Tray 2
-  - Key: {x: 1, y: 4}
+  - Key: {x: 6, y: 3}
     Value: Tray 2
-  - Key: {x: 1, y: 5}
+  - Key: {x: 5, y: 2}
+    Value: Tray 2
+  - Key: {x: 5, y: 3}
+    Value: Tray 2
+  - Key: {x: 7, y: 2}
+    Value: Tray 2
+  - Key: {x: 6, y: 1}
+    Value: Tray 2
+  - Key: {x: 7, y: 1}
     Value: Tray 2
   categoryColors:
   - Key: Animal
@@ -484,12 +518,13 @@ MonoBehaviour:
     - {x: 10, y: 2}
     - {x: 10, y: 3}
     - {x: 10, y: 4}
-  - Key: ORCHID
+  - Key: ORC
     Value:
     - {x: 11, y: 1}
     - {x: 11, y: 2}
     - {x: 11, y: 3}
-    - {x: 11, y: 4}
+  - Key: ID
+    Value:
     - {x: 11, y: 5}
     - {x: 11, y: 6}
   trayPositions: []

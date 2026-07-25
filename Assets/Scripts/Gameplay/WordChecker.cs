@@ -301,7 +301,7 @@ public class WordChecker : MonoBehaviour
                             lvlManager.excludedChar.Remove(pos);
                             lvlManager.cellCategory.Remove(pos);
                             lvlManager.cellTexts.Remove(pos);
-                            lvlManager.charDirection.Remove(pos);
+                            //lvlManager.charDirection.Remove(pos);
                         }
                     }
 
@@ -758,7 +758,7 @@ public class WordChecker : MonoBehaviour
 
         MoveDictionaryEntry(lvlManager.cellCategory, oldPos, newPos);
         MoveDictionaryEntry(lvlManager.cellTexts, oldPos, newPos);
-        MoveDictionaryEntry(lvlManager.charDirection, oldPos, newPos);
+      //  MoveDictionaryEntry(lvlManager.charDirection, oldPos, newPos);
 
         foreach (var word in lvlManager.wordPositions.Keys.ToList())
         {

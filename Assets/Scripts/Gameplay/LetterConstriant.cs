@@ -73,13 +73,13 @@ public class LetterConstriant : MonoBehaviour
         }
         if(transform.parent.parent.GetChild(slotIndex).childCount == 0 && word.Length > 0)
         {
-            var letterBox = Instantiate(BottomGridManager.Instance.squareSlot, transform.parent.parent.GetChild(slotIndex));
+           /* var letterBox = Instantiate(BottomGridManager.Instance.squareSlot, transform.parent.parent.GetChild(slotIndex));
             letterBox.transform.localPosition = Vector3.zero;
             var lc = letterBox.GetComponent<LetterController>();
             lc.direction = direction;
             letterBox.GetComponentInChildren<TextMeshPro>().text = word[0].ToString();
             word = word.Substring(1);
-           tmp.text = word.Length.ToString();
+           tmp.text = word.Length.ToString();*/
         }
     }
 }

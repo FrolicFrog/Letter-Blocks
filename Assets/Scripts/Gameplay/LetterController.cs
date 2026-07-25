@@ -151,11 +151,11 @@ public class LetterController : MonoBehaviour
             var index = keys[i].x * column + keys[i].y;
             if (index < BottomGridManager.Instance.transform.childCount && index >= 0)
             {
-                if (LevelManager.Instance.hiddenChar.Contains(keys[i]) && LevelManager.Instance.chainedLetters.ContainsKey(keys[i]))
+              /*  if (LevelManager.Instance.hiddenChar.Contains(keys[i]) && LevelManager.Instance.chainedLetters.ContainsKey(keys[i]))
                 {
                     hiddenLetter.Add(BottomGridManager.Instance.transform.GetChild(index).GetChild(0).GetComponent<LetterConstriant>());
 
-                }
+                }*/
 
             }
 

@@ -20,7 +20,7 @@ public class BottomGridManager : MonoBehaviour
     [Tooltip("Where should the first child (Child 0) be placed? Both options will always read Left-to-Right.")]
     public StartCorner startCorner = StartCorner.TopLeft;
 
-    public GameObject squareTile, squareSlot,squareGarage;
+
 
     [Header("Scaling & Placement")]
     [Tooltip("If true, scales width to match the screen. If false, uses the Manual Grid Scale slider below.")]
@@ -43,6 +43,18 @@ public class BottomGridManager : MonoBehaviour
     [Header("Safe Area")]
     [Tooltip("Reserve the TOP percentage of the screen. The grid will center itself in the remaining space below this.")]
     [Range(0f, 0.8f)] public float topScreenReserved = 0.15f;
+
+    [Header("Slot References")]
+    public GameObject emptySlot;
+    public GameObject cell1, cell2;
+    [Header("Tray References")]
+    public GameObject noSides;
+    public GameObject singleLeft, singleRight, singleFront, singleBack;
+    public GameObject twoFrontBack, twoLeftRight;
+    public GameObject twoFrontLeft, twoLeftBack, twoBackRight, twoFrontRight;
+    public GameObject threeFront, threeRight, threeLeft, threeBack;
+    public GameObject allSides;
+
 
     private Grid grid;
     private Vector3 lastCellSize;
@@ -129,7 +141,7 @@ public class BottomGridManager : MonoBehaviour
 
         for (int i = 0; i < childCount; i++)
         {
-            if (squareTile != null) Instantiate(squareTile, transform);
+            if (emptySlot != null) Instantiate(emptySlot, transform);
         }
 
         ArrangeChildren();

@@ -24,14 +24,13 @@ public class LevelManager : Manager<LevelManager>
     [HideInInspector] public int TestLevelToLoad = 1;
     private LevelData _LevelData;
 
-    public HashSet<Vector2Int> excludedChar = new(),hiddenChar = new();
+    public HashSet<Vector2Int> excludedChar = new();
     private Dictionary<Material, Sprite> _colorSprite = new(); //Do not clear
         
-    public Dictionary<Vector2Int, int> freezedChar = new();
+
     public Dictionary<Vector2Int, string> cellCategory = new(), cellTexts = new();
     public Dictionary<string, Material> categoryColors = new();
     public Dictionary<string, List<Vector2Int>> wordPositions = new();
-    public Dictionary<Vector2Int, KeyValueGroup<string, string>> charDirection = new(), charStorage = new();
     public Dictionary<Vector2Int, List<Vector2Int>> chainedLetters = new();
     public Dictionary<string, List<string>> wordCategory = new();
 
@@ -169,86 +168,14 @@ public class LevelManager : Manager<LevelManager>
                 Vector2Int key = new Vector2Int(height, width);
                 int linearIndex = key.x * letterGridManager.width + key.y;
                 var gridChild = letterGridManager.transform.GetChild(linearIndex);
-             
-                if(charStorage.ContainsKey(key))
+                if((height+width)%2 ==0)
                 {
-                    var letterStorage = Instantiate(letterGridManager.squareGarage, gridChild);
-                    var lc = letterStorage.AddComponent<LetterConstriant>();
-                    letterStorage.transform.localPosition = Vector3.zero;
-                    lc.constraint = ConstraintType.Storage;
-                    lc.word = charStorage[key].Key;
-                    if (charStorage[key].Value == "→")
-                    {
-                        lc.direction = Vector3.right;
-                        lc.slotIndex = key.x * letterGridManager.width + key.y+1;
-                    }
-                    else if (charStorage[key].Value == "↑")
-                    {
-                        lc.direction = Vector3.forward;
-                        lc.slotIndex = (key.x -1 )* letterGridManager.width + key.y;
-                    }
-                    else if (charStorage[key].Value == "↓")
-                    {
-                        lc.direction = Vector3.back;
-                        lc.slotIndex = (key.x + 1) * letterGridManager.width + key.y;
-                    }
-                    else if (charStorage[key].Value == "←")
-                    {
-                        lc.direction = Vector3.left;
-                        lc.slotIndex = key.x * letterGridManager.width + key.y-1;
-                    }
-                  
+                    Instantiate(letterGridManager.cell1, gridChild);
                 }
-
-                if (charDirection.ContainsKey(key))
+                else
                 {
-                    var letterbox = Instantiate(letterGridManager.squareSlot, gridChild);
-                    var lc = letterbox.GetComponent<LetterController>();
-                   lc.key = key;
-                    lc.myLetter = charDirection[key].Key;
-                    letterbox.transform.localPosition = Vector3.zero;
-
-                    if (charDirection[key].Value == "→")
-                    {
-                       
-                        letterbox.GetComponent<LetterController>().direction = Vector3.right;
-                    }
-                    else if (charDirection[key].Value == "↑")
-                    {
-                       
-                        letterbox.GetComponent<LetterController>().direction = Vector3.forward;
-                    }
-                    else if (charDirection[key].Value == "↓")
-                    {
-                      
-                        letterbox.GetComponent<LetterController>().direction = Vector3.back;
-                    }
-                    else if (charDirection[key].Value == "←")
-                    {
-                       
-                        letterbox.GetComponent<LetterController>().direction = Vector3.left;
-                    }
-
-                    if (freezedChar.ContainsKey(key))
-                    {
-                        letterbox.GetComponent<MeshRenderer>().material = frostMaterial;
-                        letterbox.GetComponentInChildren<TextMeshPro>().text = freezedChar[key].ToString();
-              
-                        letterbox.AddComponent<LetterConstriant>().count = freezedChar[key];
-                    }
-                    else if (hiddenChar.Contains(key))
-                    {
-                        letterbox.GetComponent<MeshRenderer>().material.color = Color.grey;
-                        letterbox.GetComponentInChildren<TextMeshPro>().text = "?";
-                
-                        letterbox.AddComponent<LetterConstriant>().constraint = ConstraintType.Hidden;
-                    }
-                    else
-                    {
-                        letterbox.GetComponentInChildren<TextMeshPro>().text = charDirection[key].Key;
-                    }
+                    Instantiate(letterGridManager.cell2, gridChild);
                 }
-               
             }
         }
     }
