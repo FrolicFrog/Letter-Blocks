@@ -19,7 +19,7 @@ MonoBehaviour:
   height: 8
   width: 8
   bottomGridSize: 0.73
-  categoryMaterial: {fileID: 2100000, guid: 4dab332f1e8966849ad5f29ef65bffcb, type: 2}
+  categoryMaterial: {fileID: 2100000, guid: becfb789e99d486438cc9c834cce52d5, type: 2}
   words:
   - TIGER
   - NEPAL
@@ -33,8 +33,7 @@ MonoBehaviour:
   - COW
   - CAT
   - JAPAN
-  - ORC
-  - ID
+  - ORCHID
   tray:
   - Tray 1
   - Tray 2
@@ -77,8 +76,7 @@ MonoBehaviour:
     - LAVENDER
     - ROSE
     - LOTUS
-    - ORC
-    - ID
+    - ORCHID
   cellCategory:
   - Key: {x: 11, y: 1}
     Value: Flower
@@ -87,7 +85,7 @@ MonoBehaviour:
   - Key: {x: 11, y: 3}
     Value: Flower
   - Key: {x: 11, y: 4}
-    Value: Animal
+    Value: Flower
   - Key: {x: 11, y: 5}
     Value: Flower
   - Key: {x: 11, y: 6}
@@ -564,12 +562,11 @@ MonoBehaviour:
     - {x: 10, y: 2}
     - {x: 10, y: 3}
     - {x: 10, y: 4}
-  - Key: ORC
+  - Key: ORCHID
     Value:
     - {x: 11, y: 1}
     - {x: 11, y: 2}
     - {x: 11, y: 3}
-  - Key: ID
-    Value:
+    - {x: 11, y: 4}
     - {x: 11, y: 5}
     - {x: 11, y: 6}
