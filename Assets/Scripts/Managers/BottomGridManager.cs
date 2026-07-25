@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteAlways]
@@ -46,20 +47,23 @@ public class BottomGridManager : MonoBehaviour
 
     [Header("Slot References")]
     public GameObject emptySlot;
-    public GameObject cell1, cell2;
+    public GameObject cell1, cell2,outline;
     [Header("Tray References")]
-    public GameObject noSides;
-    public GameObject singleLeft, singleRight, singleFront, singleBack;
-    public GameObject twoFrontBack, twoLeftRight;
-    public GameObject twoFrontLeft, twoLeftBack, twoBackRight, twoFrontRight;
-    public GameObject threeFront, threeRight, threeLeft, threeBack;
-    public GameObject allSides;
-
-
+    //public GameObject noSides;
+    //public GameObject singleLeft, singleRight, singleFront, singleBack;
+    //public GameObject twoFrontBack, twoLeftRight;
+    //public GameObject twoFrontLeft, twoLeftBack, twoBackRight, twoFrontRight;
+    //public GameObject threeFront, threeRight, threeLeft, threeBack;
+    //public GameObject allSides;
+    public List<WallDirectionPair> wallsDirection;
+   
     private Grid grid;
     private Vector3 lastCellSize;
     private Vector3 lastCellGap;
     public static BottomGridManager Instance;
+
+
+
 
     private void OnEnable()
     {
@@ -107,23 +111,6 @@ public class BottomGridManager : MonoBehaviour
     }
 #endif
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                
-                var lc = hit.collider.GetComponent<LetterController>();
-                var lCons = hit.collider.GetComponent<LetterConstriant>();
-                if (lc != null && lCons == null)
-                {
-                   lc.StartMoving();
-                }
-            }
-        }
-    }
 
     private void UpdateGridCache()
     {

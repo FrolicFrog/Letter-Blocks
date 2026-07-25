@@ -13,5 +13,5 @@ public class LevelData : ScriptableObject
     public List<KeyValueGroup<string,List<string>>> wordCategory = new();
     public List<KeyValueGroup<Vector2Int, string>> cellCategory = new(), cellTexts = new(),trayCells = new(),trayName=new();
     public List<KeyValueGroup<string,Material>> categoryColors =new(),trayColors = new();
-    public List<KeyValueGroup<string,List<Vector2Int>>> wordPositions = new(),trayPositions = new();
+    public List<KeyValueGroup<string,List<Vector2Int>>> wordPositions = new();
 }

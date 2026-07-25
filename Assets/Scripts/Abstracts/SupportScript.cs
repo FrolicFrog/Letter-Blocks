@@ -13,3 +13,15 @@ public struct KeyValueGroup<T1,T2>
         this.Value = Value;
     }
 }
+[System.Serializable]
+public struct Direction
+{
+    public bool front, left, back, right;
+}
+[System.Serializable]
+public struct WallDirectionPair
+{
+    public GameObject mesh;
+    public Direction facing;
+   
+}

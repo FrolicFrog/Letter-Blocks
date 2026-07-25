@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -22,14 +23,20 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private List<KeyValueGroup<Material, Sprite>> colorSprite;
 
     [HideInInspector] public int TestLevelToLoad = 1;
+
+    private Dictionary<Material, Sprite> _colorSprite = new(); //Do not clear
+    private Dictionary<Direction, GameObject> wallsDirectionDict = new();
+    private Dictionary<string, List<GameObject>> trayChunks = new();
+
+
     private LevelData _LevelData;
 
     public HashSet<Vector2Int> excludedChar = new();
-    private Dictionary<Material, Sprite> _colorSprite = new(); //Do not clear
-        
+  
+   
 
-    public Dictionary<Vector2Int, string> cellCategory = new(), cellTexts = new();
-    public Dictionary<string, Material> categoryColors = new();
+    public Dictionary<Vector2Int, string> cellCategory = new(), cellTexts = new(),trayCells=new(),trayName = new();
+    public Dictionary<string, Material> categoryColors = new(),trayColors = new();
     public Dictionary<string, List<Vector2Int>> wordPositions = new();
     public Dictionary<Vector2Int, List<Vector2Int>> chainedLetters = new();
     public Dictionary<string, List<string>> wordCategory = new();
@@ -70,7 +77,9 @@ public class LevelManager : Manager<LevelManager>
         cellCategory = _LevelData.cellCategory.ToDictionary(item => item.Key, item => item.Value);
         cellTexts = _LevelData.cellTexts.ToDictionary(item => item.Key, item => item.Value);
         categoryColors = _LevelData.categoryColors.ToDictionary(item => item.Key, item => item.Value);
-
+        trayCells = _LevelData.trayCells.ToDictionary(item=>item.Key, item => item.Value);
+        trayName = _LevelData.trayName.ToDictionary(item=>item.Key,item => item.Value);
+        trayColors =_LevelData.trayColors.ToDictionary(item=>item.Key,item=>item.Value);
         foreach (var item in CurLvlData.wordPositions)
         {
             wordPositions[item.Key] = item.Value;
@@ -86,6 +95,12 @@ public class LevelManager : Manager<LevelManager>
         foreach (var item in colorSprite)
         {
             _colorSprite[item.Key] = item.Value;
+        }
+
+
+        foreach (var wallDirection in letterGridManager.wallsDirection)
+        {
+            wallsDirectionDict[wallDirection.facing] = wallDirection.mesh;
         }
     }
     void LoadInScene()
@@ -178,6 +193,88 @@ public class LevelManager : Manager<LevelManager>
                 }
             }
         }
+
+        for (int height = 0; height < letterGridManager.height; height++)
+        {
+            for (int width = 0; width < letterGridManager.width; width++)
+            {
+                Vector2Int key = new Vector2Int(height, width);
+                int linearIndex = key.x * letterGridManager.width + key.y;
+                var gridChild = letterGridManager.transform.GetChild(linearIndex);
+               if(trayCells.ContainsKey(key))
+                {
+                    Direction dir = new();
+                    List<Vector2Int> keys = new();
+                    keys.Add(key - new Vector2Int(1, 0));
+                    keys.Add(key + new Vector2Int(1, 0));
+                    keys.Add(key + new Vector2Int(0, 1));
+                    keys.Add(key - new Vector2Int(0, 1));
+
+                    for (int i = 0; i < keys.Count; i++)
+                    {
+                       
+                        if (!trayCells.ContainsKey(keys[i]) || trayName[keys[i]] != trayName[key])
+                        {
+                            switch (i)
+                            {
+                                
+                                case 0:
+                                    dir.front = true;
+                                    break;
+                                case 1:
+                                    dir.back = true;
+                                    break;
+                                case 2:
+                                    dir.right = true;
+                                    break;
+                                case 3:
+                                    dir.left = true;
+                                    break;
+                            }
+
+
+                        }
+                       
+                    }
+                    Debug.Log((dir.front, dir.left, dir.back, dir.right));
+                    var trayChunk = Instantiate(wallsDirectionDict[dir], gridChild);
+                    trayChunk.transform.localPosition = Vector3.zero;
+                    trayChunk.GetComponent<MeshRenderer>().material = trayColors[trayName[key]];
+                   
+                    if (!trayChunks.ContainsKey(trayName[key]))
+                    {
+                        trayChunks[trayName[key]] = new List<GameObject>();
+                    }
+                    trayChunks[trayName[key]].Add(trayChunk);
+
+                    var outline = Instantiate(letterGridManager.outline, trayChunk.transform);
+                    outline.transform.localPosition = new Vector3(0,0,0.13f);
+                    outline.SetActive(false);
+                }
+            }
+        }
+
+        foreach (var key in trayChunks.Keys)
+        {
+            var trayParent = new GameObject(key);
+            List<Vector3> positions = new List<Vector3>();
+            Vector3 avgPosition = Vector3.zero;
+            foreach(var chunk in trayChunks[key] )
+            {
+                positions.Add(chunk.transform.position);
+            }
+            foreach(var pos in positions)
+            {
+                avgPosition += pos;
+            }
+            avgPosition /= positions.Count;
+            trayParent.transform.position = avgPosition;
+            foreach (var chunk in trayChunks[key])
+            {
+                chunk.transform.SetParent(trayParent.transform);
+            }
+        }
+
     }
     public GameObject ReplaceGameObject(GameObject oldObject, GameObject prefab)
     {

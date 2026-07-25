@@ -456,7 +456,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 23
+    m_Bits: 31
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1187,6 +1187,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1661794638}
   - component: {fileID: 1661794640}
+  - component: {fileID: 1661794641}
   - component: {fileID: 1661794639}
   m_Layer: 0
   m_Name: LetterManager
@@ -1236,36 +1237,104 @@ MonoBehaviour:
     type: 3}
   cell1: {fileID: 7629853423582124116, guid: e30cba8aaad941d47b19580cdbdcc6c3, type: 3}
   cell2: {fileID: 7629853423582124116, guid: 502dbc85e4826344d9cc105a05b7260a, type: 3}
-  noSides: {fileID: 919132149155446097, guid: 501073136fadfd942b3eba75bfe6dfb6, type: 3}
-  singleLeft: {fileID: 919132149155446097, guid: 7d4f63ab2f9e66b429c721b82d7bb678,
-    type: 3}
-  singleRight: {fileID: 919132149155446097, guid: 7a67125f23c97da4fba150f37ff7e1af,
-    type: 3}
-  singleFront: {fileID: 919132149155446097, guid: 509a1d15f81ba0447ae58e7abaf7e8e2,
-    type: 3}
-  singleBack: {fileID: 919132149155446097, guid: fdae8a2f5b85f2443838a81ab99753fc,
-    type: 3}
-  twoFrontBack: {fileID: 919132149155446097, guid: 26560b5a61a7bec4e9b1a982b4b91df5,
-    type: 3}
-  twoLeftRight: {fileID: 919132149155446097, guid: c7cad55e39b2c084eba9039c43fdf50d,
-    type: 3}
-  twoFrontLeft: {fileID: 919132149155446097, guid: c050c92d31aea5740933c154b24aa88b,
-    type: 3}
-  twoLeftBack: {fileID: 919132149155446097, guid: a5a4f83d75826fa46bb7e2532ebd4563,
-    type: 3}
-  twoBackRight: {fileID: 919132149155446097, guid: 7816fc93ba0044a43adc68f46a8d6cdb,
-    type: 3}
-  twoFrontRight: {fileID: 919132149155446097, guid: 3b070a014deff0e4d98210728afa9ecc,
-    type: 3}
-  threeFront: {fileID: 919132149155446097, guid: 02db3503ab99b344eafc3f39f1badc1f,
-    type: 3}
-  threeRight: {fileID: 919132149155446097, guid: 9f3a78266a40efc4db92ad10ef4f8b90,
-    type: 3}
-  threeLeft: {fileID: 919132149155446097, guid: 59f3202f0b002a2459cec9d5ae7a5760,
-    type: 3}
-  threeBack: {fileID: 919132149155446097, guid: 11bcfc9040173534ba6ec5c6b5ae295d,
-    type: 3}
-  allSides: {fileID: 919132149155446097, guid: b8716c452380c9446b0cbb598a86c667, type: 3}
+  outline: {fileID: 909632358181750530, guid: 3847b10167ee8144792174938fc8becf, type: 3}
+  wallsDirection:
+  - mesh: {fileID: 5890113975637710921, guid: 45520b8cad7671b40aa5d9ac41f0d9bc, type: 3}
+    facing:
+      front: 1
+      left: 1
+      back: 1
+      right: 1
+  - mesh: {fileID: 1023010689215987531, guid: f5ee84194984cf241a702894b22173c5, type: 3}
+    facing:
+      front: 0
+      left: 0
+      back: 0
+      right: 0
+  - mesh: {fileID: 5351218991717792843, guid: 229adb2265646654abac10efb7288865, type: 3}
+    facing:
+      front: 0
+      left: 0
+      back: 1
+      right: 0
+  - mesh: {fileID: 1545690686919382596, guid: d725d54042ba58d41b87beb702abdb71, type: 3}
+    facing:
+      front: 1
+      left: 0
+      back: 0
+      right: 0
+  - mesh: {fileID: 7930654610025620646, guid: 5f184caf7cce5f442aa73015493d4a43, type: 3}
+    facing:
+      front: 0
+      left: 1
+      back: 0
+      right: 0
+  - mesh: {fileID: 2104653488694235598, guid: de651de4a4d1376479d9e0b81fc7eb05, type: 3}
+    facing:
+      front: 0
+      left: 0
+      back: 0
+      right: 1
+  - mesh: {fileID: 6999070034013977834, guid: 2371483ec6b152e47ba6a8db491cc276, type: 3}
+    facing:
+      front: 1
+      left: 1
+      back: 0
+      right: 1
+  - mesh: {fileID: 3415397153303276714, guid: a6060ccfe865e40408a682f8c54520e0, type: 3}
+    facing:
+      front: 0
+      left: 1
+      back: 1
+      right: 1
+  - mesh: {fileID: 7436058261030700945, guid: fd7afe73b5813914a91f3083368f39a2, type: 3}
+    facing:
+      front: 1
+      left: 0
+      back: 1
+      right: 1
+  - mesh: {fileID: 1350519611863332674, guid: 59f1dd55b6235f1488219134a56dce13, type: 3}
+    facing:
+      front: 1
+      left: 1
+      back: 1
+      right: 0
+  - mesh: {fileID: 8442031617785525067, guid: aa30cb1880f9f36438c3e87f055faeab, type: 3}
+    facing:
+      front: 1
+      left: 0
+      back: 1
+      right: 0
+  - mesh: {fileID: 1887662626128450941, guid: 1416f26835bdf4b4a997c61f58ec01b0, type: 3}
+    facing:
+      front: 0
+      left: 1
+      back: 0
+      right: 1
+  - mesh: {fileID: 9027379826870243511, guid: 1fa65ec6d95aeda4198d7150aae62c74, type: 3}
+    facing:
+      front: 0
+      left: 1
+      back: 1
+      right: 0
+  - mesh: {fileID: 4271755888836174673, guid: 9ee6e5cad540de8479903b6295095e8d, type: 3}
+    facing:
+      front: 0
+      left: 0
+      back: 1
+      right: 1
+  - mesh: {fileID: 8036958521192841496, guid: 86df307d172d1d245a8b3c64139ff4dd, type: 3}
+    facing:
+      front: 1
+      left: 1
+      back: 0
+      right: 0
+  - mesh: {fileID: 1897128844684918161, guid: 45efd36c864abda46a26fd587a900d9b, type: 3}
+    facing:
+      front: 1
+      left: 0
+      back: 0
+      right: 1
 --- !u!156049354 &1661794640
 Grid:
   m_ObjectHideFlags: 0
@@ -1278,6 +1347,27 @@ Grid:
   m_CellGap: {x: 2, y: 2, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 1
+--- !u!114 &1661794641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661794637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8761e9e254595f34695e2a2293be0cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trayLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  planeMode: 0
+  dragOffset: 1
+  dragScaleMultiplier: 1.2
+  scaleUpDuration: 0.15
+  snapBackDuration: 0.25
+  snapBackEase: 33
 --- !u!1 &1825650879
 GameObject:
   m_ObjectHideFlags: 0

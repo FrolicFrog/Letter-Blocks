@@ -38,6 +38,9 @@ MonoBehaviour:
   tray:
   - Tray 1
   - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
   excludedChar:
   - {x: 11, y: 2}
   - {x: 5, y: 6}
@@ -54,6 +57,7 @@ MonoBehaviour:
   - {x: 9, y: 3}
   - {x: 9, y: 5}
   - {x: 0, y: 3}
+  - {x: 11, y: 4}
   wordCategory:
   - Key: Animal
     Value:
@@ -350,75 +354,111 @@ MonoBehaviour:
   - Key: {x: 9, y: 2}
     Value: O
   trayCells:
-  - Key: {x: 1, y: 1}
-    Value: A
+  - Key: {x: 4, y: 4}
+    Value: G
+  - Key: {x: 3, y: 4}
+    Value: G
+  - Key: {x: 5, y: 1}
+    Value: G
+  - Key: {x: 2, y: 5}
+    Value: G
+  - Key: {x: 6, y: 1}
+    Value: G
+  - Key: {x: 6, y: 2}
+    Value: G
+  - Key: {x: 6, y: 3}
+    Value: G
+  - Key: {x: 5, y: 2}
+    Value: G
   - Key: {x: 1, y: 2}
     Value: A
-  - Key: {x: 2, y: 1}
-    Value: C
+  - Key: {x: 0, y: 7}
+    Value: G
   - Key: {x: 2, y: 2}
-    Value: B
-  - Key: {x: 1, y: 4}
-    Value: B
-  - Key: {x: 2, y: 4}
-    Value: V
-  - Key: {x: 2, y: 5}
-    Value: B
-  - Key: {x: 1, y: 5}
-    Value: Y
-  - Key: {x: 1, y: 3}
-    Value: B
-  - Key: {x: 2, y: 3}
-    Value: B
-  - Key: {x: 6, y: 2}
+    Value: C
+  - Key: {x: 2, y: 1}
     Value: X
-  - Key: {x: 6, y: 3}
-    Value: C
-  - Key: {x: 5, y: 2}
-    Value: C
+  - Key: {x: 3, y: 5}
+    Value: G
+  - Key: {x: 1, y: 1}
+    Value: D
   - Key: {x: 5, y: 3}
-    Value: V
-  - Key: {x: 7, y: 2}
-    Value: V
-  - Key: {x: 6, y: 1}
-    Value: X
-  - Key: {x: 7, y: 1}
-    Value: X
+    Value: G
+  - Key: {x: 4, y: 1}
+    Value: G
+  - Key: {x: 4, y: 2}
+    Value: G
+  - Key: {x: 5, y: 4}
+    Value: G
+  - Key: {x: 6, y: 4}
+    Value: G
+  - Key: {x: 5, y: 5}
+    Value: G
+  - Key: {x: 6, y: 5}
+    Value: G
+  - Key: {x: 3, y: 7}
+    Value: G
+  - Key: {x: 4, y: 7}
+    Value: G
+  - Key: {x: 6, y: 7}
+    Value: G
+  - Key: {x: 5, y: 7}
+    Value: G
+  - Key: {x: 6, y: 6}
+    Value: G
   trayName:
-  - Key: {x: 1, y: 1}
-    Value: Tray 1
+  - Key: {x: 4, y: 4}
+    Value: Tray 3
+  - Key: {x: 3, y: 4}
+    Value: Tray 3
+  - Key: {x: 5, y: 1}
+    Value: Tray 5
+  - Key: {x: 2, y: 5}
+    Value: Tray 3
+  - Key: {x: 6, y: 1}
+    Value: Tray 5
+  - Key: {x: 5, y: 2}
+    Value: Tray 5
+  - Key: {x: 6, y: 3}
+    Value: Tray 5
+  - Key: {x: 6, y: 2}
+    Value: Tray 5
   - Key: {x: 1, y: 2}
+    Value: Tray 1
+  - Key: {x: 0, y: 7}
+    Value: Tray 2
+  - Key: {x: 2, y: 2}
     Value: Tray 1
   - Key: {x: 2, y: 1}
     Value: Tray 1
-  - Key: {x: 2, y: 2}
+  - Key: {x: 3, y: 5}
+    Value: Tray 3
+  - Key: {x: 1, y: 1}
     Value: Tray 1
-  - Key: {x: 1, y: 4}
-    Value: Tray 1
-  - Key: {x: 2, y: 4}
-    Value: Tray 1
-  - Key: {x: 2, y: 5}
-    Value: Tray 1
-  - Key: {x: 1, y: 5}
-    Value: Tray 1
-  - Key: {x: 1, y: 3}
-    Value: Tray 1
-  - Key: {x: 2, y: 3}
-    Value: Tray 1
-  - Key: {x: 6, y: 2}
-    Value: Tray 2
-  - Key: {x: 6, y: 3}
-    Value: Tray 2
-  - Key: {x: 5, y: 2}
-    Value: Tray 2
   - Key: {x: 5, y: 3}
-    Value: Tray 2
-  - Key: {x: 7, y: 2}
-    Value: Tray 2
-  - Key: {x: 6, y: 1}
-    Value: Tray 2
-  - Key: {x: 7, y: 1}
-    Value: Tray 2
+    Value: Tray 5
+  - Key: {x: 4, y: 1}
+    Value: Tray 5
+  - Key: {x: 4, y: 2}
+    Value: Tray 5
+  - Key: {x: 5, y: 4}
+    Value: Tray 5
+  - Key: {x: 6, y: 4}
+    Value: Tray 5
+  - Key: {x: 5, y: 5}
+    Value: Tray 5
+  - Key: {x: 6, y: 5}
+    Value: Tray 5
+  - Key: {x: 3, y: 7}
+    Value: Tray 4
+  - Key: {x: 4, y: 7}
+    Value: Tray 4
+  - Key: {x: 6, y: 7}
+    Value: Tray 4
+  - Key: {x: 5, y: 7}
+    Value: Tray 4
+  - Key: {x: 6, y: 6}
+    Value: Tray 4
   categoryColors:
   - Key: Animal
     Value: {fileID: 2100000, guid: 4dab332f1e8966849ad5f29ef65bffcb, type: 2}
@@ -430,7 +470,13 @@ MonoBehaviour:
   - Key: Tray 1
     Value: {fileID: 2100000, guid: becfb789e99d486438cc9c834cce52d5, type: 2}
   - Key: Tray 2
-    Value: {fileID: 2100000, guid: b2149924252d7a34ebdbfa037b6e419d, type: 2}
+    Value: {fileID: 2100000, guid: 153da79a40522cc47ba2648c0d78b685, type: 2}
+  - Key: Tray 3
+    Value: {fileID: 2100000, guid: 08fdd69ce292c914ba8573318785219c, type: 2}
+  - Key: Tray 4
+    Value: {fileID: 2100000, guid: 5643ac10484ffd047abebb3b549da7d7, type: 2}
+  - Key: Tray 5
+    Value: {fileID: 2100000, guid: be9ecb5670130534fbbf7ff4ac202116, type: 2}
   wordPositions:
   - Key: TIGER
     Value:
@@ -527,4 +573,3 @@ MonoBehaviour:
     Value:
     - {x: 11, y: 5}
     - {x: 11, y: 6}
-  trayPositions: []
