@@ -47,7 +47,7 @@ public class BottomGridManager : MonoBehaviour
 
     [Header("Slot References")]
     public GameObject emptySlot;
-    public GameObject cell1, cell2,outline;
+    public GameObject cell1, cell2,outline,letter;
     [Header("Tray References")]
     //public GameObject noSides;
     //public GameObject singleLeft, singleRight, singleFront, singleBack;

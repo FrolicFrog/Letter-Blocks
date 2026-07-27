@@ -247,6 +247,11 @@ public class LevelManager : Manager<LevelManager>
                     }
                     trayChunks[trayName[key]].Add(trayChunk);
 
+                    var letterBox = Instantiate(letterGridManager.letter, trayChunk.transform);
+                    letterBox.GetComponent<MeshRenderer>().material = trayColors[trayName[key]];
+                    letterBox.transform.localPosition = Vector3.zero;
+                    letterBox.transform.localScale = Vector3.one;
+                    letterBox.GetComponentInChildren<TextMeshPro>().text = trayCells[key];
                     var outline = Instantiate(letterGridManager.outline, trayChunk.transform);
                     outline.transform.localPosition = new Vector3(0,0,0.13f);
                     outline.SetActive(false);

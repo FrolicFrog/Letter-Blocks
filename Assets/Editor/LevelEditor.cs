@@ -23,8 +23,7 @@ public class LevelEditor : EditorWindow
     [StringDropdown(listFieldName = nameof(tray))]
     public string trayDropdown;
 
-
-    private string inputCategory;
+    private string inputCategory, extraChar;
 
     private Color gridCellColor;
     private Color unassignedCellColor; // Color for cells with letters but no category/tray assigned
@@ -38,7 +37,6 @@ public class LevelEditor : EditorWindow
     private Dictionary<string, Material> categoryColors = new(), trayColors = new();
     private Dictionary<string, List<Vector2Int>> wordPositions = new();
     private Dictionary<string, List<string>> wordCategory = new();
-
 
     SerializedObject window;
     SerializedProperty categoryList, trayList;
@@ -948,21 +946,56 @@ public class LevelEditor : EditorWindow
         }
         EditorGUILayout.EndHorizontal();
         GUILayout.Space(5);
-        EditorGUILayout.BeginHorizontal();
 
-        // Orders grid positions starting from the highest row index (bottom row) down to 0 (top row),
-        // and left to right (columns 0 to N) within each row.
-        string excludedString = string.Join(", ", excludedChar
+        // 1. Collect excluded characters from the primary grid (ordered bottom-to-top, left-to-right)
+        List<string> remainingExcluded = excludedChar
             .Where(pos => cellTexts.ContainsKey(pos) && !string.IsNullOrEmpty(cellTexts[pos]))
             .OrderByDescending(pos => pos.x)
             .ThenBy(pos => pos.y)
-            .Select(pos => cellTexts[pos]));
+            .Select(pos => cellTexts[pos])
+            .ToList();
 
+        // 2. Collect characters typed in the bottom grid
+        List<string> bottomChars = trayCells
+            .Where(kvp => !string.IsNullOrEmpty(kvp.Value))
+            .OrderBy(kvp => kvp.Key.x)
+            .ThenBy(kvp => kvp.Key.y)
+            .Select(kvp => kvp.Value)
+            .ToList();
+
+        List<string> extraCharsList = new List<string>();
+
+        // 3. Pop matched letters from remainingExcluded, and collect overflow/unmatched in extraCharsList
+        foreach (string bChar in bottomChars)
+        {
+            int matchIndex = remainingExcluded.FindIndex(c => string.Equals(c, bChar, System.StringComparison.OrdinalIgnoreCase));
+            if (matchIndex >= 0)
+            {
+                remainingExcluded.RemoveAt(matchIndex);
+            }
+            else
+            {
+                extraCharsList.Add(bChar);
+            }
+        }
+
+        string excludedString = string.Join(", ", remainingExcluded);
+        extraChar = string.Join(", ", extraCharsList);
+
+        EditorGUILayout.BeginHorizontal();
         EditorGUI.BeginDisabledGroup(true);
         EditorGUILayout.TextField("Excluded Chars", excludedString);
         EditorGUI.EndDisabledGroup();
-
         EditorGUILayout.EndHorizontal();
+
+        GUILayout.Space(4);
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUI.BeginDisabledGroup(true);
+        EditorGUILayout.TextField("ExtraChar", extraChar);
+        EditorGUI.EndDisabledGroup();
+        EditorGUILayout.EndHorizontal();
+
         GUILayout.Space(10);
     }
 }
