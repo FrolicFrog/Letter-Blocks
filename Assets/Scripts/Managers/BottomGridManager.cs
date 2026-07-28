@@ -34,12 +34,8 @@ public class BottomGridManager : MonoBehaviour
     public Vector3 borderPadding = Vector3.zero;
 
     [Header("Auto-Fit To Camera")]
-    [Tooltip("Scale width automatically to match the screen bounds.")]
+    [Tooltip("Scale width to match the screen and anchor the top row to the Top Boundary line.")]
     public bool autoFitToScreen = true;
-
-    [Tooltip("Manual scale multiplier for fine-tuning.")]
-    [Range(0.1f, 5f)] public float manualGridScale = 1f;
-
     public Camera mainCamera;
 
     [Tooltip("The Y-axis level where the grid sits (should match your floor height).")]
@@ -222,42 +218,98 @@ public class BottomGridManager : MonoBehaviour
             horizontalCenterOffset = rightmostCellPos / 2f;
         }
 
-        // 2. Auto-Fit Width & Align Top Edge to Upper Border
-        if (mainCamera == null) mainCamera = Camera.main;
-
-        if (mainCamera != null)
+        // 2. Auto-Fit to Width & Calculate Top Anchor (mirrors TopGridManager,
+        // just anchored to the top boundary line instead of the bottom safe
+        // line, and growing downward instead of upward).
+        if (autoFitToScreen)
         {
-            Plane floorPlane = new Plane(Vector3.up, new Vector3(0, floorHeight, 0));
+            if (mainCamera == null) mainCamera = Camera.main;
 
-            float targetY = topBoundaryReserved;
-            float minX = screenPadding;
-            float maxX = 1f - screenPadding;
-
-            Vector3 topLeft = GetFloorIntersection(new Vector2(minX, targetY), floorPlane);
-            Vector3 topRight = GetFloorIntersection(new Vector2(maxX, targetY), floorPlane);
-
-            float frustumWidth = Vector3.Distance(topLeft, topRight);
-            float gridUnscaledWidth = (width * grid.cellSize.x) + ((width - 1) * grid.cellGap.x);
-
-            if (autoFitToScreen && gridUnscaledWidth > 0f)
+            if (mainCamera != null)
             {
-                float calculatedScale = (frustumWidth / gridUnscaledWidth) * manualGridScale;
-                transform.localScale = new Vector3(calculatedScale, calculatedScale, calculatedScale);
+                Plane floorPlane = new Plane(Vector3.up, new Vector3(0, floorHeight, 0));
+
+                // A small buffer below the boundary line, mirroring how
+                // TopGridManager adds screenPadding above its reserved line.
+                float maxY = topBoundaryReserved - screenPadding;
+                float minX = screenPadding;
+                float maxX = 1f - screenPadding;
+
+                Vector3 topLeft = GetFloorIntersection(new Vector2(minX, maxY), floorPlane);
+                Vector3 topRight = GetFloorIntersection(new Vector2(maxX, maxY), floorPlane);
+
+                float frustumWidth = Vector3.Distance(topLeft, topRight);
+                float gridUnscaledWidth = (width * grid.cellSize.x) + ((width - 1) * grid.cellGap.x);
+
+                if (gridUnscaledWidth > 0)
+                {
+                    float finalScale = frustumWidth / gridUnscaledWidth;
+
+                    // Safety check: width-based scale alone doesn't guarantee
+                    // the grid fits vertically (e.g. many rows on a wide/short
+                    // screen). If it would cross the true bottom of the
+                    // frustum, scale down to whatever fits vertically too.
+                    // The top edge stays anchored to the boundary line either
+                    // way — only the bottom trims in, never the top.
+                    float gridUnscaledHeight = (height * grid.cellSize.y) + ((height - 1) * grid.cellGap.y);
+
+                    if (gridUnscaledHeight > 0)
+                    {
+                        // Use the device's actual safe-area bottom instead of
+                        // the raw viewport edge (y=0) — on devices with a
+                        // home indicator or rounded corners, content sitting
+                        // right at y=0 gets visually clipped by the device
+                        // frame even though it's technically inside the
+                        // camera frustum.
+                        float safeBottomViewportY = 0f;
+                        if (Screen.height > 0)
+                        {
+                            safeBottomViewportY = Mathf.Clamp01(Screen.safeArea.yMin / Screen.height);
+                        }
+
+                        Vector3 bottomCenterAtBoundary = GetFloorIntersection(new Vector2((minX + maxX) / 2f, maxY), floorPlane);
+                        Vector3 bottomCenterAtFloor = GetFloorIntersection(new Vector2((minX + maxX) / 2f, safeBottomViewportY), floorPlane);
+
+                        float availableFrustumHeight = Vector3.Distance(bottomCenterAtBoundary, bottomCenterAtFloor);
+                        float scaleToFitHeight = availableFrustumHeight / gridUnscaledHeight;
+
+                        finalScale = Mathf.Min(finalScale, scaleToFitHeight);
+                    }
+
+                    transform.localScale = new Vector3(finalScale, finalScale, finalScale);
+                }
+
+                Vector3 safeTopCenterWorld = (topLeft + topRight) / 2f;
+                Vector3 targetTopLocal = transform.InverseTransformPoint(safeTopCenterWorld);
+
+                Vector3 cellUpDirection = grid.CellToLocal(new Vector3Int(0, 1, 0)).normalized;
+                Vector3 topRowCellPos = grid.CellToLocal(new Vector3Int(0, height - 1, 0));
+                Vector3 rowTopEdgePos = topRowCellPos + (cellUpDirection * (grid.cellSize.y / 2f));
+
+                safeAreaAnchorOffset = targetTopLocal - rowTopEdgePos;
+
+                // Safety correction: on grids with a non-trivial Cell Swizzle,
+                // the "column" direction isn't always perfectly orthogonal to
+                // the "row/up" direction in local space. That means
+                // horizontalCenterOffset (subtracted from every child below
+                // to center the grid) can carry a small component along the
+                // up-direction too — and since it scales with finalScale,
+                // it can make the top edge drift differently as the safety
+                // clamp kicks in across different resolutions. Force it back
+                // to exactly match the boundary line by measuring where the
+                // top edge would actually land and correcting only along the
+                // up-direction, leaving horizontal centering untouched.
+                Vector3 predictedTopLocal = rowTopEdgePos - horizontalCenterOffset + safeAreaAnchorOffset;
+                Vector3 predictedTopWorld = transform.TransformPoint(predictedTopLocal);
+
+                Vector3 worldUpDir = transform.TransformDirection(cellUpDirection);
+                if (worldUpDir.sqrMagnitude > 0.0001f)
+                {
+                    Vector3 worldError = Vector3.Project(safeTopCenterWorld - predictedTopWorld, worldUpDir.normalized);
+                    Vector3 localErrorCorrection = transform.InverseTransformDirection(worldError);
+                    safeAreaAnchorOffset += localErrorCorrection;
+                }
             }
-            else
-            {
-                transform.localScale = new Vector3(manualGridScale, manualGridScale, manualGridScale);
-            }
-
-            // Align top edge of grid to topCenterWorld
-            Vector3 topCenterWorld = (topLeft + topRight) * 0.5f;
-            Vector3 targetTopLocal = transform.InverseTransformPoint(topCenterWorld);
-
-            Vector3 topRowCellPos = grid.CellToLocal(new Vector3Int(0, height - 1, 0));
-            Vector3 cellUpDirection = grid.CellToLocal(new Vector3Int(0, 1, 0)).normalized;
-            Vector3 rowTopEdgePos = topRowCellPos + (cellUpDirection * (grid.cellSize.y / 2f));
-
-            safeAreaAnchorOffset = targetTopLocal - rowTopEdgePos;
         }
 
         // 3. Map children Left-to-Right

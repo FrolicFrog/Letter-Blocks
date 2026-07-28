@@ -1206,7 +1206,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 16.110258}
-  m_LocalScale: {x: 0.8734091, y: 0.8734091, z: 0.8734091}
+  m_LocalScale: {x: 0.8586301, y: 0.8586301, z: 0.8586301}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 88770632}
@@ -1333,11 +1333,10 @@ MonoBehaviour:
   autoScaleBorder: 1
   borderPadding: {x: 2.96, y: 3.41, z: 3.83}
   autoFitToScreen: 1
-  manualGridScale: 1.02
   mainCamera: {fileID: 330585545}
   floorHeight: 0
-  screenPadding: 0.068
-  bottomScreenReserved: -0.035
+  screenPadding: 0.074
+  topBoundaryReserved: 0.502
 --- !u!156049354 &1661794640
 Grid:
   m_ObjectHideFlags: 0
@@ -2009,8 +2008,8 @@ Transform:
   m_GameObject: {fileID: 410861370479014354}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2.4675112}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 3.231761}
+  m_LocalScale: {x: 2.0271764, y: 1.7005401, z: 2.1183267}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
