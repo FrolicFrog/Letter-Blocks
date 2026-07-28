@@ -23,6 +23,32 @@ public class TopGridManager : MonoBehaviour
     public Transform queueParent;
     public List<Transform> queueSlots;
 
+    [Header("Center Border Settings - Object 1")]
+    [Tooltip("Assign a GameObject here to automatically place and scale it around the grid.")]
+    public GameObject centerObject1;
+
+    [Tooltip("If true, automatically resizes centerObject1 to fit the outer bounds of the grid.")]
+    public bool autoScaleBorder1 = true;
+
+    [Tooltip("Extra padding around the outer edge of the grid for centerObject1's border (X, Y, Z).")]
+    public Vector3 borderPadding1 = Vector3.zero;
+
+    [Tooltip("Extra positional offset for centerObject1 applied along the grid's local X, Y, and Z axes.")]
+    public Vector3 centerObject1Offset = Vector3.zero;
+
+    [Header("Center Border Settings - Object 2")]
+    [Tooltip("Assign a second GameObject here to automatically place and scale it around the grid.")]
+    public GameObject centerObject2;
+
+    [Tooltip("If true, automatically resizes centerObject2 to fit the outer bounds of the grid.")]
+    public bool autoScaleBorder2 = true;
+
+    [Tooltip("Extra padding around the outer edge of the grid for centerObject2's border (X, Y, Z).")]
+    public Vector3 borderPadding2 = Vector3.zero;
+
+    [Tooltip("Extra positional offset for centerObject2 applied along the grid's local X, Y, and Z axes.")]
+    public Vector3 centerObject2Offset = Vector3.zero;
+
     [Header("Auto-Fit To Camera")]
     [Tooltip("Scale width to match the screen and anchor the bottom to the Safe Area.")]
     public bool autoFitToScreen = true;
@@ -203,7 +229,7 @@ public class TopGridManager : MonoBehaviour
         if (grid == null) return;
 
         int currentChildCount = transform.childCount;
-        if (currentChildCount == 0) return;
+        if (currentChildCount == 0 && centerObject1 == null && centerObject2 == null) return;
 
         Vector3 safeAreaAnchorOffset = Vector3.zero;
         Vector3 horizontalCenterOffset = Vector3.zero;
@@ -253,20 +279,31 @@ public class TopGridManager : MonoBehaviour
         int validChildCount = Mathf.Min(currentChildCount, rows * columns);
 
         // 3. Map children Left-to-Right perfectly
-        for (int i = 0; i < validChildCount; i++)
+        int tileIndex = 0;
+
+        for (int i = 0; i < currentChildCount; i++)
         {
-            int physical_col = i % columns;
+            Transform child = transform.GetChild(i);
+
+            // Skip the center border objects if they happen to be parented under this grid
+            if ((centerObject1 != null && child == centerObject1.transform) ||
+                (centerObject2 != null && child == centerObject2.transform))
+                continue;
+
+            if (tileIndex >= validChildCount) break;
+
+            int physical_col = tileIndex % columns;
 
             int physical_row;
             if (startCorner == StartCorner.TopLeft)
             {
                 // Child 0 starts at the very top row and flows downwards
-                physical_row = (rows - 1) - (i / columns);
+                physical_row = (rows - 1) - (tileIndex / columns);
             }
             else
             {
                 // Child 0 starts at the Safe Area line and flows upwards
-                physical_row = i / columns;
+                physical_row = tileIndex / columns;
             }
 
             Vector3 baseLocalPos = grid.CellToLocal(new Vector3Int(physical_col, physical_row, 0));
@@ -274,7 +311,115 @@ public class TopGridManager : MonoBehaviour
             baseLocalPos -= horizontalCenterOffset;
             baseLocalPos += safeAreaAnchorOffset;
 
-            transform.GetChild(i).localPosition = baseLocalPos;
+            child.localPosition = baseLocalPos;
+            tileIndex++;
+        }
+
+        // 4. Position & Auto-Size the Center Border Objects
+        if (centerObject1 != null || centerObject2 != null)
+        {
+            Vector3 posMin = grid.CellToLocal(new Vector3Int(0, 0, 0));
+            Vector3 posMax = grid.CellToLocal(new Vector3Int(columns - 1, rows - 1, 0));
+
+            Vector3 gridLocalCenterBase = (posMin + posMax) / 2f;
+            gridLocalCenterBase -= horizontalCenterOffset;
+            gridLocalCenterBase += safeAreaAnchorOffset;
+
+            Vector3 diff = posMax - posMin;
+            Vector3 gridScale = transform.localScale;
+
+            PositionAndScaleCenterObject(centerObject1, autoScaleBorder1, borderPadding1, centerObject1Offset, gridLocalCenterBase, diff, gridScale);
+            PositionAndScaleCenterObject(centerObject2, autoScaleBorder2, borderPadding2, centerObject2Offset, gridLocalCenterBase, diff, gridScale);
+        }
+    }
+
+    /// <summary>
+    /// Positions a center border object at the grid's center (plus its own X/Y/Z offset) and,
+    /// if enabled, auto-scales it to fit the outer bounds of the grid plus padding.
+    /// </summary>
+    private void PositionAndScaleCenterObject(GameObject centerObject, bool autoScaleBorder, Vector3 borderPadding, Vector3 positionOffset, Vector3 gridLocalCenterBase, Vector3 diff, Vector3 gridScale)
+    {
+        if (centerObject == null) return;
+
+        // Apply full 3D local offset (X, Y, Z)
+        Vector3 gridLocalCenter = gridLocalCenterBase + positionOffset;
+
+        if (centerObject.transform.parent == transform)
+        {
+            centerObject.transform.localPosition = gridLocalCenter;
+        }
+        else
+        {
+            centerObject.transform.position = transform.TransformPoint(gridLocalCenter);
+        }
+
+        if (autoScaleBorder)
+        {
+            float cellZSize = grid.cellSize.z > 0 ? grid.cellSize.z : 0f;
+
+            float totalOuterWidth = Mathf.Abs(diff.x) + grid.cellSize.x + borderPadding.x;
+            float totalOuterHeight = Mathf.Abs(diff.y) + grid.cellSize.y + borderPadding.y;
+            float totalOuterDepth = Mathf.Abs(diff.z) + cellZSize + borderPadding.z;
+
+            bool isChild = centerObject.transform.parent == transform;
+
+            Vector3 targetLocalSize = new Vector3(
+                totalOuterWidth,
+                totalOuterHeight,
+                totalOuterDepth > 0f ? totalOuterDepth : centerObject.transform.localScale.z
+            );
+
+            if (!isChild)
+            {
+                Vector3 parentScale = centerObject.transform.parent != null ? centerObject.transform.parent.lossyScale : Vector3.one;
+                Vector3 targetWorldSize = Vector3.Scale(targetLocalSize, gridScale);
+                targetLocalSize = new Vector3(
+                    parentScale.x != 0 ? targetWorldSize.x / parentScale.x : targetWorldSize.x,
+                    parentScale.y != 0 ? targetWorldSize.y / parentScale.y : targetWorldSize.y,
+                    parentScale.z != 0 ? targetWorldSize.z / parentScale.z : targetWorldSize.z
+                );
+            }
+
+            SpriteRenderer sr = centerObject.GetComponent<SpriteRenderer>();
+            if (sr == null) sr = centerObject.GetComponentInChildren<SpriteRenderer>();
+
+            MeshFilter mf = centerObject.GetComponent<MeshFilter>();
+            if (mf == null) mf = centerObject.GetComponentInChildren<MeshFilter>();
+
+            if (sr != null && sr.drawMode != SpriteDrawMode.Simple)
+            {
+                sr.size = new Vector2(targetLocalSize.x, targetLocalSize.y);
+                if (borderPadding.z != 0f)
+                {
+                    Vector3 currentScale = centerObject.transform.localScale;
+                    centerObject.transform.localScale = new Vector3(currentScale.x, currentScale.y, targetLocalSize.z);
+                }
+            }
+            else if (sr != null && sr.sprite != null)
+            {
+                Vector2 spriteSize = sr.sprite.rect.size / sr.sprite.pixelsPerUnit;
+                if (spriteSize.x > 0 && spriteSize.y > 0)
+                {
+                    centerObject.transform.localScale = new Vector3(
+                        targetLocalSize.x / spriteSize.x,
+                        targetLocalSize.y / spriteSize.y,
+                        targetLocalSize.z > 0 ? targetLocalSize.z : centerObject.transform.localScale.z
+                    );
+                }
+            }
+            else if (mf != null && mf.sharedMesh != null)
+            {
+                Vector3 meshSize = mf.sharedMesh.bounds.size;
+                float scaleX = meshSize.x > 0f ? targetLocalSize.x / meshSize.x : targetLocalSize.x;
+                float scaleY = meshSize.y > 0f ? targetLocalSize.y / meshSize.y : targetLocalSize.y;
+                float scaleZ = (meshSize.z > 0f && totalOuterDepth > 0f) ? targetLocalSize.z / meshSize.z : centerObject.transform.localScale.z;
+
+                centerObject.transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
+            }
+            else
+            {
+                centerObject.transform.localScale = targetLocalSize;
+            }
         }
     }
 

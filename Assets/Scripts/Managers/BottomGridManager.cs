@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteAlways]
 [RequireComponent(typeof(Grid))]
 public class BottomGridManager : MonoBehaviour
 {
@@ -44,6 +43,9 @@ public class BottomGridManager : MonoBehaviour
     [Tooltip("Percentage of empty space to leave on the Left/Right edges (0.0 to 0.5)")]
     [Range(0f, 0.5f)] public float screenPadding = 0.05f;
 
+    [Tooltip("Percentage of extra empty space to leave on the Bottom edge (0.0 to 0.5) to prevent border clipping.")]
+    [Range(0f, 0.5f)] public float bottomScreenPadding = 0.02f;
+
     [Header("Safe Area Boundary")]
     [Tooltip("The upper boundary percentage for the bottom grid (Set to 0.35 to align directly below TopGridManager). Grid grows DOWNWARDS from this line.")]
     [Range(0.05f, 0.95f)] public float topBoundaryReserved = 0.35f;
@@ -51,15 +53,24 @@ public class BottomGridManager : MonoBehaviour
     public static BottomGridManager Instance;
 
     private Grid grid;
-    private Vector3 lastCellSize;
-    private Vector3 lastCellGap;
 
-    // Screen/Camera tracking fields for dynamic runtime & editor updates
+    // Camera Tracking
     private int lastScreenWidth;
     private int lastScreenHeight;
     private float lastCameraAspect;
     private float lastCameraFOV;
     private float lastCameraOrthoSize;
+
+    // Parameter Tracking for Update Loop
+    private int lastHeight;
+    private int lastWidth;
+    private Vector3 lastBorderPadding;
+    private float lastScreenPadding;
+    private float lastBottomScreenPadding;
+    private float lastTopBoundaryReserved;
+    private float lastFloorHeight;
+    private Vector3 lastCellSize;
+    private Vector3 lastCellGap;
 
     private void Awake()
     {
@@ -70,57 +81,84 @@ public class BottomGridManager : MonoBehaviour
     {
         Instance = this;
         grid = GetComponent<Grid>();
-        UpdateGridCache();
+
+        CacheInitialValues();
         ArrangeChildren();
-
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.update += EditorUpdate;
-#endif
-    }
-
-    private void OnDisable()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.update -= EditorUpdate;
-#endif
     }
 
     private void Update()
     {
-        CheckScreenAndCameraChanges();
+        // Only run the checks if the game is actually playing
+        if (Application.isPlaying)
+        {
+            bool screenChanged = CheckScreenAndCameraChanges();
+            bool paramsChanged = CheckParameterChanges();
+
+            if (screenChanged || paramsChanged)
+            {
+                ArrangeChildren();
+            }
+        }
     }
 
     private void OnValidate()
     {
+        // Strictly just to ensure the reference exists if working in the inspector
         if (grid == null) grid = GetComponent<Grid>();
-
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.delayCall += () =>
-        {
-            if (this != null) ArrangeChildren();
-        };
-#endif
     }
 
-#if UNITY_EDITOR
-    private void EditorUpdate()
+    private void CacheInitialValues()
     {
         if (grid != null)
         {
-            if (grid.cellGap != lastCellGap || grid.cellSize != lastCellSize)
-            {
-                UpdateGridCache();
-                ArrangeChildren();
-                UnityEditor.SceneView.RepaintAll();
-            }
+            lastCellSize = grid.cellSize;
+            lastCellGap = grid.cellGap;
+        }
+
+        lastHeight = height;
+        lastWidth = width;
+        lastBorderPadding = borderPadding;
+        lastScreenPadding = screenPadding;
+        lastBottomScreenPadding = bottomScreenPadding;
+        lastTopBoundaryReserved = topBoundaryReserved;
+        lastFloorHeight = floorHeight;
+
+        if (mainCamera == null) mainCamera = Camera.main;
+        if (mainCamera != null)
+        {
+            lastScreenWidth = Screen.width;
+            lastScreenHeight = Screen.height;
+            lastCameraAspect = mainCamera.aspect;
+            lastCameraOrthoSize = mainCamera.orthographicSize;
+            lastCameraFOV = mainCamera.fieldOfView;
         }
     }
-#endif
 
-    private void CheckScreenAndCameraChanges()
+    private bool CheckParameterChanges()
+    {
+        bool changed = false;
+
+        if (height != lastHeight) { lastHeight = height; changed = true; }
+        if (width != lastWidth) { lastWidth = width; changed = true; }
+        if (borderPadding != lastBorderPadding) { lastBorderPadding = borderPadding; changed = true; }
+        if (screenPadding != lastScreenPadding) { lastScreenPadding = screenPadding; changed = true; }
+        if (bottomScreenPadding != lastBottomScreenPadding) { lastBottomScreenPadding = bottomScreenPadding; changed = true; }
+        if (topBoundaryReserved != lastTopBoundaryReserved) { lastTopBoundaryReserved = topBoundaryReserved; changed = true; }
+        if (floorHeight != lastFloorHeight) { lastFloorHeight = floorHeight; changed = true; }
+
+        if (grid != null)
+        {
+            if (grid.cellSize != lastCellSize) { lastCellSize = grid.cellSize; changed = true; }
+            if (grid.cellGap != lastCellGap) { lastCellGap = grid.cellGap; changed = true; }
+        }
+
+        return changed;
+    }
+
+    private bool CheckScreenAndCameraChanges()
     {
         if (mainCamera == null) mainCamera = Camera.main;
-        if (mainCamera == null) return;
+        if (mainCamera == null) return false;
 
         bool hasChanged = false;
 
@@ -148,19 +186,7 @@ public class BottomGridManager : MonoBehaviour
             hasChanged = true;
         }
 
-        if (hasChanged)
-        {
-            ArrangeChildren();
-        }
-    }
-
-    private void UpdateGridCache()
-    {
-        if (grid != null)
-        {
-            lastCellSize = grid.cellSize;
-            lastCellGap = grid.cellGap;
-        }
+        return hasChanged;
     }
 
     [ContextMenu("Generate Grid Tiles")]
@@ -218,9 +244,7 @@ public class BottomGridManager : MonoBehaviour
             horizontalCenterOffset = rightmostCellPos / 2f;
         }
 
-        // 2. Auto-Fit to Width & Calculate Top Anchor (mirrors TopGridManager,
-        // just anchored to the top boundary line instead of the bottom safe
-        // line, and growing downward instead of upward).
+        // 2. Auto-Fit to Width & Calculate Top Anchor
         if (autoFitToScreen)
         {
             if (mainCamera == null) mainCamera = Camera.main;
@@ -229,8 +253,6 @@ public class BottomGridManager : MonoBehaviour
             {
                 Plane floorPlane = new Plane(Vector3.up, new Vector3(0, floorHeight, 0));
 
-                // A small buffer below the boundary line, mirroring how
-                // TopGridManager adds screenPadding above its reserved line.
                 float maxY = topBoundaryReserved - screenPadding;
                 float minX = screenPadding;
                 float maxX = 1f - screenPadding;
@@ -244,27 +266,20 @@ public class BottomGridManager : MonoBehaviour
                 if (gridUnscaledWidth > 0)
                 {
                     float finalScale = frustumWidth / gridUnscaledWidth;
-
-                    // Safety check: width-based scale alone doesn't guarantee
-                    // the grid fits vertically (e.g. many rows on a wide/short
-                    // screen). If it would cross the true bottom of the
-                    // frustum, scale down to whatever fits vertically too.
-                    // The top edge stays anchored to the boundary line either
-                    // way — only the bottom trims in, never the top.
                     float gridUnscaledHeight = (height * grid.cellSize.y) + ((height - 1) * grid.cellGap.y);
 
                     if (gridUnscaledHeight > 0)
                     {
-                        // Use the device's actual safe-area bottom instead of
-                        // the raw viewport edge (y=0) — on devices with a
-                        // home indicator or rounded corners, content sitting
-                        // right at y=0 gets visually clipped by the device
-                        // frame even though it's technically inside the
-                        // camera frustum.
-                        float safeBottomViewportY = 0f;
+                        // Account for the border extending below the bottom cell
+                        if (autoScaleBorder && centerObject != null)
+                        {
+                            gridUnscaledHeight += (borderPadding.y / 2f);
+                        }
+
+                        float safeBottomViewportY = bottomScreenPadding;
                         if (Screen.height > 0)
                         {
-                            safeBottomViewportY = Mathf.Clamp01(Screen.safeArea.yMin / Screen.height);
+                            safeBottomViewportY = Mathf.Clamp01((Screen.safeArea.yMin / Screen.height) + bottomScreenPadding);
                         }
 
                         Vector3 bottomCenterAtBoundary = GetFloorIntersection(new Vector2((minX + maxX) / 2f, maxY), floorPlane);
@@ -288,17 +303,6 @@ public class BottomGridManager : MonoBehaviour
 
                 safeAreaAnchorOffset = targetTopLocal - rowTopEdgePos;
 
-                // Safety correction: on grids with a non-trivial Cell Swizzle,
-                // the "column" direction isn't always perfectly orthogonal to
-                // the "row/up" direction in local space. That means
-                // horizontalCenterOffset (subtracted from every child below
-                // to center the grid) can carry a small component along the
-                // up-direction too — and since it scales with finalScale,
-                // it can make the top edge drift differently as the safety
-                // clamp kicks in across different resolutions. Force it back
-                // to exactly match the boundary line by measuring where the
-                // top edge would actually land and correcting only along the
-                // up-direction, leaving horizontal centering untouched.
                 Vector3 predictedTopLocal = rowTopEdgePos - horizontalCenterOffset + safeAreaAnchorOffset;
                 Vector3 predictedTopWorld = transform.TransformPoint(predictedTopLocal);
 

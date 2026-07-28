@@ -175,6 +175,7 @@ public class LevelManager : Manager<LevelManager>
     }
     void ManageAlphabets()
     {
+        letterGridManager.autoFitToScreen = false;
         LetterController.column = letterGridManager.width;
         for (int height = 0; height < letterGridManager.height; height++)
         {
@@ -280,7 +281,7 @@ public class LevelManager : Manager<LevelManager>
             }
             trayParent.transform.SetParent(letterGridManager.transform);
         }
-
+        letterGridManager.autoFitToScreen = true;
     }
     public GameObject ReplaceGameObject(GameObject oldObject, GameObject prefab)
     {
