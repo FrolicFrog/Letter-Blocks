@@ -1233,43 +1233,43 @@ MonoBehaviour:
   outline: {fileID: 909632358181750530, guid: 3847b10167ee8144792174938fc8becf, type: 3}
   letter: {fileID: 2816542064667801392, guid: 51bccfbfc2d0f224188ec1460a5a050c, type: 3}
   wallsDirection:
-  - mesh: {fileID: 5890113975637710921, guid: 45520b8cad7671b40aa5d9ac41f0d9bc, type: 3}
+  - mesh: {fileID: 1559360252519569411, guid: d68d823a0670b604b9899d12a32c585e, type: 3}
     facing:
       front: 1
       left: 1
       back: 1
       right: 1
-  - mesh: {fileID: 1023010689215987531, guid: f5ee84194984cf241a702894b22173c5, type: 3}
+  - mesh: {fileID: 8509616348565672096, guid: 9e6da8aa2aafe574f9de65c7d4441880, type: 3}
     facing:
       front: 0
       left: 0
       back: 0
       right: 0
-  - mesh: {fileID: 5351218991717792843, guid: 229adb2265646654abac10efb7288865, type: 3}
+  - mesh: {fileID: 1552303446772596818, guid: 162c216e70a96ea47873c73242f2baa9, type: 3}
     facing:
       front: 0
       left: 0
       back: 1
       right: 0
-  - mesh: {fileID: 1545690686919382596, guid: d725d54042ba58d41b87beb702abdb71, type: 3}
+  - mesh: {fileID: 7775434076225436270, guid: 875b592f89d7f674ea2b03a15116a37f, type: 3}
     facing:
       front: 1
       left: 0
       back: 0
       right: 0
-  - mesh: {fileID: 7930654610025620646, guid: 5f184caf7cce5f442aa73015493d4a43, type: 3}
+  - mesh: {fileID: 6743337108350862261, guid: 3bcd3ec44c3c5094c9dc1a40870924d8, type: 3}
     facing:
       front: 0
       left: 1
       back: 0
       right: 0
-  - mesh: {fileID: 2104653488694235598, guid: de651de4a4d1376479d9e0b81fc7eb05, type: 3}
+  - mesh: {fileID: 7985843866069066798, guid: 81c7ca44174e917429bdfdbbdcd6da7e, type: 3}
     facing:
       front: 0
       left: 0
       back: 0
       right: 1
-  - mesh: {fileID: 6999070034013977834, guid: 2371483ec6b152e47ba6a8db491cc276, type: 3}
+  - mesh: {fileID: 8166593393590261698, guid: 7209f07d44cb31e408233025157738cd, type: 3}
     facing:
       front: 1
       left: 1
@@ -1281,49 +1281,49 @@ MonoBehaviour:
       left: 1
       back: 1
       right: 1
-  - mesh: {fileID: 7436058261030700945, guid: fd7afe73b5813914a91f3083368f39a2, type: 3}
+  - mesh: {fileID: 6926805597491010736, guid: e6681e7c50585974d993cd21b5b0f873, type: 3}
     facing:
       front: 1
       left: 0
       back: 1
       right: 1
-  - mesh: {fileID: 1350519611863332674, guid: 59f1dd55b6235f1488219134a56dce13, type: 3}
+  - mesh: {fileID: 6527846642660607209, guid: 212a47979ec01e44585395c74a4ffbe4, type: 3}
     facing:
       front: 1
       left: 1
       back: 1
       right: 0
-  - mesh: {fileID: 8442031617785525067, guid: aa30cb1880f9f36438c3e87f055faeab, type: 3}
+  - mesh: {fileID: 8229108150763107350, guid: d4d5d20b13a0fc34981627c8eac4254c, type: 3}
     facing:
       front: 1
       left: 0
       back: 1
       right: 0
-  - mesh: {fileID: 1887662626128450941, guid: 1416f26835bdf4b4a997c61f58ec01b0, type: 3}
+  - mesh: {fileID: 2958420655886739411, guid: 637f8416bb394654fb8e9b7454727d2b, type: 3}
     facing:
       front: 0
       left: 1
       back: 0
       right: 1
-  - mesh: {fileID: 9027379826870243511, guid: 1fa65ec6d95aeda4198d7150aae62c74, type: 3}
+  - mesh: {fileID: 3824478487430150592, guid: 267d51bdb3d5dcd40b63fcc9b3471c4a, type: 3}
     facing:
       front: 0
       left: 1
       back: 1
       right: 0
-  - mesh: {fileID: 4271755888836174673, guid: 9ee6e5cad540de8479903b6295095e8d, type: 3}
+  - mesh: {fileID: 919132149155446097, guid: a539fa07268511f4c9abb0d0b164b685, type: 3}
     facing:
       front: 0
       left: 0
       back: 1
       right: 1
-  - mesh: {fileID: 8036958521192841496, guid: 86df307d172d1d245a8b3c64139ff4dd, type: 3}
+  - mesh: {fileID: 919132149155446097, guid: 93449880ca054b84981316599e30d5b0, type: 3}
     facing:
       front: 1
       left: 1
       back: 0
       right: 0
-  - mesh: {fileID: 1897128844684918161, guid: 45efd36c864abda46a26fd587a900d9b, type: 3}
+  - mesh: {fileID: 3065994040596944760, guid: f265da2e86d4aff46a3872805bfe2110, type: 3}
     facing:
       front: 1
       left: 0
