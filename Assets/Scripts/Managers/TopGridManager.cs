@@ -44,16 +44,25 @@ public class TopGridManager : MonoBehaviour
     private Vector3 lastCellSize;
     private Vector3 lastCellGap;
 
+    // Screen and Camera tracking fields for dynamic runtime/editor scale updates
+    private int lastScreenWidth;
+    private int lastScreenHeight;
+    private float lastCameraAspect;
+    private float lastCameraFOV;
+    private float lastCameraOrthoSize;
+
     private void Awake()
     {
         instance = this;
-      
     }
+
     private void OnEnable()
     {
+        instance = this;
         grid = GetComponent<Grid>();
         UpdateGridCache();
         ArrangeChildren();
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.update += EditorUpdate;
 #endif
@@ -66,9 +75,16 @@ public class TopGridManager : MonoBehaviour
 #endif
     }
 
+    private void Update()
+    {
+        // Continuously check for aspect ratio or resolution changes
+        CheckScreenAndCameraChanges();
+    }
+
     private void OnValidate()
     {
         if (grid == null) grid = GetComponent<Grid>();
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.delayCall += () =>
         {
@@ -76,11 +92,10 @@ public class TopGridManager : MonoBehaviour
         };
 #endif
     }
+
 #if UNITY_EDITOR
     private void EditorUpdate()
     {
-        if (Application.isPlaying) return;
-
         if (grid != null)
         {
             if (grid.cellGap != lastCellGap || grid.cellSize != lastCellSize)
@@ -92,6 +107,49 @@ public class TopGridManager : MonoBehaviour
         }
     }
 #endif
+
+    /// <summary>
+    /// Detects changes in aspect ratio, resolution, or camera properties and re-arranges children instantly.
+    /// </summary>
+    private void CheckScreenAndCameraChanges()
+    {
+        if (mainCamera == null) mainCamera = Camera.main;
+        if (mainCamera == null) return;
+
+        bool hasChanged = false;
+
+        // Check for resolution change
+        if (Screen.width != lastScreenWidth || Screen.height != lastScreenHeight)
+        {
+            lastScreenWidth = Screen.width;
+            lastScreenHeight = Screen.height;
+            hasChanged = true;
+        }
+
+        // Check for camera aspect ratio change
+        if (!Mathf.Approximately(mainCamera.aspect, lastCameraAspect))
+        {
+            lastCameraAspect = mainCamera.aspect;
+            hasChanged = true;
+        }
+
+        // Check for orthographic size / FOV change
+        float currentSize = mainCamera.orthographic ? mainCamera.orthographicSize : mainCamera.fieldOfView;
+        float lastSize = mainCamera.orthographic ? lastCameraOrthoSize : lastCameraFOV;
+
+        if (!Mathf.Approximately(currentSize, lastSize))
+        {
+            if (mainCamera.orthographic) lastCameraOrthoSize = currentSize;
+            else lastCameraFOV = currentSize;
+
+            hasChanged = true;
+        }
+
+        if (hasChanged)
+        {
+            ArrangeChildren();
+        }
+    }
 
     private void UpdateGridCache()
     {
@@ -110,11 +168,9 @@ public class TopGridManager : MonoBehaviour
         int childCount = rows * columns;
         DestroyAllChildren();
 
-        // Fallback to absolute local scale 1 if grid settings aren't set up yet
         Vector3 targetScale = Vector3.one;
         if (grid != null)
         {
-            // Sets the tile's base size to match the Grid component's Cell Size dimensions
             targetScale = grid.cellSize;
         }
 
@@ -124,7 +180,6 @@ public class TopGridManager : MonoBehaviour
             {
                 GameObject newTile = Instantiate(squareTile, transform);
                 newTile.transform.localScale = targetScale;
-               
             }
         }
 
@@ -200,7 +255,6 @@ public class TopGridManager : MonoBehaviour
         // 3. Map children Left-to-Right perfectly
         for (int i = 0; i < validChildCount; i++)
         {
-            // ALWAYS flows left to right
             int physical_col = i % columns;
 
             int physical_row;

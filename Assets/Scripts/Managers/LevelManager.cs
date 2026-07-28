@@ -71,7 +71,7 @@ public class LevelManager : Manager<LevelManager>
         gridManager.columns = _LevelData.columns;
         letterGridManager.height = _LevelData.height;
         letterGridManager.width = _LevelData.width;
-        letterGridManager.manualGridScale = _LevelData.bottomGridSize;
+       // letterGridManager.manualGridScale = _LevelData.bottomGridSize;
         hearts = _LevelData.hearts;
         excludedChar = _LevelData.excludedChar.ToHashSet();
         cellCategory = _LevelData.cellCategory.ToDictionary(item => item.Key, item => item.Value);
@@ -278,6 +278,7 @@ public class LevelManager : Manager<LevelManager>
             {
                 chunk.transform.SetParent(trayParent.transform);
             }
+            trayParent.transform.SetParent(letterGridManager.transform);
         }
 
     }

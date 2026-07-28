@@ -7,63 +7,66 @@ public class BottomGridManager : MonoBehaviour
 {
     public enum StartCorner
     {
-        TopLeft,
-        BottomLeft
+        BottomLeft,
+        TopLeft
     }
 
     [Header("Grid Layout")]
-    [Tooltip("Number of rows (vertical size)")]
-    [Min(1)] public int height = 29;
-
-    [Tooltip("Number of columns (horizontal size)")]
+    [Min(1)] public int height = 8;
     [Min(1)] public int width = 8;
 
     [Tooltip("Where should the first child (Child 0) be placed? Both options will always read Left-to-Right.")]
-    public StartCorner startCorner = StartCorner.TopLeft;
+    public StartCorner startCorner = StartCorner.BottomLeft;
 
+    [Header("Slot & Tray References")]
+    public GameObject emptySlot;
+    public GameObject cell1, cell2, outline, letter;
+    public List<WallDirectionPair> wallsDirection;
 
+    [Header("Center Border Settings")]
+    [Tooltip("Assign a GameObject here to automatically place and scale it around the grid.")]
+    public GameObject centerObject;
 
-    [Header("Scaling & Placement")]
-    [Tooltip("If true, scales width to match the screen. If false, uses the Manual Grid Scale slider below.")]
+    [Tooltip("If true, automatically resizes the border object to fit the outer bounds of the grid.")]
+    public bool autoScaleBorder = true;
+
+    [Tooltip("Extra padding around the outer edge of the grid for the border (X, Y, Z).")]
+    public Vector3 borderPadding = Vector3.zero;
+
+    [Header("Auto-Fit & Scaling")]
+    [Tooltip("Scale width automatically to match the screen bounds.")]
     public bool autoFitToScreen = true;
 
-    [Tooltip("Manually set the grid scale (Requires 'Auto Fit To Screen' to be false).")]
+    [Tooltip("Manual scale value. When Auto-Fit is OFF, this sets the exact scale. When Auto-Fit is ON, this acts as a fine-tuning multiplier.")]
     [Range(0.1f, 5f)] public float manualGridScale = 1f;
-
-    [Tooltip("If true, automatically moves the Grid's Transform to center it in the available screen area.")]
-    public bool autoPositionToScreenCenter = true;
 
     public Camera mainCamera;
 
     [Tooltip("The Y-axis level where the grid sits (should match your floor height).")]
     public float floorHeight = 0f;
 
-    [Tooltip("Percentage of empty space to leave on the Left/Right margins (0.0 to 0.5)")]
+    [Tooltip("Percentage of empty space to leave on the Left/Right edges (0.0 to 0.5)")]
     [Range(0f, 0.5f)] public float screenPadding = 0.05f;
 
     [Header("Safe Area")]
-    [Tooltip("Reserve the TOP percentage of the screen. The grid will center itself in the remaining space below this.")]
-    [Range(0f, 0.8f)] public float topScreenReserved = 0.15f;
+    [Tooltip("Reserve the bottom percentage of the screen. The grid will start at this line.")]
+    [Range(-0.8f, 0.8f)] public float bottomScreenReserved = 0.05f;
 
-    [Header("Slot References")]
-    public GameObject emptySlot;
-    public GameObject cell1, cell2,outline,letter;
-    [Header("Tray References")]
-    //public GameObject noSides;
-    //public GameObject singleLeft, singleRight, singleFront, singleBack;
-    //public GameObject twoFrontBack, twoLeftRight;
-    //public GameObject twoFrontLeft, twoLeftBack, twoBackRight, twoFrontRight;
-    //public GameObject threeFront, threeRight, threeLeft, threeBack;
-    //public GameObject allSides;
-    public List<WallDirectionPair> wallsDirection;
-   
+    public static BottomGridManager Instance;
+
     private Grid grid;
     private Vector3 lastCellSize;
     private Vector3 lastCellGap;
-    public static BottomGridManager Instance;
 
+    // Screen/Camera tracking fields for real-time Simulator resizing
+    private int lastScreenWidth;
+    private int lastScreenHeight;
+    private float lastCameraAspect;
 
-
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void OnEnable()
     {
@@ -71,6 +74,7 @@ public class BottomGridManager : MonoBehaviour
         grid = GetComponent<Grid>();
         UpdateGridCache();
         ArrangeChildren();
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.update += EditorUpdate;
 #endif
@@ -83,9 +87,15 @@ public class BottomGridManager : MonoBehaviour
 #endif
     }
 
+    private void Update()
+    {
+        CheckScreenAndCameraChanges();
+    }
+
     private void OnValidate()
     {
         if (grid == null) grid = GetComponent<Grid>();
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.delayCall += () =>
         {
@@ -97,8 +107,6 @@ public class BottomGridManager : MonoBehaviour
 #if UNITY_EDITOR
     private void EditorUpdate()
     {
-        if (Application.isPlaying) return;
-
         if (grid != null)
         {
             if (grid.cellGap != lastCellGap || grid.cellSize != lastCellSize)
@@ -111,6 +119,22 @@ public class BottomGridManager : MonoBehaviour
     }
 #endif
 
+    /// <summary>
+    /// Detects changes in screen aspect ratio or resolution and immediately updates grid arrangement.
+    /// </summary>
+    private void CheckScreenAndCameraChanges()
+    {
+        if (mainCamera == null) mainCamera = Camera.main;
+        if (mainCamera == null) return;
+
+        if (Screen.width != lastScreenWidth || Screen.height != lastScreenHeight || !Mathf.Approximately(mainCamera.aspect, lastCameraAspect))
+        {
+            lastScreenWidth = Screen.width;
+            lastScreenHeight = Screen.height;
+            lastCameraAspect = mainCamera.aspect;
+            ArrangeChildren();
+        }
+    }
 
     private void UpdateGridCache()
     {
@@ -121,14 +145,27 @@ public class BottomGridManager : MonoBehaviour
         }
     }
 
+    [ContextMenu("Generate Grid Tiles")]
     public void CreateChildren()
     {
+        if (grid == null) grid = GetComponent<Grid>();
+
         int childCount = height * width;
         DestroyAllChildren();
 
+        Vector3 targetScale = Vector3.one;
+        if (grid != null)
+        {
+            targetScale = grid.cellSize;
+        }
+
         for (int i = 0; i < childCount; i++)
         {
-            if (emptySlot != null) Instantiate(emptySlot, transform);
+            if (emptySlot != null)
+            {
+                GameObject newSlot = Instantiate(emptySlot, transform);
+                newSlot.transform.localScale = targetScale;
+            }
         }
 
         ArrangeChildren();
@@ -153,77 +190,183 @@ public class BottomGridManager : MonoBehaviour
         int currentChildCount = transform.childCount;
         if (currentChildCount == 0) return;
 
-        // 1. Calculate the exact center of the grid in local space
-        // Using Row 0 to Row -(height-1) and Col 0 to (width-1)
-        Vector3 minCellPos = grid.CellToLocal(new Vector3Int(0, -(height - 1), 0));
-        Vector3 maxCellPos = grid.CellToLocal(new Vector3Int(width - 1, 0, 0));
-        Vector3 gridLocalCenter = (minCellPos + maxCellPos) / 2f;
+        Vector3 safeAreaAnchorOffset = Vector3.zero;
+        Vector3 horizontalCenterOffset = Vector3.zero;
 
-        // 2. Position the Parent Transform and apply Scale
+        // 1. Determine horizontal center offset
+        if (width > 0)
+        {
+            Vector3 rightmostCellPos = grid.CellToLocal(new Vector3Int(width - 1, 0, 0));
+            horizontalCenterOffset = rightmostCellPos / 2f;
+        }
+
+        // 2. Calculate Scale & Bottom Safe Area Anchor Offset
         if (mainCamera == null) mainCamera = Camera.main;
 
         if (mainCamera != null)
         {
             Plane floorPlane = new Plane(Vector3.up, new Vector3(0, floorHeight, 0));
 
-            // Calculate available vertical space (leaving top reserved and bottom padding)
-            float maxY = 1f - topScreenReserved;
-            float minY = screenPadding;
-            float centerY = (maxY + minY) / 2f;
+            float minY = bottomScreenReserved + screenPadding;
+            float minX = screenPadding;
+            float maxX = 1f - screenPadding;
 
-            if (autoPositionToScreenCenter)
-            {
-                // Place the parent object precisely in the center of the available screen
-                Vector3 screenCenterWorld = GetFloorIntersection(new Vector2(0.5f, centerY), floorPlane);
-                transform.position = screenCenterWorld;
-            }
+            Vector3 bottomLeft = GetFloorIntersection(new Vector2(minX, minY), floorPlane);
+            Vector3 bottomRight = GetFloorIntersection(new Vector2(maxX, minY), floorPlane);
 
+            // Set Grid Scale
             if (autoFitToScreen)
             {
-                // Calculate frustum width specifically at the screen center
-                Vector3 centerLeft = GetFloorIntersection(new Vector2(screenPadding, centerY), floorPlane);
-                Vector3 centerRight = GetFloorIntersection(new Vector2(1f - screenPadding, centerY), floorPlane);
-                float frustumWidth = Vector3.Distance(centerLeft, centerRight);
-
+                float frustumWidth = Vector3.Distance(bottomLeft, bottomRight);
                 float gridUnscaledWidth = (width * grid.cellSize.x) + ((width - 1) * grid.cellGap.x);
 
                 if (gridUnscaledWidth > 0)
                 {
-                    float finalScale = frustumWidth / gridUnscaledWidth;
-                    transform.localScale = new Vector3(finalScale, finalScale, finalScale);
+                    // Scale auto-fits screen width, multiplied by manual scale for fine-tuning
+                    float calculatedScale = (frustumWidth / gridUnscaledWidth) * manualGridScale;
+                    transform.localScale = new Vector3(calculatedScale, calculatedScale, calculatedScale);
                 }
             }
             else
             {
-                // Apply manual scale from the center
+                // Strict manual scale maintained across all aspect ratios
                 transform.localScale = new Vector3(manualGridScale, manualGridScale, manualGridScale);
             }
+
+            // Always calculate safe area anchor offset so placement stays relative across aspect ratios
+            Vector3 safeBottomCenterWorld = (bottomLeft + bottomRight) / 2f;
+            Vector3 targetBottomLocal = transform.InverseTransformPoint(safeBottomCenterWorld);
+
+            Vector3 cellUpDirection = grid.CellToLocal(new Vector3Int(0, 1, 0)).normalized;
+            Vector3 row0BottomEdgePos = -cellUpDirection * (grid.cellSize.y / 2f);
+
+            safeAreaAnchorOffset = targetBottomLocal - row0BottomEdgePos;
         }
 
         int validChildCount = Mathf.Min(currentChildCount, height * width);
 
-        // 3. Map children and offset them so the parent is always their absolute center
+        // 3. Map children Left-to-Right perfectly
         for (int i = 0; i < validChildCount; i++)
         {
             int physical_col = i % width;
-            int physical_row;
 
+            int physical_row;
             if (startCorner == StartCorner.TopLeft)
             {
-                physical_row = -(i / width);
+                // Child 0 starts at the very top row and flows downwards
+                physical_row = (height - 1) - (i / width);
             }
             else
             {
-                physical_row = -(height - 1) + (i / width);
+                // Child 0 starts at the Safe Area line and flows upwards
+                physical_row = i / width;
             }
 
             Vector3 baseLocalPos = grid.CellToLocal(new Vector3Int(physical_col, physical_row, 0));
 
-            // Subtracting the center offset forces local (0,0,0) to be the exact middle of the grid.
-            // Because the parent pivot is now in the center, transform.localScale expands uniformly outward.
-            baseLocalPos -= gridLocalCenter;
+            baseLocalPos -= horizontalCenterOffset;
+            baseLocalPos += safeAreaAnchorOffset;
 
             transform.GetChild(i).localPosition = baseLocalPos;
+        }
+
+        // 4. Position & Auto-Size Center Border Object around outer edges
+        if (centerObject != null)
+        {
+            Vector3 posMin = grid.CellToLocal(new Vector3Int(0, 0, 0));
+            Vector3 posMax = grid.CellToLocal(new Vector3Int(width - 1, height - 1, 0));
+
+            Vector3 gridLocalCenter = (posMin + posMax) / 2f;
+            gridLocalCenter -= horizontalCenterOffset;
+            gridLocalCenter += safeAreaAnchorOffset;
+
+            // Position centerObject
+            if (centerObject.transform.parent == transform)
+            {
+                centerObject.transform.localPosition = gridLocalCenter;
+            }
+            else
+            {
+                centerObject.transform.position = transform.TransformPoint(gridLocalCenter);
+            }
+
+            // Auto-Scale border object to fit outer grid bounds
+            if (autoScaleBorder)
+            {
+                Vector3 diff = posMax - posMin;
+
+                float cellZSize = grid.cellSize.z > 0 ? grid.cellSize.z : 0f;
+
+                float totalOuterWidth = Mathf.Abs(diff.x) + grid.cellSize.x + borderPadding.x;
+                float totalOuterHeight = Mathf.Abs(diff.y) + grid.cellSize.y + borderPadding.y;
+                float totalOuterDepth = Mathf.Abs(diff.z) + cellZSize + borderPadding.z;
+
+                bool isChild = centerObject.transform.parent == transform;
+                Vector3 gridScale = transform.localScale;
+
+                Vector3 targetLocalSize = new Vector3(
+                    totalOuterWidth,
+                    totalOuterHeight,
+                    totalOuterDepth > 0f ? totalOuterDepth : centerObject.transform.localScale.z
+                );
+
+                // If centerObject is NOT a child of the grid, adjust target size so it scales properly in world space
+                if (!isChild)
+                {
+                    Vector3 parentScale = centerObject.transform.parent != null ? centerObject.transform.parent.lossyScale : Vector3.one;
+                    Vector3 targetWorldSize = Vector3.Scale(targetLocalSize, gridScale);
+                    targetLocalSize = new Vector3(
+                        parentScale.x != 0 ? targetWorldSize.x / parentScale.x : targetWorldSize.x,
+                        parentScale.y != 0 ? targetWorldSize.y / parentScale.y : targetWorldSize.y,
+                        parentScale.z != 0 ? targetWorldSize.z / parentScale.z : targetWorldSize.z
+                    );
+                }
+
+                SpriteRenderer sr = centerObject.GetComponent<SpriteRenderer>();
+                if (sr == null) sr = centerObject.GetComponentInChildren<SpriteRenderer>();
+
+                MeshFilter mf = centerObject.GetComponent<MeshFilter>();
+                if (mf == null) mf = centerObject.GetComponentInChildren<MeshFilter>();
+
+                if (sr != null && sr.drawMode != SpriteDrawMode.Simple)
+                {
+                    // Sliced or Tiled Sprite Border
+                    sr.size = new Vector2(targetLocalSize.x, targetLocalSize.y);
+                    if (borderPadding.z != 0f)
+                    {
+                        Vector3 currentScale = centerObject.transform.localScale;
+                        centerObject.transform.localScale = new Vector3(currentScale.x, currentScale.y, targetLocalSize.z);
+                    }
+                }
+                else if (sr != null && sr.sprite != null)
+                {
+                    // Simple Sprite
+                    Vector2 spriteSize = sr.sprite.rect.size / sr.sprite.pixelsPerUnit;
+                    if (spriteSize.x > 0 && spriteSize.y > 0)
+                    {
+                        centerObject.transform.localScale = new Vector3(
+                            targetLocalSize.x / spriteSize.x,
+                            targetLocalSize.y / spriteSize.y,
+                            targetLocalSize.z > 0 ? targetLocalSize.z : centerObject.transform.localScale.z
+                        );
+                    }
+                }
+                else if (mf != null && mf.sharedMesh != null)
+                {
+                    // 3D Mesh Object (e.g. BG_Wall)
+                    Vector3 meshSize = mf.sharedMesh.bounds.size;
+                    float scaleX = meshSize.x > 0f ? targetLocalSize.x / meshSize.x : targetLocalSize.x;
+                    float scaleY = meshSize.y > 0f ? targetLocalSize.y / meshSize.y : targetLocalSize.y;
+                    float scaleZ = (meshSize.z > 0f && totalOuterDepth > 0f) ? targetLocalSize.z / meshSize.z : centerObject.transform.localScale.z;
+
+                    centerObject.transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
+                }
+                else
+                {
+                    // Generic Transform Scaling
+                    centerObject.transform.localScale = targetLocalSize;
+                }
+            }
         }
     }
 
