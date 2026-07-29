@@ -19,7 +19,7 @@ MonoBehaviour:
   height: 9
   width: 8
   bottomGridSize: 0.6
-  categoryMaterial: {fileID: 2100000, guid: 153da79a40522cc47ba2648c0d78b685, type: 2}
+  categoryMaterial: {fileID: 2100000, guid: 5643ac10484ffd047abebb3b549da7d7, type: 2}
   words:
   - BRAZIL
   - TIGER
@@ -30,6 +30,9 @@ MonoBehaviour:
   - LION
   - ROSE
   - ELEPHANT
+  tray:
+  - Tray 1
+  - Tray 2
   excludedChar:
   - {x: 0, y: 2}
   - {x: 1, y: 2}
@@ -251,6 +254,48 @@ MonoBehaviour:
     Value: N
   - Key: {x: 7, y: 7}
     Value: T
+  trayCells:
+  - Key: {x: 2, y: 1}
+    Value: P
+  - Key: {x: 3, y: 1}
+    Value: O
+  - Key: {x: 4, y: 1}
+    Value: S
+  - Key: {x: 4, y: 2}
+    Value: J
+  - Key: {x: 4, y: 3}
+    Value: M
+  - Key: {x: 4, y: 6}
+    Value: O
+  - Key: {x: 5, y: 6}
+    Value: E
+  - Key: {x: 5, y: 5}
+    Value: A
+  - Key: {x: 5, y: 7}
+    Value: G
+  - Key: {x: 6, y: 6}
+    Value: R
+  trayName:
+  - Key: {x: 2, y: 1}
+    Value: Tray 1
+  - Key: {x: 3, y: 1}
+    Value: Tray 1
+  - Key: {x: 4, y: 1}
+    Value: Tray 1
+  - Key: {x: 4, y: 2}
+    Value: Tray 1
+  - Key: {x: 4, y: 3}
+    Value: Tray 1
+  - Key: {x: 4, y: 6}
+    Value: Tray 2
+  - Key: {x: 5, y: 6}
+    Value: Tray 2
+  - Key: {x: 5, y: 5}
+    Value: Tray 2
+  - Key: {x: 5, y: 7}
+    Value: Tray 2
+  - Key: {x: 6, y: 6}
+    Value: Tray 2
   categoryColors:
   - Key: Animal
     Value: {fileID: 2100000, guid: 5643ac10484ffd047abebb3b549da7d7, type: 2}
@@ -258,6 +303,11 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: becfb789e99d486438cc9c834cce52d5, type: 2}
   - Key: Country
     Value: {fileID: 2100000, guid: 153da79a40522cc47ba2648c0d78b685, type: 2}
+  trayColors:
+  - Key: Tray 1
+    Value: {fileID: 2100000, guid: b2149924252d7a34ebdbfa037b6e419d, type: 2}
+  - Key: Tray 2
+    Value: {fileID: 2100000, guid: 08fdd69ce292c914ba8573318785219c, type: 2}
   wordPositions:
   - Key: BRAZIL
     Value:

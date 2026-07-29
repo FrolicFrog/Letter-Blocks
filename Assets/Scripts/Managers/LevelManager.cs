@@ -175,8 +175,8 @@ public class LevelManager : Manager<LevelManager>
     }
     void ManageAlphabets()
     {
-        letterGridManager.autoFitToScreen = false;
-        LetterController.column = letterGridManager.width;
+       
+      
         for (int height = 0; height < letterGridManager.height; height++)
         {
             for (int width = 0; width < letterGridManager.width; width++)
@@ -186,11 +186,11 @@ public class LevelManager : Manager<LevelManager>
                 var gridChild = letterGridManager.transform.GetChild(linearIndex);
                 if((height+width)%2 ==0)
                 {
-                    Instantiate(letterGridManager.cell1, gridChild);
+                    Instantiate(letterGridManager.cell1, gridChild).transform.localPosition = Vector3.zero;
                 }
                 else
                 {
-                    Instantiate(letterGridManager.cell2, gridChild);
+                    Instantiate(letterGridManager.cell2, gridChild).transform.localPosition = Vector3.zero; 
                 }
             }
         }
@@ -281,7 +281,7 @@ public class LevelManager : Manager<LevelManager>
             }
             trayParent.transform.SetParent(letterGridManager.transform);
         }
-        letterGridManager.autoFitToScreen = true;
+      
     }
     public GameObject ReplaceGameObject(GameObject oldObject, GameObject prefab)
     {

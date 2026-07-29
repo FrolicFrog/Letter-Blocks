@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using System.Collections.Generic; // Added for List
 
 public class GlobalTrayDragger : MonoBehaviour
 {
@@ -55,8 +56,13 @@ public class GlobalTrayDragger : MonoBehaviour
     private bool hasTriggeredTopWall = false;
 
     // --- NEW FOR COLLISION ---
-    private Vector3 pieceCenterOffset;
-    private Vector3 pieceHalfExtents;
+    private struct BlockColliderData
+    {
+        public Vector3 localOffset;
+        public Vector3 halfExtents;
+    }
+    // Stores the individual bounds of each block in the dragged piece
+    private List<BlockColliderData> pieceColliders = new List<BlockColliderData>();
     // -------------------------
 
     private void Start()
@@ -163,9 +169,8 @@ public class GlobalTrayDragger : MonoBehaviour
                 targetPosition.z = lockedAxisValue;
             }
 
-            // --- NEW FOR COLLISION: Resolve overlaps before applying position ---
+            // --- RESOLVE COLLISIONS ---
             targetPosition = ResolveTrayCollisions(currentlyDraggedParent.position, targetPosition);
-            // --------------------------------------------------------------------
 
             if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
             {
@@ -194,7 +199,6 @@ public class GlobalTrayDragger : MonoBehaviour
         }
     }
 
-    // --- NEW FOR COLLISION: Evaluates X and the other axis separately for smooth sliding ---
     private Vector3 ResolveTrayCollisions(Vector3 currentPos, Vector3 targetPos)
     {
         Vector3 finalPos = currentPos;
@@ -223,37 +227,39 @@ public class GlobalTrayDragger : MonoBehaviour
         return finalPos;
     }
 
-    // --- NEW FOR COLLISION: Uses an OverlapBox to check if the new position hits another tray ---
+    // --- REWRITTEN: Now checks each individual block's bounds to allow shapes to slide into empty spaces ---
     private bool IsOverlappingTray(Vector3 testPos)
     {
-        Vector3 boxCenter = testPos + pieceCenterOffset;
-        Vector3 checkExtents = pieceHalfExtents;
-
-        // Push the test box back down to the ground plane to check against the resting trays
-        if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+        foreach (var block in pieceColliders)
         {
-            boxCenter.y -= dragOffset;
-            checkExtents.y += 5f; // Exaggerate thickness to guarantee it intersects resting colliders
-        }
-        else
-        {
-            boxCenter.z -= dragOffset;
-            checkExtents.z += 5f;
-        }
+            Vector3 boxCenter = testPos + block.localOffset;
+            Vector3 checkExtents = block.halfExtents;
 
-        Collider[] hits = Physics.OverlapBox(boxCenter, checkExtents, Quaternion.identity, trayLayer);
-
-        foreach (Collider hit in hits)
-        {
-            // If the hit collider is NOT part of the tray we are dragging, it's a collision!
-            if (!hit.transform.IsChildOf(currentlyDraggedParent))
+            // Push the test box back down to the ground plane to check against the resting trays
+            if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
             {
-                return true;
+                boxCenter.y -= dragOffset;
+                checkExtents.y += 5f; // Exaggerate thickness to guarantee it intersects resting colliders
+            }
+            else
+            {
+                boxCenter.z -= dragOffset;
+                checkExtents.z += 5f;
+            }
+
+            Collider[] hits = Physics.OverlapBox(boxCenter, checkExtents, Quaternion.identity, trayLayer);
+
+            foreach (Collider hit in hits)
+            {
+                // If the hit collider is NOT part of the tray we are dragging, it's a collision!
+                if (!hit.transform.IsChildOf(currentlyDraggedParent))
+                {
+                    return true;
+                }
             }
         }
         return false;
     }
-    // -----------------------------------------------------------------------------------------
 
     private void CalculateDynamicBoundaries()
     {
@@ -287,10 +293,29 @@ public class GlobalTrayDragger : MonoBehaviour
 
         // 3. Calculate the bounding size (extents) of the piece we just picked up
         float pMinX = 0, pMaxX = 0, pMinAxis = 0, pMaxAxis = 0;
+        pieceColliders.Clear();
 
         if (currentlyDraggedParent != null)
         {
             Renderer[] renderers = currentlyDraggedParent.GetComponentsInChildren<Renderer>();
+
+            // Gather colliders specifically on the Tray layer to map the actual physical blocks
+            Collider[] colliders = currentlyDraggedParent.GetComponentsInChildren<Collider>();
+            Vector3 pivotPos = currentlyDraggedParent.position;
+
+            foreach (Collider col in colliders)
+            {
+                // Only track colliders that are actually on the tray layer (ignores text, UI, etc)
+                if (((1 << col.gameObject.layer) & trayLayer) != 0)
+                {
+                    BlockColliderData blockData = new BlockColliderData();
+                    blockData.localOffset = col.bounds.center - pivotPos;
+                    // Shrink it 15% so it smoothly slides against edges without snagging
+                    blockData.halfExtents = col.bounds.extents * dragScaleMultiplier * 0.85f;
+                    pieceColliders.Add(blockData);
+                }
+            }
+
             if (renderers.Length > 0)
             {
                 Bounds pieceBounds = renderers[0].bounds;
@@ -298,14 +323,6 @@ public class GlobalTrayDragger : MonoBehaviour
                 {
                     pieceBounds.Encapsulate(r.bounds);
                 }
-
-                Vector3 pivotPos = currentlyDraggedParent.position;
-
-                // --- NEW FOR COLLISION: Cache the extents and offset for the OverlapBox ---
-                pieceCenterOffset = pieceBounds.center - pivotPos;
-                pieceHalfExtents = pieceBounds.extents * dragScaleMultiplier;
-                pieceHalfExtents *= 0.95f; // Shrink it just 5% so it doesn't get stuck sliding against flush edges
-                // --------------------------------------------------------------------------
 
                 pMinX = pivotPos.x - pieceBounds.min.x;
                 pMaxX = pieceBounds.max.x - pivotPos.x;
@@ -324,7 +341,6 @@ public class GlobalTrayDragger : MonoBehaviour
         }
 
         // 4. Multiply the piece boundaries by the dragScaleMultiplier 
-        // to account for the object being larger while it is picked up
         pMinX *= dragScaleMultiplier;
         pMaxX *= dragScaleMultiplier;
         pMinAxis *= dragScaleMultiplier;
@@ -349,30 +365,22 @@ public class GlobalTrayDragger : MonoBehaviour
         int piecesJumpedCount = 0;
         int totalValidPieces = 0;
 
-        // Loop through all children of the tray (the "Walls")
         foreach (Transform wall in currentlyDraggedParent)
         {
             if (wall.childCount > 0)
             {
                 totalValidPieces++;
-
-                // Grab the first child of the wall (the "Tile letter(Clone)")
                 Transform childToJump = wall.GetChild(0);
 
                 if (childToJump == null) continue;
 
-                // TMP_Text safely covers both 3D TextMeshPro and UI TextMeshProUGUI
                 var textMesh = childToJump.GetComponentInChildren<TextMeshPro>();
 
                 if (textMesh != null)
                 {
-                    // Trim invisible characters like zero-width spaces and ensure casing matches WordChecker data
                     string letter = textMesh.text;
-                    //  Debug.Log(letter);
-                    // Let WordChecker check if there's an open slot for this letter
                     if (WordChecker.instance.TryFindGridSlotForLetter(letter, out Transform slotTransform, out Vector2Int matchedKey))
                     {
-                        // Reparent and animate the specific tile
                         WordChecker.instance.AnimateTrayBlockToGrid(childToJump, slotTransform, matchedKey);
                         piecesJumpedCount++;
                     }
@@ -380,7 +388,6 @@ public class GlobalTrayDragger : MonoBehaviour
             }
         }
 
-        // If ALL the blocks jumped, destroy the empty shell and stop dragging
         if (piecesJumpedCount > 0 && piecesJumpedCount == totalValidPieces)
         {
             Destroy(currentlyDraggedParent.gameObject);
@@ -392,11 +399,9 @@ public class GlobalTrayDragger : MonoBehaviour
     {
         hasTriggeredTopWall = false;
 
-        // Animate position back to original
         currentlyDraggedParent.DOMove(originalPosition, snapBackDuration)
             .SetEase(snapBackEase);
 
-        // Animate scale back to original
         currentlyDraggedParent.DOScale(originalScale, snapBackDuration)
             .SetEase(snapBackEase);
 
