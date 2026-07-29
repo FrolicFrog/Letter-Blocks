@@ -10,6 +10,9 @@ public class WordChecker : MonoBehaviour
     public static WordChecker instance;
     private bool isProcessing = false;
     private bool dictionarySeparated = false;
+    
+    // Tracks slots that have pieces incoming so multiple don't go to the same spot
+    public static HashSet<Vector2Int> reservedGridSlots = new HashSet<Vector2Int>();
 
     [Header("Destruction Animation")]
     public float destructionDelay = 0.15f;
@@ -168,6 +171,27 @@ public class WordChecker : MonoBehaviour
         return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y) == 1;
     }
 
+    // New centralized method called by GlobalTrayDragger for animating elements onto the grid
+    public void AnimateTrayBlockToGrid(Transform block, Transform slotTransform, Vector2Int matchedKey)
+    {
+        reservedGridSlots.Add(matchedKey);
+        
+        // Immediately parent the piece so dragger no longer controls it
+        block.SetParent(slotTransform.parent);
+        block.GetComponent<MeshRenderer>().material.color = slotTransform.GetComponent<MeshRenderer>().material.color;
+        
+        // Handle animations locally within WordChecker
+        block.DOKill();
+        block.DOScale(Vector3.one, 0.2f);
+        block.DOJump(slotTransform.position, 1.5f, 1, 0.45f).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            block.localPosition = Vector3.zero;
+            reservedGridSlots.Remove(matchedKey);
+           Destroy(slotTransform.gameObject);
+            block.localScale = new Vector3(.9f, 1.8f, .9f);
+        });
+    }
+
     public bool TryFindGridSlotForLetter(string letter, out Transform slotTransform, out Vector2Int matchedKey)
     {
         var grid = TopGridManager.instance;
@@ -176,46 +200,44 @@ public class WordChecker : MonoBehaviour
 
         int startRow = grid.rows - 1;
         int endRow = Mathf.Max(0, grid.rows - 3);
-
+        Debug.Log("Searching");
         for (int row = startRow; row >= endRow; row--)
         {
+            Debug.Log("looping 1");
             for (int col = 0; col < columns; col++)
             {
+               
                 Vector2Int key = new Vector2Int(row, col);
-
-                if (lvlManager.excludedChar.Contains(key) &&
-                    !LetterController.reservedGridSlots.Contains(key) &&
-                    lvlManager.cellTexts.TryGetValue(key, out string cellLetter) &&
-                    cellLetter == letter)
+               
+                if (lvlManager.excludedChar.Contains(key) &&  lvlManager.cellTexts[key] == letter)
                 {
+                    Debug.Log("Working");
                     int index = key.x * columns + key.y;
-                    Transform candidateSlot = grid.transform.GetChild(index);
-
-                    bool slotAlreadyOccupied = false;
+                    Transform candidateSlot = grid.transform.GetChild(index).GetChild(1);
+                    lvlManager.excludedChar.Remove(key);
+                    slotTransform = candidateSlot;
+                    matchedKey = key;
+                    return true;
+                   /* bool slotAlreadyOccupied = false;
                     if (candidateSlot.childCount > 1)
                     {
-                        for (int i = 1; i < candidateSlot.childCount; i++)
-                        {
-                            if (candidateSlot.GetChild(i).GetComponent<LetterController>() != null)
-                            {
-                                slotAlreadyOccupied = true;
-                                break;
-                            }
-                        }
+                        slotAlreadyOccupied = true;
                     }
 
                     if (!slotAlreadyOccupied)
                     {
                         slotTransform = candidateSlot;
                         matchedKey = key;
+                        Debug.Log("True Returned");
                         return true;
-                    }
+                    }*/
                 }
             }
         }
 
         slotTransform = null;
         matchedKey = default;
+        Debug.Log("False Returned");
         return false;
     }
 
@@ -301,7 +323,6 @@ public class WordChecker : MonoBehaviour
                             lvlManager.excludedChar.Remove(pos);
                             lvlManager.cellCategory.Remove(pos);
                             lvlManager.cellTexts.Remove(pos);
-                            //lvlManager.charDirection.Remove(pos);
                         }
                     }
 
@@ -390,13 +411,11 @@ public class WordChecker : MonoBehaviour
                                 Vector3 startScale = child.localScale;
                                 Vector3 startRot = child.eulerAngles;
 
-                                // RESTORED: Smile position matrix calculations restored
                                 Vector3 targetPos = new Vector3(centerPos.x + offsetX, centerPos.y + arcHeightOffset, centerPos.z + offsetZ);
                                 Vector3 targetRot = new Vector3(startRot.x, startRot.y + angleY, startRot.z);
 
                                 Sequence blockSeq = DOTween.Sequence().SetLink(child.gameObject);
 
-                                // 1. RESTORED: Form inverted smile arc array creation animation smoothly
                                 blockSeq.Append(child.DOMove(targetPos, popDuration).SetEase(Ease.OutQuad));
                                 blockSeq.Join(child.DORotate(targetRot, popDuration).SetEase(Ease.OutQuad));
                                 blockSeq.Join(child.DOScale(startScale * arcScaleUp, popDuration).SetEase(Ease.OutBack));
@@ -410,7 +429,6 @@ public class WordChecker : MonoBehaviour
                                     }
                                 });
 
-                                // 2. RESTORED: Maintain old staggered visual trail pause inside smile configuration 
                                 blockSeq.AppendInterval(destructionDelay + (i * flightStaggerDelay));
 
                                 blockSeq.AppendCallback(() =>
@@ -424,11 +442,10 @@ public class WordChecker : MonoBehaviour
 
                                 if (foundUI && targetUITransform != null)
                                 {
-                                    Camera mainCam = Camera.main;
-                                    float distanceToCamera = Mathf.Max(0.5f, mainCam.WorldToScreenPoint(targetPos).z - flightElevationOffset);
-                                    Vector3 finalWorldPos = mainCam.ScreenToWorldPoint(new Vector3(targetScreenPos.x, targetScreenPos.y, distanceToCamera));
+                                    Camera cam = Camera.main;
+                                    float distanceToCamera = Mathf.Max(0.5f, cam.WorldToScreenPoint(targetPos).z - flightElevationOffset);
+                                    Vector3 finalWorldPos = cam.ScreenToWorldPoint(new Vector3(targetScreenPos.x, targetScreenPos.y, distanceToCamera));
 
-                                    // 3. Fly directly to target panels using the configured project curves
                                     blockSeq.Append(child.DOMove(finalWorldPos, flyToUIDuration).SetEase(flyEase));
                                     blockSeq.Join(child.DORotate(flightRotation, flyToUIDuration, RotateMode.FastBeyond360).SetRelative(true).SetEase(flyEase));
                                     blockSeq.Join(child.DOScale(Vector3.zero, flyToUIDuration).SetEase(destroyEase));
@@ -439,10 +456,8 @@ public class WordChecker : MonoBehaviour
                                     {
                                         if (targetUITransform != null)
                                         {
-                                            // Complete previous scale tracking instantly to stack cleanly
                                             targetUITransform.DOKill(true);
 
-                                            // Keep highly responsive additive squeeze reaction on individual letter impact
                                             Vector3 punchStrength = uiPopScale - Vector3.one;
                                             targetUITransform.DOPunchScale(punchStrength, uiPopDuration, 5, 0.3f)
                                                              .SetLink(targetUITransform.gameObject);
@@ -525,26 +540,6 @@ public class WordChecker : MonoBehaviour
         {
             stable = true;
 
-            LetterController[] allCubes = Object.FindObjectsByType<LetterController>(FindObjectsSortMode.None);
-            foreach (var cube in allCubes)
-            {
-                if (cube.currentState == LetterController.LetterState.Finished ||
-                    cube.currentState == LetterController.LetterState.Returning ||
-                    cube.currentState == LetterController.LetterState.Moving ||
-                    cube.currentState == LetterController.LetterState.Aligning)
-                {
-                    stable = false;
-                    break;
-                }
-            }
-
-            if (!stable)
-            {
-                timer += 0.1f;
-                yield return new WaitForSeconds(0.1f);
-                continue;
-            }
-
             for (int i = 0; i < transform.childCount; i++)
             {
                 Transform slot = transform.GetChild(i);
@@ -576,7 +571,7 @@ public class WordChecker : MonoBehaviour
             for (int j = 1; j < slot.childCount; j++)
             {
                 Transform block = slot.GetChild(j);
-                if (block.GetComponent<LetterController>() != null && !DOTween.IsTweening(block))
+                if (!DOTween.IsTweening(block))
                 {
                     block.localPosition = Vector3.zero;
                 }
@@ -758,7 +753,6 @@ public class WordChecker : MonoBehaviour
 
         MoveDictionaryEntry(lvlManager.cellCategory, oldPos, newPos);
         MoveDictionaryEntry(lvlManager.cellTexts, oldPos, newPos);
-      //  MoveDictionaryEntry(lvlManager.charDirection, oldPos, newPos);
 
         foreach (var word in lvlManager.wordPositions.Keys.ToList())
         {
@@ -813,16 +807,22 @@ public class WordChecker : MonoBehaviour
             if (queueSlot.childCount == 0) continue;
 
             Transform queuedCube = queueSlot.GetChild(queueSlot.childCount - 1);
-            LetterController letterController = queuedCube.GetComponent<LetterController>();
-            if (letterController == null) continue;
 
             var textMesh = queuedCube.GetComponentInChildren<TextMeshPro>();
             string cubeLetter = textMesh != null ? textMesh.text : "";
 
             if (TryFindGridSlotForLetter(cubeLetter, out Transform slot, out Vector2Int key))
             {
-                letterController.currentState = LetterController.LetterState.Finished;
-                letterController.JumpToTarget();
+                reservedGridSlots.Add(key);
+                queuedCube.SetParent(slot);
+                
+                queuedCube.DOKill();
+                queuedCube.DOJump(slot.position, 1f, 1, 0.4f).OnComplete(() =>
+                {
+                    queuedCube.localPosition = Vector3.zero;
+                    reservedGridSlots.Remove(key);
+                });
+                
                 placedAny = true;
             }
         }

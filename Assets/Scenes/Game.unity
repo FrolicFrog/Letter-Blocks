@@ -940,7 +940,6 @@ GameObject:
   - component: {fileID: 1371688888}
   - component: {fileID: 1371688889}
   - component: {fileID: 1371688890}
-  - component: {fileID: 1371688891}
   m_Layer: 0
   m_Name: WordGridManager
   m_TagString: Untagged
@@ -1049,44 +1048,6 @@ MonoBehaviour:
   spinDuration: 0.5
   spinAngle: {x: 1080, y: 0, z: 0}
   spinEase: 27
---- !u!114 &1371688891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371688886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d49de45467376754994cc28761c1b07b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rows: 12
-  columns: 8
-  height: 0
-  width: 0
-  startCorner: 1
-  squareTile: {fileID: 7629853423582124116, guid: 51f8349bc5e630b4b8fdcdf17e59ba1a,
-    type: 3}
-  squareSlot: {fileID: 2816542064667801392, guid: 242a9b274ef66cc4f89846a1223fcc2c,
-    type: 3}
-  emptyTile: {fileID: 4149636492414647536, guid: 013c4209ca5fda144b220f4871ce83b4,
-    type: 3}
-  queueParent: {fileID: 0}
-  queueSlots: []
-  centerObject1: {fileID: 1593633551148644532}
-  autoScaleBorder1: 1
-  borderPadding1: {x: 4.23, y: 0, z: -25.8}
-  centerObject1Offset: {x: 0, y: 6.45, z: -1.19}
-  centerObject2: {fileID: 1398619924}
-  autoScaleBorder2: 1
-  borderPadding2: {x: 4.17, y: 0, z: -34.7}
-  centerObject2Offset: {x: 0, y: 8.11, z: -7.48}
-  autoFitToScreen: 1
-  mainCamera: {fileID: 330585545}
-  floorHeight: 0
-  screenPadding: 0.106
-  bottomScreenReserved: 0.428
 --- !u!1 &1398619924
 GameObject:
   m_ObjectHideFlags: 0
@@ -1447,11 +1408,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   planeMode: 0
+  boundaryPadding: 0.1
+  topWallTriggerOffset: 0.5
   dragOffset: 1
   dragScaleMultiplier: 1.2
   scaleUpDuration: 0.15
-  snapBackDuration: 0.25
-  snapBackEase: 33
+  snapBackDuration: 0.2
+  snapBackEase: 27
 --- !u!114 &1661794642
 MonoBehaviour:
   m_ObjectHideFlags: 0

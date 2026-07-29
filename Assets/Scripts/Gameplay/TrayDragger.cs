@@ -1,5 +1,6 @@
 using UnityEngine;
-using DG.Tweening; // Ensure DOTween is imported in your project!
+using TMPro;
+using DG.Tweening;
 
 public class GlobalTrayDragger : MonoBehaviour
 {
@@ -17,8 +18,14 @@ public class GlobalTrayDragger : MonoBehaviour
     [Tooltip("Select XZ for standard 3D top-down boards, or XY for 2D boards.")]
     public PlaneAxisMode planeMode = PlaneAxisMode.XZ_GroundPlane_3D;
 
+    [Header("Auto Boundaries from BottomGridManager")]
+    [Tooltip("Extra padding to keep pieces slightly away from the exact visual edge.")]
+    public float boundaryPadding = 0.1f;
+    [Tooltip("Distance from the top limit to trigger the piece jumping.")]
+    public float topWallTriggerOffset = 0.2f;
+
     [Header("Height / Depth Offset Settings")]
-    [Tooltip("Offset applied along the locked axis while dragging. Set to 0 if you want the piece to stay flat on the board.")]
+    [Tooltip("Offset applied along the locked axis while dragging.")]
     public float dragOffset = 0f;
 
     [Header("Scale Settings")]
@@ -38,10 +45,14 @@ public class GlobalTrayDragger : MonoBehaviour
     private Camera mainCam;
     private Transform currentlyDraggedParent;
     private Vector3 originalPosition;
-    private Vector3 originalScale; // Cached original scale
+    private Vector3 originalScale;
     private Vector3 clickOffset;
     private Plane dragPlane;
     private float lockedAxisValue;
+
+    // Dynamically calculated boundaries
+    private float bMinX, bMaxX, bMinAxis, bMaxAxis, bTopWallTriggerThreshold;
+    private bool hasTriggeredTopWall = false;
 
     private void Start()
     {
@@ -55,19 +66,16 @@ public class GlobalTrayDragger : MonoBehaviour
 
     private void Update()
     {
-        // 1. Mouse Down: Lock target height, store scale, scale up object
         if (Input.GetMouseButtonDown(0))
         {
             TrySelectTray();
         }
 
-        // 2. Mouse Hold: Maintain 1:1 exact cursor tracking along the plane
         if (currentlyDraggedParent != null && Input.GetMouseButton(0))
         {
             DragSelectedParent();
         }
 
-        // 3. Mouse Up: Smoothly animate back position AND scale using DOTween
         if (Input.GetMouseButtonUp(0) && currentlyDraggedParent != null)
         {
             ReleaseAndSnapBack();
@@ -83,41 +91,41 @@ public class GlobalTrayDragger : MonoBehaviour
             if (hit.transform.parent != null)
             {
                 currentlyDraggedParent = hit.transform.parent;
+                hasTriggeredTopWall = false;
 
                 // Stop any running DOTween animations on position and scale
                 currentlyDraggedParent.DOKill();
 
-                // Enable the last child of each child object
+                // Enable necessary visuals before calculating bounds
                 ToggleLastChildren(currentlyDraggedParent, true);
 
-                // Store exact resting position and scale on the board
                 originalPosition = currentlyDraggedParent.position;
                 originalScale = currentlyDraggedParent.localScale;
 
                 Vector3 elevatedStartPos = originalPosition;
 
-                // Setup drag plane based on chosen orientation
                 if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
                 {
                     lockedAxisValue = originalPosition.y + dragOffset;
                     elevatedStartPos.y = lockedAxisValue;
                     dragPlane = new Plane(Vector3.up, new Vector3(0, lockedAxisValue, 0));
                 }
-                else // XY_FrontalPlane_2D
+                else
                 {
                     lockedAxisValue = originalPosition.z + dragOffset;
                     elevatedStartPos.z = lockedAxisValue;
                     dragPlane = new Plane(Vector3.back, new Vector3(0, 0, lockedAxisValue));
                 }
 
-                // Immediately move the parent to the elevated plane on Frame 0
                 currentlyDraggedParent.position = elevatedStartPos;
+
+                // Dynamically fetch the borders and adjust for the piece's specific width/height
+                CalculateDynamicBoundaries();
 
                 // Scale up the object smoothly when picked up
                 Vector3 targetScale = originalScale * dragScaleMultiplier;
                 currentlyDraggedParent.DOScale(targetScale, scaleUpDuration).SetEase(Ease.OutQuad);
 
-                // Calculate exact click offset on the drag plane
                 if (dragPlane.Raycast(ray, out float enter))
                 {
                     Vector3 clickWorldPoint = ray.GetPoint(enter);
@@ -136,22 +144,176 @@ public class GlobalTrayDragger : MonoBehaviour
             Vector3 currentMouseWorldPoint = ray.GetPoint(enter);
             Vector3 targetPosition = currentMouseWorldPoint + clickOffset;
 
-            // Enforce strict constant height on the locked axis
+            // Clamp X Axis strictly inside padded borders
+            targetPosition.x = Mathf.Clamp(targetPosition.x, bMinX, bMaxX);
+
             if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
             {
+                // Clamp Z Axis strictly inside padded borders
+                targetPosition.z = Mathf.Clamp(targetPosition.z, bMinAxis, bMaxAxis);
                 targetPosition.y = lockedAxisValue;
+
+                if (targetPosition.z >= bTopWallTriggerThreshold && !hasTriggeredTopWall)
+                {
+                   // Debug.Log("Jumping");
+                    TriggerJumpLogic();
+                }
+                else if (targetPosition.z < bTopWallTriggerThreshold - 0.1f)
+                {
+                    hasTriggeredTopWall = false;
+                }
             }
             else
             {
+                // Clamp Y Axis strictly inside padded borders
+                targetPosition.y = Mathf.Clamp(targetPosition.y, bMinAxis, bMaxAxis);
                 targetPosition.z = lockedAxisValue;
+
+                if (targetPosition.y >= bTopWallTriggerThreshold && !hasTriggeredTopWall)
+                {
+                    TriggerJumpLogic();
+                }
+                else if (targetPosition.y < bTopWallTriggerThreshold - 0.1f)
+                {
+                    hasTriggeredTopWall = false;
+                }
             }
 
             currentlyDraggedParent.position = targetPosition;
         }
     }
 
+    private void CalculateDynamicBoundaries()
+    {
+        // 1. Setup Defaults
+        bMinX = -5f; bMaxX = 5f;
+        bMinAxis = -5f; bMaxAxis = 5f;
+
+        // 2. Read exact World Space Boundaries from the Grid Manager
+        if (BottomGridManager.Instance != null && BottomGridManager.Instance.centerObject != null)
+        {
+            Renderer borderRenderer = BottomGridManager.Instance.centerObject.GetComponentInChildren<Renderer>();
+
+            if (borderRenderer != null)
+            {
+                Bounds bounds = borderRenderer.bounds;
+                bMinX = bounds.min.x;
+                bMaxX = bounds.max.x;
+
+                if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+                {
+                    bMinAxis = bounds.min.z;
+                    bMaxAxis = bounds.max.z;
+                }
+                else
+                {
+                    bMinAxis = bounds.min.y;
+                    bMaxAxis = bounds.max.y;
+                }
+            }
+        }
+
+        // 3. Calculate the bounding size (extents) of the piece we just picked up
+        float pMinX = 0, pMaxX = 0, pMinAxis = 0, pMaxAxis = 0;
+
+        if (currentlyDraggedParent != null)
+        {
+            Renderer[] renderers = currentlyDraggedParent.GetComponentsInChildren<Renderer>();
+            if (renderers.Length > 0)
+            {
+                Bounds pieceBounds = renderers[0].bounds;
+                foreach (Renderer r in renderers)
+                {
+                    pieceBounds.Encapsulate(r.bounds);
+                }
+
+                Vector3 pivotPos = currentlyDraggedParent.position;
+
+                pMinX = pivotPos.x - pieceBounds.min.x;
+                pMaxX = pieceBounds.max.x - pivotPos.x;
+
+                if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+                {
+                    pMinAxis = pivotPos.z - pieceBounds.min.z;
+                    pMaxAxis = pieceBounds.max.z - pivotPos.z;
+                }
+                else
+                {
+                    pMinAxis = pivotPos.y - pieceBounds.min.y;
+                    pMaxAxis = pieceBounds.max.y - pivotPos.y;
+                }
+            }
+        }
+
+        // 4. Multiply the piece boundaries by the dragScaleMultiplier 
+        // to account for the object being larger while it is picked up
+        pMinX *= dragScaleMultiplier;
+        pMaxX *= dragScaleMultiplier;
+        pMinAxis *= dragScaleMultiplier;
+        pMaxAxis *= dragScaleMultiplier;
+
+        // 5. Shrink the drag area by the SCALED size of the piece + your visual padding
+        bMinX += (pMinX + boundaryPadding);
+        bMaxX -= (pMaxX + boundaryPadding);
+        bMinAxis += (pMinAxis + boundaryPadding);
+        bMaxAxis -= (pMaxAxis + boundaryPadding);
+
+        // 6. Establish the threshold based on the newly clamped upper limit
+        bTopWallTriggerThreshold = bMaxAxis - topWallTriggerOffset;
+    }
+
+    private void TriggerJumpLogic()
+    {
+        if (currentlyDraggedParent.childCount == 0) return;
+
+        hasTriggeredTopWall = true;
+
+        int piecesJumpedCount = 0;
+        int totalValidPieces = 0;
+
+        // Loop through all children of the tray (the "Walls")
+        foreach (Transform wall in currentlyDraggedParent)
+        {
+            if (wall.childCount > 0)
+            {
+                totalValidPieces++;
+
+                // Grab the first child of the wall (the "Tile letter(Clone)")
+                Transform childToJump = wall.GetChild(0);
+
+                if (childToJump == null) continue;
+
+                // TMP_Text safely covers both 3D TextMeshPro and UI TextMeshProUGUI
+                var textMesh = childToJump.GetComponentInChildren<TextMeshPro>();
+
+                if (textMesh != null)
+                {
+                    // Trim invisible characters like zero-width spaces and ensure casing matches WordChecker data
+                    string letter = textMesh.text;
+                  //  Debug.Log(letter);
+                    // Let WordChecker check if there's an open slot for this letter
+                    if (WordChecker.instance.TryFindGridSlotForLetter(letter, out Transform slotTransform, out Vector2Int matchedKey))
+                    {
+                        // Reparent and animate the specific tile
+                        WordChecker.instance.AnimateTrayBlockToGrid(childToJump, slotTransform, matchedKey);
+                        piecesJumpedCount++;
+                    }
+                }
+            }
+        }
+
+        // If ALL the blocks jumped, destroy the empty shell and stop dragging
+        if (piecesJumpedCount > 0 && piecesJumpedCount == totalValidPieces)
+        {
+            Destroy(currentlyDraggedParent.gameObject);
+            currentlyDraggedParent = null;
+        }
+    }
+
     private void ReleaseAndSnapBack()
     {
+        hasTriggeredTopWall = false;
+
         // Animate position back to original
         currentlyDraggedParent.DOMove(originalPosition, snapBackDuration)
             .SetEase(snapBackEase);
@@ -160,15 +322,10 @@ public class GlobalTrayDragger : MonoBehaviour
         currentlyDraggedParent.DOScale(originalScale, snapBackDuration)
             .SetEase(snapBackEase);
 
-        // Disable the last child of each child object
         ToggleLastChildren(currentlyDraggedParent, false);
-
         currentlyDraggedParent = null;
     }
 
-    /// <summary>
-    /// Loops through every direct child of the dragged parent and toggles the active state of its last sub-child.
-    /// </summary>
     private void ToggleLastChildren(Transform parent, bool isActive)
     {
         foreach (Transform child in parent)

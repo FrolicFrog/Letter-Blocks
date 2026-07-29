@@ -237,7 +237,7 @@ public class LevelManager : Manager<LevelManager>
                         }
                        
                     }
-                    Debug.Log((dir.front, dir.left, dir.back, dir.right));
+                   // Debug.Log((dir.front, dir.left, dir.back, dir.right));
                     var trayChunk = Instantiate(wallsDirectionDict[dir], gridChild);
                     trayChunk.transform.localPosition = Vector3.zero;
                     trayChunk.GetComponent<MeshRenderer>().material = trayColors[trayName[key]];
