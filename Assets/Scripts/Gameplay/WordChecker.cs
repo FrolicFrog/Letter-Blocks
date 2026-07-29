@@ -170,26 +170,144 @@ public class WordChecker : MonoBehaviour
     {
         return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y) == 1;
     }
-
     // New centralized method called by GlobalTrayDragger for animating elements onto the grid
     public void AnimateTrayBlockToGrid(Transform block, Transform slotTransform, Vector2Int matchedKey)
     {
         reservedGridSlots.Add(matchedKey);
-        
+
         // Immediately parent the piece so dragger no longer controls it
         block.SetParent(slotTransform.parent);
-        block.GetComponent<MeshRenderer>().material.color = slotTransform.GetComponent<MeshRenderer>().material.color;
-        
-        // Handle animations locally within WordChecker
-        block.DOKill();
-        block.DOScale(Vector3.one, 0.2f);
-        block.DOJump(slotTransform.position, 1.5f, 1, 0.45f).SetEase(Ease.OutQuad).OnComplete(() =>
+
+        // 1. Color Blending Animation
+        MeshRenderer blockRenderer = block.GetComponent<MeshRenderer>();
+        MeshRenderer slotRenderer = slotTransform.GetComponent<MeshRenderer>();
+
+        float jumpDuration = 0.45f; // Snappy timing for a clean hop
+
+        if (blockRenderer != null && slotRenderer != null)
         {
-            block.localPosition = Vector3.zero;
+            Color targetColor = slotRenderer.material.color;
+            blockRenderer.material.DOColor(targetColor, jumpDuration).SetEase(Ease.InOutQuad);
+        }
+
+        // 2. Slot Replacement Animation (Scale down empty slot right before impact)
+        slotTransform.DOScale(Vector3.zero, 0.15f).SetDelay(jumpDuration - 0.15f).SetEase(Ease.InBack);
+
+        // 3. Trigger the Clean Parabolic Jump (No Rotation)
+        block.DOKill();
+
+        Sequence jumpSeq = DOTween.Sequence().SetLink(block.gameObject);
+
+        // A. Move X smoothly across the screen
+        jumpSeq.Append(block.DOMoveX(slotTransform.position.x, jumpDuration).SetEase(Ease.InOutSine));
+
+        // B. The Y-Axis Arc (Flying ABOVE the tray before dropping down)
+        float yJumpOffset = 3.5f; // Height of the arc above the highest point
+        float peakY = Mathf.Max(block.position.y, slotTransform.position.y) + yJumpOffset;
+
+        Sequence ySeq = DOTween.Sequence();
+        ySeq.Append(block.DOMoveY(peakY, jumpDuration / 2f).SetEase(Ease.OutQuad)); // Shoot up
+        ySeq.Append(block.DOMoveY(slotTransform.position.y, jumpDuration / 2f).SetEase(Ease.InQuad)); // Drop down
+        jumpSeq.Join(ySeq);
+
+        // C. The Z-Axis Arc (Popping slightly towards the camera for 3D depth)
+        float zJumpOffset = -2.5f;
+        float peakZ = Mathf.Min(block.position.z, slotTransform.position.z) + zJumpOffset;
+
+        Sequence zSeq = DOTween.Sequence();
+        zSeq.Append(block.DOMoveZ(peakZ, jumpDuration / 2f).SetEase(Ease.OutQuad));
+        zSeq.Append(block.DOMoveZ(slotTransform.position.z, jumpDuration / 2f).SetEase(Ease.InQuad));
+        jumpSeq.Join(zSeq);
+
+        // D. Scale up at the peak, then settle to final scale (Adds juiciness without rotation)
+        Vector3 finalScale = new Vector3(.9f, 1.8f, .9f); // Your target landing scale
+        Sequence scaleSeq = DOTween.Sequence();
+        scaleSeq.Append(block.DOScale(finalScale * 1.25f, jumpDuration / 2f).SetEase(Ease.OutQuad));
+        scaleSeq.Append(block.DOScale(finalScale, jumpDuration / 2f).SetEase(Ease.InQuad));
+        jumpSeq.Join(scaleSeq);
+
+        jumpSeq.OnComplete(() =>
+        {
+            // Lock it perfectly into place
+            block.localPosition = new Vector3(block.localPosition.x, block.localPosition.y, 0f);
+            block.localRotation = Quaternion.identity;
+            block.GetChild(2).gameObject.SetActive(true);
+            Debug.Log(block.GetChild(2).gameObject.name);
             reservedGridSlots.Remove(matchedKey);
-           Destroy(slotTransform.gameObject);
-            block.localScale = new Vector3(.9f, 1.8f, .9f);
+            Destroy(slotTransform.gameObject);
+
+            // Trigger word checks and grid shifting/gravity
+            if (TopGridManager.instance != null)
+            {
+                Check(TopGridManager.instance.columns);
+            }
         });
+    }
+
+    private bool TryPlaceQueuedCubes(int columns)
+    {
+        var grid = TopGridManager.instance;
+        bool placedAny = false;
+
+        foreach (Transform queueSlot in grid.queueSlots)
+        {
+            if (queueSlot.childCount == 0) continue;
+
+            Transform queuedCube = queueSlot.GetChild(queueSlot.childCount - 1);
+
+            var textMesh = queuedCube.GetComponentInChildren<TextMeshPro>();
+            string cubeLetter = textMesh != null ? textMesh.text : "";
+
+            if (TryFindGridSlotForLetter(cubeLetter, out Transform slot, out Vector2Int key))
+            {
+                reservedGridSlots.Add(key);
+
+                queuedCube.SetParent(slot.parent);
+                queuedCube.DOKill();
+
+                float jumpDuration = 0.45f;
+                Sequence queueJumpSeq = DOTween.Sequence().SetLink(queuedCube.gameObject);
+
+                // X Axis
+                queueJumpSeq.Append(queuedCube.DOMoveX(slot.position.x, jumpDuration).SetEase(Ease.InOutSine));
+
+                // Y Axis (Arc High)
+                float yJumpOffset = 3.5f;
+                float peakY = Mathf.Max(queuedCube.position.y, slot.position.y) + yJumpOffset;
+
+                Sequence ySeq = DOTween.Sequence();
+                ySeq.Append(queuedCube.DOMoveY(peakY, jumpDuration / 2f).SetEase(Ease.OutQuad));
+                ySeq.Append(queuedCube.DOMoveY(slot.position.y, jumpDuration / 2f).SetEase(Ease.InQuad));
+                queueJumpSeq.Join(ySeq);
+
+                // Z Axis (Arc out to camera)
+                float zJumpOffset = -2.5f;
+                float peakZ = Mathf.Min(queuedCube.position.z, slot.position.z) + zJumpOffset;
+
+                Sequence zSeq = DOTween.Sequence();
+                zSeq.Append(queuedCube.DOMoveZ(peakZ, jumpDuration / 2f).SetEase(Ease.OutQuad));
+                zSeq.Append(queuedCube.DOMoveZ(slot.position.z, jumpDuration / 2f).SetEase(Ease.InQuad));
+                queueJumpSeq.Join(zSeq);
+
+                // Scale (No rotation)
+                Vector3 finalScale = new Vector3(.9f, 1.8f, .9f);
+                Sequence scaleSeq = DOTween.Sequence();
+                scaleSeq.Append(queuedCube.DOScale(finalScale * 1.25f, jumpDuration / 2f).SetEase(Ease.OutQuad));
+                scaleSeq.Append(queuedCube.DOScale(finalScale, jumpDuration / 2f).SetEase(Ease.InQuad));
+                queueJumpSeq.Join(scaleSeq);
+
+                queueJumpSeq.OnComplete(() =>
+                {
+                    queuedCube.SetParent(slot);
+                    queuedCube.localPosition = Vector3.zero;
+                    queuedCube.localRotation = Quaternion.identity; // Ensures it remains perfectly flat
+                    reservedGridSlots.Remove(key);
+                });
+
+                placedAny = true;
+            }
+        }
+        return placedAny;
     }
 
     public bool TryFindGridSlotForLetter(string letter, out Transform slotTransform, out Vector2Int matchedKey)
@@ -206,9 +324,8 @@ public class WordChecker : MonoBehaviour
             Debug.Log("looping 1");
             for (int col = 0; col < columns; col++)
             {
-               
                 Vector2Int key = new Vector2Int(row, col);
-               
+                
                 if (lvlManager.excludedChar.Contains(key) &&  lvlManager.cellTexts[key] == letter)
                 {
                     Debug.Log("Working");
@@ -218,19 +335,6 @@ public class WordChecker : MonoBehaviour
                     slotTransform = candidateSlot;
                     matchedKey = key;
                     return true;
-                   /* bool slotAlreadyOccupied = false;
-                    if (candidateSlot.childCount > 1)
-                    {
-                        slotAlreadyOccupied = true;
-                    }
-
-                    if (!slotAlreadyOccupied)
-                    {
-                        slotTransform = candidateSlot;
-                        matchedKey = key;
-                        Debug.Log("True Returned");
-                        return true;
-                    }*/
                 }
             }
         }
@@ -797,35 +901,4 @@ public class WordChecker : MonoBehaviour
         return false;
     }
 
-    private bool TryPlaceQueuedCubes(int columns)
-    {
-        var grid = TopGridManager.instance;
-        bool placedAny = false;
-
-        foreach (Transform queueSlot in grid.queueSlots)
-        {
-            if (queueSlot.childCount == 0) continue;
-
-            Transform queuedCube = queueSlot.GetChild(queueSlot.childCount - 1);
-
-            var textMesh = queuedCube.GetComponentInChildren<TextMeshPro>();
-            string cubeLetter = textMesh != null ? textMesh.text : "";
-
-            if (TryFindGridSlotForLetter(cubeLetter, out Transform slot, out Vector2Int key))
-            {
-                reservedGridSlots.Add(key);
-                queuedCube.SetParent(slot);
-                
-                queuedCube.DOKill();
-                queuedCube.DOJump(slot.position, 1f, 1, 0.4f).OnComplete(() =>
-                {
-                    queuedCube.localPosition = Vector3.zero;
-                    reservedGridSlots.Remove(key);
-                });
-                
-                placedAny = true;
-            }
-        }
-        return placedAny;
-    }
 }

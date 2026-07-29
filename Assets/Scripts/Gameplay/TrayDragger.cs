@@ -54,6 +54,11 @@ public class GlobalTrayDragger : MonoBehaviour
     private float bMinX, bMaxX, bMinAxis, bMaxAxis, bTopWallTriggerThreshold;
     private bool hasTriggeredTopWall = false;
 
+    // --- NEW FOR COLLISION ---
+    private Vector3 pieceCenterOffset;
+    private Vector3 pieceHalfExtents;
+    // -------------------------
+
     private void Start()
     {
         mainCam = Camera.main;
@@ -149,13 +154,23 @@ public class GlobalTrayDragger : MonoBehaviour
 
             if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
             {
-                // Clamp Z Axis strictly inside padded borders
                 targetPosition.z = Mathf.Clamp(targetPosition.z, bMinAxis, bMaxAxis);
                 targetPosition.y = lockedAxisValue;
+            }
+            else
+            {
+                targetPosition.y = Mathf.Clamp(targetPosition.y, bMinAxis, bMaxAxis);
+                targetPosition.z = lockedAxisValue;
+            }
 
+            // --- NEW FOR COLLISION: Resolve overlaps before applying position ---
+            targetPosition = ResolveTrayCollisions(currentlyDraggedParent.position, targetPosition);
+            // --------------------------------------------------------------------
+
+            if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+            {
                 if (targetPosition.z >= bTopWallTriggerThreshold && !hasTriggeredTopWall)
                 {
-                   // Debug.Log("Jumping");
                     TriggerJumpLogic();
                 }
                 else if (targetPosition.z < bTopWallTriggerThreshold - 0.1f)
@@ -165,10 +180,6 @@ public class GlobalTrayDragger : MonoBehaviour
             }
             else
             {
-                // Clamp Y Axis strictly inside padded borders
-                targetPosition.y = Mathf.Clamp(targetPosition.y, bMinAxis, bMaxAxis);
-                targetPosition.z = lockedAxisValue;
-
                 if (targetPosition.y >= bTopWallTriggerThreshold && !hasTriggeredTopWall)
                 {
                     TriggerJumpLogic();
@@ -182,6 +193,67 @@ public class GlobalTrayDragger : MonoBehaviour
             currentlyDraggedParent.position = targetPosition;
         }
     }
+
+    // --- NEW FOR COLLISION: Evaluates X and the other axis separately for smooth sliding ---
+    private Vector3 ResolveTrayCollisions(Vector3 currentPos, Vector3 targetPos)
+    {
+        Vector3 finalPos = currentPos;
+        Vector3 testPos = currentPos;
+
+        // Test X Axis Movement
+        testPos.x = targetPos.x;
+        if (!IsOverlappingTray(testPos))
+        {
+            finalPos.x = targetPos.x;
+        }
+
+        // Test Z or Y Axis Movement
+        testPos = finalPos; // reset to the validated X
+        if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+        {
+            testPos.z = targetPos.z;
+            if (!IsOverlappingTray(testPos)) finalPos.z = targetPos.z;
+        }
+        else
+        {
+            testPos.y = targetPos.y;
+            if (!IsOverlappingTray(testPos)) finalPos.y = targetPos.y;
+        }
+
+        return finalPos;
+    }
+
+    // --- NEW FOR COLLISION: Uses an OverlapBox to check if the new position hits another tray ---
+    private bool IsOverlappingTray(Vector3 testPos)
+    {
+        Vector3 boxCenter = testPos + pieceCenterOffset;
+        Vector3 checkExtents = pieceHalfExtents;
+
+        // Push the test box back down to the ground plane to check against the resting trays
+        if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+        {
+            boxCenter.y -= dragOffset;
+            checkExtents.y += 5f; // Exaggerate thickness to guarantee it intersects resting colliders
+        }
+        else
+        {
+            boxCenter.z -= dragOffset;
+            checkExtents.z += 5f;
+        }
+
+        Collider[] hits = Physics.OverlapBox(boxCenter, checkExtents, Quaternion.identity, trayLayer);
+
+        foreach (Collider hit in hits)
+        {
+            // If the hit collider is NOT part of the tray we are dragging, it's a collision!
+            if (!hit.transform.IsChildOf(currentlyDraggedParent))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    // -----------------------------------------------------------------------------------------
 
     private void CalculateDynamicBoundaries()
     {
@@ -228,6 +300,12 @@ public class GlobalTrayDragger : MonoBehaviour
                 }
 
                 Vector3 pivotPos = currentlyDraggedParent.position;
+
+                // --- NEW FOR COLLISION: Cache the extents and offset for the OverlapBox ---
+                pieceCenterOffset = pieceBounds.center - pivotPos;
+                pieceHalfExtents = pieceBounds.extents * dragScaleMultiplier;
+                pieceHalfExtents *= 0.95f; // Shrink it just 5% so it doesn't get stuck sliding against flush edges
+                // --------------------------------------------------------------------------
 
                 pMinX = pivotPos.x - pieceBounds.min.x;
                 pMaxX = pieceBounds.max.x - pivotPos.x;
@@ -290,7 +368,7 @@ public class GlobalTrayDragger : MonoBehaviour
                 {
                     // Trim invisible characters like zero-width spaces and ensure casing matches WordChecker data
                     string letter = textMesh.text;
-                  //  Debug.Log(letter);
+                    //  Debug.Log(letter);
                     // Let WordChecker check if there's an open slot for this letter
                     if (WordChecker.instance.TryFindGridSlotForLetter(letter, out Transform slotTransform, out Vector2Int matchedKey))
                     {
