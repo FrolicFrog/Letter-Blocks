@@ -356,8 +356,10 @@ public class TopGridManager : MonoBehaviour
         if (centerObject == null) return;
 
         Vector3 gridLocalCenter = gridLocalCenterBase + positionOffset;
+        bool isChild = centerObject.transform.parent == transform;
 
-        if (centerObject.transform.parent == transform)
+        // Position Logic
+        if (isChild)
         {
             centerObject.transform.localPosition = gridLocalCenter;
         }
@@ -366,6 +368,7 @@ public class TopGridManager : MonoBehaviour
             centerObject.transform.position = transform.TransformPoint(gridLocalCenter);
         }
 
+        // Scale Logic
         if (autoScaleBorder)
         {
             float cellZSize = grid.cellSize.z > 0 ? grid.cellSize.z : 0f;
@@ -374,24 +377,33 @@ public class TopGridManager : MonoBehaviour
             float totalOuterHeight = Mathf.Abs(diff.y) + grid.cellSize.y + borderPadding.y;
             float totalOuterDepth = Mathf.Abs(diff.z) + cellZSize + borderPadding.z;
 
-            bool isChild = centerObject.transform.parent == transform;
-
-            Vector3 targetLocalSize = new Vector3(
-                totalOuterWidth,
-                totalOuterHeight,
-                totalOuterDepth > 0f ? totalOuterDepth : centerObject.transform.localScale.z
-            );
+            float targetX = totalOuterWidth;
+            float targetY = totalOuterHeight;
+            float targetZ = totalOuterDepth > 0f ? totalOuterDepth : 0f;
 
             if (!isChild)
             {
+                // Use lossyScale to accurately get the true world scale of the grid and parent
                 Vector3 parentScale = centerObject.transform.parent != null ? centerObject.transform.parent.lossyScale : Vector3.one;
-                Vector3 targetWorldSize = Vector3.Scale(targetLocalSize, gridScale);
-                targetLocalSize = new Vector3(
-                    parentScale.x != 0 ? targetWorldSize.x / parentScale.x : targetWorldSize.x,
-                    parentScale.y != 0 ? targetWorldSize.y / parentScale.y : targetWorldSize.y,
-                    parentScale.z != 0 ? targetWorldSize.z / parentScale.z : targetWorldSize.z
-                );
+                Vector3 gridLossyScale = transform.lossyScale;
+
+                targetX = (targetX * gridLossyScale.x) / (parentScale.x != 0 ? parentScale.x : 1f);
+                targetY = (targetY * gridLossyScale.y) / (parentScale.y != 0 ? parentScale.y : 1f);
+
+                if (targetZ > 0f)
+                {
+                    targetZ = (targetZ * gridLossyScale.z) / (parentScale.z != 0 ? parentScale.z : 1f);
+                }
             }
+
+            Vector3 currentLocalScale = centerObject.transform.localScale;
+
+            // Create target size. If targetZ is 0, we strictly preserve the exact current Z scale to prevent update loops.
+            Vector3 targetLocalSize = new Vector3(
+                targetX,
+                targetY,
+                targetZ > 0f ? targetZ : currentLocalScale.z
+            );
 
             SpriteRenderer sr = centerObject.GetComponent<SpriteRenderer>();
             if (sr == null) sr = centerObject.GetComponentInChildren<SpriteRenderer>();
@@ -401,41 +413,41 @@ public class TopGridManager : MonoBehaviour
 
             if (sr != null && sr.drawMode != SpriteDrawMode.Simple)
             {
+                // Sliced/Tiled sprites size must be controlled purely via sr.size. 
+                // We force localScale X/Y to 1 to prevent double-scaling distortion.
                 sr.size = new Vector2(targetLocalSize.x, targetLocalSize.y);
-                if (borderPadding.z != 0f)
-                {
-                    Vector3 currentScale = centerObject.transform.localScale;
-                    centerObject.transform.localScale = new Vector3(currentScale.x, currentScale.y, targetLocalSize.z);
-                }
+                centerObject.transform.localScale = new Vector3(1f, 1f, targetLocalSize.z);
             }
             else if (sr != null && sr.sprite != null)
             {
+                // Simple Sprites
                 Vector2 spriteSize = sr.sprite.rect.size / sr.sprite.pixelsPerUnit;
                 if (spriteSize.x > 0 && spriteSize.y > 0)
                 {
                     centerObject.transform.localScale = new Vector3(
                         targetLocalSize.x / spriteSize.x,
                         targetLocalSize.y / spriteSize.y,
-                        targetLocalSize.z > 0 ? targetLocalSize.z : centerObject.transform.localScale.z
+                        targetLocalSize.z
                     );
                 }
             }
             else if (mf != null && mf.sharedMesh != null)
             {
+                // 3D Meshes
                 Vector3 meshSize = mf.sharedMesh.bounds.size;
                 float scaleX = meshSize.x > 0f ? targetLocalSize.x / meshSize.x : targetLocalSize.x;
                 float scaleY = meshSize.y > 0f ? targetLocalSize.y / meshSize.y : targetLocalSize.y;
-                float scaleZ = (meshSize.z > 0f && totalOuterDepth > 0f) ? targetLocalSize.z / meshSize.z : centerObject.transform.localScale.z;
+                float scaleZ = (meshSize.z > 0f && targetZ > 0f) ? targetLocalSize.z / meshSize.z : targetLocalSize.z;
 
                 centerObject.transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
             }
             else
             {
+                // Raw GameObjects / Fallback
                 centerObject.transform.localScale = targetLocalSize;
             }
         }
     }
-
     private Vector3 GetFloorIntersection(Vector2 viewportPos, Plane floorPlane)
     {
         Ray ray = mainCamera.ViewportPointToRay(viewportPos);
