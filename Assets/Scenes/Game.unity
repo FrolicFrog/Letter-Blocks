@@ -1007,7 +1007,7 @@ MonoBehaviour:
   centerObject2: {fileID: 1398619924}
   autoScaleBorder2: 1
   borderPadding2: {x: 4.09, y: 0, z: -34.6}
-  centerObject2Offset: {x: 0, y: 7.89, z: -5.33}
+  centerObject2Offset: {x: 0, y: 7.89, z: -6.61}
   autoFitToScreen: 1
   mainCamera: {fileID: 330585545}
   floorHeight: 0
@@ -1080,8 +1080,8 @@ MonoBehaviour:
   centerObject1Offset: {x: 0, y: 6.45, z: -1.19}
   centerObject2: {fileID: 1398619924}
   autoScaleBorder2: 1
-  borderPadding2: {x: 4.17, y: 0, z: -35.39}
-  centerObject2Offset: {x: 0, y: 8.11, z: -4.06}
+  borderPadding2: {x: 4.17, y: 0, z: -34.7}
+  centerObject2Offset: {x: 0, y: 8.11, z: -7.48}
   autoFitToScreen: 1
   mainCamera: {fileID: 330585545}
   floorHeight: 0

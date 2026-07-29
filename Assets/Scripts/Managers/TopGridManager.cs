@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteAlways]
 [RequireComponent(typeof(Grid))]
 public class TopGridManager : MonoBehaviour
 {
@@ -67,15 +66,26 @@ public class TopGridManager : MonoBehaviour
     public static TopGridManager instance;
 
     private Grid grid;
-    private Vector3 lastCellSize;
-    private Vector3 lastCellGap;
 
-    // Screen and Camera tracking fields for dynamic runtime/editor scale updates
+    // Camera Tracking
     private int lastScreenWidth;
     private int lastScreenHeight;
     private float lastCameraAspect;
     private float lastCameraFOV;
     private float lastCameraOrthoSize;
+
+    // Parameter Tracking for Update Loop
+    private int lastRows;
+    private int lastColumns;
+    private Vector3 lastBorderPadding1;
+    private Vector3 lastCenterObject1Offset;
+    private Vector3 lastBorderPadding2;
+    private Vector3 lastCenterObject2Offset;
+    private float lastScreenPadding;
+    private float lastBottomScreenReserved;
+    private float lastFloorHeight;
+    private Vector3 lastCellSize;
+    private Vector3 lastCellGap;
 
     private void Awake()
     {
@@ -86,65 +96,89 @@ public class TopGridManager : MonoBehaviour
     {
         instance = this;
         grid = GetComponent<Grid>();
-        UpdateGridCache();
+
+        CacheInitialValues();
         ArrangeChildren();
-
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.update += EditorUpdate;
-#endif
-    }
-
-    private void OnDisable()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.update -= EditorUpdate;
-#endif
     }
 
     private void Update()
     {
-        // Continuously check for aspect ratio or resolution changes
-        CheckScreenAndCameraChanges();
+        if (Application.isPlaying)
+        {
+            bool screenChanged = CheckScreenAndCameraChanges();
+            bool paramsChanged = CheckParameterChanges();
+
+            if (screenChanged || paramsChanged)
+            {
+                ArrangeChildren();
+            }
+        }
     }
 
     private void OnValidate()
     {
         if (grid == null) grid = GetComponent<Grid>();
-
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.delayCall += () =>
-        {
-            if (this != null) ArrangeChildren();
-        };
-#endif
     }
 
-#if UNITY_EDITOR
-    private void EditorUpdate()
+    private void CacheInitialValues()
     {
         if (grid != null)
         {
-            if (grid.cellGap != lastCellGap || grid.cellSize != lastCellSize)
-            {
-                UpdateGridCache();
-                ArrangeChildren();
-                UnityEditor.SceneView.RepaintAll();
-            }
+            lastCellSize = grid.cellSize;
+            lastCellGap = grid.cellGap;
+        }
+
+        lastRows = rows;
+        lastColumns = columns;
+        lastBorderPadding1 = borderPadding1;
+        lastCenterObject1Offset = centerObject1Offset;
+        lastBorderPadding2 = borderPadding2;
+        lastCenterObject2Offset = centerObject2Offset;
+        lastScreenPadding = screenPadding;
+        lastBottomScreenReserved = bottomScreenReserved;
+        lastFloorHeight = floorHeight;
+
+        if (mainCamera == null) mainCamera = Camera.main;
+        if (mainCamera != null)
+        {
+            lastScreenWidth = Screen.width;
+            lastScreenHeight = Screen.height;
+            lastCameraAspect = mainCamera.aspect;
+            lastCameraOrthoSize = mainCamera.orthographicSize;
+            lastCameraFOV = mainCamera.fieldOfView;
         }
     }
-#endif
 
-    /// <summary>
-    /// Detects changes in aspect ratio, resolution, or camera properties and re-arranges children instantly.
-    /// </summary>
-    private void CheckScreenAndCameraChanges()
+    private bool CheckParameterChanges()
+    {
+        bool changed = false;
+
+        if (rows != lastRows) { lastRows = rows; changed = true; }
+        if (columns != lastColumns) { lastColumns = columns; changed = true; }
+        if (borderPadding1 != lastBorderPadding1) { lastBorderPadding1 = borderPadding1; changed = true; }
+        if (centerObject1Offset != lastCenterObject1Offset) { lastCenterObject1Offset = centerObject1Offset; changed = true; }
+        if (borderPadding2 != lastBorderPadding2) { lastBorderPadding2 = borderPadding2; changed = true; }
+        if (centerObject2Offset != lastCenterObject2Offset) { lastCenterObject2Offset = centerObject2Offset; changed = true; }
+        if (screenPadding != lastScreenPadding) { lastScreenPadding = screenPadding; changed = true; }
+        if (bottomScreenReserved != lastBottomScreenReserved) { lastBottomScreenReserved = bottomScreenReserved; changed = true; }
+        if (floorHeight != lastFloorHeight) { lastFloorHeight = floorHeight; changed = true; }
+
+        if (grid != null)
+        {
+            if (grid.cellSize != lastCellSize) { lastCellSize = grid.cellSize; changed = true; }
+            if (grid.cellGap != lastCellGap) { lastCellGap = grid.cellGap; changed = true; }
+        }
+
+        return changed;
+    }
+
+    private bool CheckScreenAndCameraChanges()
     {
         if (mainCamera == null) mainCamera = Camera.main;
-        if (mainCamera == null) return;
+        if (mainCamera == null) return false;
 
         bool hasChanged = false;
 
-        // Check for resolution change
         if (Screen.width != lastScreenWidth || Screen.height != lastScreenHeight)
         {
             lastScreenWidth = Screen.width;
@@ -152,14 +186,12 @@ public class TopGridManager : MonoBehaviour
             hasChanged = true;
         }
 
-        // Check for camera aspect ratio change
         if (!Mathf.Approximately(mainCamera.aspect, lastCameraAspect))
         {
             lastCameraAspect = mainCamera.aspect;
             hasChanged = true;
         }
 
-        // Check for orthographic size / FOV change
         float currentSize = mainCamera.orthographic ? mainCamera.orthographicSize : mainCamera.fieldOfView;
         float lastSize = mainCamera.orthographic ? lastCameraOrthoSize : lastCameraFOV;
 
@@ -171,19 +203,7 @@ public class TopGridManager : MonoBehaviour
             hasChanged = true;
         }
 
-        if (hasChanged)
-        {
-            ArrangeChildren();
-        }
-    }
-
-    private void UpdateGridCache()
-    {
-        if (grid != null)
-        {
-            lastCellSize = grid.cellSize;
-            lastCellGap = grid.cellGap;
-        }
+        return hasChanged;
     }
 
     [ContextMenu("Generate Grid Tiles")]
@@ -262,6 +282,7 @@ public class TopGridManager : MonoBehaviour
 
                 if (gridUnscaledWidth > 0)
                 {
+                    // Strictly scale based on the screen width
                     float finalScale = frustumWidth / gridUnscaledWidth;
                     transform.localScale = new Vector3(finalScale, finalScale, finalScale);
                 }
@@ -285,7 +306,6 @@ public class TopGridManager : MonoBehaviour
         {
             Transform child = transform.GetChild(i);
 
-            // Skip the center border objects if they happen to be parented under this grid
             if ((centerObject1 != null && child == centerObject1.transform) ||
                 (centerObject2 != null && child == centerObject2.transform))
                 continue;
@@ -297,12 +317,10 @@ public class TopGridManager : MonoBehaviour
             int physical_row;
             if (startCorner == StartCorner.TopLeft)
             {
-                // Child 0 starts at the very top row and flows downwards
                 physical_row = (rows - 1) - (tileIndex / columns);
             }
             else
             {
-                // Child 0 starts at the Safe Area line and flows upwards
                 physical_row = tileIndex / columns;
             }
 
@@ -333,15 +351,10 @@ public class TopGridManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Positions a center border object at the grid's center (plus its own X/Y/Z offset) and,
-    /// if enabled, auto-scales it to fit the outer bounds of the grid plus padding.
-    /// </summary>
     private void PositionAndScaleCenterObject(GameObject centerObject, bool autoScaleBorder, Vector3 borderPadding, Vector3 positionOffset, Vector3 gridLocalCenterBase, Vector3 diff, Vector3 gridScale)
     {
         if (centerObject == null) return;
 
-        // Apply full 3D local offset (X, Y, Z)
         Vector3 gridLocalCenter = gridLocalCenterBase + positionOffset;
 
         if (centerObject.transform.parent == transform)
