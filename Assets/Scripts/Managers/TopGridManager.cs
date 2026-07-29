@@ -73,6 +73,8 @@ public class TopGridManager : MonoBehaviour
     private float lastCameraAspect;
     private float lastCameraFOV;
     private float lastCameraOrthoSize;
+    private Vector3 lastCameraPosition;      // NEW: tracks camera movement
+    private Quaternion lastCameraRotation;   // NEW: tracks camera rotation
 
     // Parameter Tracking for Update Loop
     private int lastRows;
@@ -101,7 +103,15 @@ public class TopGridManager : MonoBehaviour
         ArrangeChildren();
     }
 
-    private void Update()
+    // Changed from Update -> LateUpdate.
+    // This guarantees we arrange AFTER any camera-follow/camera-rig scripts have
+    // finished moving the camera for this frame. Previously, if a camera controller
+    // moved/positioned the camera in its own Awake/Start/Update *after* this script's
+    // OnEnable ran (order is not guaranteed across sessions/builds), the grid would be
+    // anchored to a stale camera position and never get corrected, since camera
+    // position/rotation weren't part of the change-detection. That's what caused the
+    // border/tile positions to look "different" or "inconsistent" between play sessions.
+    private void LateUpdate()
     {
         if (Application.isPlaying)
         {
@@ -146,6 +156,8 @@ public class TopGridManager : MonoBehaviour
             lastCameraAspect = mainCamera.aspect;
             lastCameraOrthoSize = mainCamera.orthographicSize;
             lastCameraFOV = mainCamera.fieldOfView;
+            lastCameraPosition = mainCamera.transform.position;   // NEW
+            lastCameraRotation = mainCamera.transform.rotation;   // NEW
         }
     }
 
@@ -200,6 +212,24 @@ public class TopGridManager : MonoBehaviour
             if (mainCamera.orthographic) lastCameraOrthoSize = currentSize;
             else lastCameraFOV = currentSize;
 
+            hasChanged = true;
+        }
+
+        // NEW: camera position/rotation must be tracked too, since ArrangeChildren()
+        // raycasts from the camera's viewport corners onto the floor plane. Without
+        // this check, any camera movement/positioning that happens after our own
+        // OnEnable (e.g. a camera rig settling into place, orientation changes,
+        // safe-area adjustments) would silently be ignored and the grid would stay
+        // anchored to the camera's earlier position for the rest of the session.
+        if (mainCamera.transform.position != lastCameraPosition)
+        {
+            lastCameraPosition = mainCamera.transform.position;
+            hasChanged = true;
+        }
+
+        if (mainCamera.transform.rotation != lastCameraRotation)
+        {
+            lastCameraRotation = mainCamera.transform.rotation;
             hasChanged = true;
         }
 

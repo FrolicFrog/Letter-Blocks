@@ -19,7 +19,7 @@ MonoBehaviour:
   height: 9
   width: 9
   bottomGridSize: 0.73
-  categoryMaterial: {fileID: 2100000, guid: becfb789e99d486438cc9c834cce52d5, type: 2}
+  categoryMaterial: {fileID: 2100000, guid: 4dab332f1e8966849ad5f29ef65bffcb, type: 2}
   words:
   - TIGER
   - NEPAL

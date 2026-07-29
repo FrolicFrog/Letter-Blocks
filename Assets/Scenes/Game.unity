@@ -755,7 +755,7 @@ MonoBehaviour:
     Value: {fileID: 21300000, guid: c9703985a29ddcf44bc4d4f71e0350ae, type: 3}
   - Key: {fileID: 2100000, guid: 4dab332f1e8966849ad5f29ef65bffcb, type: 2}
     Value: {fileID: 21300000, guid: b36e74e238bcbdf4b9b1a4459ec04717, type: 3}
-  TestLevelToLoad: 1
+  TestLevelToLoad: 2
   hearts: 0
 --- !u!1 &826340751
 GameObject:
@@ -946,6 +946,7 @@ GameObject:
   - component: {fileID: 1371688888}
   - component: {fileID: 1371688889}
   - component: {fileID: 1371688890}
+  - component: {fileID: 1371688891}
   m_Layer: 0
   m_Name: WordGridManager
   m_TagString: Untagged
@@ -992,7 +993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d49de45467376754994cc28761c1b07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 12
+  rows: 8
   columns: 8
   height: 0
   width: 0
@@ -1007,12 +1008,12 @@ MonoBehaviour:
   queueSlots: []
   centerObject1: {fileID: 1593633551148644532}
   autoScaleBorder1: 1
-  borderPadding1: {x: 9.38, y: 2.01, z: -18.6}
-  centerObject1Offset: {x: 0, y: 8.17, z: 5.13}
+  borderPadding1: {x: 9.38, y: 2.01, z: -13.7}
+  centerObject1Offset: {x: 0, y: 8.17, z: 2.79}
   centerObject2: {fileID: 1398619924}
   autoScaleBorder2: 1
-  borderPadding2: {x: -5.3, y: 0, z: -35}
-  centerObject2Offset: {x: 1.21, y: 11, z: -5.37}
+  borderPadding2: {x: -5.83, y: 0, z: -35}
+  centerObject2Offset: {x: 1.21, y: 14.57, z: -2.72}
   autoFitToScreen: 1
   mainCamera: {fileID: 330585545}
   floorHeight: 0
@@ -1054,6 +1055,44 @@ MonoBehaviour:
   spinDuration: 0.5
   spinAngle: {x: 1080, y: 0, z: 0}
   spinEase: 27
+--- !u!114 &1371688891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371688886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d49de45467376754994cc28761c1b07b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rows: 8
+  columns: 8
+  height: 0
+  width: 0
+  startCorner: 1
+  squareTile: {fileID: 7629853423582124116, guid: 51f8349bc5e630b4b8fdcdf17e59ba1a,
+    type: 3}
+  squareSlot: {fileID: 2816542064667801392, guid: 242a9b274ef66cc4f89846a1223fcc2c,
+    type: 3}
+  emptyTile: {fileID: 4149636492414647536, guid: 013c4209ca5fda144b220f4871ce83b4,
+    type: 3}
+  queueParent: {fileID: 0}
+  queueSlots: []
+  centerObject1: {fileID: 1593633551148644532}
+  autoScaleBorder1: 1
+  borderPadding1: {x: 9.38, y: 2.01, z: -13.7}
+  centerObject1Offset: {x: 0, y: 8.17, z: 3.42}
+  centerObject2: {fileID: 1398619924}
+  autoScaleBorder2: 1
+  borderPadding2: {x: -5.83, y: 0, z: -22.3}
+  centerObject2Offset: {x: 1.21, y: 14.57, z: -1.68}
+  autoFitToScreen: 1
+  mainCamera: {fileID: 330585545}
+  floorHeight: 0
+  screenPadding: 0.106
+  bottomScreenReserved: 0.428
 --- !u!1 &1398619924
 GameObject:
   m_ObjectHideFlags: 0
@@ -1430,13 +1469,13 @@ MonoBehaviour:
       left: 1
       back: 1
       right: 0
-  - mesh: {fileID: 919132149155446097, guid: a539fa07268511f4c9abb0d0b164b685, type: 3}
+  - mesh: {fileID: 1530655964725946711, guid: 232c1a1f6a6acb3439c34916d970fd3b, type: 3}
     facing:
       front: 0
       left: 0
       back: 1
       right: 1
-  - mesh: {fileID: 919132149155446097, guid: 93449880ca054b84981316599e30d5b0, type: 3}
+  - mesh: {fileID: 1053404685816092111, guid: ac21bfcd13a21bc43b24e71cc40f9db1, type: 3}
     facing:
       front: 1
       left: 1
