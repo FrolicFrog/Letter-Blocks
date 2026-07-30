@@ -22,32 +22,6 @@ public class TopGridManager : MonoBehaviour
     public Transform queueParent;
     public List<Transform> queueSlots;
 
-    [Header("Center Border Settings - Object 1")]
-    [Tooltip("Assign a GameObject here to automatically place and scale it around the grid.")]
-    public GameObject centerObject1;
-
-    [Tooltip("If true, automatically resizes centerObject1 to fit the outer bounds of the grid.")]
-    public bool autoScaleBorder1 = true;
-
-    [Tooltip("Extra padding around the outer edge of the grid for centerObject1's border (X, Y, Z).")]
-    public Vector3 borderPadding1 = Vector3.zero;
-
-    [Tooltip("Extra positional offset for centerObject1 applied along the grid's local X, Y, and Z axes.")]
-    public Vector3 centerObject1Offset = Vector3.zero;
-
-    [Header("Center Border Settings - Object 2")]
-    [Tooltip("Assign a second GameObject here to automatically place and scale it around the grid.")]
-    public GameObject centerObject2;
-
-    [Tooltip("If true, automatically resizes centerObject2 to fit the outer bounds of the grid.")]
-    public bool autoScaleBorder2 = true;
-
-    [Tooltip("Extra padding around the outer edge of the grid for centerObject2's border (X, Y, Z).")]
-    public Vector3 borderPadding2 = Vector3.zero;
-
-    [Tooltip("Extra positional offset for centerObject2 applied along the grid's local X, Y, and Z axes.")]
-    public Vector3 centerObject2Offset = Vector3.zero;
-
     [Header("Auto-Fit To Camera")]
     [Tooltip("Scale width to match the screen and anchor the bottom to the Safe Area.")]
     public bool autoFitToScreen = true;
@@ -73,16 +47,13 @@ public class TopGridManager : MonoBehaviour
     private float lastCameraAspect;
     private float lastCameraFOV;
     private float lastCameraOrthoSize;
-    private Vector3 lastCameraPosition;      // NEW: tracks camera movement
-    private Quaternion lastCameraRotation;   // NEW: tracks camera rotation
+    private Vector3 lastCameraPosition;
+    private Quaternion lastCameraRotation;
 
     // Parameter Tracking for Update Loop
     private int lastRows;
     private int lastColumns;
-    private Vector3 lastBorderPadding1;
-    private Vector3 lastCenterObject1Offset;
-    private Vector3 lastBorderPadding2;
-    private Vector3 lastCenterObject2Offset;
+    private int lastChildCount;
     private float lastScreenPadding;
     private float lastBottomScreenReserved;
     private float lastFloorHeight;
@@ -103,14 +74,6 @@ public class TopGridManager : MonoBehaviour
         ArrangeChildren();
     }
 
-    // Changed from Update -> LateUpdate.
-    // This guarantees we arrange AFTER any camera-follow/camera-rig scripts have
-    // finished moving the camera for this frame. Previously, if a camera controller
-    // moved/positioned the camera in its own Awake/Start/Update *after* this script's
-    // OnEnable ran (order is not guaranteed across sessions/builds), the grid would be
-    // anchored to a stale camera position and never get corrected, since camera
-    // position/rotation weren't part of the change-detection. That's what caused the
-    // border/tile positions to look "different" or "inconsistent" between play sessions.
     private void LateUpdate()
     {
         if (Application.isPlaying)
@@ -140,10 +103,7 @@ public class TopGridManager : MonoBehaviour
 
         lastRows = rows;
         lastColumns = columns;
-        lastBorderPadding1 = borderPadding1;
-        lastCenterObject1Offset = centerObject1Offset;
-        lastBorderPadding2 = borderPadding2;
-        lastCenterObject2Offset = centerObject2Offset;
+        lastChildCount = transform.childCount;
         lastScreenPadding = screenPadding;
         lastBottomScreenReserved = bottomScreenReserved;
         lastFloorHeight = floorHeight;
@@ -156,8 +116,8 @@ public class TopGridManager : MonoBehaviour
             lastCameraAspect = mainCamera.aspect;
             lastCameraOrthoSize = mainCamera.orthographicSize;
             lastCameraFOV = mainCamera.fieldOfView;
-            lastCameraPosition = mainCamera.transform.position;   // NEW
-            lastCameraRotation = mainCamera.transform.rotation;   // NEW
+            lastCameraPosition = mainCamera.transform.position;
+            lastCameraRotation = mainCamera.transform.rotation;
         }
     }
 
@@ -165,12 +125,11 @@ public class TopGridManager : MonoBehaviour
     {
         bool changed = false;
 
+        // Auto-detect when new children are instantiated or destroyed
+        if (transform.childCount != lastChildCount) { lastChildCount = transform.childCount; changed = true; }
+
         if (rows != lastRows) { lastRows = rows; changed = true; }
         if (columns != lastColumns) { lastColumns = columns; changed = true; }
-        if (borderPadding1 != lastBorderPadding1) { lastBorderPadding1 = borderPadding1; changed = true; }
-        if (centerObject1Offset != lastCenterObject1Offset) { lastCenterObject1Offset = centerObject1Offset; changed = true; }
-        if (borderPadding2 != lastBorderPadding2) { lastBorderPadding2 = borderPadding2; changed = true; }
-        if (centerObject2Offset != lastCenterObject2Offset) { lastCenterObject2Offset = centerObject2Offset; changed = true; }
         if (screenPadding != lastScreenPadding) { lastScreenPadding = screenPadding; changed = true; }
         if (bottomScreenReserved != lastBottomScreenReserved) { lastBottomScreenReserved = bottomScreenReserved; changed = true; }
         if (floorHeight != lastFloorHeight) { lastFloorHeight = floorHeight; changed = true; }
@@ -211,16 +170,9 @@ public class TopGridManager : MonoBehaviour
         {
             if (mainCamera.orthographic) lastCameraOrthoSize = currentSize;
             else lastCameraFOV = currentSize;
-
             hasChanged = true;
         }
 
-        // NEW: camera position/rotation must be tracked too, since ArrangeChildren()
-        // raycasts from the camera's viewport corners onto the floor plane. Without
-        // this check, any camera movement/positioning that happens after our own
-        // OnEnable (e.g. a camera rig settling into place, orientation changes,
-        // safe-area adjustments) would silently be ignored and the grid would stay
-        // anchored to the camera's earlier position for the rest of the session.
         if (mainCamera.transform.position != lastCameraPosition)
         {
             lastCameraPosition = mainCamera.transform.position;
@@ -279,7 +231,20 @@ public class TopGridManager : MonoBehaviour
         if (grid == null) return;
 
         int currentChildCount = transform.childCount;
-        if (currentChildCount == 0 && centerObject1 == null && centerObject2 == null) return;
+        if (currentChildCount == 0) return;
+
+        int actualTileCount = currentChildCount;
+
+        // Auto-expand rows if there are more tiles than the current grid allows.
+        if (columns > 0)
+        {
+            int requiredRows = Mathf.CeilToInt((float)actualTileCount / columns);
+            if (requiredRows > rows)
+            {
+                rows = requiredRows;
+                lastRows = rows; // Prevent triggering an unnecessary update loop
+            }
+        }
 
         Vector3 safeAreaAnchorOffset = Vector3.zero;
         Vector3 horizontalCenterOffset = Vector3.zero;
@@ -327,18 +292,13 @@ public class TopGridManager : MonoBehaviour
             }
         }
 
-        int validChildCount = Mathf.Min(currentChildCount, rows * columns);
-
         // 3. Map children Left-to-Right perfectly
+        int validChildCount = Mathf.Max(actualTileCount, rows * columns);
         int tileIndex = 0;
 
         for (int i = 0; i < currentChildCount; i++)
         {
             Transform child = transform.GetChild(i);
-
-            if ((centerObject1 != null && child == centerObject1.transform) ||
-                (centerObject2 != null && child == centerObject2.transform))
-                continue;
 
             if (tileIndex >= validChildCount) break;
 
@@ -362,122 +322,8 @@ public class TopGridManager : MonoBehaviour
             child.localPosition = baseLocalPos;
             tileIndex++;
         }
-
-        // 4. Position & Auto-Size the Center Border Objects
-        if (centerObject1 != null || centerObject2 != null)
-        {
-            Vector3 posMin = grid.CellToLocal(new Vector3Int(0, 0, 0));
-            Vector3 posMax = grid.CellToLocal(new Vector3Int(columns - 1, rows - 1, 0));
-
-            Vector3 gridLocalCenterBase = (posMin + posMax) / 2f;
-            gridLocalCenterBase -= horizontalCenterOffset;
-            gridLocalCenterBase += safeAreaAnchorOffset;
-
-            Vector3 diff = posMax - posMin;
-            Vector3 gridScale = transform.localScale;
-
-            PositionAndScaleCenterObject(centerObject1, autoScaleBorder1, borderPadding1, centerObject1Offset, gridLocalCenterBase, diff, gridScale);
-            PositionAndScaleCenterObject(centerObject2, autoScaleBorder2, borderPadding2, centerObject2Offset, gridLocalCenterBase, diff, gridScale);
-        }
     }
 
-    private void PositionAndScaleCenterObject(GameObject centerObject, bool autoScaleBorder, Vector3 borderPadding, Vector3 positionOffset, Vector3 gridLocalCenterBase, Vector3 diff, Vector3 gridScale)
-    {
-        if (centerObject == null) return;
-
-        Vector3 gridLocalCenter = gridLocalCenterBase + positionOffset;
-        bool isChild = centerObject.transform.parent == transform;
-
-        // Position Logic
-        if (isChild)
-        {
-            centerObject.transform.localPosition = gridLocalCenter;
-        }
-        else
-        {
-            centerObject.transform.position = transform.TransformPoint(gridLocalCenter);
-        }
-
-        // Scale Logic
-        if (autoScaleBorder)
-        {
-            float cellZSize = grid.cellSize.z > 0 ? grid.cellSize.z : 0f;
-
-            float totalOuterWidth = Mathf.Abs(diff.x) + grid.cellSize.x + borderPadding.x;
-            float totalOuterHeight = Mathf.Abs(diff.y) + grid.cellSize.y + borderPadding.y;
-            float totalOuterDepth = Mathf.Abs(diff.z) + cellZSize + borderPadding.z;
-
-            float targetX = totalOuterWidth;
-            float targetY = totalOuterHeight;
-            float targetZ = totalOuterDepth > 0f ? totalOuterDepth : 0f;
-
-            if (!isChild)
-            {
-                // Use lossyScale to accurately get the true world scale of the grid and parent
-                Vector3 parentScale = centerObject.transform.parent != null ? centerObject.transform.parent.lossyScale : Vector3.one;
-                Vector3 gridLossyScale = transform.lossyScale;
-
-                targetX = (targetX * gridLossyScale.x) / (parentScale.x != 0 ? parentScale.x : 1f);
-                targetY = (targetY * gridLossyScale.y) / (parentScale.y != 0 ? parentScale.y : 1f);
-
-                if (targetZ > 0f)
-                {
-                    targetZ = (targetZ * gridLossyScale.z) / (parentScale.z != 0 ? parentScale.z : 1f);
-                }
-            }
-
-            Vector3 currentLocalScale = centerObject.transform.localScale;
-
-            // Create target size. If targetZ is 0, we strictly preserve the exact current Z scale to prevent update loops.
-            Vector3 targetLocalSize = new Vector3(
-                targetX,
-                targetY,
-                targetZ > 0f ? targetZ : currentLocalScale.z
-            );
-
-            SpriteRenderer sr = centerObject.GetComponent<SpriteRenderer>();
-            if (sr == null) sr = centerObject.GetComponentInChildren<SpriteRenderer>();
-
-            MeshFilter mf = centerObject.GetComponent<MeshFilter>();
-            if (mf == null) mf = centerObject.GetComponentInChildren<MeshFilter>();
-
-            if (sr != null && sr.drawMode != SpriteDrawMode.Simple)
-            {
-                // Sliced/Tiled sprites size must be controlled purely via sr.size. 
-                // We force localScale X/Y to 1 to prevent double-scaling distortion.
-                sr.size = new Vector2(targetLocalSize.x, targetLocalSize.y);
-                centerObject.transform.localScale = new Vector3(1f, 1f, targetLocalSize.z);
-            }
-            else if (sr != null && sr.sprite != null)
-            {
-                // Simple Sprites
-                Vector2 spriteSize = sr.sprite.rect.size / sr.sprite.pixelsPerUnit;
-                if (spriteSize.x > 0 && spriteSize.y > 0)
-                {
-                    centerObject.transform.localScale = new Vector3(
-                        targetLocalSize.x / spriteSize.x,
-                        targetLocalSize.y / spriteSize.y,
-                        targetLocalSize.z
-                    );
-                }
-            }
-            else if (mf != null && mf.sharedMesh != null)
-            {
-                // 3D Meshes
-                Vector3 meshSize = mf.sharedMesh.bounds.size;
-                float scaleX = meshSize.x > 0f ? targetLocalSize.x / meshSize.x : targetLocalSize.x;
-                float scaleY = meshSize.y > 0f ? targetLocalSize.y / meshSize.y : targetLocalSize.y;
-                float scaleZ = (meshSize.z > 0f && targetZ > 0f) ? targetLocalSize.z / meshSize.z : targetLocalSize.z;
-
-                centerObject.transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
-            }
-            else
-            {
-                // Raw GameObjects / Fallback
-                centerObject.transform.localScale = targetLocalSize;
-            }
-        }
-    }
     private Vector3 GetFloorIntersection(Vector2 viewportPos, Plane floorPlane)
     {
         Ray ray = mainCamera.ViewportPointToRay(viewportPos);

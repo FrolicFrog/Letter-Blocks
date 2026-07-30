@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
-using System.Collections.Generic; // Added for List
+using System.Collections.Generic;
 
 public class GlobalTrayDragger : MonoBehaviour
 {
@@ -195,7 +195,11 @@ public class GlobalTrayDragger : MonoBehaviour
                 }
             }
 
-            currentlyDraggedParent.position = targetPosition;
+            // Only update position if it hasn't been destroyed by jumping
+            if (currentlyDraggedParent != null)
+            {
+                currentlyDraggedParent.position = targetPosition;
+            }
         }
     }
 
@@ -227,7 +231,6 @@ public class GlobalTrayDragger : MonoBehaviour
         return finalPos;
     }
 
-    // --- REWRITTEN: Now checks each individual block's bounds to allow shapes to slide into empty spaces ---
     private bool IsOverlappingTray(Vector3 testPos)
     {
         foreach (var block in pieceColliders)
@@ -263,11 +266,9 @@ public class GlobalTrayDragger : MonoBehaviour
 
     private void CalculateDynamicBoundaries()
     {
-        // 1. Setup Defaults
         bMinX = -5f; bMaxX = 5f;
         bMinAxis = -5f; bMaxAxis = 5f;
 
-        // 2. Read exact World Space Boundaries from the Grid Manager
         if (BottomGridManager.Instance != null && BottomGridManager.Instance.centerObject != null)
         {
             Renderer borderRenderer = BottomGridManager.Instance.centerObject.GetComponentInChildren<Renderer>();
@@ -291,26 +292,21 @@ public class GlobalTrayDragger : MonoBehaviour
             }
         }
 
-        // 3. Calculate the bounding size (extents) of the piece we just picked up
         float pMinX = 0, pMaxX = 0, pMinAxis = 0, pMaxAxis = 0;
         pieceColliders.Clear();
 
         if (currentlyDraggedParent != null)
         {
             Renderer[] renderers = currentlyDraggedParent.GetComponentsInChildren<Renderer>();
-
-            // Gather colliders specifically on the Tray layer to map the actual physical blocks
             Collider[] colliders = currentlyDraggedParent.GetComponentsInChildren<Collider>();
             Vector3 pivotPos = currentlyDraggedParent.position;
 
             foreach (Collider col in colliders)
             {
-                // Only track colliders that are actually on the tray layer (ignores text, UI, etc)
                 if (((1 << col.gameObject.layer) & trayLayer) != 0)
                 {
                     BlockColliderData blockData = new BlockColliderData();
                     blockData.localOffset = col.bounds.center - pivotPos;
-                    // Shrink it 15% so it smoothly slides against edges without snagging
                     blockData.halfExtents = col.bounds.extents * dragScaleMultiplier * 0.85f;
                     pieceColliders.Add(blockData);
                 }
@@ -340,38 +336,31 @@ public class GlobalTrayDragger : MonoBehaviour
             }
         }
 
-        // 4. Multiply the piece boundaries by the dragScaleMultiplier 
         pMinX *= dragScaleMultiplier;
         pMaxX *= dragScaleMultiplier;
         pMinAxis *= dragScaleMultiplier;
         pMaxAxis *= dragScaleMultiplier;
 
-        // 5. Shrink the drag area by the SCALED size of the piece + your visual padding
         bMinX += (pMinX + boundaryPadding);
         bMaxX -= (pMaxX + boundaryPadding);
         bMinAxis += (pMinAxis + boundaryPadding);
         bMaxAxis -= (pMaxAxis + boundaryPadding);
 
-        // 6. Establish the threshold based on the newly clamped upper limit
         bTopWallTriggerThreshold = bMaxAxis - topWallTriggerOffset;
     }
 
     private void TriggerJumpLogic()
     {
-        if (currentlyDraggedParent.childCount == 0) return;
+        if (currentlyDraggedParent == null || currentlyDraggedParent.childCount == 0) return;
 
         hasTriggeredTopWall = true;
 
-        int piecesJumpedCount = 0;
-        int totalValidPieces = 0;
-
+        // 1. Process all jumping pieces
         foreach (Transform wall in currentlyDraggedParent)
         {
             if (wall.childCount > 0)
             {
-                totalValidPieces++;
                 Transform childToJump = wall.GetChild(0);
-
                 if (childToJump == null) continue;
 
                 var textMesh = childToJump.GetComponentInChildren<TextMeshPro>();
@@ -382,16 +371,32 @@ public class GlobalTrayDragger : MonoBehaviour
                     if (WordChecker.instance.TryFindGridSlotForLetter(letter, out Transform slotTransform, out Vector2Int matchedKey))
                     {
                         WordChecker.instance.AnimateTrayBlockToGrid(childToJump, slotTransform, matchedKey);
-                        piecesJumpedCount++;
                     }
                 }
             }
         }
 
-        if (piecesJumpedCount > 0 && piecesJumpedCount == totalValidPieces)
+        // 2. Check the new condition: Does every wall have EXACTLY one child gameobject left?
+        bool isTrayEmpty = true;
+        foreach (Transform wall in currentlyDraggedParent)
         {
-            Destroy(currentlyDraggedParent.gameObject);
-            currentlyDraggedParent = null;
+            if (wall.childCount != 1)
+            {
+                isTrayEmpty = false;
+                break; // If any wall has 0 or >1 children, the tray isn't empty yet
+            }
+        }
+
+        // 3. Scale and destroy if the empty condition is met
+        if (isTrayEmpty)
+        {
+            Transform trayToDestroy = currentlyDraggedParent;
+            currentlyDraggedParent = null; // Unassign immediately so we stop tracking it
+
+            trayToDestroy.DOScale(Vector3.zero, snapBackDuration).SetEase(Ease.InBack).OnComplete(() =>
+            {
+                Destroy(trayToDestroy.gameObject);
+            });
         }
     }
 

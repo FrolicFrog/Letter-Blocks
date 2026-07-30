@@ -19,7 +19,7 @@ MonoBehaviour:
   height: 9
   width: 9
   bottomGridSize: 0.73
-  categoryMaterial: {fileID: 2100000, guid: 4dab332f1e8966849ad5f29ef65bffcb, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - TIGER
   - NEPAL
@@ -419,18 +419,18 @@ MonoBehaviour:
     Value: Tray 3
   categoryColors:
   - Key: Animal
-    Value: {fileID: 2100000, guid: 4dab332f1e8966849ad5f29ef65bffcb, type: 2}
+    Value: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
   - Key: Flower
-    Value: {fileID: 2100000, guid: becfb789e99d486438cc9c834cce52d5, type: 2}
+    Value: {fileID: 2100000, guid: ca799e8bd8421c3489f37623cd01a3e0, type: 2}
   - Key: Country
-    Value: {fileID: 2100000, guid: 153da79a40522cc47ba2648c0d78b685, type: 2}
+    Value: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
   trayColors:
   - Key: Tray 1
-    Value: {fileID: 2100000, guid: becfb789e99d486438cc9c834cce52d5, type: 2}
+    Value: {fileID: 2100000, guid: ca799e8bd8421c3489f37623cd01a3e0, type: 2}
   - Key: Tray 2
-    Value: {fileID: 2100000, guid: 153da79a40522cc47ba2648c0d78b685, type: 2}
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
   - Key: Tray 3
-    Value: {fileID: 2100000, guid: 08fdd69ce292c914ba8573318785219c, type: 2}
+    Value: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
   - Key: Tray 4
     Value: {fileID: 2100000, guid: 5643ac10484ffd047abebb3b549da7d7, type: 2}
   - Key: Tray 5

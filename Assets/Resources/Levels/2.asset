@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hearts: 3
   LevelNumber: 2
-  rows: 8
+  rows: 10
   columns: 8
   height: 9
   width: 8
   bottomGridSize: 0.6
-  categoryMaterial: {fileID: 2100000, guid: 5643ac10484ffd047abebb3b549da7d7, type: 2}
+  categoryMaterial: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
   words:
   - BRAZIL
   - TIGER
@@ -30,9 +30,12 @@ MonoBehaviour:
   - LION
   - ROSE
   - ELEPHANT
+  - INDIA
+  - CHINA
   tray:
   - Tray 1
   - Tray 2
+  - Tray 3
   excludedChar:
   - {x: 0, y: 2}
   - {x: 1, y: 2}
@@ -44,11 +47,16 @@ MonoBehaviour:
   - {x: 6, y: 2}
   - {x: 6, y: 5}
   - {x: 7, y: 3}
+  - {x: 8, y: 2}
+  - {x: 9, y: 3}
+  - {x: 9, y: 5}
   wordCategory:
   - Key: Country
     Value:
     - BRAZIL
     - JAPAN
+    - INDIA
+    - CHINA
   - Key: Animal
     Value:
     - TIGER
@@ -157,6 +165,26 @@ MonoBehaviour:
     Value: Country
   - Key: {x: 0, y: 6}
     Value: Country
+  - Key: {x: 8, y: 1}
+    Value: Country
+  - Key: {x: 8, y: 2}
+    Value: Country
+  - Key: {x: 8, y: 3}
+    Value: Country
+  - Key: {x: 8, y: 4}
+    Value: Country
+  - Key: {x: 8, y: 5}
+    Value: Country
+  - Key: {x: 9, y: 2}
+    Value: Country
+  - Key: {x: 9, y: 3}
+    Value: Country
+  - Key: {x: 9, y: 4}
+    Value: Country
+  - Key: {x: 9, y: 5}
+    Value: Country
+  - Key: {x: 9, y: 6}
+    Value: Country
   cellTexts:
   - Key: {x: 0, y: 1}
     Value: B
@@ -254,6 +282,26 @@ MonoBehaviour:
     Value: N
   - Key: {x: 7, y: 7}
     Value: T
+  - Key: {x: 8, y: 1}
+    Value: I
+  - Key: {x: 8, y: 2}
+    Value: N
+  - Key: {x: 8, y: 3}
+    Value: D
+  - Key: {x: 8, y: 4}
+    Value: I
+  - Key: {x: 8, y: 5}
+    Value: A
+  - Key: {x: 9, y: 2}
+    Value: C
+  - Key: {x: 9, y: 3}
+    Value: H
+  - Key: {x: 9, y: 4}
+    Value: I
+  - Key: {x: 9, y: 5}
+    Value: N
+  - Key: {x: 9, y: 6}
+    Value: A
   trayCells:
   - Key: {x: 2, y: 1}
     Value: P
@@ -275,6 +323,12 @@ MonoBehaviour:
     Value: G
   - Key: {x: 6, y: 6}
     Value: R
+  - Key: {x: 7, y: 1}
+    Value: N
+  - Key: {x: 7, y: 2}
+    Value: H
+  - Key: {x: 7, y: 3}
+    Value: N
   trayName:
   - Key: {x: 2, y: 1}
     Value: Tray 1
@@ -296,18 +350,26 @@ MonoBehaviour:
     Value: Tray 2
   - Key: {x: 6, y: 6}
     Value: Tray 2
+  - Key: {x: 7, y: 1}
+    Value: Tray 3
+  - Key: {x: 7, y: 2}
+    Value: Tray 3
+  - Key: {x: 7, y: 3}
+    Value: Tray 3
   categoryColors:
   - Key: Animal
-    Value: {fileID: 2100000, guid: 5643ac10484ffd047abebb3b549da7d7, type: 2}
+    Value: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
   - Key: Flower
-    Value: {fileID: 2100000, guid: becfb789e99d486438cc9c834cce52d5, type: 2}
+    Value: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
   - Key: Country
-    Value: {fileID: 2100000, guid: 153da79a40522cc47ba2648c0d78b685, type: 2}
+    Value: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
   trayColors:
   - Key: Tray 1
-    Value: {fileID: 2100000, guid: b2149924252d7a34ebdbfa037b6e419d, type: 2}
+    Value: {fileID: 2100000, guid: a4d3d5fee2e3dba49917f9e86d113315, type: 2}
   - Key: Tray 2
-    Value: {fileID: 2100000, guid: 08fdd69ce292c914ba8573318785219c, type: 2}
+    Value: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
+  - Key: Tray 3
+    Value: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
   wordPositions:
   - Key: BRAZIL
     Value:
@@ -375,3 +437,17 @@ MonoBehaviour:
     - {x: 7, y: 5}
     - {x: 7, y: 6}
     - {x: 7, y: 7}
+  - Key: INDIA
+    Value:
+    - {x: 8, y: 1}
+    - {x: 8, y: 2}
+    - {x: 8, y: 3}
+    - {x: 8, y: 4}
+    - {x: 8, y: 5}
+  - Key: CHINA
+    Value:
+    - {x: 9, y: 2}
+    - {x: 9, y: 3}
+    - {x: 9, y: 4}
+    - {x: 9, y: 5}
+    - {x: 9, y: 6}

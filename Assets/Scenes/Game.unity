@@ -683,6 +683,7 @@ GameObject:
   m_Component:
   - component: {fileID: 558711658}
   - component: {fileID: 558711659}
+  - component: {fileID: 558711660}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -735,28 +736,63 @@ MonoBehaviour:
   borderMaterial: {fileID: 2100000, guid: b2333297cbff7ce41a5ecef33c48e6a7, type: 2}
   frostMaterial: {fileID: 2100000, guid: 1dd370d4d0ce03a49a0dc24c38be27b4, type: 2}
   colorSprite:
-  - Key: {fileID: 2100000, guid: 933c4aa464578da4fa76034515a6f090, type: 2}
-    Value: {fileID: 21300000, guid: 12cbbd6112d50224c806c3cb87e3c612, type: 3}
-  - Key: {fileID: 2100000, guid: ae64937e9ad6d2749885e962e6eb4c1f, type: 2}
-    Value: {fileID: 21300000, guid: 46196a440edfc1642bdcab1e00e54de8, type: 3}
-  - Key: {fileID: 2100000, guid: 5643ac10484ffd047abebb3b549da7d7, type: 2}
+  - Key: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
+    Value: {fileID: 21300000, guid: b0a508a4780baa6409c4b05d1466d99f, type: 3}
+  - Key: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
+    Value: {fileID: 21300000, guid: 04dd1448b6162414391bdd1d0ee9e162, type: 3}
+  - Key: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
     Value: {fileID: 21300000, guid: 21c0e0ffb6d1799468093028a2e1027b, type: 3}
-  - Key: {fileID: 2100000, guid: 178d27f199e199842ba258e9f550c0d2, type: 2}
+  - Key: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+    Value: {fileID: 21300000, guid: d32f77a2802a30245ad23f449ede5b78, type: 3}
+  - Key: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
     Value: {fileID: 21300000, guid: edefcf4dda7f0fe488a8ca02af2dc8c5, type: 3}
-  - Key: {fileID: 2100000, guid: be9ecb5670130534fbbf7ff4ac202116, type: 2}
+  - Key: {fileID: 2100000, guid: f3c280131a8cfd248be5604224053358, type: 2}
     Value: {fileID: 21300000, guid: 78ae38c537ebd84409dec94b4ffdd5cb, type: 3}
-  - Key: {fileID: 2100000, guid: 08fdd69ce292c914ba8573318785219c, type: 2}
-    Value: {fileID: 21300000, guid: b0d01b967057fab4ca0ab186b47ada18, type: 3}
-  - Key: {fileID: 2100000, guid: becfb789e99d486438cc9c834cce52d5, type: 2}
+  - Key: {fileID: 2100000, guid: ca799e8bd8421c3489f37623cd01a3e0, type: 2}
+    Value: {fileID: 21300000, guid: 1cd3ce10a60a3b442bbb56268ac8a809, type: 3}
+  - Key: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
+    Value: {fileID: 21300000, guid: 48d364a4b273d8441aceb6f97ef11509, type: 3}
+  - Key: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+    Value: {fileID: 21300000, guid: b4daf43eb99821649930c78ba296238d, type: 3}
+  - Key: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
     Value: {fileID: 21300000, guid: 233753370a1593f46ae2440536756d15, type: 3}
-  - Key: {fileID: 2100000, guid: 153da79a40522cc47ba2648c0d78b685, type: 2}
+  - Key: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
     Value: {fileID: 21300000, guid: 5ddfd65fa87d0e248a10e3238c8ee9db, type: 3}
-  - Key: {fileID: 2100000, guid: b2149924252d7a34ebdbfa037b6e419d, type: 2}
+  - Key: {fileID: 2100000, guid: 74a701c54a3fc14469104bed730e8899, type: 2}
     Value: {fileID: 21300000, guid: c9703985a29ddcf44bc4d4f71e0350ae, type: 3}
-  - Key: {fileID: 2100000, guid: 4dab332f1e8966849ad5f29ef65bffcb, type: 2}
-    Value: {fileID: 21300000, guid: b36e74e238bcbdf4b9b1a4459ec04717, type: 3}
-  TestLevelToLoad: 2
+  - Key: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}
+    Value: {fileID: 21300000, guid: 38d7e1e47b0431540a17e66be19beea2, type: 3}
+  - Key: {fileID: 2100000, guid: a4d3d5fee2e3dba49917f9e86d113315, type: 2}
+    Value: {fileID: 21300000, guid: 554ac2717a1fca7498219a5208f0b8c9, type: 3}
+  - Key: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
+    Value: {fileID: 21300000, guid: 31d6eb05fcd7b2544b8c5160f1a2f345, type: 3}
+  - Key: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
+    Value: {fileID: 21300000, guid: 405d8dcbd34ee6141af468e6d985c62f, type: 3}
+  TestLevelToLoad: 1
   hearts: 0
+--- !u!114 &558711660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558711657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 738b81ab44f80544597cd91ece8e3c03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fitMode: 1
+  targetGridManager: {fileID: 1371688889}
+  mainCamera: {fileID: 330585545}
+  centerObject1: {fileID: 1593633551148644532}
+  autoScaleBorder1: 1
+  borderPadding1: {x: 0, y: -36.88, z: 0}
+  centerObject1Offset: {x: -0, y: 42.6, z: 0}
+  centerObject2: {fileID: 2044008556}
+  autoScaleBorder2: 1
+  borderPadding2: {x: 0.42, y: -39.6, z: 0}
+  centerObject2Offset: {x: 0, y: 44.9, z: -1.49}
 --- !u!1 &826340751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,14 +1042,6 @@ MonoBehaviour:
     type: 3}
   queueParent: {fileID: 0}
   queueSlots: []
-  centerObject1: {fileID: 1593633551148644532}
-  autoScaleBorder1: 1
-  borderPadding1: {x: 9.38, y: 2.01, z: -13.7}
-  centerObject1Offset: {x: 0, y: 8.17, z: 2.79}
-  centerObject2: {fileID: 1398619924}
-  autoScaleBorder2: 1
-  borderPadding2: {x: -5.83, y: 0, z: -35}
-  centerObject2Offset: {x: 1.21, y: 14.57, z: -2.72}
   autoFitToScreen: 1
   mainCamera: {fileID: 330585545}
   floorHeight: 0
@@ -1080,14 +1108,6 @@ MonoBehaviour:
     type: 3}
   queueParent: {fileID: 0}
   queueSlots: []
-  centerObject1: {fileID: 1593633551148644532}
-  autoScaleBorder1: 1
-  borderPadding1: {x: 9.38, y: 2.01, z: -13.7}
-  centerObject1Offset: {x: 0, y: 8.17, z: 3.42}
-  centerObject2: {fileID: 1398619924}
-  autoScaleBorder2: 1
-  borderPadding2: {x: -5.83, y: 0, z: -22.3}
-  centerObject2Offset: {x: 1.21, y: 14.57, z: -1.68}
   autoFitToScreen: 1
   mainCamera: {fileID: 330585545}
   floorHeight: 0
@@ -1565,7 +1585,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 474.88}
+  m_AnchoredPosition: {x: 0, y: 448.53}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1825650881
@@ -1699,7 +1719,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 410}
+  m_AnchoredPosition: {x: 0, y: 385}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1855233888
@@ -1722,8 +1742,8 @@ MonoBehaviour:
   m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 108, y: 54}
-  m_Spacing: {x: 6.9, y: 6}
+  m_CellSize: {x: 90, y: 55}
+  m_Spacing: {x: 10, y: 6}
   m_Constraint: 1
   m_ConstraintCount: 4
 --- !u!1 &1869432442
@@ -2059,7 +2079,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2044008556}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.7487, y: 0, z: 4.5064}
   m_LocalScale: {x: 1.8570964, y: 3.35, z: 1}
   m_ConstrainProportionsScale: 1
