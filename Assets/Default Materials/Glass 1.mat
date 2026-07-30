@@ -29,7 +29,7 @@ Material:
     - _CloudHazeSoftness: 1
     - _CloudPatternScale: 2
     - _RimIntensity: 0.62
-    - _RimPower: 10
+    - _RimPower: 9.88
     - _RimThreshold: 0.177
     - _Smoothness: 0.98
     - _SpecularFalloff: 0.0356
@@ -37,8 +37,8 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0.29803923}
     - _CloudColor: {r: 1, g: 1, b: 1, a: 0}
-    - _GlassTint: {r: 0.9, g: 0.9, b: 1, a: 0.5176471}
-    - _RimColor: {r: 0.41132066, g: 0.41132066, b: 0.41132066, a: 1}
+    - _GlassTint: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 0.5176471}
+    - _RimColor: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 0.27058825}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _Spot1Pos: {r: 0.4, g: 0.6, b: 0.2, a: 0}
