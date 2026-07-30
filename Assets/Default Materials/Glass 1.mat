@@ -25,23 +25,23 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _CloudDensityThreshold: 0.979
-    - _CloudHazeSoftness: 1
+    - _CloudDensityThreshold: 1
+    - _CloudHazeSoftness: 0.919
     - _CloudPatternScale: 2
     - _RimIntensity: 0.62
-    - _RimPower: 9.88
+    - _RimPower: 50
     - _RimThreshold: 0.177
     - _Smoothness: 0.98
     - _SpecularFalloff: 0.0356
     - _SpecularSize: 0.141
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0.29803923}
-    - _CloudColor: {r: 1, g: 1, b: 1, a: 0}
-    - _GlassTint: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 0.5176471}
-    - _RimColor: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 0.27058825}
+    - _CloudColor: {r: 1, g: 1, b: 1, a: 0.41568628}
+    - _GlassTint: {r: 1, g: 1, b: 1, a: 0.7254902}
+    - _RimColor: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 0.27058825}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Spot1Pos: {r: 0.4, g: 0.6, b: 0.2, a: 0}
-    - _Spot2Pos: {r: 0.7, g: 0.3, b: 0.15, a: 0}
-    - _Spot3Pos: {r: 0.2, g: 0.3, b: 0.3, a: 0}
+    - _Spot1Pos: {r: 4.12, g: 0.66, b: 0.41, a: 0}
+    - _Spot2Pos: {r: -0.33, g: -2.21, b: 1.93, a: 0}
+    - _Spot3Pos: {r: 0.69, g: 4.92, b: 1.44, a: 0}
   m_BuildTextureStacks: []
