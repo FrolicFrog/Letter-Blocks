@@ -27,10 +27,12 @@ public class LevelEditor : EditorWindow
 
     private Color gridCellColor;
     private Color unassignedCellColor; // Color for cells with letters but no category/tray assigned
+    private Color blockedCellColor;    // Color for blocked cells in the bottom grid
+
     private Material categoryMaterial, trayMaterial;
 
     private HashSet<string> words = new();
-    private HashSet<Vector2Int> excludedChar = new();
+    private HashSet<Vector2Int> excludedChar = new(), blockedCells = new();
 
     private Dictionary<Vector2Int, string> cellCategory = new(), trayName = new();
     private Dictionary<Vector2Int, string> cellTexts = new(), trayCells = new();
@@ -73,6 +75,7 @@ public class LevelEditor : EditorWindow
     {
         gridCellColor = new Color(0.3f, 0.3f, 0.3f);
         unassignedCellColor = new Color(0.2f, 0.4f, 0.55f); // Distinct dark slate blue
+        blockedCellColor = new Color(0.6f, 0.15f, 0.15f);   // Dark Red for blocked cells
         wantsMouseMove = true;
         window = new SerializedObject(this);
         categoryList = window.FindProperty("categoriesDropdown");
@@ -186,6 +189,7 @@ public class LevelEditor : EditorWindow
                 hearts = 3;
                 words.Clear();
                 excludedChar.Clear();
+                blockedCells.Clear(); // Cleared when switching levels
                 cellCategory.Clear();
                 cellTexts.Clear();
                 categoryColors.Clear();
@@ -256,6 +260,10 @@ public class LevelEditor : EditorWindow
         currentData.hearts = hearts;
         currentData.words = words.ToList();
         currentData.excludedChar = excludedChar.ToList();
+
+        // Save blocked cells data
+        currentData.blockedCells = blockedCells.ToList();
+
         currentData.tray = new List<string>(tray);
         currentData.categoryMaterial = categoryMaterial;
 
@@ -298,6 +306,10 @@ public class LevelEditor : EditorWindow
         hearts = CurLvlData.hearts;
         words = CurLvlData.words.ToHashSet();
         excludedChar = CurLvlData.excludedChar.ToHashSet();
+
+        // Load blocked cells data
+        blockedCells = CurLvlData.blockedCells != null ? CurLvlData.blockedCells.ToHashSet() : new HashSet<Vector2Int>();
+
         tray = new List<string>(CurLvlData.tray);
         categoryMaterial = CurLvlData.categoryMaterial;
         cellCategory = CurLvlData.cellCategory.ToDictionary(item => item.Key, item => item.Value);
@@ -505,8 +517,13 @@ public class LevelEditor : EditorWindow
                                    tMat != null;
 
                     bool hasText = trayCells.TryGetValue(gridPos, out string txt) && !string.IsNullOrEmpty(txt);
+                    bool isBlocked = blockedCells.Contains(gridPos);
 
-                    if (hasTray)
+                    if (isBlocked)
+                    {
+                        cellBgColor = blockedCellColor;
+                    }
+                    else if (hasTray)
                     {
                         cellBgColor = GetMaterialColor(trayColors[tName]);
 
@@ -538,7 +555,7 @@ public class LevelEditor : EditorWindow
                 string cellText = $"{r},{c}";
                 GUIStyle activeStyle = defaultLabelStyle;
 
-                bool cellHasText = isPrimary ? cellTexts.ContainsKey(gridPos) : trayCells.ContainsKey(gridPos);
+                bool cellHasText = isPrimary ? cellTexts.ContainsKey(gridPos) : (trayCells.ContainsKey(gridPos) || (!isPrimary && blockedCells.Contains(gridPos)));
 
                 if (isPrimary && cellTexts.ContainsKey(gridPos))
                 {
@@ -549,6 +566,11 @@ public class LevelEditor : EditorWindow
                 {
                     cellText = trayCells[gridPos];
                     activeStyle = boldLabelStyle;
+                }
+                else if (!isPrimary && blockedCells.Contains(gridPos))
+                {
+                    cellText = "Blocked";
+                    activeStyle = new GUIStyle(boldLabelStyle) { fontSize = 11 };
                 }
 
                 Color previousContentColor = GUI.contentColor;
@@ -682,7 +704,7 @@ public class LevelEditor : EditorWindow
                 }
             }
         }
-        // Right Click to toggle Excluded Character (Primary) or Clear Tray Assignment (Bottom)
+        // Right Click to toggle Excluded Character (Primary) or Toggle Blocked State (Bottom)
         else if (e.type == EventType.MouseDown && e.button == 1)
         {
             if (TryGetGridPosFromMouse(e.mousePosition, gridArea, gridRows, gridCols, out Vector2Int gridPos))
@@ -696,8 +718,16 @@ public class LevelEditor : EditorWindow
                 }
                 else
                 {
-                    if (trayName.ContainsKey(gridPos))
-                        trayName.Remove(gridPos);
+                    // Bottom grid: only works on empty cells (no letter assigned)
+                    bool isEmpty = !trayCells.ContainsKey(gridPos) || string.IsNullOrEmpty(trayCells[gridPos]);
+
+                    if (isEmpty)
+                    {
+                        if (blockedCells.Contains(gridPos))
+                            blockedCells.Remove(gridPos);
+                        else
+                            blockedCells.Add(gridPos);
+                    }
                 }
 
                 e.Use();
@@ -750,10 +780,13 @@ public class LevelEditor : EditorWindow
                     }
                     else
                     {
-                        trayCells[gridPos] = e.character.ToString().ToUpper();
-                        if (!string.IsNullOrEmpty(trayDropdown) && trayColors.ContainsKey(trayDropdown) && trayColors[trayDropdown] != null)
+                        if (!blockedCells.Contains(gridPos))
                         {
-                            trayName[gridPos] = trayDropdown;
+                            trayCells[gridPos] = e.character.ToString().ToUpper();
+                            if (!string.IsNullOrEmpty(trayDropdown) && trayColors.ContainsKey(trayDropdown) && trayColors[trayDropdown] != null)
+                            {
+                                trayName[gridPos] = trayDropdown;
+                            }
                         }
                     }
                     e.Use();
@@ -895,6 +928,8 @@ public class LevelEditor : EditorWindow
 
         var outOfBoundsTrayCells = trayCells.Keys.Where(pos => pos.x >= height || pos.y >= width).ToList();
         foreach (var pos in outOfBoundsTrayCells) trayCells.Remove(pos);
+
+        blockedCells.RemoveWhere(pos => pos.x >= height || pos.y >= width);
     }
 
     private void ShowExcludedLetters()

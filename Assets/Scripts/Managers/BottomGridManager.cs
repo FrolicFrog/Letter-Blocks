@@ -19,7 +19,7 @@ public class BottomGridManager : MonoBehaviour
 
     [Header("Slot & Tray References")]
     public GameObject emptySlot;
-    public GameObject cell1, cell2, outline, letter;
+    public GameObject cell1, cell2, outline, letter,blockWall;
     public List<WallDirectionPair> wallsDirection;
 
     [Header("Center Border Settings")]

@@ -9,6 +9,7 @@ TagManager:
   - Belt
   - Heart
   - Queue
+  - Block
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - Tray
   - Water
   - UI
-  - 
+  - Block
   - 
   - 
   - 

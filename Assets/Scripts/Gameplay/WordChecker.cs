@@ -220,7 +220,7 @@ public class WordChecker : MonoBehaviour
         jumpSeq.Join(zSeq);
 
         // D. Scale up at the peak, then settle to final scale (Adds juiciness without rotation)
-        Vector3 finalScale = new Vector3(.9f, 1.8f, .9f); // Your target landing scale
+        Vector3 finalScale = new Vector3(.9f, 1f, .9f); // Your target landing scale
         Sequence scaleSeq = DOTween.Sequence();
         scaleSeq.Append(block.DOScale(finalScale * 1.25f, jumpDuration / 2f).SetEase(Ease.OutQuad));
         scaleSeq.Append(block.DOScale(finalScale, jumpDuration / 2f).SetEase(Ease.InQuad));

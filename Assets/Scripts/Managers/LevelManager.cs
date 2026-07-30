@@ -31,7 +31,7 @@ public class LevelManager : Manager<LevelManager>
 
     private LevelData _LevelData;
 
-    public HashSet<Vector2Int> excludedChar = new();
+    public HashSet<Vector2Int> excludedChar = new(),blockedCells = new();
   
    
 
@@ -74,6 +74,7 @@ public class LevelManager : Manager<LevelManager>
        // letterGridManager.manualGridScale = _LevelData.bottomGridSize;
         hearts = _LevelData.hearts;
         excludedChar = _LevelData.excludedChar.ToHashSet();
+        blockedCells = _LevelData.blockedCells.ToHashSet();
         cellCategory = _LevelData.cellCategory.ToDictionary(item => item.Key, item => item.Value);
         cellTexts = _LevelData.cellTexts.ToDictionary(item => item.Key, item => item.Value);
         categoryColors = _LevelData.categoryColors.ToDictionary(item => item.Key, item => item.Value);
@@ -137,6 +138,7 @@ public class LevelManager : Manager<LevelManager>
                 int linearIndex = key.x * gridManager.columns + key.y;
                 var gridChild = gridManager.transform.GetChild(linearIndex);
 
+           
                 if (cellTexts.ContainsKey(key))
                 {
                     var letterbox = Instantiate(gridManager.squareSlot, gridChild);
@@ -192,6 +194,14 @@ public class LevelManager : Manager<LevelManager>
                 {
                     Instantiate(letterGridManager.cell2, gridChild).transform.localPosition = Vector3.zero; 
                 }
+
+                if (blockedCells.Contains(key))
+                {
+                    var blockWall = Instantiate(letterGridManager.blockWall, gridChild);
+                    blockWall.transform.localPosition = Vector3.zero;
+                    blockWall.transform.localScale = new Vector3(1f, 2, 1f);
+                }
+
             }
         }
 
