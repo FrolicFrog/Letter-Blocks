@@ -13,7 +13,7 @@ Shader "Custom/GameScreenGlass"
 
        
         _RimColor ("Edge Rim Light Color", Color) = (1.0, 1.0, 1.0, 1.0) // Soft, bright rim
-        _RimPower ("Edge Rim Light Power", Range(0.1, 10)) = 3.0 // Width of the edge glow
+        _RimPower ("Edge Rim Light Power", Range(0.1, 50)) = 3.0 // Width of the edge glow
 
       
         _Spot1Pos ("Spot 1 Position (UV)", Vector) = (0.4, 0.6, 0.2, 0.0) // (X, Y, Size, [unused])
