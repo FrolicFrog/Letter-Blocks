@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 1
   m_EditorClassIdentifier: 
-  hearts: 3
+  timer: 1
   LevelNumber: 1
   rows: 12
   columns: 8
   height: 9
   width: 9
+  minutes: 2
+  seconds: 5
   bottomGridSize: 0.73
   categoryMaterial: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
   words:

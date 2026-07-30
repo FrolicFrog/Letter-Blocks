@@ -12,8 +12,8 @@ public class LevelEditor : EditorWindow
     private int height = 8; // Bottom Grid Rows
     private int width = 8;  // Bottom Grid Columns
     private float bottomGridSize = 0.6f; // Bottom Grid Scale Factor
-    private int hearts = 3;
-
+    private int minutes, seconds;
+    private bool timer = true;
     private float gap = 2f;
     private float horizontalMargin = 20f;
 
@@ -186,7 +186,9 @@ public class LevelEditor : EditorWindow
                 bottomGridSize = 0.6f;
                 categoryMaterial = null;
                 trayMaterial = null;
-                hearts = 3;
+                minutes = 0;
+                seconds = 0;
+                timer =true;
                 words.Clear();
                 excludedChar.Clear();
                 blockedCells.Clear(); // Cleared when switching levels
@@ -203,8 +205,28 @@ public class LevelEditor : EditorWindow
                 trayDropdown = "Tray 1";
                 CachedLvlData = null;
             }
+            GUILayout.BeginHorizontal();
 
-            hearts = EditorGUILayout.IntField("Heart Count:", hearts);
+            // Use ExpandWidth(false) so the toggle only takes up the space it needs
+            timer = EditorGUILayout.Toggle("Timer", timer, GUILayout.ExpandWidth(false));
+
+            if (timer)
+            {
+                // 1. Cache the original label width so we don't break the rest of the inspector
+                float originalLabelWidth = EditorGUIUtility.labelWidth;
+
+                // 2. Shrink the label width to fit "Min:" and "Sec:" snugly
+                EditorGUIUtility.labelWidth = 35f;
+
+                // 3. Constrain the total width of each field so they sit nicely next to each other
+                minutes = EditorGUILayout.IntField("Min:", minutes, GUILayout.Width(80f));
+                seconds = EditorGUILayout.IntField("Sec:", seconds, GUILayout.Width(80f));
+
+                // 4. Restore the original label width for the rest of your custom editor
+                EditorGUIUtility.labelWidth = originalLabelWidth;
+            }
+
+            GUILayout.EndHorizontal();
             GUILayout.EndVertical();
             Actions();
             GridSystem();
@@ -257,7 +279,9 @@ public class LevelEditor : EditorWindow
         currentData.height = height;
         currentData.width = width;
         currentData.bottomGridSize = bottomGridSize;
-        currentData.hearts = hearts;
+       currentData.minutes = minutes;
+        currentData.seconds = seconds;
+        currentData.timer = timer;
         currentData.words = words.ToList();
         currentData.excludedChar = excludedChar.ToList();
 
@@ -303,7 +327,9 @@ public class LevelEditor : EditorWindow
         height = CurLvlData.height;
         width = CurLvlData.width;
         bottomGridSize = CurLvlData.bottomGridSize;
-        hearts = CurLvlData.hearts;
+        minutes = CurLvlData.minutes;
+        seconds= CurLvlData.seconds;
+        timer = CurLvlData.timer;
         words = CurLvlData.words.ToHashSet();
         excludedChar = CurLvlData.excludedChar.ToHashSet();
 

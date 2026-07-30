@@ -14,11 +14,10 @@ public class LevelManager : Manager<LevelManager>
     [Header("REFERENCES")]
     [SerializeField] private TopGridManager gridManager;
     [SerializeField] private BottomGridManager letterGridManager;
+    [SerializeField] private ResultManager resultManager;
     [SerializeField] private GameObject categoryHeading;
     [SerializeField] private Transform categoryHeadingParent;
     [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private GameObject heartPrefab;
-    [SerializeField] private Transform heartParent;
     [SerializeField] private Material borderMaterial,frostMaterial;
     [SerializeField] private List<KeyValueGroup<Material, Sprite>> colorSprite;
 
@@ -71,8 +70,6 @@ public class LevelManager : Manager<LevelManager>
         gridManager.columns = _LevelData.columns;
         letterGridManager.height = _LevelData.height;
         letterGridManager.width = _LevelData.width;
-       // letterGridManager.manualGridScale = _LevelData.bottomGridSize;
-        hearts = _LevelData.hearts;
         excludedChar = _LevelData.excludedChar.ToHashSet();
         blockedCells = _LevelData.blockedCells.ToHashSet();
         cellCategory = _LevelData.cellCategory.ToDictionary(item => item.Key, item => item.Value);
@@ -81,6 +78,8 @@ public class LevelManager : Manager<LevelManager>
         trayCells = _LevelData.trayCells.ToDictionary(item=>item.Key, item => item.Value);
         trayName = _LevelData.trayName.ToDictionary(item=>item.Key,item => item.Value);
         trayColors =_LevelData.trayColors.ToDictionary(item=>item.Key,item=>item.Value);
+        resultManager.timer = _LevelData.timer;
+        resultManager.time = _LevelData.minutes*60+_LevelData.seconds;
         foreach (var item in CurLvlData.wordPositions)
         {
             wordPositions[item.Key] = item.Value;
@@ -123,10 +122,7 @@ public class LevelManager : Manager<LevelManager>
             heading.GetComponent<Image>().sprite = _colorSprite[categoryColors[category]];
             heading.GetComponentInChildren<TextMeshProUGUI>().text = category;
         }
-        for(int i = 0;i<hearts;i++)
-        {
-            Instantiate(heartPrefab, heartParent);
-        }
+
     }
     void ManageWords()
     {

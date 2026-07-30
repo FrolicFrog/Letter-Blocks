@@ -4,8 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "LevelData", menuName = "Frolic Frog/Level Data", order = 1)]
 public class LevelData : ScriptableObject
 {
-    public int hearts = 3;
-    public int LevelNumber,rows,columns,height,width;
+    public bool timer = true;
+    public int LevelNumber,rows,columns,height,width,minutes,seconds;
     public float bottomGridSize=.6f;
     public Material categoryMaterial;
     public List<string> words = new(),tray = new();
