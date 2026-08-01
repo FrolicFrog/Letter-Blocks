@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Black
+  m_Name: Mulberry
   m_Shader: {fileID: -6465566751694194690, guid: bfd1d59353386d84983c172b2b53befa,
     type: 3}
   m_Parent: {fileID: 0}

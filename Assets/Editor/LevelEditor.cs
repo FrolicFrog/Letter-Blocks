@@ -29,14 +29,18 @@ public class LevelEditor : EditorWindow
     private Color unassignedCellColor; // Color for cells with letters but no category/tray assigned
     private Color blockedCellColor;    // Color for blocked cells in the bottom grid
 
-    private Material categoryMaterial, trayMaterial;
+    private Material categoryMaterial;
 
     private HashSet<string> words = new();
     private HashSet<Vector2Int> excludedChar = new(), blockedCells = new();
 
     private Dictionary<Vector2Int, string> cellCategory = new(), trayName = new();
     private Dictionary<Vector2Int, string> cellTexts = new(), trayCells = new();
-    private Dictionary<string, Material> categoryColors = new(), trayColors = new();
+    private Dictionary<string, Material> categoryColors = new();
+
+    // Auto-generated colors for the trays
+    private Dictionary<string, Color> trayDisplayColors = new();
+
     private Dictionary<string, List<Vector2Int>> wordPositions = new();
     private Dictionary<string, List<string>> wordCategory = new();
 
@@ -185,10 +189,9 @@ public class LevelEditor : EditorWindow
             {
                 bottomGridSize = 0.6f;
                 categoryMaterial = null;
-                trayMaterial = null;
                 minutes = 1;
                 seconds = 30;
-                timer =true;
+                timer = true;
                 words.Clear();
                 excludedChar.Clear();
                 blockedCells.Clear(); // Cleared when switching levels
@@ -198,7 +201,7 @@ public class LevelEditor : EditorWindow
                 wordPositions.Clear();
                 trayCells.Clear();
                 trayName.Clear();
-                trayColors.Clear();
+                trayDisplayColors.Clear();
                 wordCategory.Clear();
                 tray.Clear();
                 tray.Add("Tray 1");
@@ -279,7 +282,7 @@ public class LevelEditor : EditorWindow
         currentData.height = height;
         currentData.width = width;
         currentData.bottomGridSize = bottomGridSize;
-       currentData.minutes = minutes;
+        currentData.minutes = minutes;
         currentData.seconds = seconds;
         currentData.timer = timer;
         currentData.words = words.ToList();
@@ -294,7 +297,6 @@ public class LevelEditor : EditorWindow
         currentData.cellCategory = cellCategory.Select(kvp => new KeyValueGroup<Vector2Int, string>(kvp.Key, kvp.Value)).ToList();
         currentData.cellTexts = cellTexts.Select(kvp => new KeyValueGroup<Vector2Int, string>(kvp.Key, kvp.Value)).ToList();
         currentData.categoryColors = categoryColors.Select(kvp => new KeyValueGroup<string, Material>(kvp.Key, kvp.Value)).ToList();
-        currentData.trayColors = trayColors.Select(kvp => new KeyValueGroup<string, Material>(kvp.Key, kvp.Value)).ToList();
 
         currentData.trayName = trayName.Select(kvp => new KeyValueGroup<Vector2Int, string>(kvp.Key, kvp.Value)).ToList();
         currentData.trayCells = trayCells.Select(kvp => new KeyValueGroup<Vector2Int, string>(kvp.Key, kvp.Value)).ToList();
@@ -328,7 +330,7 @@ public class LevelEditor : EditorWindow
         width = CurLvlData.width;
         bottomGridSize = CurLvlData.bottomGridSize;
         minutes = CurLvlData.minutes;
-        seconds= CurLvlData.seconds;
+        seconds = CurLvlData.seconds;
         timer = CurLvlData.timer;
         words = CurLvlData.words.ToHashSet();
         excludedChar = CurLvlData.excludedChar.ToHashSet();
@@ -341,7 +343,6 @@ public class LevelEditor : EditorWindow
         cellCategory = CurLvlData.cellCategory.ToDictionary(item => item.Key, item => item.Value);
         cellTexts = CurLvlData.cellTexts.ToDictionary(item => item.Key, item => item.Value);
         categoryColors = CurLvlData.categoryColors.ToDictionary(item => item.Key, item => item.Value);
-        trayColors = CurLvlData.trayColors.ToDictionary(item => item.Key, item => item.Value);
         wordPositions = new Dictionary<string, List<Vector2Int>>();
 
         foreach (var item in CurLvlData.wordPositions)
@@ -366,7 +367,14 @@ public class LevelEditor : EditorWindow
             trayCells.Clear();
 
         categoryMaterial = (!string.IsNullOrEmpty(categoriesDropdown) && categoryColors.ContainsKey(categoriesDropdown)) ? categoryColors[categoriesDropdown] : null;
-        trayMaterial = (!string.IsNullOrEmpty(trayDropdown) && trayColors.ContainsKey(trayDropdown)) ? trayColors[trayDropdown] : null;
+
+        // Auto-assign random colors for loaded trays
+        trayDisplayColors.Clear();
+        foreach (var name in tray)
+        {
+            if (!trayDisplayColors.ContainsKey(name))
+                trayDisplayColors[name] = Random.ColorHSV(0f, 1f, 0.4f, 0.8f, 0.7f, 1f);
+        }
     }
 
     void GridSystem()
@@ -416,14 +424,6 @@ public class LevelEditor : EditorWindow
         if (EditorGUI.EndChangeCheck())
         {
             window.ApplyModifiedProperties();
-            if (!string.IsNullOrEmpty(trayDropdown) && trayColors.ContainsKey(trayDropdown))
-            {
-                trayMaterial = trayColors[trayDropdown];
-            }
-            else
-            {
-                trayMaterial = null;
-            }
         }
         else
         {
@@ -437,21 +437,13 @@ public class LevelEditor : EditorWindow
             string newTrayName = "Tray " + trayCount;
             tray.Add(newTrayName);
             trayDropdown = newTrayName;
-            trayMaterial = null;
+
+            // Assign a random HSV color to the new tray
+            trayDisplayColors[newTrayName] = Random.ColorHSV(0f, 1f, 0.4f, 0.8f, 0.7f, 1f);
+
             GUI.FocusControl(null);
         }
         GUILayout.EndHorizontal();
-
-        EditorGUI.BeginChangeCheck();
-        trayMaterial = EditorGUILayout.ObjectField("Tray Material", trayMaterial, typeof(Material), false) as Material;
-        if (EditorGUI.EndChangeCheck())
-        {
-            if (!string.IsNullOrEmpty(trayDropdown))
-            {
-                trayColors[trayDropdown] = trayMaterial;
-                Repaint();
-            }
-        }
 
         totalGapWidth = (width - 1) * gap;
         totalGapHeight = (height - 1) * gap;
@@ -538,9 +530,7 @@ public class LevelEditor : EditorWindow
                 else
                 {
                     bool hasTray = trayName.TryGetValue(gridPos, out string tName) &&
-                                   !string.IsNullOrEmpty(tName) &&
-                                   trayColors.TryGetValue(tName, out Material tMat) &&
-                                   tMat != null;
+                                   !string.IsNullOrEmpty(tName);
 
                     bool hasText = trayCells.TryGetValue(gridPos, out string txt) && !string.IsNullOrEmpty(txt);
                     bool isBlocked = blockedCells.Contains(gridPos);
@@ -551,7 +541,13 @@ public class LevelEditor : EditorWindow
                     }
                     else if (hasTray)
                     {
-                        cellBgColor = GetMaterialColor(trayColors[tName]);
+                        // Fallback to assign random color if missing
+                        if (!trayDisplayColors.ContainsKey(tName))
+                        {
+                            trayDisplayColors[tName] = Random.ColorHSV(0f, 1f, 0.4f, 0.8f, 0.7f, 1f);
+                        }
+
+                        cellBgColor = trayDisplayColors[tName];
 
                         // Accumulate bounding box for the tray overlay label
                         if (trayBounds.ContainsKey(tName))
@@ -713,7 +709,7 @@ public class LevelEditor : EditorWindow
                 {
                     if (trayCells.ContainsKey(gridPos) && !string.IsNullOrEmpty(trayCells[gridPos]))
                     {
-                        if (!string.IsNullOrEmpty(trayDropdown) && trayColors.ContainsKey(trayDropdown))
+                        if (!string.IsNullOrEmpty(trayDropdown))
                         {
                             if (!trayName.ContainsKey(gridPos) || trayName[gridPos] != trayDropdown)
                             {
@@ -721,10 +717,6 @@ public class LevelEditor : EditorWindow
                                 e.Use();
                                 Repaint();
                             }
-                        }
-                        else if (e.type == EventType.MouseDown)
-                        {
-                            Debug.LogWarning("Select a valid tray with an assigned material before painting.");
                         }
                     }
                 }
@@ -809,7 +801,7 @@ public class LevelEditor : EditorWindow
                         if (!blockedCells.Contains(gridPos))
                         {
                             trayCells[gridPos] = e.character.ToString().ToUpper();
-                            if (!string.IsNullOrEmpty(trayDropdown) && trayColors.ContainsKey(trayDropdown) && trayColors[trayDropdown] != null)
+                            if (!string.IsNullOrEmpty(trayDropdown))
                             {
                                 trayName[gridPos] = trayDropdown;
                             }
