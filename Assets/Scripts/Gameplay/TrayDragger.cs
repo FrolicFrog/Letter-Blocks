@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 using System.Collections.Generic;
+using System.Collections;
 
 public class GlobalTrayDragger : MonoBehaviour
 {
@@ -76,6 +77,7 @@ public class GlobalTrayDragger : MonoBehaviour
     // Dynamically calculated boundaries
     private float bMinX, bMaxX, bMinAxis, bMaxAxis, bTopWallTriggerThreshold;
     private bool hasTriggeredTopWall = false;
+    private Coroutine jumpCoroutine; // Tracks the active jumping sequence
 
     // Snapshots to perfectly preserve tile scales across weirdly shaped walls
     private Dictionary<Transform, Vector3> wallDefaultPos = new Dictionary<Transform, Vector3>();
@@ -90,9 +92,6 @@ public class GlobalTrayDragger : MonoBehaviour
     }
 
     private List<BlockColliderData> pieceColliders = new List<BlockColliderData>();
-
-    // Prevents double-queueing if the player wiggles the tray during the stagger delay
-    private HashSet<Transform> blocksAlreadyJumping = new HashSet<Transform>();
 
     private void Start()
     {
@@ -119,6 +118,7 @@ public class GlobalTrayDragger : MonoBehaviour
             {
                 currentlyDraggedParent = hit.transform.parent;
                 hasTriggeredTopWall = false;
+                if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
 
                 // --- SNAPSHOT TILE SCALES & POSITIONS ---
                 wallDefaultPos.Clear();
@@ -214,13 +214,31 @@ public class GlobalTrayDragger : MonoBehaviour
 
             if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
             {
-                if (currentlyDraggedParent.position.z >= bTopWallTriggerThreshold && !hasTriggeredTopWall) TriggerJumpLogic();
-                else if (currentlyDraggedParent.position.z < bTopWallTriggerThreshold - 0.1f) hasTriggeredTopWall = false;
+                if (currentlyDraggedParent.position.z >= bTopWallTriggerThreshold && !hasTriggeredTopWall)
+                {
+                    TriggerJumpLogic();
+                }
+                else if (currentlyDraggedParent.position.z < bTopWallTriggerThreshold - 0.1f && hasTriggeredTopWall)
+                {
+                    // Cancel jumps when pulled away
+                    hasTriggeredTopWall = false;
+                    if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
+                    CheckAndDestroyEmptyTray(currentlyDraggedParent);
+                }
             }
             else
             {
-                if (currentlyDraggedParent.position.y >= bTopWallTriggerThreshold && !hasTriggeredTopWall) TriggerJumpLogic();
-                else if (currentlyDraggedParent.position.y < bTopWallTriggerThreshold - 0.1f) hasTriggeredTopWall = false;
+                if (currentlyDraggedParent.position.y >= bTopWallTriggerThreshold && !hasTriggeredTopWall)
+                {
+                    TriggerJumpLogic();
+                }
+                else if (currentlyDraggedParent.position.y < bTopWallTriggerThreshold - 0.1f && hasTriggeredTopWall)
+                {
+                    // Cancel jumps when pulled away
+                    hasTriggeredTopWall = false;
+                    if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
+                    CheckAndDestroyEmptyTray(currentlyDraggedParent);
+                }
             }
         }
     }
@@ -451,211 +469,236 @@ public class GlobalTrayDragger : MonoBehaviour
         if (currentlyDraggedParent == null || currentlyDraggedParent.childCount == 0) return;
         hasTriggeredTopWall = true;
 
+        if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
+        jumpCoroutine = StartCoroutine(JumpRoutine());
+    }
+
+    private IEnumerator JumpRoutine()
+    {
         Transform activeTray = currentlyDraggedParent;
-        List<System.Action> jumpActions = new List<System.Action>();
 
-        int totalLettersInTray = activeTray.GetComponentsInChildren<TextMeshPro>(true).Length;
-
-        // 1. Grab all walls
-        List<Transform> allWalls = new List<Transform>();
-        foreach (Transform child in activeTray)
+        while (hasTriggeredTopWall && activeTray != null)
         {
-            if (child.name.Contains("Wall")) allWalls.Add(child);
-        }
-
-        // 2. Sort the walls based on their actual visual snake path
-        allWalls = GetSortedSnakePath(allWalls);
-
-        // 3. Evaluate all tiles following the proper physical path
-        foreach (Transform wall in allWalls)
-        {
-            Transform tileToJump = GetValidTile(wall);
-            if (tileToJump != null && !blocksAlreadyJumping.Contains(tileToJump))
+            List<Transform> allWalls = new List<Transform>();
+            foreach (Transform child in activeTray)
             {
-                var textMesh = tileToJump.GetComponentInChildren<TextMeshPro>();
-                if (textMesh != null)
+                if (child.name.Contains("Wall")) allWalls.Add(child);
+            }
+
+            bool jumpedAny = false;
+
+            // Gather available tiles from the tray
+            List<Transform> availableTiles = new List<Transform>();
+            foreach (Transform wall in allWalls)
+            {
+                Transform t = GetValidTile(wall);
+                if (t != null) availableTiles.Add(t);
+            }
+
+            // Check grid from BOTTOM to TOP and pull the needed letter
+            Transform bestTileToJump = null;
+            Transform bestSlotTransform = null;
+            Vector2Int bestMatchedKey = default;
+
+            if (TopGridManager.instance != null && LevelManager.Instance != null)
+            {
+                var grid = TopGridManager.instance;
+                var lvlManager = LevelManager.Instance;
+                int cols = grid.columns;
+
+                int startRow = grid.rows - 1;
+                int endRow = Mathf.Max(0, grid.rows - 3);
+
+                for (int r = startRow; r >= endRow; r--)
                 {
-                    string letter = textMesh.text;
-
-                    if (WordChecker.instance.TryFindGridSlotForLetter(letter, out Transform slotTransform, out Vector2Int matchedKey))
+                    for (int c = 0; c < cols; c++)
                     {
-                        blocksAlreadyJumping.Add(tileToJump);
-
-                        Transform capTile = tileToJump;
-
-                        jumpActions.Add(() =>
+                        Vector2Int key = new Vector2Int(r, c);
+                        if (lvlManager.excludedChar.Contains(key))
                         {
-                            if (capTile != null)
+                            string neededLetter = lvlManager.cellTexts[key];
+
+                            foreach (Transform tile in availableTiles)
                             {
-                                blocksAlreadyJumping.Remove(capTile);
+                                var textMesh = tile.GetComponentInChildren<TextMeshPro>();
+                                if (textMesh != null && textMesh.text == neededLetter)
+                                {
+                                    bestTileToJump = tile;
 
-                                capTile.name = "JumpingTile";
-                                WordChecker.instance.AnimateTrayBlockToGrid(capTile, slotTransform, matchedKey);
+                                    int index = key.x * cols + key.y;
+                                    bestSlotTransform = grid.transform.GetChild(index).GetChild(1);
+                                    bestMatchedKey = key;
 
-                                // Shift remaining tiles forward along the path to fill the gap
-                                bool shifted = CollapseTray(allWalls);
-
-                                float resetDelay = shifted ? shiftDuration : 0.05f;
-                                DOVirtual.DelayedCall(resetDelay, () => { hasTriggeredTopWall = false; });
+                                    lvlManager.excludedChar.Remove(key);
+                                    WordChecker.reservedGridSlots.Add(key);
+                                    break;
+                                }
                             }
-                        });
+                        }
+                        if (bestTileToJump != null) break;
                     }
+                    if (bestTileToJump != null) break;
                 }
+            }
+
+            // Jump the prioritized letter
+            if (bestTileToJump != null)
+            {
+                bestTileToJump.name = "JumpingTile";
+
+                WordChecker.instance.AnimateTrayBlockToGrid(bestTileToJump, bestSlotTransform, bestMatchedKey);
+
+                // Immediately shift to dynamically fill the gap
+                CollapseTray(allWalls);
+
+                jumpedAny = true;
+            }
+
+            if (CheckAndDestroyEmptyTray(activeTray))
+            {
+                yield break; // Stop routine completely, the tray is gone
+            }
+
+            if (jumpedAny)
+            {
+                yield return new WaitForSeconds(staggeredJumpDelay);
+            }
+            else
+            {
+                // If nothing jumped, wait a frame so we don't lock the thread
+                yield return null;
             }
         }
 
-        if (jumpActions.Count == 0) return;
-
-        bool isFullyCleared = (jumpActions.Count >= totalLettersInTray);
-        if (isFullyCleared)
-        {
-            currentlyDraggedParent = null;
-        }
-
-        for (int i = 0; i < jumpActions.Count; i++)
-        {
-            int index = i;
-            float delay = index * staggeredJumpDelay;
-
-            DOVirtual.DelayedCall(delay, () =>
-            {
-                if (jumpActions[index] != null) jumpActions[index].Invoke();
-
-                if (index == jumpActions.Count - 1 && isFullyCleared && activeTray != null)
-                {
-                    activeTray.DOScale(Vector3.zero, snapBackDuration).SetEase(Ease.InBack).OnComplete(() =>
-                    {
-                        if (activeTray != null) Destroy(activeTray.gameObject);
-                    });
-                }
-            });
-        }
+        CheckAndDestroyEmptyTray(activeTray);
     }
 
     /// <summary>
-    /// Shifts tiles forward along the sorted snake sequence to precisely fill any empty walls.
+    /// Checks if a tray currently has zero active letters left in it. If true, initiates destruction.
     /// </summary>
-    private bool CollapseTray(List<Transform> sortedWalls)
+    private bool CheckAndDestroyEmptyTray(Transform tray)
     {
-        bool shiftedSomething = false;
+        if (tray == null) return true;
 
-        // Iterate through all walls in path order
-        for (int i = 0; i < sortedWalls.Count - 1; i++)
+        int totalRemaining = 0;
+        foreach (Transform child in tray)
         {
-            Transform currentWall = sortedWalls[i];
-
-            // If we find an empty space where a block used to be
-            if (GetValidTile(currentWall) == null)
+            if (child.name.Contains("Wall") && GetValidTile(child) != null)
             {
-                // Look ahead to the remaining walls to find the next available block to pull forward
-                for (int j = i + 1; j < sortedWalls.Count; j++)
+                totalRemaining++;
+            }
+        }
+
+        if (totalRemaining == 0)
+        {
+            hasTriggeredTopWall = false;
+            if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
+
+            // Detach it from being dragged right before blowing it up
+            if (currentlyDraggedParent == tray) currentlyDraggedParent = null;
+
+            tray.DOScale(Vector3.zero, snapBackDuration).SetEase(Ease.InBack).OnComplete(() =>
+            {
+                if (tray != null) Destroy(tray.gameObject);
+            });
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// DYNAMIC COLLAPSE LOGIC: Instead of a rigid snake path, this scans for empty spaces 
+    /// and dynamically pulls the physically closest lower block to fill it. 
+    /// </summary>
+    private void CollapseTray(List<Transform> allWalls)
+    {
+        bool shiftedSomething = true;
+        int maxIterations = 10; // Safety catch to prevent infinite loops during chain reactions
+
+        // Run until every gap that can possibly be filled, is filled.
+        while (shiftedSomething && maxIterations > 0)
+        {
+            shiftedSomething = false;
+            maxIterations--;
+
+            // 1. Calculate the max height of the tray to lock top-row tiles
+            float maxHeight = float.MinValue;
+            foreach (Transform wall in allWalls)
+            {
+                float h = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? wall.localPosition.z : wall.localPosition.y;
+                if (h > maxHeight) maxHeight = h;
+            }
+
+            // 2. Identify empty and filled walls
+            List<Transform> emptyWalls = new List<Transform>();
+            List<Transform> filledWalls = new List<Transform>();
+
+            foreach (Transform wall in allWalls)
+            {
+                if (GetValidTile(wall) == null) emptyWalls.Add(wall);
+                else filledWalls.Add(wall);
+            }
+
+            // Sort empty walls so we always prioritize filling the highest holes first
+            emptyWalls.Sort((a, b) => {
+                float hA = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? a.localPosition.z : a.localPosition.y;
+                float hB = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? b.localPosition.z : b.localPosition.y;
+                return hB.CompareTo(hA);
+            });
+
+            // 3. For each empty wall, find the closest valid tile to pull into it
+            foreach (Transform emptyWall in emptyWalls)
+            {
+                Transform bestTileWall = null;
+                float minDistance = float.MaxValue;
+
+                float emptyH = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? emptyWall.localPosition.z : emptyWall.localPosition.y;
+
+                foreach (Transform filledWall in filledWalls)
                 {
-                    Transform nextWall = sortedWalls[j];
-                    Transform nextTile = GetValidTile(nextWall);
+                    float filledH = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? filledWall.localPosition.z : filledWall.localPosition.y;
 
-                    if (nextTile != null)
+                    // Rule 1: Do not pull a tile that is already sitting at the highest point of the tray.
+                    if (filledH >= maxHeight - 0.1f) continue;
+
+                    // Rule 2: Do not pull tiles DOWNWARDS to fill holes.
+                    if (filledH > emptyH + 0.1f) continue;
+
+                    float dist = Vector3.Distance(emptyWall.localPosition, filledWall.localPosition);
+
+                    // Find the absolute closest block to the hole
+                    if (dist < minDistance)
                     {
-                        nextTile.SetParent(currentWall, true);
-                        nextTile.SetAsFirstSibling();
+                        minDistance = dist;
+                        bestTileWall = filledWall;
+                    }
+                }
 
-                        // Look up the exact default scale and position for this specific wall
-                        Vector3 targetPos = wallDefaultPos.ContainsKey(currentWall) ? wallDefaultPos[currentWall] : Vector3.zero;
-                        Vector3 targetScale = wallDefaultScale.ContainsKey(currentWall) ? wallDefaultScale[currentWall] : Vector3.one;
+                // Move the closest block into the empty space
+                if (bestTileWall != null)
+                {
+                    Transform tileToMove = GetValidTile(bestTileWall);
+                    if (tileToMove != null)
+                    {
+                        tileToMove.SetParent(emptyWall, true);
+                        tileToMove.SetAsFirstSibling();
 
-                        nextTile.DOLocalMove(targetPos, shiftDuration).SetEase(Ease.OutQuad);
-                        nextTile.DOScale(targetScale, shiftDuration).SetEase(Ease.OutQuad);
+                        Vector3 targetPos = wallDefaultPos.ContainsKey(emptyWall) ? wallDefaultPos[emptyWall] : Vector3.zero;
+                        Vector3 targetScale = wallDefaultScale.ContainsKey(emptyWall) ? wallDefaultScale[emptyWall] : Vector3.one;
+
+                        tileToMove.DOLocalMove(targetPos, shiftDuration).SetEase(Ease.OutQuad);
+                        tileToMove.DOScale(targetScale, shiftDuration).SetEase(Ease.OutQuad);
 
                         shiftedSomething = true;
-
-                        break;
+                        filledWalls.Remove(bestTileWall); // Remove from pool so we don't try to move it twice in one frame
                     }
                 }
             }
         }
-        return shiftedSomething;
     }
 
-    /// <summary>
-    /// Connects the walls by tracing their physical adjacency starting from the Top-Most tile.
-    /// </summary>
-    private List<Transform> GetSortedSnakePath(List<Transform> unsortedWalls)
-    {
-        if (unsortedWalls.Count <= 1) return unsortedWalls;
-
-        List<Transform> sorted = new List<Transform>();
-        HashSet<Transform> visited = new HashSet<Transform>();
-
-        // 1. Find the Head (Highest position, then Left-most position to break ties)
-        Transform head = unsortedWalls[0];
-        for (int i = 1; i < unsortedWalls.Count; i++)
-        {
-            if (IsPrioritized(unsortedWalls[i], head))
-                head = unsortedWalls[i];
-        }
-
-        sorted.Add(head);
-        visited.Add(head);
-
-        // 2. Traverse physical adjacencies to build the sequence
-        Transform current = head;
-        while (sorted.Count < unsortedWalls.Count)
-        {
-            Transform nextNode = null;
-            float closestDist = float.MaxValue;
-
-            foreach (Transform w in unsortedWalls)
-            {
-                if (visited.Contains(w)) continue;
-
-                float dist = Vector3.Distance(current.localPosition, w.localPosition);
-
-                if (dist < closestDist - 0.01f) // Found a physically closer block
-                {
-                    closestDist = dist;
-                    nextNode = w;
-                }
-                else if (Mathf.Abs(dist - closestDist) <= 0.01f) // Tie-breaker (equally close)
-                {
-                    if (nextNode != null && IsPrioritized(w, nextNode))
-                        nextNode = w;
-                }
-            }
-
-            if (nextNode != null)
-            {
-                sorted.Add(nextNode);
-                visited.Add(nextNode);
-                current = nextNode;
-            }
-            else break; // Failsafe
-        }
-
-        // Add any disconnected orphans just in case
-        foreach (Transform w in unsortedWalls)
-        {
-            if (!visited.Contains(w)) sorted.Add(w);
-        }
-
-        return sorted;
-    }
-
-    /// <summary>
-    /// Determines which wall is closer to the "Top Left" reading origin.
-    /// </summary>
-    private bool IsPrioritized(Transform a, Transform b)
-    {
-        float zA = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? a.localPosition.z : a.localPosition.y;
-        float zB = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? b.localPosition.z : b.localPosition.y;
-        float xA = a.localPosition.x;
-        float xB = b.localPosition.x;
-
-        if (Mathf.Abs(zA - zB) > 0.05f) return zA > zB; // Higher up on the board wins
-        return xA < xB; // Left-most wins if heights match
-    }
-
-    /// <summary>
-    /// Gets a valid letter tile from a wall, ignoring tiles that are already jumping out.
-    /// </summary>
     private Transform GetValidTile(Transform wall)
     {
         foreach (Transform child in wall)
@@ -668,6 +711,13 @@ public class GlobalTrayDragger : MonoBehaviour
     private void ReleaseAndSnapBack()
     {
         hasTriggeredTopWall = false;
+        if (jumpCoroutine != null) StopCoroutine(jumpCoroutine); // Stop any pending jumps when let go
+
+        if (currentlyDraggedParent == null) return;
+
+        // If it's completely empty when released, just destroy it instead of snapping it back.
+        if (CheckAndDestroyEmptyTray(currentlyDraggedParent)) return;
+
         Vector3 finalTargetPos = originalPosition;
 
         if (BottomGridManager.Instance != null && currentlyDraggedParent.childCount > 0)

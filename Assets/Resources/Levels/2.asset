@@ -307,58 +307,58 @@ MonoBehaviour:
   - Key: {x: 9, y: 6}
     Value: A
   trayCells:
-  - Key: {x: 3, y: 2}
-    Value: P
-  - Key: {x: 3, y: 1}
-    Value: O
-  - Key: {x: 4, y: 1}
-    Value: S
-  - Key: {x: 4, y: 2}
-    Value: J
-  - Key: {x: 4, y: 3}
-    Value: M
-  - Key: {x: 4, y: 6}
-    Value: O
-  - Key: {x: 5, y: 6}
-    Value: E
-  - Key: {x: 5, y: 5}
-    Value: A
-  - Key: {x: 5, y: 7}
+  - Key: {x: 4, y: 4}
     Value: G
-  - Key: {x: 1, y: 5}
-    Value: H
-  - Key: {x: 2, y: 5}
-    Value: N
-  - Key: {x: 3, y: 5}
+  - Key: {x: 3, y: 4}
     Value: R
-  - Key: {x: 3, y: 3}
+  - Key: {x: 3, y: 6}
+    Value: J
+  - Key: {x: 4, y: 5}
+    Value: M
+  - Key: {x: 7, y: 1}
+    Value: S
+  - Key: {x: 2, y: 1}
     Value: N
-  trayName:
-  - Key: {x: 3, y: 2}
-    Value: Tray 1
   - Key: {x: 3, y: 1}
-    Value: Tray 1
+    Value: N
   - Key: {x: 4, y: 1}
-    Value: Tray 1
-  - Key: {x: 4, y: 2}
-    Value: Tray 1
-  - Key: {x: 4, y: 3}
-    Value: Tray 1
+    Value: P
+  - Key: {x: 1, y: 1}
+    Value: H
+  - Key: {x: 8, y: 1}
+    Value: E
+  - Key: {x: 5, y: 1}
+    Value: O
+  - Key: {x: 6, y: 1}
+    Value: O
   - Key: {x: 4, y: 6}
+    Value: A
+  trayName:
+  - Key: {x: 4, y: 4}
+    Value: Tray 1
+  - Key: {x: 3, y: 4}
+    Value: Tray 1
+  - Key: {x: 3, y: 6}
+    Value: Tray 1
+  - Key: {x: 4, y: 5}
+    Value: Tray 1
+  - Key: {x: 7, y: 1}
     Value: Tray 2
-  - Key: {x: 5, y: 6}
+  - Key: {x: 2, y: 1}
     Value: Tray 2
-  - Key: {x: 5, y: 5}
+  - Key: {x: 3, y: 1}
     Value: Tray 2
-  - Key: {x: 5, y: 7}
+  - Key: {x: 4, y: 1}
     Value: Tray 2
-  - Key: {x: 1, y: 5}
-    Value: Tray 3
-  - Key: {x: 2, y: 5}
-    Value: Tray 3
-  - Key: {x: 3, y: 5}
-    Value: Tray 3
-  - Key: {x: 3, y: 3}
+  - Key: {x: 1, y: 1}
+    Value: Tray 2
+  - Key: {x: 8, y: 1}
+    Value: Tray 2
+  - Key: {x: 5, y: 1}
+    Value: Tray 2
+  - Key: {x: 6, y: 1}
+    Value: Tray 2
+  - Key: {x: 4, y: 6}
     Value: Tray 1
   categoryColors:
   - Key: Animal

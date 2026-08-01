@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 2
   seconds: 5
   bottomGridSize: 0.73
-  categoryMaterial: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
+  categoryMaterial: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
   words:
   - TIGER
   - NEPAL
@@ -425,7 +425,7 @@ MonoBehaviour:
     Value: Tray 4
   categoryColors:
   - Key: Animal
-    Value: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
+    Value: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
   - Key: Flower
     Value: {fileID: 2100000, guid: ca799e8bd8421c3489f37623cd01a3e0, type: 2}
   - Key: Country

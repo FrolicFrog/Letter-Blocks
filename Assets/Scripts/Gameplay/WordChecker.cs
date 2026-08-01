@@ -10,9 +10,12 @@ public class WordChecker : MonoBehaviour
     public static WordChecker instance;
     private bool isProcessing = false;
     private bool dictionarySeparated = false;
-    
+
     // Tracks slots that have pieces incoming so multiple don't go to the same spot
     public static HashSet<Vector2Int> reservedGridSlots = new HashSet<Vector2Int>();
+
+    // Tracks currently playing destruction animations to safely delay gravity
+    private int activeDestructions = 0;
 
     [Header("Destruction Animation")]
     public float destructionDelay = 0.15f;
@@ -170,47 +173,50 @@ public class WordChecker : MonoBehaviour
     {
         return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y) == 1;
     }
-    // New centralized method called by GlobalTrayDragger for animating elements onto the grid
+
     public void AnimateTrayBlockToGrid(Transform block, Transform slotTransform, Vector2Int matchedKey)
     {
-        reservedGridSlots.Add(matchedKey);
-
-        // Immediately parent the piece so dragger no longer controls it
         block.SetParent(slotTransform.parent);
 
-        // 1. Color Blending Animation
         MeshRenderer blockRenderer = block.GetComponent<MeshRenderer>();
         MeshRenderer slotRenderer = slotTransform.GetComponent<MeshRenderer>();
 
-        float jumpDuration = 0.45f; // Snappy timing for a clean hop
+        float jumpDuration = 0.45f;
 
         if (blockRenderer != null && slotRenderer != null)
         {
             Color targetColor = slotRenderer.material.color;
-            blockRenderer.material.DOColor(targetColor, jumpDuration).SetEase(Ease.InOutQuad);
+            blockRenderer.material.DOColor(targetColor, jumpDuration).SetEase(Ease.InOutQuad).SetLink(block.gameObject);
         }
 
-        // 2. Slot Replacement Animation (Scale down empty slot right before impact)
-        slotTransform.DOScale(Vector3.zero, 0.15f).SetDelay(jumpDuration - 0.15f).SetEase(Ease.InBack);
+        // DOTWEEN CRASH FIX: Checks if the object still exists before animating safely.
+        DOVirtual.DelayedCall(jumpDuration - 0.15f, () =>
+        {
+            if (slotTransform != null)
+            {
+                slotTransform.DOScale(Vector3.zero, 0.15f)
+                             .SetEase(Ease.InBack)
+                             .SetLink(slotTransform.gameObject)
+                             .OnComplete(() => {
+                                 if (slotTransform != null) Destroy(slotTransform.gameObject);
+                             });
+            }
+        });
 
-        // 3. Trigger the Clean Parabolic Jump (No Rotation)
         block.DOKill();
 
         Sequence jumpSeq = DOTween.Sequence().SetLink(block.gameObject);
 
-        // A. Move X smoothly across the screen
         jumpSeq.Append(block.DOMoveX(slotTransform.position.x, jumpDuration).SetEase(Ease.InOutSine));
 
-        // B. The Y-Axis Arc (Flying ABOVE the tray before dropping down)
-        float yJumpOffset = 3.5f; // Height of the arc above the highest point
+        float yJumpOffset = 3.5f;
         float peakY = Mathf.Max(block.position.y, slotTransform.position.y) + yJumpOffset;
 
         Sequence ySeq = DOTween.Sequence();
-        ySeq.Append(block.DOMoveY(peakY, jumpDuration / 2f).SetEase(Ease.OutQuad)); // Shoot up
-        ySeq.Append(block.DOMoveY(slotTransform.position.y, jumpDuration / 2f).SetEase(Ease.InQuad)); // Drop down
+        ySeq.Append(block.DOMoveY(peakY, jumpDuration / 2f).SetEase(Ease.OutQuad));
+        ySeq.Append(block.DOMoveY(slotTransform.position.y, jumpDuration / 2f).SetEase(Ease.InQuad));
         jumpSeq.Join(ySeq);
 
-        // C. The Z-Axis Arc (Popping slightly towards the camera for 3D depth)
         float zJumpOffset = -2.5f;
         float peakZ = Mathf.Min(block.position.z, slotTransform.position.z) + zJumpOffset;
 
@@ -219,8 +225,7 @@ public class WordChecker : MonoBehaviour
         zSeq.Append(block.DOMoveZ(slotTransform.position.z, jumpDuration / 2f).SetEase(Ease.InQuad));
         jumpSeq.Join(zSeq);
 
-        // D. Scale up at the peak, then settle to final scale (Adds juiciness without rotation)
-        Vector3 finalScale = new Vector3(.9f, 1f, .9f); // Your target landing scale
+        Vector3 finalScale = new Vector3(.9f, 1f, .9f);
         Sequence scaleSeq = DOTween.Sequence();
         scaleSeq.Append(block.DOScale(finalScale * 1.25f, jumpDuration / 2f).SetEase(Ease.OutQuad));
         scaleSeq.Append(block.DOScale(finalScale, jumpDuration / 2f).SetEase(Ease.InQuad));
@@ -228,15 +233,12 @@ public class WordChecker : MonoBehaviour
 
         jumpSeq.OnComplete(() =>
         {
-            // Lock it perfectly into place
             block.localPosition = new Vector3(block.localPosition.x, block.localPosition.y, 0f);
             block.localRotation = Quaternion.identity;
-            block.GetChild(2).gameObject.SetActive(true);
-            Debug.Log(block.GetChild(2).gameObject.name);
-            reservedGridSlots.Remove(matchedKey);
-            Destroy(slotTransform.gameObject);
 
-            // Trigger word checks and grid shifting/gravity
+            if (block.childCount > 2) block.GetChild(2).gameObject.SetActive(true);
+            reservedGridSlots.Remove(matchedKey);
+
             if (TopGridManager.instance != null)
             {
                 Check(TopGridManager.instance.columns);
@@ -254,42 +256,55 @@ public class WordChecker : MonoBehaviour
             if (queueSlot.childCount == 0) continue;
 
             Transform queuedCube = queueSlot.GetChild(queueSlot.childCount - 1);
-
             var textMesh = queuedCube.GetComponentInChildren<TextMeshPro>();
             string cubeLetter = textMesh != null ? textMesh.text : "";
 
             if (TryFindGridSlotForLetter(cubeLetter, out Transform slot, out Vector2Int key))
             {
-                reservedGridSlots.Add(key);
-
                 queuedCube.SetParent(slot.parent);
                 queuedCube.DOKill();
 
+                MeshRenderer blockRenderer = queuedCube.GetComponent<MeshRenderer>();
+                MeshRenderer slotRenderer = slot.GetComponent<MeshRenderer>();
                 float jumpDuration = 0.45f;
+
+                if (blockRenderer != null && slotRenderer != null)
+                {
+                    blockRenderer.material.DOColor(slotRenderer.material.color, jumpDuration).SetEase(Ease.InOutQuad).SetLink(queuedCube.gameObject);
+                }
+
+                // DOTWEEN CRASH FIX: Checking existence before triggering the tween.
+                DOVirtual.DelayedCall(jumpDuration - 0.15f, () =>
+                {
+                    if (slot != null)
+                    {
+                        slot.DOScale(Vector3.zero, 0.15f)
+                            .SetEase(Ease.InBack)
+                            .SetLink(slot.gameObject)
+                            .OnComplete(() => {
+                                if (slot != null) Destroy(slot.gameObject);
+                            });
+                    }
+                });
+
                 Sequence queueJumpSeq = DOTween.Sequence().SetLink(queuedCube.gameObject);
 
-                // X Axis
                 queueJumpSeq.Append(queuedCube.DOMoveX(slot.position.x, jumpDuration).SetEase(Ease.InOutSine));
 
-                // Y Axis (Arc High)
                 float yJumpOffset = 3.5f;
                 float peakY = Mathf.Max(queuedCube.position.y, slot.position.y) + yJumpOffset;
-
                 Sequence ySeq = DOTween.Sequence();
                 ySeq.Append(queuedCube.DOMoveY(peakY, jumpDuration / 2f).SetEase(Ease.OutQuad));
                 ySeq.Append(queuedCube.DOMoveY(slot.position.y, jumpDuration / 2f).SetEase(Ease.InQuad));
                 queueJumpSeq.Join(ySeq);
 
-                // Z Axis (Arc out to camera)
                 float zJumpOffset = -2.5f;
                 float peakZ = Mathf.Min(queuedCube.position.z, slot.position.z) + zJumpOffset;
-
                 Sequence zSeq = DOTween.Sequence();
                 zSeq.Append(queuedCube.DOMoveZ(peakZ, jumpDuration / 2f).SetEase(Ease.OutQuad));
                 zSeq.Append(queuedCube.DOMoveZ(slot.position.z, jumpDuration / 2f).SetEase(Ease.InQuad));
                 queueJumpSeq.Join(zSeq);
 
-                // Scale (No rotation)
                 Vector3 finalScale = new Vector3(.9f, 1.8f, .9f);
                 Sequence scaleSeq = DOTween.Sequence();
                 scaleSeq.Append(queuedCube.DOScale(finalScale * 1.25f, jumpDuration / 2f).SetEase(Ease.OutQuad));
@@ -298,9 +313,9 @@ public class WordChecker : MonoBehaviour
 
                 queueJumpSeq.OnComplete(() =>
                 {
-                    queuedCube.SetParent(slot);
-                    queuedCube.localPosition = Vector3.zero;
-                    queuedCube.localRotation = Quaternion.identity; // Ensures it remains perfectly flat
+                    queuedCube.localPosition = new Vector3(queuedCube.localPosition.x, queuedCube.localPosition.y, 0f);
+                    queuedCube.localRotation = Quaternion.identity;
+                    if (queuedCube.childCount > 2) queuedCube.GetChild(2).gameObject.SetActive(true);
                     reservedGridSlots.Remove(key);
                 });
 
@@ -316,22 +331,25 @@ public class WordChecker : MonoBehaviour
         var lvlManager = LevelManager.Instance;
         int columns = grid.columns;
 
-        int startRow = grid.rows - 1;
-        int endRow = Mathf.Max(0, grid.rows - 3);
-        Debug.Log("Searching");
-        for (int row = startRow; row >= endRow; row--)
+        // FIXED: Reversing the loop to check Bottom-to-Top
+        int startRow = Mathf.Max(0, grid.rows - 3); // The bottom row of the active 3
+        int endRow = grid.rows - 1;                 // The top row of the active 3
+
+        for (int row = startRow; row <= endRow; row++)
         {
-            Debug.Log("looping 1");
             for (int col = 0; col < columns; col++)
             {
                 Vector2Int key = new Vector2Int(row, col);
-                
-                if (lvlManager.excludedChar.Contains(key) &&  lvlManager.cellTexts[key] == letter)
+
+                if (lvlManager.excludedChar.Contains(key) && lvlManager.cellTexts[key] == letter)
                 {
-                    Debug.Log("Working");
                     int index = key.x * columns + key.y;
                     Transform candidateSlot = grid.transform.GetChild(index).GetChild(1);
+
+                    // FIXED: Claim it immediately so other logic treats it as "incoming" but NOT "finished"
                     lvlManager.excludedChar.Remove(key);
+                    reservedGridSlots.Add(key);
+
                     slotTransform = candidateSlot;
                     matchedKey = key;
                     return true;
@@ -341,25 +359,21 @@ public class WordChecker : MonoBehaviour
 
         slotTransform = null;
         matchedKey = default;
-        Debug.Log("False Returned");
         return false;
     }
 
     private IEnumerator ProcessDestructionAndGravity(int columns)
     {
         isProcessing = true;
-        bool boardChanged = true;
+        var lvlManager = LevelManager.Instance;
+        bool gravityNeeded = false;
 
-        while (boardChanged)
+        while (true)
         {
-            boardChanged = false;
-
-            yield return StartCoroutine(WaitForGridStability());
-
-            var lvlManager = LevelManager.Instance;
+            bool boardChangedThisFrame = false;
             List<string> wordsToDestroy = new List<string>();
 
-            foreach (var word in lvlManager.wordPositions.Keys)
+            foreach (var word in lvlManager.wordPositions.Keys.ToList())
             {
                 bool missingLetter = false;
                 foreach (var pos in lvlManager.wordPositions[word])
@@ -370,268 +384,345 @@ public class WordChecker : MonoBehaviour
                         break;
                     }
                 }
-                if (!missingLetter) wordsToDestroy.Add(word);
+
+                if (!missingLetter)
+                {
+                    bool isStable = true;
+                    foreach (var pos in lvlManager.wordPositions[word])
+                    {
+                        // FIXED: If a slot is waiting for a letter to arrive from the tray, the word is NOT complete yet
+                        if (reservedGridSlots.Contains(pos))
+                        {
+                            isStable = false;
+                            break;
+                        }
+
+                        int linearIndex = pos.x * columns + pos.y;
+                        if (linearIndex >= 0 && linearIndex < transform.childCount)
+                        {
+                            var gridChild = transform.GetChild(linearIndex);
+                            for (int j = 1; j < gridChild.childCount; j++)
+                            {
+                                Transform block = gridChild.GetChild(j);
+                                if (DOTween.IsTweening(block) || block.localPosition.sqrMagnitude > 0.01f)
+                                {
+                                    isStable = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!isStable) break;
+                    }
+
+                    if (isStable) wordsToDestroy.Add(word);
+                }
             }
 
             if (wordsToDestroy.Count > 0)
             {
-                boardChanged = true;
-                Sequence destroySeq = DOTween.Sequence().SetLink(gameObject);
-                List<GameObject> objectsToDestroy = new List<GameObject>();
+                boardChangedThisFrame = true;
+                gravityNeeded = true;
 
                 foreach (string word in wordsToDestroy)
                 {
-                    if (!lvlManager.wordPositions.ContainsKey(word)) continue;
-
-                    List<ArcBlockData> blocksInWord = new List<ArcBlockData>();
-
-                    foreach (var pos in lvlManager.wordPositions[word])
-                    {
-                        bool stillNeeded = IsPositionStillNeeded(pos, word, lvlManager.wordPositions, wordsToDestroy, out _);
-
-                        if (!stillNeeded)
-                        {
-                            int linearIndex = pos.x * columns + pos.y;
-                            if (linearIndex >= 0 && linearIndex < transform.childCount)
-                            {
-                                var gridChild = transform.GetChild(linearIndex);
-
-                                if (gridChild.childCount > 1)
-                                {
-                                    string foundCategory = "";
-                                    if (lvlManager.cellCategory.TryGetValue(pos, out string cat))
-                                    {
-                                        foundCategory = cat;
-                                    }
-
-                                    ArcBlockData blockData = new ArcBlockData
-                                    {
-                                        elements = new List<Transform>(),
-                                        originalWorldPos = gridChild.position,
-                                        category = foundCategory
-                                    };
-
-                                    while (gridChild.childCount > 1)
-                                    {
-                                        Transform child = gridChild.GetChild(1);
-                                        child.DOKill();
-                                        child.SetParent(null);
-
-                                        blockData.elements.Add(child);
-                                        objectsToDestroy.Add(child.gameObject);
-                                    }
-                                    blocksInWord.Add(blockData);
-                                }
-                            }
-
-                            lvlManager.excludedChar.Remove(pos);
-                            lvlManager.cellCategory.Remove(pos);
-                            lvlManager.cellTexts.Remove(pos);
-                        }
-                    }
-
-                    lvlManager.wordPositions.Remove(word);
-
-                    if (blocksInWord.Count > 0)
-                    {
-                        blocksInWord = blocksInWord
-                            .OrderBy(b => b.originalWorldPos.x)
-                            .ThenByDescending(b => b.originalWorldPos.y)
-                            .ToList();
-
-                        Vector3 centerPos = Vector3.zero;
-                        foreach (var b in blocksInWord) centerPos += b.originalWorldPos;
-                        centerPos /= blocksInWord.Count;
-
-                        int blockCount = blocksInWord.Count;
-                        float centerIndex = (blockCount - 1) / 2f;
-
-                        string wordCategoryTarget = blocksInWord[0].category;
-
-                        if (lvlManager.wordCategory != null && !string.IsNullOrEmpty(wordCategoryTarget))
-                        {
-                            string dictKey = lvlManager.wordCategory.Keys.FirstOrDefault(k => k.Trim().Equals(wordCategoryTarget.Trim(), System.StringComparison.OrdinalIgnoreCase));
-                            if (dictKey != null)
-                            {
-                                string baseWord = word;
-                                if (baseWord.Contains("_")) baseWord = baseWord.Substring(0, baseWord.IndexOf('_'));
-                                if (baseWord.Contains("#")) baseWord = baseWord.Substring(0, baseWord.IndexOf('#'));
-
-                                var wordList = lvlManager.wordCategory[dictKey];
-                                string matchedItem = wordList.FirstOrDefault(w => w.Trim().Equals(baseWord.Trim(), System.StringComparison.OrdinalIgnoreCase));
-                                if (matchedItem != null)
-                                {
-                                    wordList.Remove(matchedItem);
-                                }
-                            }
-                        }
-
-                        for (int i = 0; i < blockCount; i++)
-                        {
-                            float idx = i - centerIndex;
-                            float arcLength = idx * arcSpacingX;
-                            float theta = arcLength / arcRadius;
-                            float offsetX = arcRadius * Mathf.Sin(theta);
-                            float offsetZ = arcRadius * (1f - Mathf.Cos(theta));
-                            float angleY = -theta * Mathf.Rad2Deg;
-
-                            Vector2 targetScreenPos = Vector2.zero;
-                            Transform targetUITransform = null;
-                            bool foundUI = false;
-                            string targetCategory = blocksInWord[i].category;
-
-                            if (categoryUIParent != null && !string.IsNullOrEmpty(targetCategory))
-                            {
-                                string searchCat = targetCategory.Trim().ToLower();
-
-                                foreach (Transform categoryImage in categoryUIParent)
-                                {
-                                    foreach (Transform tChild in categoryImage)
-                                    {
-                                        var tmpComp = tChild.GetComponent<TextMeshProUGUI>();
-                                        if (tmpComp != null)
-                                        {
-                                            string cleanUIText = tmpComp.text.Trim().ToLower();
-                                            if (cleanUIText == searchCat)
-                                            {
-                                                Canvas canvas = categoryImage.GetComponentInParent<Canvas>();
-                                                Camera uiCam = (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay) ? canvas.worldCamera : null;
-
-                                                targetScreenPos = RectTransformUtility.WorldToScreenPoint(uiCam, categoryImage.position);
-                                                targetUITransform = categoryImage;
-                                                foundUI = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    if (foundUI) break;
-                                }
-                            }
-
-                            bool isLastLetter = (i == blockCount - 1);
-
-                            foreach (var child in blocksInWord[i].elements)
-                            {
-                                Vector3 startScale = child.localScale;
-                                Vector3 startRot = child.eulerAngles;
-
-                                Vector3 targetPos = new Vector3(centerPos.x + offsetX, centerPos.y + arcHeightOffset, centerPos.z + offsetZ);
-                                Vector3 targetRot = new Vector3(startRot.x, startRot.y + angleY, startRot.z);
-
-                                Sequence blockSeq = DOTween.Sequence().SetLink(child.gameObject);
-
-                                blockSeq.Append(child.DOMove(targetPos, popDuration).SetEase(Ease.OutQuad));
-                                blockSeq.Join(child.DORotate(targetRot, popDuration).SetEase(Ease.OutQuad));
-                                blockSeq.Join(child.DOScale(startScale * arcScaleUp, popDuration).SetEase(Ease.OutBack));
-
-                                blockSeq.AppendCallback(() =>
-                                {
-                                    if (child != null)
-                                    {
-                                        MeshRenderer mr = child.GetComponent<MeshRenderer>();
-                                        if (mr != null) mr.material.SetFloat("_Enable_Highlights", 1);
-                                    }
-                                });
-
-                                blockSeq.AppendInterval(destructionDelay + (i * flightStaggerDelay));
-
-                                blockSeq.AppendCallback(() =>
-                                {
-                                    if (child != null)
-                                    {
-                                        MeshRenderer mr = child.GetComponent<MeshRenderer>();
-                                        if (mr != null) mr.material.SetFloat("_Enable_Highlights", 0);
-                                    }
-                                });
-
-                                if (foundUI && targetUITransform != null)
-                                {
-                                    Camera cam = Camera.main;
-                                    float distanceToCamera = Mathf.Max(0.5f, cam.WorldToScreenPoint(targetPos).z - flightElevationOffset);
-                                    Vector3 finalWorldPos = cam.ScreenToWorldPoint(new Vector3(targetScreenPos.x, targetScreenPos.y, distanceToCamera));
-
-                                    blockSeq.Append(child.DOMove(finalWorldPos, flyToUIDuration).SetEase(flyEase));
-                                    blockSeq.Join(child.DORotate(flightRotation, flyToUIDuration, RotateMode.FastBeyond360).SetRelative(true).SetEase(flyEase));
-                                    blockSeq.Join(child.DOScale(Vector3.zero, flyToUIDuration).SetEase(destroyEase));
-
-                                    string capturedCategory = targetCategory;
-
-                                    blockSeq.OnComplete(() =>
-                                    {
-                                        if (targetUITransform != null)
-                                        {
-                                            targetUITransform.DOKill(true);
-
-                                            Vector3 punchStrength = uiPopScale - Vector3.one;
-                                            targetUITransform.DOPunchScale(punchStrength, uiPopDuration, 5, 0.3f)
-                                                             .SetLink(targetUITransform.gameObject);
-
-                                            bool categoryHasActiveWordsLeft = false;
-                                            if (LevelManager.Instance != null && LevelManager.Instance.wordPositions != null &&
-                                                LevelManager.Instance.cellCategory != null && !string.IsNullOrEmpty(capturedCategory))
-                                            {
-                                                foreach (var remainingWordPositions in LevelManager.Instance.wordPositions.Values)
-                                                {
-                                                    if (remainingWordPositions != null && remainingWordPositions.Count > 0)
-                                                    {
-                                                        if (LevelManager.Instance.cellCategory.TryGetValue(remainingWordPositions[0], out string remainingCat))
-                                                        {
-                                                            if (!string.IsNullOrEmpty(remainingCat) && remainingCat.Trim().Equals(capturedCategory.Trim(), System.StringComparison.OrdinalIgnoreCase))
-                                                            {
-                                                                categoryHasActiveWordsLeft = true;
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                            if (!categoryHasActiveWordsLeft && isLastLetter)
-                                            {
-                                                if (targetUITransform.childCount > 1)
-                                                {
-                                                    targetUITransform.GetChild(1).gameObject.SetActive(true);
-                                                }
-                                            }
-                                        }
-                                    });
-                                }
-                                else
-                                {
-                                    blockSeq.Append(child.DOScale(Vector3.zero, flyToUIDuration).SetEase(destroyEase));
-                                }
-
-                                destroySeq.Insert(0, blockSeq);
-                            }
-                        }
-                    }
-                }
-
-                if (objectsToDestroy.Count > 0)
-                {
-                    yield return destroySeq.WaitForCompletion();
-                    foreach (var obj in objectsToDestroy)
-                    {
-                        if (obj != null) Destroy(obj);
-                    }
-                }
-
-                yield return StartCoroutine(WaitForGridStability());
-
-                Sequence gravitySeq = ApplyGravity(columns);
-                if (gravitySeq != null)
-                {
-                    yield return gravitySeq.WaitForCompletion();
+                    StartCoroutine(DestroyWordRoutine(word, columns, wordsToDestroy));
                 }
             }
 
             if (TryPlaceQueuedCubes(columns))
             {
-                boardChanged = true;
+                boardChangedThisFrame = true;
             }
+
+            if (!boardChangedThisFrame && activeDestructions == 0 && !HasFlyingBlocks())
+            {
+                if (gravityNeeded)
+                {
+                    yield return StartCoroutine(WaitForGridStability());
+                    Sequence gravitySeq = ApplyGravity(columns);
+                    if (gravitySeq != null)
+                    {
+                        yield return gravitySeq.WaitForCompletion();
+                    }
+                    gravityNeeded = false;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            yield return null;
         }
 
         isProcessing = false;
+    }
+
+    private bool HasFlyingBlocks()
+    {
+        // FIXED: Stop gravity from shifting the board if letters are queued but haven't launched yet
+        if (reservedGridSlots.Count > 0) return true;
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform slot = transform.GetChild(i);
+            if (slot.childCount > 1)
+            {
+                for (int j = 1; j < slot.childCount; j++)
+                {
+                    Transform block = slot.GetChild(j);
+                    if (DOTween.IsTweening(block) || block.localPosition.sqrMagnitude > 0.01f)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private IEnumerator DestroyWordRoutine(string word, int columns, List<string> wordsBeingDestroyedThisPass)
+    {
+        activeDestructions++;
+        var lvlManager = LevelManager.Instance;
+
+        List<ArcBlockData> blocksInWord = new List<ArcBlockData>();
+        List<GameObject> objectsToDestroy = new List<GameObject>();
+
+        if (lvlManager.wordPositions.ContainsKey(word))
+        {
+            foreach (var pos in lvlManager.wordPositions[word])
+            {
+                bool stillNeeded = IsPositionStillNeeded(pos, word, lvlManager.wordPositions, wordsBeingDestroyedThisPass, out _);
+
+                if (!stillNeeded)
+                {
+                    int linearIndex = pos.x * columns + pos.y;
+                    if (linearIndex >= 0 && linearIndex < transform.childCount)
+                    {
+                        var gridChild = transform.GetChild(linearIndex);
+                        if (gridChild.childCount > 1)
+                        {
+                            string foundCategory = "";
+                            if (lvlManager.cellCategory.TryGetValue(pos, out string cat))
+                            {
+                                foundCategory = cat;
+                            }
+
+                            ArcBlockData blockData = new ArcBlockData
+                            {
+                                elements = new List<Transform>(),
+                                originalWorldPos = gridChild.position,
+                                category = foundCategory
+                            };
+
+                            while (gridChild.childCount > 1)
+                            {
+                                Transform child = gridChild.GetChild(1);
+                                child.DOKill();
+                                child.SetParent(null);
+
+                                blockData.elements.Add(child);
+                                objectsToDestroy.Add(child.gameObject);
+                            }
+                            blocksInWord.Add(blockData);
+                        }
+                    }
+
+                    lvlManager.excludedChar.Remove(pos);
+                    lvlManager.cellCategory.Remove(pos);
+                    lvlManager.cellTexts.Remove(pos);
+                }
+            }
+
+            lvlManager.wordPositions.Remove(word);
+        }
+
+        Sequence destroySeq = DOTween.Sequence();
+
+        if (blocksInWord.Count > 0)
+        {
+            blocksInWord = blocksInWord
+                .OrderBy(b => b.originalWorldPos.x)
+                .ThenByDescending(b => b.originalWorldPos.y)
+                .ToList();
+
+            Vector3 centerPos = Vector3.zero;
+            foreach (var b in blocksInWord) centerPos += b.originalWorldPos;
+            centerPos /= blocksInWord.Count;
+
+            int blockCount = blocksInWord.Count;
+            float centerIndex = (blockCount - 1) / 2f;
+            string wordCategoryTarget = blocksInWord[0].category;
+
+            if (lvlManager.wordCategory != null && !string.IsNullOrEmpty(wordCategoryTarget))
+            {
+                string dictKey = lvlManager.wordCategory.Keys.FirstOrDefault(k => k.Trim().Equals(wordCategoryTarget.Trim(), System.StringComparison.OrdinalIgnoreCase));
+                if (dictKey != null)
+                {
+                    string baseWord = word;
+                    if (baseWord.Contains("_")) baseWord = baseWord.Substring(0, baseWord.IndexOf('_'));
+                    if (baseWord.Contains("#")) baseWord = baseWord.Substring(0, baseWord.IndexOf('#'));
+
+                    var wordList = lvlManager.wordCategory[dictKey];
+                    string matchedItem = wordList.FirstOrDefault(w => w.Trim().Equals(baseWord.Trim(), System.StringComparison.OrdinalIgnoreCase));
+                    if (matchedItem != null)
+                    {
+                        wordList.Remove(matchedItem);
+                    }
+                }
+            }
+
+            for (int i = 0; i < blockCount; i++)
+            {
+                float idx = i - centerIndex;
+                float arcLength = idx * arcSpacingX;
+                float theta = arcLength / arcRadius;
+                float offsetX = arcRadius * Mathf.Sin(theta);
+                float offsetZ = arcRadius * (1f - Mathf.Cos(theta));
+                float angleY = -theta * Mathf.Rad2Deg;
+
+                Vector2 targetScreenPos = Vector2.zero;
+                Transform targetUITransform = null;
+                bool foundUI = false;
+                string targetCategory = blocksInWord[i].category;
+
+                if (categoryUIParent != null && !string.IsNullOrEmpty(targetCategory))
+                {
+                    string searchCat = targetCategory.Trim().ToLower();
+
+                    foreach (Transform categoryImage in categoryUIParent)
+                    {
+                        foreach (Transform tChild in categoryImage)
+                        {
+                            var tmpComp = tChild.GetComponent<TextMeshProUGUI>();
+                            if (tmpComp != null)
+                            {
+                                string cleanUIText = tmpComp.text.Trim().ToLower();
+                                if (cleanUIText == searchCat)
+                                {
+                                    Canvas canvas = categoryImage.GetComponentInParent<Canvas>();
+                                    Camera uiCam = (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay) ? canvas.worldCamera : null;
+
+                                    targetScreenPos = RectTransformUtility.WorldToScreenPoint(uiCam, categoryImage.position);
+                                    targetUITransform = categoryImage;
+                                    foundUI = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (foundUI) break;
+                    }
+                }
+
+                bool isLastLetter = (i == blockCount - 1);
+
+                foreach (var child in blocksInWord[i].elements)
+                {
+                    Vector3 startScale = child.localScale;
+                    Vector3 startRot = child.eulerAngles;
+
+                    Vector3 targetPos = new Vector3(centerPos.x + offsetX, centerPos.y + arcHeightOffset, centerPos.z + offsetZ);
+                    Vector3 targetRot = new Vector3(startRot.x, startRot.y + angleY, startRot.z);
+
+                    Sequence blockSeq = DOTween.Sequence().SetLink(child.gameObject);
+
+                    blockSeq.Append(child.DOMove(targetPos, popDuration).SetEase(Ease.OutQuad));
+                    blockSeq.Join(child.DORotate(targetRot, popDuration).SetEase(Ease.OutQuad));
+                    blockSeq.Join(child.DOScale(startScale * arcScaleUp, popDuration).SetEase(Ease.OutBack));
+
+                    blockSeq.AppendCallback(() =>
+                    {
+                        if (child != null)
+                        {
+                            MeshRenderer mr = child.GetComponent<MeshRenderer>();
+                            if (mr != null) mr.material.SetFloat("_Enable_Highlights", 1);
+                        }
+                    });
+
+                    blockSeq.AppendInterval(destructionDelay + (i * flightStaggerDelay));
+
+                    blockSeq.AppendCallback(() =>
+                    {
+                        if (child != null)
+                        {
+                            MeshRenderer mr = child.GetComponent<MeshRenderer>();
+                            if (mr != null) mr.material.SetFloat("_Enable_Highlights", 0);
+                        }
+                    });
+
+                    if (foundUI && targetUITransform != null)
+                    {
+                        Camera cam = Camera.main;
+                        float distanceToCamera = Mathf.Max(0.5f, cam.WorldToScreenPoint(targetPos).z - flightElevationOffset);
+                        Vector3 finalWorldPos = cam.ScreenToWorldPoint(new Vector3(targetScreenPos.x, targetScreenPos.y, distanceToCamera));
+
+                        blockSeq.Append(child.DOMove(finalWorldPos, flyToUIDuration).SetEase(flyEase));
+                        blockSeq.Join(child.DORotate(flightRotation, flyToUIDuration, RotateMode.FastBeyond360).SetRelative(true).SetEase(flyEase));
+                        blockSeq.Join(child.DOScale(Vector3.zero, flyToUIDuration).SetEase(destroyEase));
+
+                        string capturedCategory = targetCategory;
+
+                        blockSeq.OnComplete(() =>
+                        {
+                            if (targetUITransform != null)
+                            {
+                                targetUITransform.DOKill(true);
+
+                                Vector3 punchStrength = uiPopScale - Vector3.one;
+                                targetUITransform.DOPunchScale(punchStrength, uiPopDuration, 5, 0.3f)
+                                                 .SetLink(targetUITransform.gameObject);
+
+                                bool categoryHasActiveWordsLeft = false;
+                                if (LevelManager.Instance != null && LevelManager.Instance.wordPositions != null &&
+                                    LevelManager.Instance.cellCategory != null && !string.IsNullOrEmpty(capturedCategory))
+                                {
+                                    foreach (var remainingWordPositions in LevelManager.Instance.wordPositions.Values)
+                                    {
+                                        if (remainingWordPositions != null && remainingWordPositions.Count > 0)
+                                        {
+                                            if (LevelManager.Instance.cellCategory.TryGetValue(remainingWordPositions[0], out string remainingCat))
+                                            {
+                                                if (!string.IsNullOrEmpty(remainingCat) && remainingCat.Trim().Equals(capturedCategory.Trim(), System.StringComparison.OrdinalIgnoreCase))
+                                                {
+                                                    categoryHasActiveWordsLeft = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (!categoryHasActiveWordsLeft && isLastLetter)
+                                {
+                                    if (targetUITransform.childCount > 1)
+                                    {
+                                        targetUITransform.GetChild(1).gameObject.SetActive(true);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    else
+                    {
+                        blockSeq.Append(child.DOScale(Vector3.zero, flyToUIDuration).SetEase(destroyEase));
+                    }
+
+                    destroySeq.Insert(0, blockSeq);
+                }
+            }
+        }
+
+        if (objectsToDestroy.Count > 0)
+        {
+            yield return destroySeq.WaitForCompletion();
+            foreach (var obj in objectsToDestroy)
+            {
+                if (obj != null) Destroy(obj);
+            }
+        }
+
+        activeDestructions--;
     }
 
     private IEnumerator WaitForGridStability()
@@ -644,22 +735,29 @@ public class WordChecker : MonoBehaviour
         {
             stable = true;
 
-            for (int i = 0; i < transform.childCount; i++)
+            if (reservedGridSlots.Count > 0)
             {
-                Transform slot = transform.GetChild(i);
-                if (slot.childCount > 1)
+                stable = false;
+            }
+            else
+            {
+                for (int i = 0; i < transform.childCount; i++)
                 {
-                    for (int j = 1; j < slot.childCount; j++)
+                    Transform slot = transform.GetChild(i);
+                    if (slot.childCount > 1)
                     {
-                        Transform block = slot.GetChild(j);
-                        if (DOTween.IsTweening(block) || block.localPosition.sqrMagnitude > 0.01f)
+                        for (int j = 1; j < slot.childCount; j++)
                         {
-                            stable = false;
-                            break;
+                            Transform block = slot.GetChild(j);
+                            if (DOTween.IsTweening(block) || block.localPosition.sqrMagnitude > 0.01f)
+                            {
+                                stable = false;
+                                break;
+                            }
                         }
                     }
+                    if (!stable) break;
                 }
-                if (!stable) break;
             }
 
             if (!stable)
@@ -900,5 +998,4 @@ public class WordChecker : MonoBehaviour
         }
         return false;
     }
-
 }

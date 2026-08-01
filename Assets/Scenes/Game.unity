@@ -817,37 +817,35 @@ MonoBehaviour:
   trayOutlineMat: {fileID: 2100000, guid: dfb0e59f768f18540a92e3b5ee5394c3, type: 2}
   colorSprite:
   - Key: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
-    Value: {fileID: 21300000, guid: b0a508a4780baa6409c4b05d1466d99f, type: 3}
-  - Key: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
-    Value: {fileID: 21300000, guid: 04dd1448b6162414391bdd1d0ee9e162, type: 3}
+    Value: {fileID: 21300000, guid: 0a5f2dc00412f8342b606877619963fe, type: 3}
   - Key: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
-    Value: {fileID: 21300000, guid: 21c0e0ffb6d1799468093028a2e1027b, type: 3}
+    Value: {fileID: 21300000, guid: 230f301e6feee0745830aab2a452036b, type: 3}
   - Key: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
-    Value: {fileID: 21300000, guid: d32f77a2802a30245ad23f449ede5b78, type: 3}
+    Value: {fileID: 21300000, guid: 9004d31ce5a22e14787d5dbb409b68dd, type: 3}
   - Key: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
-    Value: {fileID: 21300000, guid: edefcf4dda7f0fe488a8ca02af2dc8c5, type: 3}
+    Value: {fileID: 21300000, guid: e4d3cddfee4bcab4a945f1e0f87afe19, type: 3}
   - Key: {fileID: 2100000, guid: f3c280131a8cfd248be5604224053358, type: 2}
-    Value: {fileID: 21300000, guid: 78ae38c537ebd84409dec94b4ffdd5cb, type: 3}
+    Value: {fileID: 21300000, guid: 042faf96482662c408ca3cc8067bd84b, type: 3}
   - Key: {fileID: 2100000, guid: ca799e8bd8421c3489f37623cd01a3e0, type: 2}
-    Value: {fileID: 21300000, guid: 1cd3ce10a60a3b442bbb56268ac8a809, type: 3}
+    Value: {fileID: 21300000, guid: 5ef2f2a815d1b6c4f86e029da13249ae, type: 3}
   - Key: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
-    Value: {fileID: 21300000, guid: 48d364a4b273d8441aceb6f97ef11509, type: 3}
+    Value: {fileID: 21300000, guid: fee611a3656107846b16b5815f52423c, type: 3}
+  - Key: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
+    Value: {fileID: 21300000, guid: daee67f1df34e9a4da3efd5c06589cdb, type: 3}
   - Key: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
-    Value: {fileID: 21300000, guid: b4daf43eb99821649930c78ba296238d, type: 3}
+    Value: {fileID: 21300000, guid: 979614ea2422f9944985fb802969078d, type: 3}
   - Key: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
-    Value: {fileID: 21300000, guid: 233753370a1593f46ae2440536756d15, type: 3}
+    Value: {fileID: 21300000, guid: d7b56807467f0184b8de17c287998a2d, type: 3}
   - Key: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
-    Value: {fileID: 21300000, guid: 5ddfd65fa87d0e248a10e3238c8ee9db, type: 3}
+    Value: {fileID: 21300000, guid: 4a7f084177a98a649b240d912f19cef5, type: 3}
   - Key: {fileID: 2100000, guid: 74a701c54a3fc14469104bed730e8899, type: 2}
-    Value: {fileID: 21300000, guid: c9703985a29ddcf44bc4d4f71e0350ae, type: 3}
+    Value: {fileID: 21300000, guid: 1d9f0f124fb723c409864dcddb37bb09, type: 3}
   - Key: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}
-    Value: {fileID: 21300000, guid: 38d7e1e47b0431540a17e66be19beea2, type: 3}
-  - Key: {fileID: 2100000, guid: a4d3d5fee2e3dba49917f9e86d113315, type: 2}
-    Value: {fileID: 21300000, guid: 554ac2717a1fca7498219a5208f0b8c9, type: 3}
-  - Key: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
-    Value: {fileID: 21300000, guid: 31d6eb05fcd7b2544b8c5160f1a2f345, type: 3}
+    Value: {fileID: 21300000, guid: 577cde3d60e3e1b43996f7e0af69b62f, type: 3}
   - Key: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
-    Value: {fileID: 21300000, guid: 405d8dcbd34ee6141af468e6d985c62f, type: 3}
+    Value: {fileID: 21300000, guid: a9931f7fac872dd43ae8061099897239, type: 3}
+  - Key: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
+    Value: {fileID: 21300000, guid: aefe9a7b28535a64890a485812624c67, type: 3}
   TestLevelToLoad: 2
   hearts: 0
 --- !u!1001 &795219532
@@ -1176,7 +1174,7 @@ MonoBehaviour:
   mainCamera: {fileID: 330585545}
   floorHeight: 0
   screenPadding: 0.106
-  bottomScreenReserved: 0.428
+  bottomScreenReserved: 0.45
 --- !u!114 &1371688890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1763,7 +1761,7 @@ MonoBehaviour:
   gridCellSize: 1
   slideSpeed: 60
   topWallTriggerOffset: 0.2
-  staggeredJumpDelay: 0.15
+  staggeredJumpDelay: 0.4
   shiftDuration: 0.3
   boundaryPadding: 0.15
   dragOffset: 0
@@ -1830,8 +1828,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Level: 0'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3f4ce1b8030cdd14da877099b5d4c0ef, type: 2}
-  m_sharedMaterial: {fileID: -4251038223034420202, guid: 3f4ce1b8030cdd14da877099b5d4c0ef,
+  m_fontAsset: {fileID: 11400000, guid: 441627251d5f1a741979906af7e2b502, type: 2}
+  m_sharedMaterial: {fileID: 8241512609693611084, guid: 441627251d5f1a741979906af7e2b502,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
