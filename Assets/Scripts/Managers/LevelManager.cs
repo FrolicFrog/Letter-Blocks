@@ -18,7 +18,7 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private GameObject categoryHeading;
     [SerializeField] private Transform categoryHeadingParent;
     [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private Material borderMaterial,frostMaterial;
+    [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial;
     [SerializeField] private List<KeyValueGroup<Material, Sprite>> colorSprite;
 
     [HideInInspector] public int TestLevelToLoad = 1;
@@ -246,7 +246,7 @@ public class LevelManager : Manager<LevelManager>
                    // Debug.Log((dir.front, dir.left, dir.back, dir.right));
                     var trayChunk = Instantiate(wallsDirectionDict[dir], gridChild);
                     trayChunk.transform.localPosition = Vector3.zero;
-                    trayChunk.GetComponent<MeshRenderer>().material = trayColors[trayName[key]];
+                    trayChunk.GetComponent<MeshRenderer>().material = trayMaterial;
                    
                     if (!trayChunks.ContainsKey(trayName[key]))
                     {
@@ -255,10 +255,36 @@ public class LevelManager : Manager<LevelManager>
                     trayChunks[trayName[key]].Add(trayChunk);
 
                     var letterBox = Instantiate(letterGridManager.letter, trayChunk.transform);
-                    letterBox.GetComponent<MeshRenderer>().material = trayColors[trayName[key]];
+                    letterBox.GetComponent<MeshRenderer>().material = boxMaterial;
                     letterBox.transform.localPosition = Vector3.zero;
-                    letterBox.transform.localScale = new Vector3(.9f,1.72f,.9f);
                     letterBox.GetComponentInChildren<TextMeshPro>().text = trayCells[key];
+                    Vector3 size = new Vector3(1, 2.2f, 1);
+                    Vector3 pos = Vector3.zero;
+
+                    if (dir.left)
+                    {
+                        size.x -= .07f;
+                        pos.x += .078f;
+                    }
+                    if (dir.right)
+                    {
+                        size.x -= .07f;
+                        pos.x -= .078f;
+                    }
+                    if (dir.front)
+                    {
+                        size.z -= 0.07f;
+                        pos.z -= 0.078f;
+                    }
+                    if (dir.back)
+                    {
+                        size.z -= 0.07f;
+                        pos.z += 0.078f;
+                    }
+                    letterBox.transform.localScale = size;
+                    letterBox.transform.localPosition = pos;
+
+
                     var outline = Instantiate(letterGridManager.outline, trayChunk.transform);
                     outline.transform.localPosition = new Vector3(0,0,.5f);
                     outline.SetActive(false);
@@ -281,11 +307,12 @@ public class LevelManager : Manager<LevelManager>
             }
             avgPosition /= positions.Count;
             trayParent.transform.position = avgPosition;
+       
             foreach (var chunk in trayChunks[key])
             {
                 chunk.transform.SetParent(trayParent.transform);
             }
-            trayParent.transform.SetParent(letterGridManager.transform);
+           
         }
       
     }

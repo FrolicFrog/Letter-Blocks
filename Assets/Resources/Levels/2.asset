@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 2
   m_EditorClassIdentifier: 
-  hearts: 3
+  timer: 1
   LevelNumber: 2
   rows: 10
   columns: 8
   height: 9
   width: 8
+  minutes: 0
+  seconds: 0
   bottomGridSize: 0.6
   categoryMaterial: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
   words:
@@ -36,6 +38,7 @@ MonoBehaviour:
   - Tray 1
   - Tray 2
   - Tray 3
+  - Tray 4
   excludedChar:
   - {x: 0, y: 2}
   - {x: 1, y: 2}
@@ -50,6 +53,7 @@ MonoBehaviour:
   - {x: 8, y: 2}
   - {x: 9, y: 3}
   - {x: 9, y: 5}
+  blockedCells: []
   wordCategory:
   - Key: Country
     Value:
@@ -303,7 +307,7 @@ MonoBehaviour:
   - Key: {x: 9, y: 6}
     Value: A
   trayCells:
-  - Key: {x: 2, y: 1}
+  - Key: {x: 3, y: 2}
     Value: P
   - Key: {x: 3, y: 1}
     Value: O
@@ -325,12 +329,12 @@ MonoBehaviour:
     Value: R
   - Key: {x: 7, y: 1}
     Value: N
-  - Key: {x: 7, y: 2}
-    Value: H
   - Key: {x: 7, y: 3}
+    Value: H
+  - Key: {x: 3, y: 3}
     Value: N
   trayName:
-  - Key: {x: 2, y: 1}
+  - Key: {x: 3, y: 2}
     Value: Tray 1
   - Key: {x: 3, y: 1}
     Value: Tray 1
@@ -352,10 +356,10 @@ MonoBehaviour:
     Value: Tray 2
   - Key: {x: 7, y: 1}
     Value: Tray 3
-  - Key: {x: 7, y: 2}
-    Value: Tray 3
   - Key: {x: 7, y: 3}
-    Value: Tray 3
+    Value: Tray 4
+  - Key: {x: 3, y: 3}
+    Value: Tray 1
   categoryColors:
   - Key: Animal
     Value: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
@@ -370,6 +374,8 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
   - Key: Tray 3
     Value: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
+  - Key: Tray 4
+    Value: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
   wordPositions:
   - Key: BRAZIL
     Value:

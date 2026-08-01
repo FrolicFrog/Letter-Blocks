@@ -157,6 +157,59 @@ Transform:
   - {fileID: 1887342592}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &163248433
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 163248434}
+  - component: {fileID: 163248435}
+  m_Layer: 0
+  m_Name: Top Collider
+  m_TagString: Plane
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &163248434
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163248433}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 5.16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 408457070}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &163248435
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163248433}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10.759151, y: 3.4118755, z: 0.45446587}
+  m_Center: {x: 0.12142277, y: 1.205938, z: 0.024082184}
 --- !u!1 &245620291
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,7 +425,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 95
+    m_Bits: 223
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -471,6 +524,34 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1492978032}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &408457070 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 787e07b466441364190ad484913a3bea,
+    type: 3}
+  m_PrefabInstance: {fileID: 1492978032}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &408457071
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408457067}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -462981019419857548, guid: 787e07b466441364190ad484913a3bea, type: 3}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -731,8 +812,9 @@ MonoBehaviour:
     type: 3}
   categoryHeadingParent: {fileID: 1855233887}
   levelText: {fileID: 1825650881}
-  borderMaterial: {fileID: 2100000, guid: b2333297cbff7ce41a5ecef33c48e6a7, type: 2}
-  frostMaterial: {fileID: 2100000, guid: 1dd370d4d0ce03a49a0dc24c38be27b4, type: 2}
+  borderMaterial: {fileID: 2100000, guid: 0281333be7b0a9349babf1c3f80a07a4, type: 2}
+  trayMaterial: {fileID: 2100000, guid: 8d16376db75a59d48b9abbe65483552c, type: 2}
+  boxMaterial: {fileID: 2100000, guid: c5bc1b060dce35940b02af2174c398e4, type: 2}
   colorSprite:
   - Key: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
     Value: {fileID: 21300000, guid: b0a508a4780baa6409c4b05d1466d99f, type: 3}
@@ -790,7 +872,7 @@ MonoBehaviour:
   centerObject2: {fileID: 2044008556}
   autoScaleBorder2: 1
   borderPadding2: {x: 0.42, y: -39.6, z: 0}
-  centerObject2Offset: {x: 0, y: 47, z: 43.8}
+  centerObject2Offset: {x: 0, y: 44.3, z: 43.8}
 --- !u!1001 &795219532
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1388,16 +1470,29 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: a773f2f7c4d535d48a6a9ab9d37cef88, type: 2}
+      objectReference: {fileID: 2100000, guid: c81691efbca8b7044a0e99e1dcd196e0, type: 2}
     - target: {fileID: 919132149155446097, guid: 787e07b466441364190ad484913a3bea,
         type: 3}
       propertyPath: m_Name
       value: Border2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 787e07b466441364190ad484913a3bea,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 787e07b466441364190ad484913a3bea,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 163248434}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 787e07b466441364190ad484913a3bea,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 408457071}
   m_SourcePrefab: {fileID: 100100000, guid: 787e07b466441364190ad484913a3bea, type: 3}
 --- !u!1 &1613735652
 GameObject:
@@ -1522,7 +1617,7 @@ MonoBehaviour:
   cell2: {fileID: 5005995568649371615, guid: 9075fcc95992fef48a80f12e75924168, type: 3}
   outline: {fileID: 8509616348565672096, guid: 508243c1116372642b436efaaae6de97, type: 3}
   letter: {fileID: 2816542064667801392, guid: 51bccfbfc2d0f224188ec1460a5a050c, type: 3}
-  blockWall: {fileID: 5535507088894839105, guid: a27b217901bf3e24da68f832cb81d2b2,
+  blockWall: {fileID: 4865700692335665741, guid: 3613f2c864059f44b825424ca35be49a,
     type: 3}
   wallsDirection:
   - mesh: {fileID: 1559360252519569411, guid: d68d823a0670b604b9899d12a32c585e, type: 3}
@@ -1657,18 +1752,11 @@ MonoBehaviour:
   trayLayer:
     serializedVersion: 2
     m_Bits: 8
-  blockLayer:
+  obstacleLayers:
     serializedVersion: 2
-    m_Bits: 64
-  planeMode: 0
-  topWallTriggerOffset: 0.5
-  staggeredJumpDelay: 0.15
-  boundaryPadding: 0.65
-  dragOffset: 1
-  dragScaleMultiplier: 1.1
-  scaleUpDuration: 0.15
-  snapBackDuration: 0.2
-  snapBackEase: 33
+    m_Bits: 200
+  boxCastShrink: 0.26
+  skinWidth: 0.05
 --- !u!1 &1825650879
 GameObject:
   m_ObjectHideFlags: 0
