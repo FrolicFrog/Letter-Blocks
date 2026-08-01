@@ -8,8 +8,12 @@ public class ResultManager : MonoBehaviour
     public TextMeshProUGUI tmp;
     [HideInInspector]public bool timer;
     [HideInInspector]public float time;
+    [HideInInspector] public bool startTimer = false;
+    public static ResultManager Instance;
     void Start()
     {
+
+        Instance = this;
         if (timer)
             UpdateTimerDisplay();
 
@@ -19,10 +23,14 @@ public class ResultManager : MonoBehaviour
 
     void Update()
     {
-        if (timer)
+        if (timer && startTimer)
         {
             time -= Time.deltaTime;
             UpdateTimerDisplay();
+            if(time <0)
+            {
+                startTimer = false;
+            }
         }
     }
 

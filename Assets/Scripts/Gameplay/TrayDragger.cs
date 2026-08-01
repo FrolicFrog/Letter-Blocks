@@ -23,14 +23,14 @@ public class GlobalTrayDragger : MonoBehaviour
     public PlaneAxisMode planeMode = PlaneAxisMode.XZ_GroundPlane_3D;
 
     [Header("Grid Snapping Settings")]
-    [Tooltip("Enable step-by-step grid sliding during drag (as seen in reference video).")]
+    [Tooltip("Enable step-by-step grid sliding during drag.")]
     public bool snapToGridWhileDragging = true;
 
     [Tooltip("Distance of one grid cell tile. Auto-detected from BottomGridManager if available.")]
     public float gridCellSize = 1.0f;
 
     [Tooltip("Speed at which the piece slides toward target grid steps while dragging.")]
-    public float slideSpeed = 30f;
+    public float slideSpeed = 45f;
 
     [Header("Jump Trigger Settings")]
     [Tooltip("Distance from the top limit to trigger the piece jumping.")]
@@ -40,22 +40,22 @@ public class GlobalTrayDragger : MonoBehaviour
 
     [Header("Auto Boundaries from BottomGridManager")]
     [Tooltip("Extra padding to keep pieces slightly away from the exact visual edge.")]
-    public float boundaryPadding = 0.05f;
+    public float boundaryPadding = 0.02f;
 
     [Header("Height / Depth Offset Settings")]
     [Tooltip("Offset applied along the locked axis while dragging.")]
     public float dragOffset = 0f;
 
     [Header("Scale Settings")]
-    [Tooltip("Multiplier applied to the scale while dragging (e.g. 1.2 = 20% larger).")]
-    public float dragScaleMultiplier = 1.2f;
+    [Tooltip("Multiplier applied to Y-axis scale while dragging.")]
+    public float dragScaleMultiplier = 1.0f;
 
     [Tooltip("Duration in seconds for the piece to scale up on click.")]
-    public float scaleUpDuration = 0.15f;
+    public float scaleUpDuration = 0.1f;
 
     [Header("DOTween Snapback Settings")]
     [Tooltip("Duration in seconds for the piece to animate back to its starting position and scale.")]
-    public float snapBackDuration = 0.2f;
+    public float snapBackDuration = 0.18f;
 
     [Tooltip("Easing function for the return animation.")]
     public Ease snapBackEase = Ease.OutBack;
@@ -138,8 +138,8 @@ public class GlobalTrayDragger : MonoBehaviour
                 // Calculate dynamic boundaries & auto-detect grid size
                 CalculateDynamicBoundaries();
 
-                // Scale up the object smoothly when picked up for visual feedback
-                Vector3 targetScale = originalScale * dragScaleMultiplier;
+                // Apply pickup scale animation exclusively along the Y-axis
+                Vector3 targetScale = new Vector3(originalScale.x, originalScale.y * dragScaleMultiplier, originalScale.z);
                 currentlyDraggedParent.DOScale(targetScale, scaleUpDuration).SetEase(Ease.OutQuad);
 
                 if (dragPlane.Raycast(ray, out float enter))
@@ -160,6 +160,9 @@ public class GlobalTrayDragger : MonoBehaviour
             Vector3 currentMouseWorldPoint = ray.GetPoint(enter);
             Vector3 targetPosition = currentMouseWorldPoint + clickOffset;
 
+            if (!ResultManager.Instance.startTimer)
+                ResultManager.Instance.startTimer = true;
+
             // Strict mathematical clamping keeps the piece visually inside the board at all times
             targetPosition.x = Mathf.Clamp(targetPosition.x, bMinX, bMaxX);
 
@@ -178,7 +181,7 @@ public class GlobalTrayDragger : MonoBehaviour
 
             if (snapToGridWhileDragging && gridCellSize > 0.05f)
             {
-                // Move cell-by-cell along the grid tracks
+                // Move cell-by-cell along grid tracks
                 targetStepPos = ResolveGridStepMovement(currentlyDraggedParent.position, targetPosition);
             }
             else
@@ -208,7 +211,7 @@ public class GlobalTrayDragger : MonoBehaviour
         Vector3 diff = targetPos - currentPos;
 
         // --- RESOLVE X AXIS GRID STEPS ---
-        if (Mathf.Abs(diff.x) >= gridCellSize * 0.35f)
+        if (Mathf.Abs(diff.x) >= gridCellSize * 0.15f)
         {
             int stepsX = Mathf.RoundToInt(diff.x / gridCellSize);
             int dirX = System.Math.Sign(stepsX);
@@ -236,7 +239,7 @@ public class GlobalTrayDragger : MonoBehaviour
         // --- RESOLVE Z or Y AXIS GRID STEPS ---
         if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
         {
-            if (Mathf.Abs(diff.z) >= gridCellSize * 0.35f)
+            if (Mathf.Abs(diff.z) >= gridCellSize * 0.15f)
             {
                 int stepsZ = Mathf.RoundToInt(diff.z / gridCellSize);
                 int dirZ = System.Math.Sign(stepsZ);
@@ -263,7 +266,7 @@ public class GlobalTrayDragger : MonoBehaviour
         }
         else
         {
-            if (Mathf.Abs(diff.y) >= gridCellSize * 0.35f)
+            if (Mathf.Abs(diff.y) >= gridCellSize * 0.15f)
             {
                 int stepsY = Mathf.RoundToInt(diff.y / gridCellSize);
                 int dirY = System.Math.Sign(stepsY);
@@ -327,18 +330,17 @@ public class GlobalTrayDragger : MonoBehaviour
 
             if (isDragging)
             {
-                // 0.90x shrink keeps grid steps clear of false-positive adjacent wall collisions
-                Vector3 checkExtents = block.unscaledExtents * 0.90f;
+                Vector3 checkExtents = block.unscaledExtents * 0.82f;
 
                 if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
                 {
                     checkCenter.y -= dragOffset;
-                    checkExtents.y += 5f;
+                    checkExtents.y += 2f;
                 }
                 else
                 {
                     checkCenter.z -= dragOffset;
-                    checkExtents.z += 5f;
+                    checkExtents.z += 2f;
                 }
 
                 Collider[] hits = Physics.OverlapBox(checkCenter, checkExtents, block.rotation, combinedCollisionLayers);
@@ -540,7 +542,8 @@ public class GlobalTrayDragger : MonoBehaviour
 
             finalTargetPos = GetForgivingSnapPosition(anchorChunk);
 
-            currentlyDraggedParent.localScale = originalScale * dragScaleMultiplier;
+            // Re-apply Y-only drag scale when testing snap fits
+            currentlyDraggedParent.localScale = new Vector3(originalScale.x, originalScale.y * dragScaleMultiplier, originalScale.z);
         }
 
         if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) finalTargetPos.y = originalPosition.y;

@@ -245,7 +245,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -198.32, y: 476}
+  m_AnchoredPosition: {x: -175, y: 430}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &245620293
@@ -445,8 +445,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 0, y: 34, z: 0}
+  m_LocalRotation: {x: 0.5000032, y: 0, z: 0, w: 0.86602354}
+  m_LocalPosition: {x: 0, y: 19.947334, z: 5.9149885}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -748,7 +748,7 @@ Transform:
   m_GameObject: {fileID: 529791191}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 10.35}
+  m_LocalPosition: {x: 0, y: 0, z: 9.2}
   m_LocalScale: {x: 4.97, y: 4.97, z: 4.97}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -764,7 +764,6 @@ GameObject:
   m_Component:
   - component: {fileID: 558711658}
   - component: {fileID: 558711659}
-  - component: {fileID: 558711660}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -850,29 +849,6 @@ MonoBehaviour:
     Value: {fileID: 21300000, guid: 405d8dcbd34ee6141af468e6d985c62f, type: 3}
   TestLevelToLoad: 1
   hearts: 0
---- !u!114 &558711660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 558711657}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 738b81ab44f80544597cd91ece8e3c03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fitMode: 1
-  targetGridManager: {fileID: 1371688889}
-  mainCamera: {fileID: 330585545}
-  centerObject1: {fileID: 1323573865}
-  autoScaleBorder1: 1
-  borderPadding1: {x: 0.46, y: -36.88, z: 8.28}
-  centerObject1Offset: {x: -0, y: 29.6, z: 26.4}
-  centerObject2: {fileID: 2044008556}
-  autoScaleBorder2: 1
-  borderPadding2: {x: 0.42, y: -39.6, z: 0}
-  centerObject2Offset: {x: 0, y: 44.3, z: 43.8}
 --- !u!1001 &795219532
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1123,12 +1099,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1323573865 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 00312face11729a4a9c4ce180e52a915,
-    type: 3}
-  m_PrefabInstance: {fileID: 795219532}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1371688886
 GameObject:
   m_ObjectHideFlags: 0
@@ -1141,6 +1111,7 @@ GameObject:
   - component: {fileID: 1371688888}
   - component: {fileID: 1371688889}
   - component: {fileID: 1371688890}
+  - component: {fileID: 1371688891}
   m_Layer: 0
   m_Name: WordGridManager
   m_TagString: Untagged
@@ -1157,7 +1128,7 @@ Transform:
   m_GameObject: {fileID: 1371688886}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 26.62991}
+  m_LocalPosition: {x: 0, y: -0.0000009536743, z: 24.431324}
   m_LocalScale: {x: 0.9234374, y: 0.9234374, z: 0.9234374}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1241,6 +1212,37 @@ MonoBehaviour:
   spinDuration: 0.5
   spinAngle: {x: 1080, y: 0, z: 0}
   spinEase: 27
+--- !u!114 &1371688891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371688886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 738b81ab44f80544597cd91ece8e3c03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetCamera: {fileID: 330585545}
+  gridManager: {fileID: 1371688889}
+  grid: {fileID: 1371688888}
+  topBackground: {fileID: 1981967893}
+  topSnapRowIndex: 3
+  topBackgroundYOffset: 0
+  positionOffset1: {x: 3.4, y: 5.72, z: -6.97}
+  autoScaleX1: 1
+  autoScaleY1: 0
+  scaleWidthPercent1: 159.3
+  bottomBackground: {fileID: 1398619925}
+  bottomSnapRowIndex: 0
+  bottomBackgroundYOffset: 0
+  positionOffset2: {x: 3.79, y: 17, z: 22.1}
+  autoScaleX2: 1
+  autoScaleY2: 0
+  scaleWidthPercent2: 142.5
+  scaleLocalY: 1
+  scaleLocalZ: 0
 --- !u!1 &1398619924
 GameObject:
   m_ObjectHideFlags: 0
@@ -1307,7 +1309,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -107.29999, y: -50.30005}
+  m_AnchoredPosition: {x: -61.369995, y: -61.599976}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1457105257
@@ -1718,13 +1720,13 @@ MonoBehaviour:
       right: 1
   centerObject: {fileID: 408457067}
   autoScaleBorder: 1
-  borderPadding: {x: 2.96, y: 1.87, z: 3.83}
+  borderPadding: {x: 4.2, y: 1.87, z: 4.45}
   autoFitToScreen: 1
   mainCamera: {fileID: 330585545}
   floorHeight: 0
-  screenPadding: 0.064
+  screenPadding: 0.08
   bottomScreenPadding: 0
-  topBoundaryReserved: 0.54
+  topBoundaryReserved: 0.557
 --- !u!156049354 &1661794640
 Grid:
   m_ObjectHideFlags: 0
@@ -1752,11 +1754,21 @@ MonoBehaviour:
   trayLayer:
     serializedVersion: 2
     m_Bits: 8
-  obstacleLayers:
+  blockLayer:
     serializedVersion: 2
-    m_Bits: 200
-  boxCastShrink: 0.26
-  skinWidth: 0.05
+    m_Bits: 0
+  planeMode: 0
+  snapToGridWhileDragging: 0
+  gridCellSize: 1
+  slideSpeed: 60
+  topWallTriggerOffset: 0.2
+  staggeredJumpDelay: 0.15
+  boundaryPadding: 0.6
+  dragOffset: 0
+  dragScaleMultiplier: 1.1
+  scaleUpDuration: 0.15
+  snapBackDuration: 0.2
+  snapBackEase: 27
 --- !u!1 &1825650879
 GameObject:
   m_ObjectHideFlags: 0
@@ -1791,7 +1803,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 470}
+  m_AnchoredPosition: {x: 0, y: 445}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1825650881
@@ -1925,7 +1937,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 408.4}
+  m_AnchoredPosition: {x: 0, y: 386}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1855233888
@@ -2119,6 +2131,13 @@ MonoBehaviour:
   tmp: {fileID: 1457105257}
   timer: 0
   time: 0
+  startTimer: 0
+--- !u!4 &1981967893 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 00312face11729a4a9c4ce180e52a915,
+    type: 3}
+  m_PrefabInstance: {fileID: 795219532}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1999973093
 GameObject:
   m_ObjectHideFlags: 0
@@ -2172,7 +2191,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 720, y: 960}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.8
+  m_MatchWidthOrHeight: 0.9
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -2302,8 +2321,8 @@ Transform:
   m_GameObject: {fileID: 2044008556}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.7487, y: 0, z: 4.5064}
-  m_LocalScale: {x: 1.8570964, y: 3.35, z: 1}
+  m_LocalPosition: {x: -0.7487, y: 0, z: -1.1604}
+  m_LocalScale: {x: 1.8570964, y: 1.8759999, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1398619925}

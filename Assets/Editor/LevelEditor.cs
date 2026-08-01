@@ -12,7 +12,7 @@ public class LevelEditor : EditorWindow
     private int height = 8; // Bottom Grid Rows
     private int width = 8;  // Bottom Grid Columns
     private float bottomGridSize = 0.6f; // Bottom Grid Scale Factor
-    private int minutes, seconds;
+    private int minutes = 1, seconds = 30;
     private bool timer = true;
     private float gap = 2f;
     private float horizontalMargin = 20f;
@@ -186,8 +186,8 @@ public class LevelEditor : EditorWindow
                 bottomGridSize = 0.6f;
                 categoryMaterial = null;
                 trayMaterial = null;
-                minutes = 0;
-                seconds = 0;
+                minutes = 1;
+                seconds = 30;
                 timer =true;
                 words.Clear();
                 excludedChar.Clear();
