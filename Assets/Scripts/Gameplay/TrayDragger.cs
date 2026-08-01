@@ -22,6 +22,16 @@ public class GlobalTrayDragger : MonoBehaviour
     [Tooltip("Select XZ for standard 3D top-down boards, or XY for 2D boards.")]
     public PlaneAxisMode planeMode = PlaneAxisMode.XZ_GroundPlane_3D;
 
+    [Header("Grid Snapping Settings")]
+    [Tooltip("Enable step-by-step grid sliding during drag (as seen in reference video).")]
+    public bool snapToGridWhileDragging = true;
+
+    [Tooltip("Distance of one grid cell tile. Auto-detected from BottomGridManager if available.")]
+    public float gridCellSize = 1.0f;
+
+    [Tooltip("Speed at which the piece slides toward target grid steps while dragging.")]
+    public float slideSpeed = 30f;
+
     [Header("Jump Trigger Settings")]
     [Tooltip("Distance from the top limit to trigger the piece jumping.")]
     public float topWallTriggerOffset = 0.2f;
@@ -65,8 +75,9 @@ public class GlobalTrayDragger : MonoBehaviour
     // --- COLLISION & JUMP TRACKING ---
     private struct BlockColliderData
     {
-        public Vector3 localOffset;
-        public Vector3 dragBoxExtents;
+        public Vector3 unscaledLocalOffset;
+        public Vector3 unscaledExtents;
+        public Quaternion rotation;
     }
 
     private List<BlockColliderData> pieceColliders = new List<BlockColliderData>();
@@ -124,10 +135,10 @@ public class GlobalTrayDragger : MonoBehaviour
 
                 currentlyDraggedParent.position = elevatedStartPos;
 
-                // Dynamically fetch the borders and calculate pivot offsets (BEFORE scaling)
+                // Calculate dynamic boundaries & auto-detect grid size
                 CalculateDynamicBoundaries();
 
-                // Scale up the object smoothly when picked up
+                // Scale up the object smoothly when picked up for visual feedback
                 Vector3 targetScale = originalScale * dragScaleMultiplier;
                 currentlyDraggedParent.DOScale(targetScale, scaleUpDuration).SetEase(Ease.OutQuad);
 
@@ -163,22 +174,122 @@ public class GlobalTrayDragger : MonoBehaviour
                 targetPosition.z = lockedAxisValue;
             }
 
-            // --- RESOLVE COLLISIONS ---
-            targetPosition = ResolveTrayCollisions(currentlyDraggedParent.position, targetPosition);
+            Vector3 targetStepPos;
 
-            if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+            if (snapToGridWhileDragging && gridCellSize > 0.05f)
             {
-                if (targetPosition.z >= bTopWallTriggerThreshold && !hasTriggeredTopWall) TriggerJumpLogic();
-                else if (targetPosition.z < bTopWallTriggerThreshold - 0.1f) hasTriggeredTopWall = false;
+                // Move cell-by-cell along the grid tracks
+                targetStepPos = ResolveGridStepMovement(currentlyDraggedParent.position, targetPosition);
             }
             else
             {
-                if (targetPosition.y >= bTopWallTriggerThreshold && !hasTriggeredTopWall) TriggerJumpLogic();
-                else if (targetPosition.y < bTopWallTriggerThreshold - 0.1f) hasTriggeredTopWall = false;
+                targetStepPos = ResolveTrayCollisions(currentlyDraggedParent.position, targetPosition);
             }
 
-            if (currentlyDraggedParent != null) currentlyDraggedParent.position = targetPosition;
+            // Smoothly slide piece toward the target grid step
+            currentlyDraggedParent.position = Vector3.Lerp(currentlyDraggedParent.position, targetStepPos, Time.deltaTime * slideSpeed);
+
+            // Check top wall jump trigger
+            if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+            {
+                if (currentlyDraggedParent.position.z >= bTopWallTriggerThreshold && !hasTriggeredTopWall) TriggerJumpLogic();
+                else if (currentlyDraggedParent.position.z < bTopWallTriggerThreshold - 0.1f) hasTriggeredTopWall = false;
+            }
+            else
+            {
+                if (currentlyDraggedParent.position.y >= bTopWallTriggerThreshold && !hasTriggeredTopWall) TriggerJumpLogic();
+                else if (currentlyDraggedParent.position.y < bTopWallTriggerThreshold - 0.1f) hasTriggeredTopWall = false;
+            }
         }
+    }
+
+    private Vector3 ResolveGridStepMovement(Vector3 currentPos, Vector3 targetPos)
+    {
+        Vector3 diff = targetPos - currentPos;
+
+        // --- RESOLVE X AXIS GRID STEPS ---
+        if (Mathf.Abs(diff.x) >= gridCellSize * 0.35f)
+        {
+            int stepsX = Mathf.RoundToInt(diff.x / gridCellSize);
+            int dirX = System.Math.Sign(stepsX);
+            int maxStepsX = Mathf.Abs(stepsX);
+
+            Vector3 testPos = currentPos;
+            for (int i = 0; i < maxStepsX; i++)
+            {
+                Vector3 nextStep = testPos;
+                nextStep.x += dirX * gridCellSize;
+                nextStep.x = Mathf.Clamp(nextStep.x, bMinX, bMaxX);
+
+                if (!IsOverlappingTray(nextStep, true))
+                {
+                    testPos = nextStep;
+                }
+                else
+                {
+                    break; // Blocked by wall or tray
+                }
+            }
+            currentPos.x = testPos.x;
+        }
+
+        // --- RESOLVE Z or Y AXIS GRID STEPS ---
+        if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+        {
+            if (Mathf.Abs(diff.z) >= gridCellSize * 0.35f)
+            {
+                int stepsZ = Mathf.RoundToInt(diff.z / gridCellSize);
+                int dirZ = System.Math.Sign(stepsZ);
+                int maxStepsZ = Mathf.Abs(stepsZ);
+
+                Vector3 testPos = currentPos;
+                for (int i = 0; i < maxStepsZ; i++)
+                {
+                    Vector3 nextStep = testPos;
+                    nextStep.z += dirZ * gridCellSize;
+                    nextStep.z = Mathf.Clamp(nextStep.z, bMinAxis, bMaxAxis);
+
+                    if (!IsOverlappingTray(nextStep, true))
+                    {
+                        testPos = nextStep;
+                    }
+                    else
+                    {
+                        break; // Blocked by wall or tray
+                    }
+                }
+                currentPos.z = testPos.z;
+            }
+        }
+        else
+        {
+            if (Mathf.Abs(diff.y) >= gridCellSize * 0.35f)
+            {
+                int stepsY = Mathf.RoundToInt(diff.y / gridCellSize);
+                int dirY = System.Math.Sign(stepsY);
+                int maxStepsY = Mathf.Abs(stepsY);
+
+                Vector3 testPos = currentPos;
+                for (int i = 0; i < maxStepsY; i++)
+                {
+                    Vector3 nextStep = testPos;
+                    nextStep.y += dirY * gridCellSize;
+                    nextStep.y = Mathf.Clamp(nextStep.y, bMinAxis, bMaxAxis);
+
+                    if (!IsOverlappingTray(nextStep, true))
+                    {
+                        testPos = nextStep;
+                    }
+                    else
+                    {
+                        break; // Blocked by wall or tray
+                    }
+                }
+                currentPos.y = testPos.y;
+            }
+        }
+
+        return currentPos;
     }
 
     private Vector3 ResolveTrayCollisions(Vector3 currentPos, Vector3 targetPos)
@@ -186,7 +297,7 @@ public class GlobalTrayDragger : MonoBehaviour
         Vector3 finalPos = currentPos;
         Vector3 testPos = currentPos;
 
-        // Test X Axis Movement (Pass 'true' to use the solid Drag Overlap Box)
+        // Test X Axis Movement
         testPos.x = targetPos.x;
         if (!IsOverlappingTray(testPos, true)) finalPos.x = targetPos.x;
 
@@ -212,11 +323,12 @@ public class GlobalTrayDragger : MonoBehaviour
 
         foreach (var block in pieceColliders)
         {
-            Vector3 checkCenter = testPos + block.localOffset;
+            Vector3 checkCenter = testPos + block.unscaledLocalOffset;
 
             if (isDragging)
             {
-                Vector3 checkExtents = block.dragBoxExtents;
+                // 0.90x shrink keeps grid steps clear of false-positive adjacent wall collisions
+                Vector3 checkExtents = block.unscaledExtents * 0.90f;
 
                 if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
                 {
@@ -229,7 +341,7 @@ public class GlobalTrayDragger : MonoBehaviour
                     checkExtents.z += 5f;
                 }
 
-                Collider[] hits = Physics.OverlapBox(checkCenter, checkExtents, Quaternion.identity, combinedCollisionLayers);
+                Collider[] hits = Physics.OverlapBox(checkCenter, checkExtents, block.rotation, combinedCollisionLayers);
                 foreach (Collider hit in hits)
                 {
                     if (!hit.transform.IsChildOf(currentlyDraggedParent)) return true;
@@ -260,6 +372,17 @@ public class GlobalTrayDragger : MonoBehaviour
         {
             Renderer borderRenderer = BottomGridManager.Instance.centerObject.GetComponentInChildren<Renderer>();
             if (borderRenderer != null) boardBounds = borderRenderer.bounds;
+
+            // Auto-detect grid cell size from adjacent slots if available
+            Transform gridTransform = BottomGridManager.Instance.transform;
+            if (gridTransform.childCount >= 2)
+            {
+                float detectedDist = Vector3.Distance(gridTransform.GetChild(0).position, gridTransform.GetChild(1).position);
+                if (detectedDist > 0.1f && detectedDist < 5f)
+                {
+                    gridCellSize = detectedDist;
+                }
+            }
         }
 
         pieceColliders.Clear();
@@ -277,18 +400,18 @@ public class GlobalTrayDragger : MonoBehaviour
                 Bounds pieceBounds = renderers[0].bounds;
                 foreach (Renderer r in renderers) pieceBounds.Encapsulate(r.bounds);
 
-                extLeft = pivotPos.x - pieceBounds.min.x;
-                extRight = pieceBounds.max.x - pivotPos.x;
+                extLeft = (pivotPos.x - pieceBounds.min.x);
+                extRight = (pieceBounds.max.x - pivotPos.x);
 
                 if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
                 {
-                    extBottom = pivotPos.z - pieceBounds.min.z;
-                    extTop = pieceBounds.max.z - pivotPos.z;
+                    extBottom = (pivotPos.z - pieceBounds.min.z);
+                    extTop = (pieceBounds.max.z - pivotPos.z);
                 }
                 else
                 {
-                    extBottom = pivotPos.y - pieceBounds.min.y;
-                    extTop = pieceBounds.max.y - pivotPos.y;
+                    extBottom = (pivotPos.y - pieceBounds.min.y);
+                    extTop = (pieceBounds.max.y - pivotPos.y);
                 }
             }
 
@@ -316,8 +439,9 @@ public class GlobalTrayDragger : MonoBehaviour
                 if (((1 << col.gameObject.layer) & trayLayer) != 0)
                 {
                     BlockColliderData blockData = new BlockColliderData();
-                    blockData.localOffset = col.transform.position - pivotPos;
-                    blockData.dragBoxExtents = col.bounds.extents * 0.85f;
+                    blockData.unscaledLocalOffset = col.transform.position - pivotPos;
+                    blockData.unscaledExtents = col.bounds.extents;
+                    blockData.rotation = col.transform.rotation;
                     pieceColliders.Add(blockData);
                 }
             }
