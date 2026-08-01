@@ -18,7 +18,7 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private GameObject categoryHeading;
     [SerializeField] private Transform categoryHeadingParent;
     [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial;
+    [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial,trayOutlineMat;
     [SerializeField] private List<KeyValueGroup<Material, Sprite>> colorSprite;
 
     [HideInInspector] public int TestLevelToLoad = 1;
@@ -258,8 +258,15 @@ public class LevelManager : Manager<LevelManager>
                     letterBox.GetComponent<MeshRenderer>().material = boxMaterial;
                     letterBox.transform.localPosition = Vector3.zero;
                     letterBox.GetComponentInChildren<TextMeshPro>().text = trayCells[key];
-                    Vector3 size = new Vector3(1, 2.2f, 1);
+                    Vector3 size = new Vector3(1, 2.4f, 1);
                     Vector3 pos = Vector3.zero;
+
+                    var trayOutline = Instantiate(wallsDirectionDict[dir], trayChunk.transform);
+                    trayOutline.transform.localPosition = Vector3.zero;
+                    trayOutline.transform.localScale = Vector3.one * 1.08f;
+                    Destroy(trayOutline.GetComponent<MeshCollider>());
+                    trayOutline.GetComponent<MeshRenderer>().material = trayOutlineMat;
+                    trayOutline.SetActive(false);
 
                     if (dir.left)
                     {
@@ -285,9 +292,7 @@ public class LevelManager : Manager<LevelManager>
                     letterBox.transform.localPosition = pos;
 
 
-                    var outline = Instantiate(letterGridManager.outline, trayChunk.transform);
-                    outline.transform.localPosition = new Vector3(0,0,.5f);
-                    outline.SetActive(false);
+                   
                 }
             }
         }

@@ -814,6 +814,7 @@ MonoBehaviour:
   borderMaterial: {fileID: 2100000, guid: 0281333be7b0a9349babf1c3f80a07a4, type: 2}
   trayMaterial: {fileID: 2100000, guid: 8d16376db75a59d48b9abbe65483552c, type: 2}
   boxMaterial: {fileID: 2100000, guid: c5bc1b060dce35940b02af2174c398e4, type: 2}
+  trayOutlineMat: {fileID: 2100000, guid: dfb0e59f768f18540a92e3b5ee5394c3, type: 2}
   colorSprite:
   - Key: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
     Value: {fileID: 21300000, guid: b0a508a4780baa6409c4b05d1466d99f, type: 3}
@@ -1309,7 +1310,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -61.369995, y: -61.599976}
+  m_AnchoredPosition: {x: -61.369995, y: -61.599854}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1457105257
@@ -1763,7 +1764,7 @@ MonoBehaviour:
   slideSpeed: 60
   topWallTriggerOffset: 0.2
   staggeredJumpDelay: 0.15
-  boundaryPadding: 0.6
+  boundaryPadding: 0.15
   dragOffset: 0
   dragScaleMultiplier: 1.1
   scaleUpDuration: 0.15
