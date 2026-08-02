@@ -28,7 +28,7 @@ Material:
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -113,8 +113,8 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Highlight_Effect: 0.92
-    - _Highlight_Intensity: 0.5
+    - _Highlight_Effect: 0.51
+    - _Highlight_Intensity: 0.23
     - _Metalic: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
@@ -122,19 +122,19 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.5
+    - _Smoothness: 3
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _Transpirancy: 1
+    - _Transpirancy: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 0.8242223, b: 0.27735847, a: 1}
+    - _Color: {r: 1, g: 0.75454277, b: 0.0039215684, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Highlight_Color: {r: 1, g: 1, b: 1, a: 0.95686275}
+    - _Highlight_Color: {r: 0.98039216, g: 0.54792994, b: 0, a: 0.95686275}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
