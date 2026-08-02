@@ -21,12 +21,16 @@ MonoBehaviour:
   minutes: 2
   seconds: 5
   bottomGridSize: 0.73
-  categoryMaterial: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
+  categoryMaterial: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
   words:
-  - DGREE
-  - AQU
-  - MAG
-  - DBLUE
+  - LBL
+  - SAF
+  - DB
+  - AQ
+  - PIN
+  - MUL
+  - TURQ
+  - YELL
   tray:
   - Tray 1
   - Tray 2
@@ -39,84 +43,128 @@ MonoBehaviour:
   - {x: 1, y: 7}
   - {x: 2, y: 7}
   wordCategory:
+  - Key: light blue
+    Value:
+    - LBL
   - Key: sapphire
     Value:
-    - DGREE
+    - SAF
+  - Key: deep blue
+    Value:
+    - DB
+  - Key: aqua
+    Value:
+    - AQ
   - Key: pink
     Value:
-    - AQU
-  - Key: yellow
+    - PIN
+  - Key: mulberry
     Value:
-    - MAG
+    - MUL
   - Key: turquoise
     Value:
-    - DBLUE
+    - TURQ
+  - Key: yellow
+    Value:
+    - YELL
   cellCategory:
-  - Key: {x: 11, y: 5}
-    Value: turquoise
-  - Key: {x: 11, y: 6}
-    Value: turquoise
-  - Key: {x: 11, y: 7}
-    Value: turquoise
-  - Key: {x: 11, y: 0}
-    Value: yellow
-  - Key: {x: 11, y: 1}
-    Value: yellow
-  - Key: {x: 11, y: 2}
-    Value: yellow
   - Key: {x: 11, y: 3}
     Value: turquoise
-  - Key: {x: 11, y: 4}
-    Value: turquoise
-  - Key: {x: 10, y: 7}
-    Value: pink
-  - Key: {x: 10, y: 6}
-    Value: pink
-  - Key: {x: 10, y: 5}
-    Value: pink
-  - Key: {x: 10, y: 4}
-    Value: sapphire
-  - Key: {x: 10, y: 3}
-    Value: sapphire
   - Key: {x: 10, y: 2}
-    Value: sapphire
-  - Key: {x: 10, y: 1}
-    Value: sapphire
-  - Key: {x: 10, y: 0}
-    Value: sapphire
-  cellTexts:
+    Value: pink
   - Key: {x: 11, y: 5}
-    Value: L
-  - Key: {x: 11, y: 6}
-    Value: U
-  - Key: {x: 11, y: 7}
-    Value: E
-  - Key: {x: 11, y: 0}
-    Value: M
-  - Key: {x: 11, y: 1}
-    Value: A
-  - Key: {x: 11, y: 2}
-    Value: G
-  - Key: {x: 11, y: 3}
-    Value: D
-  - Key: {x: 11, y: 4}
-    Value: B
+    Value: yellow
   - Key: {x: 10, y: 7}
-    Value: U
+    Value: mulberry
+  - Key: {x: 10, y: 4}
+    Value: pink
+  - Key: {x: 10, y: 3}
+    Value: pink
+  - Key: {x: 11, y: 4}
+    Value: yellow
   - Key: {x: 10, y: 6}
+    Value: mulberry
+  - Key: {x: 11, y: 2}
+    Value: turquoise
+  - Key: {x: 11, y: 6}
+    Value: yellow
+  - Key: {x: 10, y: 1}
+    Value: aqua
+  - Key: {x: 10, y: 5}
+    Value: mulberry
+  - Key: {x: 11, y: 0}
+    Value: turquoise
+  - Key: {x: 11, y: 7}
+    Value: yellow
+  - Key: {x: 10, y: 0}
+    Value: aqua
+  - Key: {x: 11, y: 1}
+    Value: turquoise
+  - Key: {x: 9, y: 0}
+    Value: light blue
+  - Key: {x: 9, y: 1}
+    Value: light blue
+  - Key: {x: 9, y: 2}
+    Value: light blue
+  - Key: {x: 9, y: 3}
+    Value: sapphire
+  - Key: {x: 9, y: 4}
+    Value: sapphire
+  - Key: {x: 9, y: 5}
+    Value: sapphire
+  - Key: {x: 9, y: 6}
+    Value: deep blue
+  - Key: {x: 9, y: 7}
+    Value: deep blue
+  cellTexts:
+  - Key: {x: 11, y: 3}
+    Value: Q
+  - Key: {x: 10, y: 2}
+    Value: P
+  - Key: {x: 11, y: 5}
+    Value: E
+  - Key: {x: 10, y: 7}
+    Value: L
+  - Key: {x: 10, y: 4}
+    Value: N
+  - Key: {x: 10, y: 3}
+    Value: I
+  - Key: {x: 11, y: 4}
+    Value: Y
+  - Key: {x: 10, y: 6}
+    Value: U
+  - Key: {x: 11, y: 2}
+    Value: R
+  - Key: {x: 11, y: 6}
+    Value: L
+  - Key: {x: 10, y: 1}
     Value: Q
   - Key: {x: 10, y: 5}
-    Value: A
-  - Key: {x: 10, y: 4}
-    Value: E
-  - Key: {x: 10, y: 3}
-    Value: E
-  - Key: {x: 10, y: 2}
-    Value: R
-  - Key: {x: 10, y: 1}
-    Value: G
+    Value: M
+  - Key: {x: 11, y: 0}
+    Value: T
+  - Key: {x: 11, y: 7}
+    Value: L
   - Key: {x: 10, y: 0}
+    Value: A
+  - Key: {x: 11, y: 1}
+    Value: U
+  - Key: {x: 9, y: 0}
+    Value: L
+  - Key: {x: 9, y: 1}
+    Value: B
+  - Key: {x: 9, y: 2}
+    Value: L
+  - Key: {x: 9, y: 3}
+    Value: S
+  - Key: {x: 9, y: 4}
+    Value: A
+  - Key: {x: 9, y: 5}
+    Value: F
+  - Key: {x: 9, y: 6}
     Value: D
+  - Key: {x: 9, y: 7}
+    Value: B
   trayCells:
   - Key: {x: 6, y: 5}
     Value: W
@@ -234,26 +282,42 @@ MonoBehaviour:
   - Key: Tray 5
     Value: {fileID: 2100000, guid: be9ecb5670130534fbbf7ff4ac202116, type: 2}
   wordPositions:
-  - Key: DGREE
+  - Key: LBL
+    Value:
+    - {x: 9, y: 0}
+    - {x: 9, y: 1}
+    - {x: 9, y: 2}
+  - Key: SAF
+    Value:
+    - {x: 9, y: 3}
+    - {x: 9, y: 4}
+    - {x: 9, y: 5}
+  - Key: DB
+    Value:
+    - {x: 9, y: 6}
+    - {x: 9, y: 7}
+  - Key: AQ
     Value:
     - {x: 10, y: 0}
     - {x: 10, y: 1}
+  - Key: PIN
+    Value:
     - {x: 10, y: 2}
     - {x: 10, y: 3}
     - {x: 10, y: 4}
-  - Key: AQU
+  - Key: MUL
     Value:
     - {x: 10, y: 5}
     - {x: 10, y: 6}
     - {x: 10, y: 7}
-  - Key: MAG
+  - Key: TURQ
     Value:
     - {x: 11, y: 0}
     - {x: 11, y: 1}
     - {x: 11, y: 2}
-  - Key: DBLUE
-    Value:
     - {x: 11, y: 3}
+  - Key: YELL
+    Value:
     - {x: 11, y: 4}
     - {x: 11, y: 5}
     - {x: 11, y: 6}
