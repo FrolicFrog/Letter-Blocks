@@ -138,7 +138,7 @@ public class GlobalTrayDragger : MonoBehaviour
 
                 // Stop animations
                 currentlyDraggedParent.DOKill();
-                ToggleLastChildren(currentlyDraggedParent, true);
+                UpdateTrayLayers(currentlyDraggedParent, true);
 
                 originalPosition = currentlyDraggedParent.position;
                 originalScale = currentlyDraggedParent.localScale;
@@ -736,7 +736,7 @@ public class GlobalTrayDragger : MonoBehaviour
         currentlyDraggedParent.DOMove(finalTargetPos, snapBackDuration).SetEase(snapBackEase);
         currentlyDraggedParent.DOScale(originalScale, snapBackDuration).SetEase(snapBackEase);
 
-        ToggleLastChildren(currentlyDraggedParent, false);
+        UpdateTrayLayers(currentlyDraggedParent, false);
         currentlyDraggedParent = null;
     }
 
@@ -785,15 +785,14 @@ public class GlobalTrayDragger : MonoBehaviour
             return Vector2.Distance(new Vector2(posA.x, posA.y), new Vector2(posB.x, posB.y));
     }
 
-    private void ToggleLastChildren(Transform parent, bool isActive)
+    private void UpdateTrayLayers(Transform parent, bool isDragging)
     {
+        // Change layer to "TraySelected" if actively dragging, else back to "Tray"
+        int targetLayer = LayerMask.NameToLayer(isDragging ? "TraySelected" : "Tray");
+
         foreach (Transform child in parent)
         {
-            if (child.childCount > 0)
-            {
-                Transform lastSubChild = child.GetChild(child.childCount - 1);
-                lastSubChild.gameObject.SetActive(isActive);
-            }
+            child.gameObject.layer = targetLayer;
         }
     }
 }

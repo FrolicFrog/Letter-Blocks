@@ -157,27 +157,37 @@ public class AdaptiveGridBackgroundPlacer : MonoBehaviour
     }
 
     /// <summary>
-    /// Looks at the actual instantiated child objects to find exactly where TopGridManager put the row.
+    /// Looks at the actual instantiated child objects to find exactly where TopGridManager put the center of the row.
     /// </summary>
     private Vector3 GetRowCenterWorldPosition(int rowIndex)
     {
         if (gridManager.transform.childCount == 0 || gridManager.columns == 0) return gridManager.transform.position;
 
         rowIndex = Mathf.Clamp(rowIndex, 0, gridManager.rows - 1);
-        int childIndex = 0;
+        int startChildIndex = 0;
 
         // Account for TopGridManager's build direction
         if (gridManager.startCorner == TopGridManager.StartCorner.BottomLeft)
         {
-            childIndex = rowIndex * gridManager.columns;
+            startChildIndex = rowIndex * gridManager.columns;
         }
         else
         {
-            childIndex = ((gridManager.rows - 1) - rowIndex) * gridManager.columns;
+            startChildIndex = ((gridManager.rows - 1) - rowIndex) * gridManager.columns;
         }
 
-        childIndex = Mathf.Clamp(childIndex, 0, gridManager.transform.childCount - 1);
-        return gridManager.transform.GetChild(childIndex).position;
+        // Get the start (left) and end (right) indices of this specific row
+        int endChildIndex = startChildIndex + (gridManager.columns - 1);
+
+        startChildIndex = Mathf.Clamp(startChildIndex, 0, gridManager.transform.childCount - 1);
+        endChildIndex = Mathf.Clamp(endChildIndex, 0, gridManager.transform.childCount - 1);
+
+        // Get world positions of the first and last tile in the row
+        Vector3 rowStartPos = gridManager.transform.GetChild(startChildIndex).position;
+        Vector3 rowEndPos = gridManager.transform.GetChild(endChildIndex).position;
+
+        // Return the exact horizontal center point of the row
+        return (rowStartPos + rowEndPos) / 2f;
     }
 
     /// <summary>

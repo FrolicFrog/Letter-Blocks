@@ -261,12 +261,7 @@ public class LevelManager : Manager<LevelManager>
                     Vector3 size = new Vector3(1, 2.4f, 1);
                     Vector3 pos = Vector3.zero;
 
-                    var trayOutline = Instantiate(wallsDirectionDict[dir], trayChunk.transform);
-                    trayOutline.transform.localPosition = Vector3.zero;
-                    trayOutline.transform.localScale = Vector3.one * 1.08f;
-                    Destroy(trayOutline.GetComponent<MeshCollider>());
-                    trayOutline.GetComponent<MeshRenderer>().material = trayOutlineMat;
-                    trayOutline.SetActive(false);
+                  
 
                     if (dir.left)
                     {

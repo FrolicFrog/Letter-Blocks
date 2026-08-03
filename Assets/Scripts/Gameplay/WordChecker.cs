@@ -236,7 +236,7 @@ public class WordChecker : MonoBehaviour
             block.localPosition = new Vector3(block.localPosition.x, block.localPosition.y, 0f);
             block.localRotation = Quaternion.identity;
 
-            if (block.childCount > 2) block.GetChild(2).gameObject.SetActive(true);
+            block.gameObject.layer = LayerMask.NameToLayer("Word");
             reservedGridSlots.Remove(matchedKey);
 
             if (TopGridManager.instance != null)
@@ -315,7 +315,10 @@ public class WordChecker : MonoBehaviour
                 {
                     queuedCube.localPosition = new Vector3(queuedCube.localPosition.x, queuedCube.localPosition.y, 0f);
                     queuedCube.localRotation = Quaternion.identity;
-                    if (queuedCube.childCount > 2) queuedCube.GetChild(2).gameObject.SetActive(true);
+                    if (queuedCube.childCount > 2)
+                        queuedCube.GetChild(2).gameObject.SetActive(true);
+                    else
+                        Debug.Log("No Child");
                     reservedGridSlots.Remove(key);
                 });
 
