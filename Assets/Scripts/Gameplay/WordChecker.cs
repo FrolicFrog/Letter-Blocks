@@ -180,13 +180,15 @@ public class WordChecker : MonoBehaviour
 
         MeshRenderer blockRenderer = block.GetComponent<MeshRenderer>();
         MeshRenderer slotRenderer = slotTransform.GetComponent<MeshRenderer>();
-
+        //   Debug.Log(slotRenderer.GetComponent<MeshRenderer>().materials.Length);
+       
         float jumpDuration = 0.45f;
 
         if (blockRenderer != null && slotRenderer != null)
         {
             Color targetColor = slotRenderer.material.color;
             blockRenderer.material.DOColor(targetColor, jumpDuration).SetEase(Ease.InOutQuad).SetLink(block.gameObject);
+            slotRenderer.GetComponent<MeshRenderer>().materials[1].DOColor(Color.green, jumpDuration/2f).SetEase(Ease.InOutBack);
         }
 
         // DOTWEEN CRASH FIX: Checks if the object still exists before animating safely.
@@ -271,9 +273,10 @@ public class WordChecker : MonoBehaviour
                 if (blockRenderer != null && slotRenderer != null)
                 {
                     blockRenderer.material.DOColor(slotRenderer.material.color, jumpDuration).SetEase(Ease.InOutQuad).SetLink(queuedCube.gameObject);
+          
                 }
 
-                // DOTWEEN CRASH FIX: Checking existence before triggering the tween.
+
                 DOVirtual.DelayedCall(jumpDuration - 0.15f, () =>
                 {
                     if (slot != null)
@@ -334,9 +337,8 @@ public class WordChecker : MonoBehaviour
         var lvlManager = LevelManager.Instance;
         int columns = grid.columns;
 
-        // FIXED: Reversing the loop to check Bottom-to-Top
-        int startRow = Mathf.Max(0, grid.rows - 3); // The bottom row of the active 3
-        int endRow = grid.rows - 1;                 // The top row of the active 3
+        int startRow = Mathf.Max(0, grid.rows - 3); 
+        int endRow = grid.rows - 1;                 
 
         for (int row = startRow; row <= endRow; row++)
         {
@@ -349,7 +351,7 @@ public class WordChecker : MonoBehaviour
                     int index = key.x * columns + key.y;
                     Transform candidateSlot = grid.transform.GetChild(index).GetChild(1);
 
-                    // FIXED: Claim it immediately so other logic treats it as "incoming" but NOT "finished"
+                   
                     lvlManager.excludedChar.Remove(key);
                     reservedGridSlots.Add(key);
 
@@ -558,16 +560,16 @@ public class WordChecker : MonoBehaviour
             float centerIndex = (blockCount - 1) / 2f;
             string wordCategoryTarget = blocksInWord[0].category;
 
-            if (lvlManager.wordCategory != null && !string.IsNullOrEmpty(wordCategoryTarget))
+            if (lvlManager.wordsCategory != null && !string.IsNullOrEmpty(wordCategoryTarget))
             {
-                string dictKey = lvlManager.wordCategory.Keys.FirstOrDefault(k => k.Trim().Equals(wordCategoryTarget.Trim(), System.StringComparison.OrdinalIgnoreCase));
+                string dictKey = lvlManager.wordsCategory.Keys.FirstOrDefault(k => k.Trim().Equals(wordCategoryTarget.Trim(), System.StringComparison.OrdinalIgnoreCase));
                 if (dictKey != null)
                 {
                     string baseWord = word;
                     if (baseWord.Contains("_")) baseWord = baseWord.Substring(0, baseWord.IndexOf('_'));
                     if (baseWord.Contains("#")) baseWord = baseWord.Substring(0, baseWord.IndexOf('#'));
 
-                    var wordList = lvlManager.wordCategory[dictKey];
+                    var wordList = lvlManager.wordsCategory[dictKey];
                     string matchedItem = wordList.FirstOrDefault(w => w.Trim().Equals(baseWord.Trim(), System.StringComparison.OrdinalIgnoreCase));
                     if (matchedItem != null)
                     {
@@ -689,18 +691,39 @@ public class WordChecker : MonoBehaviour
                                                 if (!string.IsNullOrEmpty(remainingCat) && remainingCat.Trim().Equals(capturedCategory.Trim(), System.StringComparison.OrdinalIgnoreCase))
                                                 {
                                                     categoryHasActiveWordsLeft = true;
+                                                    
                                                     break;
                                                 }
                                             }
                                         }
                                     }
                                 }
-
-                                if (!categoryHasActiveWordsLeft && isLastLetter)
+                                if (isLastLetter)
                                 {
-                                    if (targetUITransform.childCount > 1)
+                                    if (!categoryHasActiveWordsLeft)
                                     {
-                                        targetUITransform.GetChild(1).gameObject.SetActive(true);
+                                        if (targetUITransform.childCount > 2)
+                                        {
+                                            targetUITransform.GetChild(1).gameObject.SetActive(false);
+                                            targetUITransform.GetChild(2).gameObject.SetActive(true);
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var tmp = targetUITransform.GetChild(1).GetComponent<TextMeshProUGUI>();
+                                        string uiCategoryText = targetUITransform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
+
+                                        foreach (var key in lvlManager.wordsCategory.Keys)
+                                        {
+                                            // Compare the dictionary Key (Category) with the UI Category Text
+                                            if (key.Trim().Equals(uiCategoryText.Trim(), System.StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                tmp.text = lvlManager.wordsCategory[key].Count.ToString();
+                                               
+                                                break;
+                                            }
+                                        }
                                     }
                                 }
                             }

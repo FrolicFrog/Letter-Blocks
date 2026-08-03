@@ -37,8 +37,7 @@ public class LevelManager : Manager<LevelManager>
     public Dictionary<Vector2Int, string> cellCategory = new(), cellTexts = new(),trayCells=new(),trayName = new();
     public Dictionary<string, Material> categoryColors = new(),trayColors = new();
     public Dictionary<string, List<Vector2Int>> wordPositions = new();
-    public Dictionary<Vector2Int, List<Vector2Int>> chainedLetters = new();
-    public Dictionary<string, List<string>> wordCategory = new();
+    public Dictionary<string, List<string>> wordsCategory = new();
 
 
     [HideInInspector] public int hearts;
@@ -80,14 +79,16 @@ public class LevelManager : Manager<LevelManager>
         trayColors =_LevelData.trayColors.ToDictionary(item=>item.Key,item=>item.Value);
         resultManager.timer = _LevelData.timer;
         resultManager.time = _LevelData.minutes*60+_LevelData.seconds;
+
+
         foreach (var item in CurLvlData.wordPositions)
         {
-            wordPositions[item.Key] = item.Value;
+            wordPositions[item.Key] = new List<Vector2Int>( item.Value);
         }
-  
-        foreach (var item in CurLvlData.wordCategory)
+        foreach (var item in _LevelData.wordCategory)
         {
-            wordCategory[item.Key] = item.Value;
+            // Create a NEW list using the values from the ScriptableObject
+            wordsCategory[item.Key] = new List<string>(item.Value);
         }
 
 
@@ -120,7 +121,11 @@ public class LevelManager : Manager<LevelManager>
         {
            var heading= Instantiate(categoryHeading, categoryHeadingParent);
             heading.GetComponent<Image>().sprite = _colorSprite[categoryColors[category]];
-            heading.GetComponentInChildren<TextMeshProUGUI>().text = category;
+            heading.GetComponentsInChildren<TextMeshProUGUI>()[0].text = category;
+            Debug.Log(wordsCategory[category].Count);
+            heading.GetComponentsInChildren<TextMeshProUGUI>()[1].text =  wordsCategory[category].Count.ToString();
+
+           
         }
 
     }
