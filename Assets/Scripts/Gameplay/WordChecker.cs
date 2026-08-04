@@ -8,7 +8,13 @@ using TMPro;
 public class WordChecker : MonoBehaviour
 {
     public static WordChecker instance;
-    private bool isProcessing = false;
+
+    // Tracks if the whole loop is running (used to prevent double-starts)
+    public bool isProcessing = false;
+
+    // NEW FIX: Specifically tracks ONLY the gravity/shifting phase for the Tray Dragger
+    public bool isShifting = false;
+
     private bool dictionarySeparated = false;
 
     // Tracks slots that have pieces incoming so multiple don't go to the same spot
@@ -190,8 +196,12 @@ public class WordChecker : MonoBehaviour
         if (blockRenderer != null && slotRenderer != null)
         {
             Color targetColor = slotRenderer.material.color;
-            blockRenderer.material.DOColor(targetColor, trayJumpDuration/2).SetEase(Ease.InOutQuad).SetLink(block.gameObject);
-            slotRenderer.GetComponent<MeshRenderer>().materials[1].DOColor(Color.green, trayJumpDuration / 2f).SetEase(Ease.InOutBack);
+            blockRenderer.material.DOColor(targetColor, trayJumpDuration / 2).SetEase(Ease.InOutQuad).SetLink(block.gameObject);
+
+            if (slotRenderer.materials.Length > 1)
+            {
+                slotRenderer.materials[1].DOColor(Color.green, trayJumpDuration / 2f).SetEase(Ease.InOutBack);
+            }
         }
 
         DOVirtual.DelayedCall(trayJumpDuration - 0.15f, () =>
@@ -341,12 +351,19 @@ public class WordChecker : MonoBehaviour
             {
                 if (gravityNeeded)
                 {
+                    // NEW FIX: Tell the Tray Dragger that we are literally shifting blocks now!
+                    isShifting = true;
+
                     yield return StartCoroutine(WaitForGridStability());
                     Sequence gravitySeq = ApplyGravity(columns);
                     if (gravitySeq != null)
                     {
                         yield return gravitySeq.WaitForCompletion();
                     }
+
+                    // NEW FIX: Tell the Tray Dragger that gravity is finished.
+                    isShifting = false;
+
                     gravityNeeded = false;
                 }
                 else
@@ -359,6 +376,7 @@ public class WordChecker : MonoBehaviour
         }
 
         isProcessing = false;
+        isShifting = false; // Failsafe
     }
 
     private bool HasFlyingBlocks()

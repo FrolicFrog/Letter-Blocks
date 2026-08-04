@@ -79,7 +79,7 @@ public class LevelManager : Manager<LevelManager>
         trayColors =_LevelData.trayColors.ToDictionary(item=>item.Key,item=>item.Value);
         resultManager.timer = _LevelData.timer;
         resultManager.time = _LevelData.minutes*60+_LevelData.seconds;
-
+        letterGridManager.screenPadding = _LevelData.bottomGridSize;
 
         foreach (var item in CurLvlData.wordPositions)
         {

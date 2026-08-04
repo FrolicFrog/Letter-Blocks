@@ -6,7 +6,7 @@ public class LevelData : ScriptableObject
 {
     public bool timer = true;
     public int LevelNumber,rows,columns,height,width,minutes,seconds;
-    public float bottomGridSize=.6f;
+    public float bottomGridSize=.08f;
     public Material categoryMaterial;
     public List<string> words = new(),tray = new();
     public List<Vector2Int> excludedChar = new(),blockedCells = new();

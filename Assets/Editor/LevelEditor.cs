@@ -11,11 +11,12 @@ public class LevelEditor : EditorWindow
     private int columns = 8;
     private int height = 8; // Bottom Grid Rows
     private int width = 8;  // Bottom Grid Columns
-    private float bottomGridSize = 0.6f; // Bottom Grid Scale Factor
+   
     private int minutes = 1, seconds = 30;
     private bool timer = true;
     private float gap = 2f;
     private float horizontalMargin = 20f;
+    private float screenPadding = 0.08f;
 
     public List<string> tray = new List<string> { "Tray 1" };
     [StringDropdown("Data/Categories.txt")]
@@ -187,7 +188,7 @@ public class LevelEditor : EditorWindow
             CurLvlNum = EditorGUILayout.IntSlider("Level Number :", CurLvlNum, 1, 100);
             if (EditorGUI.EndChangeCheck())
             {
-                bottomGridSize = 0.6f;
+                screenPadding = 0.08f;
                 categoryMaterial = null;
                 minutes = 1;
                 seconds = 30;
@@ -281,7 +282,7 @@ public class LevelEditor : EditorWindow
         currentData.rows = rows;
         currentData.height = height;
         currentData.width = width;
-        currentData.bottomGridSize = bottomGridSize;
+        currentData.bottomGridSize = screenPadding;
         currentData.minutes = minutes;
         currentData.seconds = seconds;
         currentData.timer = timer;
@@ -328,7 +329,7 @@ public class LevelEditor : EditorWindow
         columns = CurLvlData.columns;
         height = CurLvlData.height;
         width = CurLvlData.width;
-        bottomGridSize = CurLvlData.bottomGridSize;
+        screenPadding = CurLvlData.bottomGridSize;
         minutes = CurLvlData.minutes;
         seconds = CurLvlData.seconds;
         timer = CurLvlData.timer;
@@ -412,10 +413,10 @@ public class LevelEditor : EditorWindow
         GUILayout.Space(30);
 
         // --- Bottom Grid Controls & Display ---
-        bottomGridSize = EditorGUILayout.Slider("Bottom Grid Size", bottomGridSize, 0.05f, 1f);
+        
         height = EditorGUILayout.IntSlider("Bottom Grid Rows", height, 1, 20);
         width = EditorGUILayout.IntSlider("Bottom Grid Columns", width, 1, 20);
-
+        screenPadding = EditorGUILayout.Slider("Screen Padding", screenPadding, 0, 0.5f);
         window.Update();
         GUILayout.BeginHorizontal();
 

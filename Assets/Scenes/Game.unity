@@ -1192,6 +1192,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e05feb500903e458dd35c9e108dda1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isProcessing: 0
+  isShifting: 0
   trayJumpDuration: 0.55
   trayJumpPower: 16
   trayFlightScaleMultiplier: 1.6
@@ -1209,7 +1211,7 @@ MonoBehaviour:
   uiPopScale: {x: 1.15, y: 1.15, z: 1}
   uiPopDuration: 0.15
   arcRadius: -12
-  arcSpacingX: 2.65
+  arcSpacingX: 2.5
   arcScaleUp: 1.15
   arcHeightOffset: 2.5
   gravityShrinkScale: 0.6
@@ -1772,7 +1774,7 @@ MonoBehaviour:
   topWallTriggerOffset: 0.2
   staggeredJumpDelay: 0.4
   shiftDuration: 0.3
-  boundaryPadding: 0.15
+  boundaryPadding: 0.8
   dragOffset: 0
   dragScaleMultiplier: 1.1
   scaleUpDuration: 0.15
