@@ -190,7 +190,7 @@ public class WordChecker : MonoBehaviour
         if (blockRenderer != null && slotRenderer != null)
         {
             Color targetColor = slotRenderer.material.color;
-            blockRenderer.material.DOColor(targetColor, trayJumpDuration).SetEase(Ease.InOutQuad).SetLink(block.gameObject);
+            blockRenderer.material.DOColor(targetColor, trayJumpDuration/2).SetEase(Ease.InOutQuad).SetLink(block.gameObject);
             slotRenderer.GetComponent<MeshRenderer>().materials[1].DOColor(Color.green, trayJumpDuration / 2f).SetEase(Ease.InOutBack);
         }
 

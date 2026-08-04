@@ -846,7 +846,7 @@ MonoBehaviour:
     Value: {fileID: 21300000, guid: 95162cf693b20a440ab9c5248adccaf7, type: 3}
   - Key: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
     Value: {fileID: 21300000, guid: ddf4c8a1263b12e429c13c51cf37ddb3, type: 3}
-  TestLevelToLoad: 2
+  TestLevelToLoad: 1
   hearts: 0
 --- !u!1001 &795219532
 PrefabInstance:
@@ -1193,9 +1193,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trayJumpDuration: 0.55
-  trayJumpPower: 5
+  trayJumpPower: 16
   trayFlightScaleMultiplier: 1.6
-  trayJumpEase: 35
+  trayJumpEase: 7
   destructionDelay: 0.3
   popDuration: 0.1
   categoryUIParent: {fileID: 1855233887}
@@ -1627,7 +1627,7 @@ MonoBehaviour:
   cell2: {fileID: 5005995568649371615, guid: 9075fcc95992fef48a80f12e75924168, type: 3}
   outline: {fileID: 8509616348565672096, guid: 508243c1116372642b436efaaae6de97, type: 3}
   letter: {fileID: 2816542064667801392, guid: 51bccfbfc2d0f224188ec1460a5a050c, type: 3}
-  blockWall: {fileID: 4865700692335665741, guid: 3613f2c864059f44b825424ca35be49a,
+  blockWall: {fileID: 4603154671305583394, guid: 835a3ce724f49334c9fd32eaec48d46e,
     type: 3}
   wallsDirection:
   - mesh: {fileID: 1559360252519569411, guid: d68d823a0670b604b9899d12a32c585e, type: 3}

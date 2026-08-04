@@ -201,7 +201,7 @@ public class LevelManager : Manager<LevelManager>
                 {
                     var blockWall = Instantiate(letterGridManager.blockWall, gridChild);
                     blockWall.transform.localPosition = Vector3.zero;
-                    blockWall.transform.localScale = new Vector3(1f, 2, 1f);
+                    blockWall.transform.localScale = new Vector3(1.5f, 2, 1.4f);
                 }
 
             }
