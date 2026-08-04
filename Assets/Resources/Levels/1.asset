@@ -16,12 +16,12 @@ MonoBehaviour:
   LevelNumber: 1
   rows: 10
   columns: 8
-  height: 8
-  width: 7
+  height: 4
+  width: 4
   minutes: 1
   seconds: 0
-  bottomGridSize: 0.105
-  categoryMaterial: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
+  bottomGridSize: 0.14
+  categoryMaterial: {fileID: 0}
   words:
   - BRAZIL
   - TIGER
@@ -307,58 +307,14 @@ MonoBehaviour:
   - Key: {x: 9, y: 6}
     Value: A
   trayCells:
-  - Key: {x: 3, y: 3}
-    Value: A
-  - Key: {x: 2, y: 3}
-    Value: G
-  - Key: {x: 2, y: 4}
-    Value: M
-  - Key: {x: 1, y: 4}
-    Value: J
-  - Key: {x: 5, y: 5}
-    Value: P
-  - Key: {x: 6, y: 6}
-    Value: S
-  - Key: {x: 7, y: 2}
-    Value: O
-  - Key: {x: 5, y: 3}
+  - Key: {x: 1, y: 1}
     Value: H
-  - Key: {x: 6, y: 3}
+  - Key: {x: 1, y: 0}
     Value: N
-  - Key: {x: 6, y: 2}
-    Value: N
-  - Key: {x: 6, y: 5}
-    Value: O
-  - Key: {x: 1, y: 3}
-    Value: R
-  - Key: {x: 7, y: 6}
-    Value: E
   trayName:
-  - Key: {x: 3, y: 3}
-    Value: Tray 4
-  - Key: {x: 2, y: 3}
-    Value: Tray 4
-  - Key: {x: 2, y: 4}
-    Value: Tray 4
-  - Key: {x: 1, y: 4}
-    Value: Tray 4
-  - Key: {x: 5, y: 5}
-    Value: Tray 2
-  - Key: {x: 6, y: 6}
-    Value: Tray 2
-  - Key: {x: 7, y: 2}
-    Value: Tray 3
-  - Key: {x: 5, y: 3}
-    Value: Tray 3
-  - Key: {x: 6, y: 3}
-    Value: Tray 3
-  - Key: {x: 6, y: 2}
-    Value: Tray 3
-  - Key: {x: 6, y: 5}
-    Value: Tray 2
-  - Key: {x: 1, y: 3}
-    Value: Tray 4
-  - Key: {x: 7, y: 6}
+  - Key: {x: 1, y: 1}
+    Value: Tray 1
+  - Key: {x: 1, y: 0}
     Value: Tray 2
   categoryColors:
   - Key: Animal

@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 0
   bottomGridSize: 0.081
-  categoryMaterial: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - BRAZIL
   - TIGER
