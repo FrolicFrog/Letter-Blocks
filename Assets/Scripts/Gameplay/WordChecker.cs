@@ -711,7 +711,7 @@ public class WordChecker : MonoBehaviour
                                     }
                                     else
                                     {
-                                        var tmp = targetUITransform.GetChild(1).GetComponent<TextMeshProUGUI>();
+                                        var tmp = targetUITransform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
                                         string uiCategoryText = targetUITransform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
 
                                         foreach (var key in lvlManager.wordsCategory.Keys)

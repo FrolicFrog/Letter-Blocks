@@ -124,8 +124,9 @@ public class LevelManager : Manager<LevelManager>
             heading.GetComponentsInChildren<TextMeshProUGUI>()[0].text = category;
             Debug.Log(wordsCategory[category].Count);
             heading.GetComponentsInChildren<TextMeshProUGUI>()[1].text =  wordsCategory[category].Count.ToString();
+            heading.transform.GetChild(1).GetComponent<Image>().color = categoryColors[category].color;
 
-           
+
         }
 
     }
