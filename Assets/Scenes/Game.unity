@@ -1192,6 +1192,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e05feb500903e458dd35c9e108dda1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trayJumpDuration: 0.55
+  trayJumpPower: 5
+  trayFlightScaleMultiplier: 1.6
+  trayJumpEase: 35
   destructionDelay: 0.3
   popDuration: 0.1
   categoryUIParent: {fileID: 1855233887}
