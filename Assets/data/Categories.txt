@@ -2,18 +2,4 @@ Animal
 Flower
 Country
 Breakfast
-aqua
-dark green
-deep blue
-green
-grey
-light blue
-magenta
-mulberry
-orange
-pink
-purple
-red
-sapphire
-turquoise
-yellow
+Fruit
