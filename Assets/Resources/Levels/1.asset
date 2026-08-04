@@ -337,10 +337,10 @@ MonoBehaviour:
     Value: M
   - Key: {x: 1, y: 4}
     Value: J
-  - Key: {x: 7, y: 6}
-    Value: S
-  - Key: {x: 6, y: 5}
+  - Key: {x: 5, y: 5}
     Value: P
+  - Key: {x: 6, y: 6}
+    Value: S
   - Key: {x: 7, y: 2}
     Value: O
   - Key: {x: 5, y: 3}
@@ -349,12 +349,12 @@ MonoBehaviour:
     Value: N
   - Key: {x: 6, y: 2}
     Value: N
-  - Key: {x: 6, y: 6}
-    Value: E
+  - Key: {x: 6, y: 5}
+    Value: O
   - Key: {x: 1, y: 3}
     Value: R
-  - Key: {x: 5, y: 5}
-    Value: O
+  - Key: {x: 7, y: 6}
+    Value: E
   trayName:
   - Key: {x: 3, y: 3}
     Value: Tray 4
@@ -364,10 +364,10 @@ MonoBehaviour:
     Value: Tray 4
   - Key: {x: 1, y: 4}
     Value: Tray 4
-  - Key: {x: 7, y: 6}
-    Value: Tray 3
-  - Key: {x: 6, y: 5}
-    Value: Tray 3
+  - Key: {x: 5, y: 5}
+    Value: Tray 2
+  - Key: {x: 6, y: 6}
+    Value: Tray 2
   - Key: {x: 7, y: 2}
     Value: Tray 3
   - Key: {x: 5, y: 3}
@@ -376,12 +376,12 @@ MonoBehaviour:
     Value: Tray 3
   - Key: {x: 6, y: 2}
     Value: Tray 3
-  - Key: {x: 6, y: 6}
-    Value: Tray 3
+  - Key: {x: 6, y: 5}
+    Value: Tray 2
   - Key: {x: 1, y: 3}
     Value: Tray 4
-  - Key: {x: 5, y: 5}
-    Value: Tray 3
+  - Key: {x: 7, y: 6}
+    Value: Tray 2
   categoryColors:
   - Key: Animal
     Value: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
