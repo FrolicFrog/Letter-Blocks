@@ -53,7 +53,11 @@ MonoBehaviour:
   - {x: 8, y: 2}
   - {x: 9, y: 3}
   - {x: 9, y: 5}
-  blockedCells: []
+  blockedCells:
+  - {x: 2, y: 2}
+  - {x: 2, y: 3}
+  - {x: 2, y: 0}
+  - {x: 2, y: 6}
   wordCategory:
   - Key: Country
     Value:
