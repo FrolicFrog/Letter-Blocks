@@ -6,21 +6,17 @@ TagManager:
   tags:
   - Plane
   - Cube
-  - Belt
-  - Heart
-  - Queue
-  - Block
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Tray
+  - Word
   - Water
   - UI
+  - Tray
+  - TraySelected
   - Block
   - Wall
-  - Word
-  - TraySelected
   - 
   - 
   - 

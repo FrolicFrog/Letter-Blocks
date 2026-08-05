@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7044799506461306475}
   - component: {fileID: 8697065270099253687}
   - component: {fileID: 8943387240745019601}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 1842585213571387027}
   - component: {fileID: 8258542384557365517}
   - component: {fileID: 8819185500771844241}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Tile letter
   m_TagString: Cube
   m_Icon: {fileID: 0}
@@ -317,7 +317,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3164847601773695637}
   - component: {fileID: 6032749731951127164}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

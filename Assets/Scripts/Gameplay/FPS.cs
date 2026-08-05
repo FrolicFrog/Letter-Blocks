@@ -1,23 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using TMPro;
+
 
 public class FPS : MonoBehaviour
 {
     float timer;
     int fps;
     TextMeshProUGUI tmp;
-   
-    private void Start()
+
+
+    void Start()
     {
         tmp = GetComponent<TextMeshProUGUI>();
+        QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 500;
+        RenderPipelineAsset currentAsset = GraphicsSettings.currentRenderPipeline;
+
+      
     }
+
+
     private void Update()
     {
       
-        if(timer >= .9f)
+        if(timer >= 1f)
         {
             tmp.text = fps.ToString();
             timer = 0;
