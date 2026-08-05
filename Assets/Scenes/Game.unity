@@ -812,8 +812,8 @@ MonoBehaviour:
   categoryHeadingParent: {fileID: 1855233887}
   levelText: {fileID: 1825650881}
   borderMaterial: {fileID: 2100000, guid: 0281333be7b0a9349babf1c3f80a07a4, type: 2}
-  trayMaterial: {fileID: 2100000, guid: 8d16376db75a59d48b9abbe65483552c, type: 2}
-  boxMaterial: {fileID: 2100000, guid: c5bc1b060dce35940b02af2174c398e4, type: 2}
+  trayMaterial: {fileID: 2100000, guid: d18d9efa4d68cc94382408f4900c9d75, type: 2}
+  boxMaterial: {fileID: 2100000, guid: cd1310db1c5b9c14aa82b65e44c4d216, type: 2}
   trayOutlineMat: {fileID: 2100000, guid: dfb0e59f768f18540a92e3b5ee5394c3, type: 2}
   colorSprite:
   - Key: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
@@ -1746,7 +1746,7 @@ Grid:
   m_GameObject: {fileID: 1661794637}
   m_Enabled: 1
   m_CellSize: {x: 1, y: 1, z: 1}
-  m_CellGap: {x: 2, y: 2, z: 0}
+  m_CellGap: {x: 2, y: 2.15, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 1
 --- !u!114 &1661794641

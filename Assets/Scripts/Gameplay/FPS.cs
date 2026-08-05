@@ -16,7 +16,7 @@ public class FPS : MonoBehaviour
     private void Update()
     {
       
-        if(timer >= 1)
+        if(timer >= .9f)
         {
             tmp.text = fps.ToString();
             timer = 0;
