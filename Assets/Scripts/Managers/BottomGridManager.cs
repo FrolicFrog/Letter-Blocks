@@ -19,7 +19,7 @@ public class BottomGridManager : MonoBehaviour
 
     [Header("Slot & Tray References")]
     public GameObject emptySlot;
-    public GameObject cell1, cell2, outline, letter,blockWall;
+    public GameObject cell1, cell2, outline, letter, blockWall;
     public List<WallDirectionPair> wallsDirection;
 
     [Header("Center Border Settings")]
@@ -398,24 +398,20 @@ public class BottomGridManager : MonoBehaviour
                     );
                 }
 
+                // STRICTLY ONLY checking the centerObject itself, ignoring children
                 SpriteRenderer sr = centerObject.GetComponent<SpriteRenderer>();
-                if (sr == null) sr = centerObject.GetComponentInChildren<SpriteRenderer>();
-
                 MeshFilter mf = centerObject.GetComponent<MeshFilter>();
-                if (mf == null) mf = centerObject.GetComponentInChildren<MeshFilter>();
 
                 if (sr != null && sr.drawMode != SpriteDrawMode.Simple)
                 {
+                    // Reset the scale to 1 on X and Y, maintaining Z
+                    centerObject.transform.localScale = new Vector3(1f, 1f, targetLocalSize.z > 0 ? targetLocalSize.z : centerObject.transform.localScale.z);
                     sr.size = new Vector2(targetLocalSize.x, targetLocalSize.y);
-                    if (borderPadding.z != 0f)
-                    {
-                        Vector3 currentScale = centerObject.transform.localScale;
-                        centerObject.transform.localScale = new Vector3(currentScale.x, currentScale.y, targetLocalSize.z);
-                    }
                 }
                 else if (sr != null && sr.sprite != null)
                 {
                     Vector2 spriteSize = sr.sprite.rect.size / sr.sprite.pixelsPerUnit;
+
                     if (spriteSize.x > 0 && spriteSize.y > 0)
                     {
                         centerObject.transform.localScale = new Vector3(
@@ -428,6 +424,7 @@ public class BottomGridManager : MonoBehaviour
                 else if (mf != null && mf.sharedMesh != null)
                 {
                     Vector3 meshSize = mf.sharedMesh.bounds.size;
+
                     float scaleX = meshSize.x > 0f ? targetLocalSize.x / meshSize.x : targetLocalSize.x;
                     float scaleY = meshSize.y > 0f ? targetLocalSize.y / meshSize.y : targetLocalSize.y;
                     float scaleZ = (meshSize.z > 0f && totalOuterDepth > 0f) ? targetLocalSize.z / meshSize.z : centerObject.transform.localScale.z;
@@ -436,6 +433,7 @@ public class BottomGridManager : MonoBehaviour
                 }
                 else
                 {
+                    // Fallback to directly setting local scale if no relevant visual component is found
                     centerObject.transform.localScale = targetLocalSize;
                 }
             }

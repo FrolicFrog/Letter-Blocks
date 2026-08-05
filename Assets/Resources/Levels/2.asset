@@ -16,7 +16,7 @@ MonoBehaviour:
   LevelNumber: 2
   rows: 10
   columns: 8
-  height: 8
+  height: 9
   width: 8
   minutes: 1
   seconds: 0
@@ -54,7 +54,7 @@ MonoBehaviour:
   - {x: 9, y: 3}
   - {x: 9, y: 5}
   blockedCells:
-  - {x: 2, y: 6}
+  - {x: 0, y: 4}
   wordCategory:
   - Key: Country
     Value:

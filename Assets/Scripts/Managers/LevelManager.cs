@@ -15,7 +15,7 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private TopGridManager gridManager;
     [SerializeField] private BottomGridManager letterGridManager;
     [SerializeField] private ResultManager resultManager;
-    [SerializeField] private GameObject categoryHeading;
+    [SerializeField] private GameObject categoryHeading,arrow;
     [SerializeField] private Transform categoryHeadingParent;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial,trayOutlineMat;
@@ -321,6 +321,23 @@ public class LevelManager : Manager<LevelManager>
            
         }
       
+        for(int i = 0;i<letterGridManager.width;i++)
+        {
+            var arr = Instantiate(arrow, letterGridManager.centerObject.transform);
+            arr.transform.localPosition = new Vector3(-0.5f, 2.95f, 5.4f);
+        }
+        letterGridManager.centerObject.GetComponent<ArrowAdjust>().DistributeObjects();
+
+        for (int i = 0; i < letterGridManager.width; i++)
+        {
+            var key =new Vector2Int(0, i);
+
+            if(blockedCells.Contains(key))
+            {
+               
+                Destroy(letterGridManager.centerObject.transform.GetChild(i).gameObject);
+            }
+        }
     }
     public GameObject ReplaceGameObject(GameObject oldObject, GameObject prefab)
     {
