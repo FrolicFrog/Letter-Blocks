@@ -1,5 +1,7 @@
-Animal
 Flower
 Country
 Breakfast
 Fruit
+Colors
+Food
+Animals
