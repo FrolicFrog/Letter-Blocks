@@ -36,9 +36,10 @@ Shader "Hidden/SimpleOutlineShader"
             TEXTURE2D(_OutlineMaskTexture);
             SAMPLER(sampler_OutlineMaskTexture);
 
-            float4 _MainTex_TexelSize;
-            float _OutlineThickness;
-            float4 _OutlineColor;
+            // OPTIMIZATION: Converted all floats to half for mobile GPU speed
+            half4 _MainTex_TexelSize;
+            half _OutlineThickness;
+            half4 _OutlineColor;
 
             Varyings vert(Attributes input)
             {
@@ -50,45 +51,43 @@ Shader "Hidden/SimpleOutlineShader"
 
             half4 frag(Varyings input) : SV_Target
             {
-                half4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv);
+                // Early outs remain the same, they are already highly optimized
+                half4 maskCenter = SAMPLE_TEXTURE2D(_OutlineMaskTexture, sampler_OutlineMaskTexture, input.uv);
                 
-                float4 maskCenter = SAMPLE_TEXTURE2D(_OutlineMaskTexture, sampler_OutlineMaskTexture, input.uv);
-                
-                // If this pixel is Green (the Blocker layer), immediately abort.
-                if (maskCenter.g > 0.5) return col;
+                // If this pixel is Green (the Blocker layer) or Red (the Target object), immediately abort.
+                if (maskCenter.g > 0.5h || maskCenter.r > 0.5h) 
+                {
+                    return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv);
+                }
 
-                // If this pixel is Red (the Target object), immediately abort.
-                if (maskCenter.r > 0.5) return col;
-
-                // Calculate orthogonal offsets
-                float2 offsetX = float2(_MainTex_TexelSize.x * _OutlineThickness, 0);
-                float2 offsetY = float2(0, _MainTex_TexelSize.y * _OutlineThickness);
+                // Calculate orthogonal offsets using half precision
+                half2 offsetX = half2(_MainTex_TexelSize.x * _OutlineThickness, 0.0h);
+                half2 offsetY = half2(0.0h, _MainTex_TexelSize.y * _OutlineThickness);
                 
-                // Calculate diagonal offsets (multiplied by 0.707 to maintain a perfect circular radius)
-                float2 offsetDiag1 = float2(offsetX.x, offsetY.y) * 0.707;
-                float2 offsetDiag2 = float2(offsetX.x, -offsetY.y) * 0.707;
+                // Calculate diagonal offsets
+                half2 offsetDiag1 = half2(offsetX.x, offsetY.y) * 0.707h;
+                half2 offsetDiag2 = half2(offsetX.x, -offsetY.y) * 0.707h;
                 
-                float edge = 0;
+                half edge = 0.0h;
                 
-                // 1. Check Orthogonal Edges (Up, Down, Left, Right)
+                // Check Orthogonal Edges (Up, Down, Left, Right)
                 edge += SAMPLE_TEXTURE2D(_OutlineMaskTexture, sampler_OutlineMaskTexture, input.uv + offsetX).r;
                 edge += SAMPLE_TEXTURE2D(_OutlineMaskTexture, sampler_OutlineMaskTexture, input.uv - offsetX).r;
                 edge += SAMPLE_TEXTURE2D(_OutlineMaskTexture, sampler_OutlineMaskTexture, input.uv + offsetY).r;
                 edge += SAMPLE_TEXTURE2D(_OutlineMaskTexture, sampler_OutlineMaskTexture, input.uv - offsetY).r;
                 
-                // 2. Check Diagonal Edges (Corners) to fill in the gaps
+                // Check Diagonal Edges (Corners)
                 edge += SAMPLE_TEXTURE2D(_OutlineMaskTexture, sampler_OutlineMaskTexture, input.uv + offsetDiag1).r;
                 edge += SAMPLE_TEXTURE2D(_OutlineMaskTexture, sampler_OutlineMaskTexture, input.uv - offsetDiag1).r;
                 edge += SAMPLE_TEXTURE2D(_OutlineMaskTexture, sampler_OutlineMaskTexture, input.uv + offsetDiag2).r;
                 edge += SAMPLE_TEXTURE2D(_OutlineMaskTexture, sampler_OutlineMaskTexture, input.uv - offsetDiag2).r;
                 
-                // If we detected a red pixel anywhere in the radius, draw the outline
-                if (edge > 0.1) 
+                if (edge > 0.1h) 
                 {
                     return _OutlineColor;
                 }
                 
-                return col;
+                return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv);
             }
             ENDHLSL
         }

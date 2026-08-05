@@ -26,7 +26,8 @@ public class LayeredOutlineFeature : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        if (outlinePass.SetupMaterials())
+        // Only enqueue if we successfully created materials AND we actually have layers selected
+        if (outlinePass.SetupMaterials() && (settings.outlineLayerMask != 0 || settings.blockerLayerMask != 0))
         {
             renderer.EnqueuePass(outlinePass);
         }
@@ -34,28 +35,37 @@ public class LayeredOutlineFeature : ScriptableRendererFeature
 
     class OutlinePass : ScriptableRenderPass
     {
-        private OutlineSettings settings;
+        private readonly OutlineSettings settings;
         private Material outlineShaderMaterial;
         private Material drawOutlineMaterial;
         private Material drawBlockerMaterial;
 
         private RenderTargetIdentifier cameraColorTarget;
-        private int maskTextureID = Shader.PropertyToID("_OutlineMaskTexture");
-        private int tempTargetID = Shader.PropertyToID("_TempCameraColor");
 
-        private ShaderTagId[] shaderTags;
+        // Cached Property IDs (Extremely fast for mobile compared to string lookups)
+        private static readonly int MaskTextureID = Shader.PropertyToID("_OutlineMaskTexture");
+        private static readonly int TempTargetID = Shader.PropertyToID("_TempCameraColor");
+        private static readonly int OutlineColorID = Shader.PropertyToID("_OutlineColor");
+        private static readonly int OutlineThicknessID = Shader.PropertyToID("_OutlineThickness");
+        private static readonly int BaseColorID = Shader.PropertyToID("_BaseColor");
+        private static readonly int SrcBlendID = Shader.PropertyToID("_SrcBlend");
+        private static readonly int DstBlendID = Shader.PropertyToID("_DstBlend");
+        private static readonly int ZWriteID = Shader.PropertyToID("_ZWrite");
+
+        // Static readonly arrays prevent Garbage Collection allocations during gameplay
+        private static readonly ShaderTagId[] ShaderTags = {
+            new ShaderTagId("UniversalForward"),
+            new ShaderTagId("UniversalForwardOnly"),
+            new ShaderTagId("LightweightForward"),
+            new ShaderTagId("SRPDefaultUnlit"),
+            new ShaderTagId("Universal2D")
+        };
+
+        private ProfilingSampler profilingSampler = new ProfilingSampler("Android Optimized Outline");
 
         public OutlinePass(OutlineSettings settings)
         {
             this.settings = settings;
-            shaderTags = new ShaderTagId[]
-            {
-                new ShaderTagId("UniversalForward"),
-                new ShaderTagId("UniversalForwardOnly"),
-                new ShaderTagId("LightweightForward"),
-                new ShaderTagId("SRPDefaultUnlit"),
-                new ShaderTagId("Universal2D")
-            };
         }
 
         public bool SetupMaterials()
@@ -70,23 +80,20 @@ public class LayeredOutlineFeature : ScriptableRendererFeature
             if (drawOutlineMaterial == null)
             {
                 drawOutlineMaterial = CoreUtils.CreateEngineMaterial("Universal Render Pipeline/Unlit");
-                drawOutlineMaterial.SetColor("_BaseColor", Color.red);
-                drawOutlineMaterial.SetInt("_ZWrite", 0);
-                drawOutlineMaterial.SetInt("_ZTest", (int)CompareFunction.Always);
+                drawOutlineMaterial.SetColor(BaseColorID, Color.red);
             }
 
             if (drawBlockerMaterial == null)
             {
                 drawBlockerMaterial = CoreUtils.CreateEngineMaterial("Universal Render Pipeline/Unlit");
-                drawBlockerMaterial.SetColor("_BaseColor", Color.green);
-                drawBlockerMaterial.SetInt("_SrcBlend", (int)BlendMode.One);
-                drawBlockerMaterial.SetInt("_DstBlend", (int)BlendMode.Zero);
-                drawBlockerMaterial.SetInt("_ZWrite", 0);
-                drawBlockerMaterial.SetInt("_ZTest", (int)CompareFunction.Always);
+                drawBlockerMaterial.SetColor(BaseColorID, Color.green);
+                drawBlockerMaterial.SetInt(SrcBlendID, (int)BlendMode.One);
+                drawBlockerMaterial.SetInt(DstBlendID, (int)BlendMode.Zero);
+                drawBlockerMaterial.SetInt(ZWriteID, 1);
             }
 
-            outlineShaderMaterial.SetColor("_OutlineColor", settings.outlineColor);
-            outlineShaderMaterial.SetFloat("_OutlineThickness", settings.outlineThickness);
+            outlineShaderMaterial.SetColor(OutlineColorID, settings.outlineColor);
+            outlineShaderMaterial.SetFloat(OutlineThicknessID, settings.outlineThickness);
 
             return true;
         }
@@ -98,64 +105,70 @@ public class LayeredOutlineFeature : ScriptableRendererFeature
             RenderTextureDescriptor descriptor = renderingData.cameraData.cameraTargetDescriptor;
             descriptor.colorFormat = RenderTextureFormat.ARGB32;
 
-            // Restored 16-bit depth so Android Vulkan/GLES doesn't drop the mesh draw calls
+            // 16-bit depth is strictly required for Android mesh rendering
             descriptor.depthBufferBits = 16;
             descriptor.msaaSamples = 1;
-            descriptor.useMipMap = false;
 
-            cmd.GetTemporaryRT(maskTextureID, descriptor, FilterMode.Bilinear);
+            // OPTIMIZATION: Use Point filtering. We are only checking solid Red/Green pixels.
+            // Point filtering is computationally cheaper on mobile and prevents edge bleeding.
+            cmd.GetTemporaryRT(MaskTextureID, descriptor, FilterMode.Point);
         }
 
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             if (outlineShaderMaterial == null) return;
 
-            CommandBuffer cmd = CommandBufferPool.Get("Layered Outline Pass");
-
-            cmd.SetRenderTarget(maskTextureID);
-
-            // Now that depth is 16, we MUST clear it (true) so old data doesn't corrupt the mask
-            cmd.ClearRenderTarget(true, true, Color.clear);
-            context.ExecuteCommandBuffer(cmd);
-            cmd.Clear();
-
-            if (settings.outlineLayerMask != 0)
+            CommandBuffer cmd = CommandBufferPool.Get();
+            using (new ProfilingScope(cmd, profilingSampler))
             {
-                FilteringSettings filterSettings = new FilteringSettings(RenderQueueRange.all, settings.outlineLayerMask);
-                DrawingSettings drawSettings = CreateDrawingSettings(shaderTags[0], ref renderingData, SortingCriteria.CommonOpaque);
-                for (int i = 1; i < shaderTags.Length; i++) drawSettings.SetShaderPassName(i, shaderTags[i]);
+                cmd.SetRenderTarget(MaskTextureID);
+                // Clear both Color and Depth. This is crucial for Tile-Based GPUs on Android.
+                cmd.ClearRenderTarget(true, true, Color.clear);
+                context.ExecuteCommandBuffer(cmd);
+                cmd.Clear();
 
-                drawSettings.overrideMaterial = drawOutlineMaterial;
-                context.DrawRenderers(renderingData.cullResults, ref drawSettings, ref filterSettings);
+                // Draw Target Mask
+                if (settings.outlineLayerMask != 0)
+                {
+                    FilteringSettings filterSettings = new FilteringSettings(RenderQueueRange.all, settings.outlineLayerMask);
+                    DrawingSettings drawSettings = CreateDrawingSettings(ShaderTags[0], ref renderingData, SortingCriteria.CommonOpaque);
+                    for (int i = 1; i < ShaderTags.Length; i++) drawSettings.SetShaderPassName(i, ShaderTags[i]);
+
+                    drawSettings.overrideMaterial = drawOutlineMaterial;
+                    context.DrawRenderers(renderingData.cullResults, ref drawSettings, ref filterSettings);
+                }
+
+                // Draw Blocker Mask
+                if (settings.blockerLayerMask != 0)
+                {
+                    FilteringSettings blockFilterSettings = new FilteringSettings(RenderQueueRange.all, settings.blockerLayerMask);
+                    DrawingSettings blockDrawSettings = CreateDrawingSettings(ShaderTags[0], ref renderingData, SortingCriteria.CommonOpaque);
+                    for (int i = 1; i < ShaderTags.Length; i++) blockDrawSettings.SetShaderPassName(i, ShaderTags[i]);
+
+                    blockDrawSettings.overrideMaterial = drawBlockerMaterial;
+                    context.DrawRenderers(renderingData.cullResults, ref blockDrawSettings, ref blockFilterSettings);
+                }
+
+                cmd.SetGlobalTexture(MaskTextureID, MaskTextureID);
+
+                // Post-Process Blit
+                RenderTextureDescriptor cameraDesc = renderingData.cameraData.cameraTargetDescriptor;
+                cameraDesc.depthBufferBits = 0;
+                cmd.GetTemporaryRT(TempTargetID, cameraDesc, FilterMode.Bilinear); // Screen blit can remain Bilinear
+
+                cmd.Blit(cameraColorTarget, TempTargetID, outlineShaderMaterial, 0);
+                cmd.Blit(TempTargetID, cameraColorTarget);
             }
 
-            if (settings.blockerLayerMask != 0)
-            {
-                FilteringSettings blockFilterSettings = new FilteringSettings(RenderQueueRange.all, settings.blockerLayerMask);
-                DrawingSettings blockDrawSettings = CreateDrawingSettings(shaderTags[0], ref renderingData, SortingCriteria.CommonOpaque);
-                for (int i = 1; i < shaderTags.Length; i++) blockDrawSettings.SetShaderPassName(i, shaderTags[i]);
-
-                blockDrawSettings.overrideMaterial = drawBlockerMaterial;
-                context.DrawRenderers(renderingData.cullResults, ref blockDrawSettings, ref blockFilterSettings);
-            }
-
-            cmd.SetGlobalTexture("_OutlineMaskTexture", maskTextureID);
-
-            RenderTextureDescriptor cameraDesc = renderingData.cameraData.cameraTargetDescriptor;
-            cameraDesc.depthBufferBits = 0;
-            cmd.GetTemporaryRT(tempTargetID, cameraDesc, FilterMode.Bilinear);
-
-            cmd.Blit(cameraColorTarget, tempTargetID, outlineShaderMaterial, 0);
-            cmd.Blit(tempTargetID, cameraColorTarget);
-
             context.ExecuteCommandBuffer(cmd);
-            cmd.ReleaseTemporaryRT(tempTargetID);
+
+            cmd.ReleaseTemporaryRT(TempTargetID);
             CommandBufferPool.Release(cmd);
         }
 
         public override void OnCameraCleanup(CommandBuffer cmd)
         {
-            cmd.ReleaseTemporaryRT(maskTextureID);
+            cmd.ReleaseTemporaryRT(MaskTextureID);
         }
     }
 }

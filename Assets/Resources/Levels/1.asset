@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 1
   m_EditorClassIdentifier: 
-  timer: 0
+  timer: 1
   LevelNumber: 1
   rows: 10
   columns: 8
   height: 4
   width: 4
   minutes: 1
-  seconds: 0
-  bottomGridSize: 0.14
+  seconds: 30
+  bottomGridSize: 0.166
   categoryMaterial: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
   words:
   - APPLE
@@ -28,11 +28,9 @@ MonoBehaviour:
   tray:
   - Tray 1
   - Tray 2
-  - Tray 3
-  - Tray 4
   excludedChar:
-  - {x: 9, y: 2}
-  - {x: 8, y: 5}
+  - {x: 9, y: 6}
+  - {x: 8, y: 4}
   blockedCells: []
   wordCategory:
   - Key: Fruit
@@ -40,6 +38,8 @@ MonoBehaviour:
     - APPLE
     - BANANA
   cellCategory:
+  - Key: {x: 8, y: 1}
+    Value: Fruit
   - Key: {x: 8, y: 2}
     Value: Fruit
   - Key: {x: 8, y: 3}
@@ -47,10 +47,6 @@ MonoBehaviour:
   - Key: {x: 8, y: 4}
     Value: Fruit
   - Key: {x: 8, y: 5}
-    Value: Fruit
-  - Key: {x: 8, y: 6}
-    Value: Fruit
-  - Key: {x: 9, y: 1}
     Value: Fruit
   - Key: {x: 9, y: 2}
     Value: Fruit
@@ -61,71 +57,59 @@ MonoBehaviour:
   - Key: {x: 9, y: 5}
     Value: Fruit
   - Key: {x: 9, y: 6}
+    Value: Fruit
+  - Key: {x: 9, y: 7}
     Value: Fruit
   cellTexts:
+  - Key: {x: 8, y: 1}
+    Value: A
   - Key: {x: 8, y: 2}
-    Value: A
-  - Key: {x: 9, y: 5}
-    Value: N
-  - Key: {x: 9, y: 6}
-    Value: A
-  - Key: {x: 9, y: 4}
-    Value: A
-  - Key: {x: 9, y: 3}
-    Value: N
-  - Key: {x: 9, y: 1}
-    Value: B
-  - Key: {x: 8, y: 4}
     Value: P
   - Key: {x: 8, y: 3}
     Value: P
-  - Key: {x: 8, y: 6}
-    Value: E
-  - Key: {x: 8, y: 5}
+  - Key: {x: 8, y: 4}
     Value: L
+  - Key: {x: 8, y: 5}
+    Value: E
   - Key: {x: 9, y: 2}
+    Value: B
+  - Key: {x: 9, y: 3}
+    Value: A
+  - Key: {x: 9, y: 4}
+    Value: N
+  - Key: {x: 9, y: 5}
+    Value: A
+  - Key: {x: 9, y: 6}
+    Value: N
+  - Key: {x: 9, y: 7}
     Value: A
   trayCells:
-  - Key: {x: 2, y: 2}
+  - Key: {x: 1, y: 1}
+    Value: N
+  - Key: {x: 1, y: 2}
     Value: L
-  - Key: {x: 2, y: 1}
-    Value: A
   trayName:
-  - Key: {x: 2, y: 2}
+  - Key: {x: 1, y: 1}
     Value: Tray 1
-  - Key: {x: 2, y: 1}
+  - Key: {x: 1, y: 2}
     Value: Tray 2
   categoryColors:
-  - Key: Animal
-    Value: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
-  - Key: Flower
-    Value: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
-  - Key: Country
-    Value: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
   - Key: Fruit
     Value: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
-  trayColors:
-  - Key: Tray 1
-    Value: {fileID: 2100000, guid: a4d3d5fee2e3dba49917f9e86d113315, type: 2}
-  - Key: Tray 2
-    Value: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
-  - Key: Tray 3
-    Value: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
-  - Key: Tray 4
-    Value: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
+  trayColors: []
   wordPositions:
   - Key: APPLE
     Value:
+    - {x: 8, y: 1}
     - {x: 8, y: 2}
     - {x: 8, y: 3}
     - {x: 8, y: 4}
     - {x: 8, y: 5}
-    - {x: 8, y: 6}
   - Key: BANANA
     Value:
-    - {x: 9, y: 1}
     - {x: 9, y: 2}
     - {x: 9, y: 3}
     - {x: 9, y: 4}
     - {x: 9, y: 5}
     - {x: 9, y: 6}
+    - {x: 9, y: 7}
