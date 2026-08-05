@@ -175,7 +175,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &245620292
 RectTransform:
   m_ObjectHideFlags: 0
@@ -803,7 +803,7 @@ MonoBehaviour:
     Value: {fileID: 21300000, guid: 95162cf693b20a440ab9c5248adccaf7, type: 3}
   - Key: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
     Value: {fileID: 21300000, guid: ddf4c8a1263b12e429c13c51cf37ddb3, type: 3}
-  TestLevelToLoad: 2
+  TestLevelToLoad: 5
   hearts: 0
 --- !u!1 &630893620
 GameObject:
@@ -1944,8 +1944,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3612946991
-  m_fontColor: {r: 0.18431373, g: 0.19607843, b: 0.34901962, a: 0.84313726}
+    rgba: 3615512918
+  m_fontColor: {r: 0.3372549, g: 0.34901962, b: 0.5019608, a: 0.84313726}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

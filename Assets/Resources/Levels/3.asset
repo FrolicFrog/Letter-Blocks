@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
-  m_Name: 2
+  m_Name: 3
   m_EditorClassIdentifier: 
   timer: 0
-  LevelNumber: 2
+  LevelNumber: 3
   rows: 10
   columns: 8
   height: 5
@@ -21,47 +21,37 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: 74a701c54a3fc14469104bed730e8899, type: 2}
+  categoryMaterial: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
   words:
-  - RED
-  - PEPPER
-  - ORANGE
-  - PUMPKIN
+  - LION
+  - PINK
+  - SHARK
+  - WHITE
+  - DOG
   tray:
   - Tray 1
   - Tray 2
   - Tray 3
   - Tray 4
+  - Tray 5
   excludedChar:
-  - {x: 8, y: 3}
-  - {x: 6, y: 3}
-  - {x: 9, y: 5}
-  - {x: 7, y: 4}
+  - {x: 8, y: 6}
+  - {x: 6, y: 4}
+  - {x: 9, y: 2}
+  - {x: 7, y: 2}
+  - {x: 5, y: 5}
   blockedCells: []
   wordCategory:
+  - Key: Animals
+    Value:
+    - LION
+    - SHARK
+    - DOG
   - Key: Colors
     Value:
-    - RED
-    - ORANGE
-  - Key: Food
-    Value:
-    - PEPPER
-    - PUMPKIN
+    - PINK
+    - WHITE
   cellCategory:
-  - Key: {x: 9, y: 0}
-    Value: Food
-  - Key: {x: 9, y: 1}
-    Value: Food
-  - Key: {x: 9, y: 2}
-    Value: Food
-  - Key: {x: 9, y: 4}
-    Value: Food
-  - Key: {x: 9, y: 3}
-    Value: Food
-  - Key: {x: 9, y: 5}
-    Value: Food
-  - Key: {x: 9, y: 6}
-    Value: Food
   - Key: {x: 8, y: 2}
     Value: Colors
   - Key: {x: 8, y: 3}
@@ -72,123 +62,138 @@ MonoBehaviour:
     Value: Colors
   - Key: {x: 8, y: 6}
     Value: Colors
-  - Key: {x: 8, y: 7}
-    Value: Colors
-  - Key: {x: 7, y: 0}
-    Value: Food
-  - Key: {x: 7, y: 1}
-    Value: Food
-  - Key: {x: 7, y: 3}
-    Value: Food
-  - Key: {x: 7, y: 2}
-    Value: Food
-  - Key: {x: 7, y: 4}
-    Value: Food
-  - Key: {x: 7, y: 5}
-    Value: Food
-  - Key: {x: 6, y: 2}
-    Value: Colors
   - Key: {x: 6, y: 3}
     Value: Colors
   - Key: {x: 6, y: 4}
     Value: Colors
+  - Key: {x: 6, y: 5}
+    Value: Colors
+  - Key: {x: 6, y: 6}
+    Value: Colors
+  - Key: {x: 9, y: 1}
+    Value: Animals
+  - Key: {x: 9, y: 2}
+    Value: Animals
+  - Key: {x: 9, y: 3}
+    Value: Animals
+  - Key: {x: 7, y: 0}
+    Value: Animals
+  - Key: {x: 7, y: 1}
+    Value: Animals
+  - Key: {x: 7, y: 2}
+    Value: Animals
+  - Key: {x: 7, y: 3}
+    Value: Animals
+  - Key: {x: 7, y: 4}
+    Value: Animals
+  - Key: {x: 5, y: 2}
+    Value: Animals
+  - Key: {x: 5, y: 3}
+    Value: Animals
+  - Key: {x: 5, y: 4}
+    Value: Animals
+  - Key: {x: 5, y: 5}
+    Value: Animals
   cellTexts:
-  - Key: {x: 9, y: 0}
-    Value: P
   - Key: {x: 9, y: 1}
-    Value: U
+    Value: D
   - Key: {x: 9, y: 2}
-    Value: M
-  - Key: {x: 9, y: 4}
-    Value: K
-  - Key: {x: 9, y: 3}
-    Value: P
-  - Key: {x: 9, y: 5}
-    Value: I
-  - Key: {x: 9, y: 6}
-    Value: N
-  - Key: {x: 8, y: 2}
     Value: O
-  - Key: {x: 8, y: 3}
-    Value: R
-  - Key: {x: 8, y: 4}
-    Value: A
-  - Key: {x: 8, y: 5}
-    Value: N
-  - Key: {x: 8, y: 6}
+  - Key: {x: 9, y: 3}
     Value: G
-  - Key: {x: 8, y: 7}
+  - Key: {x: 8, y: 2}
+    Value: W
+  - Key: {x: 8, y: 3}
+    Value: H
+  - Key: {x: 8, y: 4}
+    Value: I
+  - Key: {x: 8, y: 5}
+    Value: T
+  - Key: {x: 8, y: 6}
     Value: E
   - Key: {x: 7, y: 0}
-    Value: P
+    Value: S
   - Key: {x: 7, y: 1}
-    Value: E
-  - Key: {x: 7, y: 3}
-    Value: P
+    Value: H
   - Key: {x: 7, y: 2}
-    Value: P
+    Value: A
+  - Key: {x: 7, y: 3}
+    Value: R
   - Key: {x: 7, y: 4}
-    Value: E
-  - Key: {x: 7, y: 5}
-    Value: R
-  - Key: {x: 6, y: 2}
-    Value: R
+    Value: K
   - Key: {x: 6, y: 3}
-    Value: E
+    Value: P
   - Key: {x: 6, y: 4}
-    Value: D
+    Value: I
+  - Key: {x: 6, y: 5}
+    Value: N
+  - Key: {x: 6, y: 6}
+    Value: K
+  - Key: {x: 5, y: 2}
+    Value: L
+  - Key: {x: 5, y: 3}
+    Value: I
+  - Key: {x: 5, y: 4}
+    Value: O
+  - Key: {x: 5, y: 5}
+    Value: N
   trayCells:
   - Key: {x: 2, y: 1}
-    Value: I
-  - Key: {x: 2, y: 3}
-    Value: R
-  - Key: {x: 4, y: 1}
+    Value: O
+  - Key: {x: 2, y: 2}
     Value: E
+  - Key: {x: 3, y: 2}
+    Value: N
+  - Key: {x: 4, y: 2}
+    Value: A
   - Key: {x: 4, y: 3}
-    Value: E
+    Value: I
   trayName:
   - Key: {x: 2, y: 1}
     Value: Tray 1
-  - Key: {x: 2, y: 3}
+  - Key: {x: 2, y: 2}
+    Value: Tray 1
+  - Key: {x: 3, y: 2}
     Value: Tray 2
-  - Key: {x: 4, y: 1}
+  - Key: {x: 4, y: 2}
     Value: Tray 3
   - Key: {x: 4, y: 3}
-    Value: Tray 4
+    Value: Tray 3
   categoryColors:
-  - Key: Food
-    Value: {fileID: 2100000, guid: 74a701c54a3fc14469104bed730e8899, type: 2}
   - Key: Colors
     Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  - Key: Animals
+    Value: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
   trayColors: []
   wordPositions:
-  - Key: RED
+  - Key: LION
     Value:
-    - {x: 6, y: 2}
+    - {x: 5, y: 2}
+    - {x: 5, y: 3}
+    - {x: 5, y: 4}
+    - {x: 5, y: 5}
+  - Key: PINK
+    Value:
     - {x: 6, y: 3}
     - {x: 6, y: 4}
-  - Key: PEPPER
+    - {x: 6, y: 5}
+    - {x: 6, y: 6}
+  - Key: SHARK
     Value:
     - {x: 7, y: 0}
     - {x: 7, y: 1}
     - {x: 7, y: 2}
     - {x: 7, y: 3}
     - {x: 7, y: 4}
-    - {x: 7, y: 5}
-  - Key: ORANGE
+  - Key: WHITE
     Value:
     - {x: 8, y: 2}
     - {x: 8, y: 3}
     - {x: 8, y: 4}
     - {x: 8, y: 5}
     - {x: 8, y: 6}
-    - {x: 8, y: 7}
-  - Key: PUMPKIN
+  - Key: DOG
     Value:
-    - {x: 9, y: 0}
     - {x: 9, y: 1}
     - {x: 9, y: 2}
     - {x: 9, y: 3}
-    - {x: 9, y: 4}
-    - {x: 9, y: 5}
-    - {x: 9, y: 6}

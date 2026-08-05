@@ -1,7 +1,8 @@
 Flower
 Country
 Breakfast
-Fruit
 Colors
 Food
 Animals
+Clothes
+Vehicles

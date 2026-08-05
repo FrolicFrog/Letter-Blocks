@@ -1,0 +1,300 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 4
+  m_EditorClassIdentifier: 
+  timer: 0
+  LevelNumber: 4
+  rows: 10
+  columns: 8
+  height: 5
+  width: 5
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.12
+  categoryMaterial: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  words:
+  - BROWN
+  - JACKET
+  - BLACK
+  - HOODIE
+  - PANTS
+  - YELLOW
+  - DRESS
+  tray:
+  - Tray 1
+  - Tray 2
+  - Tray 3
+  excludedChar:
+  - {x: 8, y: 6}
+  - {x: 5, y: 2}
+  - {x: 3, y: 4}
+  - {x: 6, y: 7}
+  - {x: 4, y: 3}
+  - {x: 7, y: 1}
+  - {x: 9, y: 2}
+  blockedCells: []
+  wordCategory:
+  - Key: Colors
+    Value:
+    - BROWN
+    - BLACK
+    - YELLOW
+  - Key: Clothes
+    Value:
+    - JACKET
+    - HOODIE
+    - PANTS
+    - DRESS
+  cellCategory:
+  - Key: {x: 9, y: 0}
+    Value: Clothes
+  - Key: {x: 9, y: 1}
+    Value: Clothes
+  - Key: {x: 9, y: 2}
+    Value: Clothes
+  - Key: {x: 9, y: 3}
+    Value: Clothes
+  - Key: {x: 9, y: 4}
+    Value: Clothes
+  - Key: {x: 8, y: 2}
+    Value: Colors
+  - Key: {x: 8, y: 3}
+    Value: Colors
+  - Key: {x: 8, y: 4}
+    Value: Colors
+  - Key: {x: 8, y: 5}
+    Value: Colors
+  - Key: {x: 8, y: 6}
+    Value: Colors
+  - Key: {x: 8, y: 7}
+    Value: Colors
+  - Key: {x: 7, y: 0}
+    Value: Clothes
+  - Key: {x: 7, y: 2}
+    Value: Clothes
+  - Key: {x: 7, y: 1}
+    Value: Clothes
+  - Key: {x: 7, y: 3}
+    Value: Clothes
+  - Key: {x: 7, y: 4}
+    Value: Clothes
+  - Key: {x: 6, y: 3}
+    Value: Clothes
+  - Key: {x: 6, y: 4}
+    Value: Clothes
+  - Key: {x: 6, y: 2}
+    Value: Clothes
+  - Key: {x: 6, y: 5}
+    Value: Clothes
+  - Key: {x: 6, y: 6}
+    Value: Clothes
+  - Key: {x: 6, y: 7}
+    Value: Clothes
+  - Key: {x: 5, y: 0}
+    Value: Colors
+  - Key: {x: 5, y: 1}
+    Value: Colors
+  - Key: {x: 5, y: 2}
+    Value: Colors
+  - Key: {x: 5, y: 3}
+    Value: Colors
+  - Key: {x: 5, y: 4}
+    Value: Colors
+  - Key: {x: 4, y: 1}
+    Value: Clothes
+  - Key: {x: 4, y: 2}
+    Value: Clothes
+  - Key: {x: 4, y: 3}
+    Value: Clothes
+  - Key: {x: 4, y: 4}
+    Value: Clothes
+  - Key: {x: 4, y: 5}
+    Value: Clothes
+  - Key: {x: 4, y: 6}
+    Value: Clothes
+  - Key: {x: 3, y: 2}
+    Value: Colors
+  - Key: {x: 3, y: 3}
+    Value: Colors
+  - Key: {x: 3, y: 4}
+    Value: Colors
+  - Key: {x: 3, y: 5}
+    Value: Colors
+  - Key: {x: 3, y: 6}
+    Value: Colors
+  cellTexts:
+  - Key: {x: 9, y: 0}
+    Value: D
+  - Key: {x: 9, y: 1}
+    Value: R
+  - Key: {x: 9, y: 2}
+    Value: E
+  - Key: {x: 9, y: 3}
+    Value: S
+  - Key: {x: 9, y: 4}
+    Value: S
+  - Key: {x: 8, y: 2}
+    Value: Y
+  - Key: {x: 8, y: 3}
+    Value: E
+  - Key: {x: 8, y: 4}
+    Value: L
+  - Key: {x: 8, y: 5}
+    Value: L
+  - Key: {x: 8, y: 6}
+    Value: O
+  - Key: {x: 8, y: 7}
+    Value: W
+  - Key: {x: 7, y: 0}
+    Value: P
+  - Key: {x: 7, y: 2}
+    Value: N
+  - Key: {x: 7, y: 1}
+    Value: A
+  - Key: {x: 7, y: 3}
+    Value: T
+  - Key: {x: 7, y: 4}
+    Value: S
+  - Key: {x: 6, y: 3}
+    Value: O
+  - Key: {x: 6, y: 4}
+    Value: O
+  - Key: {x: 6, y: 2}
+    Value: H
+  - Key: {x: 6, y: 5}
+    Value: D
+  - Key: {x: 6, y: 6}
+    Value: I
+  - Key: {x: 6, y: 7}
+    Value: E
+  - Key: {x: 5, y: 0}
+    Value: B
+  - Key: {x: 5, y: 1}
+    Value: L
+  - Key: {x: 5, y: 2}
+    Value: A
+  - Key: {x: 5, y: 3}
+    Value: C
+  - Key: {x: 5, y: 4}
+    Value: K
+  - Key: {x: 4, y: 1}
+    Value: J
+  - Key: {x: 4, y: 2}
+    Value: A
+  - Key: {x: 4, y: 3}
+    Value: C
+  - Key: {x: 4, y: 4}
+    Value: K
+  - Key: {x: 4, y: 5}
+    Value: E
+  - Key: {x: 4, y: 6}
+    Value: T
+  - Key: {x: 3, y: 2}
+    Value: B
+  - Key: {x: 3, y: 3}
+    Value: R
+  - Key: {x: 3, y: 4}
+    Value: O
+  - Key: {x: 3, y: 5}
+    Value: W
+  - Key: {x: 3, y: 6}
+    Value: N
+  trayCells:
+  - Key: {x: 3, y: 0}
+    Value: E
+  - Key: {x: 2, y: 0}
+    Value: O
+  - Key: {x: 2, y: 1}
+    Value: A
+  - Key: {x: 3, y: 2}
+    Value: O
+  - Key: {x: 4, y: 1}
+    Value: E
+  - Key: {x: 4, y: 2}
+    Value: A
+  - Key: {x: 4, y: 3}
+    Value: C
+  trayName:
+  - Key: {x: 3, y: 0}
+    Value: Tray 1
+  - Key: {x: 2, y: 0}
+    Value: Tray 1
+  - Key: {x: 2, y: 1}
+    Value: Tray 1
+  - Key: {x: 3, y: 2}
+    Value: Tray 2
+  - Key: {x: 4, y: 1}
+    Value: Tray 3
+  - Key: {x: 4, y: 2}
+    Value: Tray 3
+  - Key: {x: 4, y: 3}
+    Value: Tray 3
+  categoryColors:
+  - Key: Colors
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  - Key: Clothes
+    Value: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}
+  trayColors: []
+  wordPositions:
+  - Key: BROWN
+    Value:
+    - {x: 3, y: 2}
+    - {x: 3, y: 3}
+    - {x: 3, y: 4}
+    - {x: 3, y: 5}
+    - {x: 3, y: 6}
+  - Key: JACKET
+    Value:
+    - {x: 4, y: 1}
+    - {x: 4, y: 2}
+    - {x: 4, y: 3}
+    - {x: 4, y: 4}
+    - {x: 4, y: 5}
+    - {x: 4, y: 6}
+  - Key: BLACK
+    Value:
+    - {x: 5, y: 0}
+    - {x: 5, y: 1}
+    - {x: 5, y: 2}
+    - {x: 5, y: 3}
+    - {x: 5, y: 4}
+  - Key: HOODIE
+    Value:
+    - {x: 6, y: 2}
+    - {x: 6, y: 3}
+    - {x: 6, y: 4}
+    - {x: 6, y: 5}
+    - {x: 6, y: 6}
+    - {x: 6, y: 7}
+  - Key: PANTS
+    Value:
+    - {x: 7, y: 0}
+    - {x: 7, y: 1}
+    - {x: 7, y: 2}
+    - {x: 7, y: 3}
+    - {x: 7, y: 4}
+  - Key: YELLOW
+    Value:
+    - {x: 8, y: 2}
+    - {x: 8, y: 3}
+    - {x: 8, y: 4}
+    - {x: 8, y: 5}
+    - {x: 8, y: 6}
+    - {x: 8, y: 7}
+  - Key: DRESS
+    Value:
+    - {x: 9, y: 0}
+    - {x: 9, y: 1}
+    - {x: 9, y: 2}
+    - {x: 9, y: 3}
+    - {x: 9, y: 4}
