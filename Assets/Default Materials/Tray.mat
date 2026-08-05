@@ -31,8 +31,8 @@ Material:
     - _Enable_Shine: 1
     - _FresnelPower: 3
     - _ShineAngle: 135
-    - _ShineSize: 0.15
-    - _ShineSoftness: 0.5
+    - _ShineSize: 0.262
+    - _ShineSoftness: 0.497
     - _SideDarkness: 0.522
     m_Colors:
     - _Color: {r: 0.5297879, g: 0.27058828, b: 1, a: 1}

@@ -17,8 +17,8 @@ MonoBehaviour:
     outlineLayerMask:
       serializedVersion: 2
       m_Bits: 8
-    outlineColor: {r: 0.4113207, g: 0, b: 0.22050448, a: 1}
-    outlineThickness: 10
+    outlineColor: {r: 0.6792453, g: 0.4261303, b: 0.5233741, a: 1}
+    outlineThickness: 7.43
     blockerLayerMask:
       serializedVersion: 2
       m_Bits: 2
@@ -107,8 +107,8 @@ MonoBehaviour:
     outlineLayerMask:
       serializedVersion: 2
       m_Bits: 128
-    outlineColor: {r: 0.19245279, g: 0.17974365, b: 0.17974365, a: 1}
-    outlineThickness: 5.74
+    outlineColor: {r: 1, g: 1, b: 1, a: 1}
+    outlineThickness: 10
     blockerLayerMask:
       serializedVersion: 2
       m_Bits: 2

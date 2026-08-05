@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.166
-  categoryMaterial: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - APPLE
   - BANANA
@@ -84,15 +84,15 @@ MonoBehaviour:
   - Key: {x: 9, y: 7}
     Value: A
   trayCells:
-  - Key: {x: 1, y: 1}
-    Value: N
-  - Key: {x: 1, y: 2}
+  - Key: {x: 3, y: 2}
     Value: L
+  - Key: {x: 3, y: 1}
+    Value: N
   trayName:
-  - Key: {x: 1, y: 1}
-    Value: Tray 1
-  - Key: {x: 1, y: 2}
+  - Key: {x: 3, y: 2}
     Value: Tray 2
+  - Key: {x: 3, y: 1}
+    Value: Tray 1
   categoryColors:
   - Key: Fruit
     Value: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
