@@ -27,10 +27,6 @@ public class CameraFloorHighlighter : MonoBehaviour
     [Tooltip("Position offset applied to the secondary center target.")]
     public Vector3 secondaryCenterOffset = Vector3.zero;
 
-    private void Start()
-    {
-        Application.targetFrameRate = 500;
-    }
     private void Update()
     {
         // Only run the calculations if we actually have at least one target to move

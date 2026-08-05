@@ -8,10 +8,11 @@ public class FPS : MonoBehaviour
     float timer;
     int fps;
     TextMeshProUGUI tmp;
-
+   
     private void Start()
     {
         tmp = GetComponent<TextMeshProUGUI>();
+        Application.targetFrameRate = 500;
     }
     private void Update()
     {
