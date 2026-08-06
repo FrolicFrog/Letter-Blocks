@@ -12,7 +12,8 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _ENABLE_SHINE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -25,14 +26,14 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _BottomDarkness: 0
+    - _BottomDarkness: 0.424
     - _Enable_Highlights: 0
-    - _Enable_Shine: 0
+    - _Enable_Shine: 1
     - _FresnelPower: 3
-    - _ShineAngle: 152
-    - _ShineSize: 0.361
+    - _ShineAngle: 193
+    - _ShineSize: 0.295
     - _ShineSoftness: 0.5
-    - _SideDarkness: 0.522
+    - _SideDarkness: 0.457
     m_Colors:
     - _Color: {r: 0.5297879, g: 0.27058828, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 0.5}

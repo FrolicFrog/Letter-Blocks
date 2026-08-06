@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
+  categoryMaterial: {fileID: 2100000, guid: 74a701c54a3fc14469104bed730e8899, type: 2}
   words:
   - RHINO
   - BACON
@@ -253,7 +253,7 @@ MonoBehaviour:
     Value: O
   trayCells:
   - Key: {x: 2, y: 0}
-    Value: G
+    Value: K
   - Key: {x: 2, y: 1}
     Value: E
   - Key: {x: 2, y: 3}
@@ -261,7 +261,7 @@ MonoBehaviour:
   - Key: {x: 2, y: 4}
     Value: U
   - Key: {x: 3, y: 1}
-    Value: K
+    Value: G
   - Key: {x: 4, y: 1}
     Value: A
   - Key: {x: 3, y: 3}

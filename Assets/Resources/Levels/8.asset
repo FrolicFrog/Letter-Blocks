@@ -1,0 +1,406 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 8
+  m_EditorClassIdentifier: 
+  timer: 0
+  LevelNumber: 8
+  rows: 10
+  columns: 8
+  height: 5
+  width: 5
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.12
+  categoryMaterial: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
+  words:
+  - DOCTOR
+  - TENNIS
+  - CHEF
+  - GOLF
+  - CUBA
+  - MEXICO
+  - SOLDIER
+  - USA
+  - SOCCER
+  - POLICE
+  tray:
+  - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  excludedChar:
+  - {x: 7, y: 5}
+  - {x: 5, y: 3}
+  - {x: 3, y: 2}
+  - {x: 4, y: 4}
+  - {x: 9, y: 3}
+  - {x: 6, y: 2}
+  - {x: 2, y: 4}
+  - {x: 0, y: 3}
+  - {x: 8, y: 6}
+  - {x: 1, y: 4}
+  blockedCells: []
+  wordCategory:
+  - Key: Jobs
+    Value:
+    - DOCTOR
+    - CHEF
+    - SOLDIER
+    - POLICE
+  - Key: Sports
+    Value:
+    - TENNIS
+    - GOLF
+    - SOCCER
+  - Key: Countries
+    Value:
+    - CUBA
+    - MEXICO
+    - USA
+  cellCategory:
+  - Key: {x: 7, y: 4}
+    Value: Countries
+  - Key: {x: 7, y: 5}
+    Value: Countries
+  - Key: {x: 7, y: 6}
+    Value: Countries
+  - Key: {x: 5, y: 2}
+    Value: Countries
+  - Key: {x: 5, y: 3}
+    Value: Countries
+  - Key: {x: 5, y: 4}
+    Value: Countries
+  - Key: {x: 5, y: 5}
+    Value: Countries
+  - Key: {x: 5, y: 6}
+    Value: Countries
+  - Key: {x: 5, y: 7}
+    Value: Countries
+  - Key: {x: 3, y: 1}
+    Value: Sports
+  - Key: {x: 3, y: 2}
+    Value: Sports
+  - Key: {x: 3, y: 3}
+    Value: Sports
+  - Key: {x: 3, y: 4}
+    Value: Sports
+  - Key: {x: 4, y: 3}
+    Value: Countries
+  - Key: {x: 4, y: 4}
+    Value: Countries
+  - Key: {x: 4, y: 5}
+    Value: Countries
+  - Key: {x: 4, y: 6}
+    Value: Countries
+  - Key: {x: 9, y: 0}
+    Value: Jobs
+  - Key: {x: 9, y: 1}
+    Value: Jobs
+  - Key: {x: 9, y: 2}
+    Value: Jobs
+  - Key: {x: 9, y: 3}
+    Value: Jobs
+  - Key: {x: 9, y: 4}
+    Value: Jobs
+  - Key: {x: 9, y: 5}
+    Value: Jobs
+  - Key: {x: 6, y: 1}
+    Value: Jobs
+  - Key: {x: 6, y: 2}
+    Value: Jobs
+  - Key: {x: 6, y: 3}
+    Value: Jobs
+  - Key: {x: 6, y: 4}
+    Value: Jobs
+  - Key: {x: 6, y: 5}
+    Value: Jobs
+  - Key: {x: 6, y: 6}
+    Value: Jobs
+  - Key: {x: 6, y: 7}
+    Value: Jobs
+  - Key: {x: 2, y: 2}
+    Value: Jobs
+  - Key: {x: 2, y: 3}
+    Value: Jobs
+  - Key: {x: 2, y: 4}
+    Value: Jobs
+  - Key: {x: 2, y: 5}
+    Value: Jobs
+  - Key: {x: 0, y: 1}
+    Value: Jobs
+  - Key: {x: 0, y: 2}
+    Value: Jobs
+  - Key: {x: 0, y: 3}
+    Value: Jobs
+  - Key: {x: 0, y: 4}
+    Value: Jobs
+  - Key: {x: 0, y: 5}
+    Value: Jobs
+  - Key: {x: 0, y: 6}
+    Value: Jobs
+  - Key: {x: 8, y: 2}
+    Value: Sports
+  - Key: {x: 8, y: 3}
+    Value: Sports
+  - Key: {x: 8, y: 4}
+    Value: Sports
+  - Key: {x: 8, y: 5}
+    Value: Sports
+  - Key: {x: 8, y: 6}
+    Value: Sports
+  - Key: {x: 8, y: 7}
+    Value: Sports
+  - Key: {x: 1, y: 1}
+    Value: Sports
+  - Key: {x: 1, y: 2}
+    Value: Sports
+  - Key: {x: 1, y: 3}
+    Value: Sports
+  - Key: {x: 1, y: 4}
+    Value: Sports
+  - Key: {x: 1, y: 5}
+    Value: Sports
+  - Key: {x: 1, y: 6}
+    Value: Sports
+  cellTexts:
+  - Key: {x: 9, y: 0}
+    Value: P
+  - Key: {x: 9, y: 1}
+    Value: O
+  - Key: {x: 9, y: 2}
+    Value: L
+  - Key: {x: 9, y: 3}
+    Value: I
+  - Key: {x: 9, y: 4}
+    Value: C
+  - Key: {x: 9, y: 5}
+    Value: E
+  - Key: {x: 8, y: 2}
+    Value: S
+  - Key: {x: 8, y: 3}
+    Value: O
+  - Key: {x: 8, y: 4}
+    Value: C
+  - Key: {x: 8, y: 5}
+    Value: C
+  - Key: {x: 8, y: 6}
+    Value: E
+  - Key: {x: 8, y: 7}
+    Value: R
+  - Key: {x: 7, y: 4}
+    Value: U
+  - Key: {x: 7, y: 5}
+    Value: S
+  - Key: {x: 7, y: 6}
+    Value: A
+  - Key: {x: 6, y: 1}
+    Value: S
+  - Key: {x: 6, y: 2}
+    Value: O
+  - Key: {x: 6, y: 3}
+    Value: L
+  - Key: {x: 6, y: 4}
+    Value: D
+  - Key: {x: 6, y: 5}
+    Value: I
+  - Key: {x: 6, y: 6}
+    Value: E
+  - Key: {x: 6, y: 7}
+    Value: R
+  - Key: {x: 5, y: 2}
+    Value: M
+  - Key: {x: 5, y: 3}
+    Value: E
+  - Key: {x: 5, y: 4}
+    Value: X
+  - Key: {x: 5, y: 5}
+    Value: I
+  - Key: {x: 5, y: 6}
+    Value: C
+  - Key: {x: 5, y: 7}
+    Value: O
+  - Key: {x: 4, y: 3}
+    Value: C
+  - Key: {x: 4, y: 4}
+    Value: U
+  - Key: {x: 4, y: 5}
+    Value: B
+  - Key: {x: 4, y: 6}
+    Value: A
+  - Key: {x: 3, y: 1}
+    Value: G
+  - Key: {x: 3, y: 2}
+    Value: O
+  - Key: {x: 3, y: 3}
+    Value: L
+  - Key: {x: 3, y: 4}
+    Value: F
+  - Key: {x: 2, y: 2}
+    Value: C
+  - Key: {x: 2, y: 3}
+    Value: H
+  - Key: {x: 2, y: 4}
+    Value: E
+  - Key: {x: 2, y: 5}
+    Value: F
+  - Key: {x: 1, y: 1}
+    Value: T
+  - Key: {x: 1, y: 2}
+    Value: E
+  - Key: {x: 1, y: 3}
+    Value: N
+  - Key: {x: 1, y: 4}
+    Value: N
+  - Key: {x: 1, y: 5}
+    Value: I
+  - Key: {x: 1, y: 6}
+    Value: S
+  - Key: {x: 0, y: 1}
+    Value: D
+  - Key: {x: 0, y: 2}
+    Value: O
+  - Key: {x: 0, y: 3}
+    Value: C
+  - Key: {x: 0, y: 4}
+    Value: T
+  - Key: {x: 0, y: 5}
+    Value: O
+  - Key: {x: 0, y: 6}
+    Value: R
+  trayCells:
+  - Key: {x: 1, y: 3}
+    Value: U
+  - Key: {x: 1, y: 4}
+    Value: N
+  - Key: {x: 2, y: 0}
+    Value: E
+  - Key: {x: 2, y: 1}
+    Value: O
+  - Key: {x: 2, y: 3}
+    Value: S
+  - Key: {x: 3, y: 3}
+    Value: E
+  - Key: {x: 4, y: 3}
+    Value: O
+  - Key: {x: 3, y: 1}
+    Value: E
+  - Key: {x: 4, y: 2}
+    Value: C
+  - Key: {x: 3, y: 4}
+    Value: I
+  trayName:
+  - Key: {x: 1, y: 3}
+    Value: Tray 1
+  - Key: {x: 1, y: 4}
+    Value: Tray 2
+  - Key: {x: 2, y: 0}
+    Value: Tray 3
+  - Key: {x: 2, y: 1}
+    Value: Tray 3
+  - Key: {x: 2, y: 3}
+    Value: Tray 4
+  - Key: {x: 3, y: 3}
+    Value: Tray 4
+  - Key: {x: 4, y: 3}
+    Value: Tray 4
+  - Key: {x: 3, y: 1}
+    Value: Tray 5
+  - Key: {x: 4, y: 2}
+    Value: Tray 6
+  - Key: {x: 3, y: 4}
+    Value: Tray 7
+  categoryColors:
+  - Key: Countries
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  - Key: Jobs
+    Value: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  - Key: Sports
+    Value: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
+  trayColors: []
+  wordPositions:
+  - Key: DOCTOR
+    Value:
+    - {x: 0, y: 1}
+    - {x: 0, y: 2}
+    - {x: 0, y: 3}
+    - {x: 0, y: 4}
+    - {x: 0, y: 5}
+    - {x: 0, y: 6}
+  - Key: TENNIS
+    Value:
+    - {x: 1, y: 1}
+    - {x: 1, y: 2}
+    - {x: 1, y: 3}
+    - {x: 1, y: 4}
+    - {x: 1, y: 5}
+    - {x: 1, y: 6}
+  - Key: CHEF
+    Value:
+    - {x: 2, y: 2}
+    - {x: 2, y: 3}
+    - {x: 2, y: 4}
+    - {x: 2, y: 5}
+  - Key: GOLF
+    Value:
+    - {x: 3, y: 1}
+    - {x: 3, y: 2}
+    - {x: 3, y: 3}
+    - {x: 3, y: 4}
+  - Key: CUBA
+    Value:
+    - {x: 4, y: 3}
+    - {x: 4, y: 4}
+    - {x: 4, y: 5}
+    - {x: 4, y: 6}
+  - Key: MEXICO
+    Value:
+    - {x: 5, y: 2}
+    - {x: 5, y: 3}
+    - {x: 5, y: 4}
+    - {x: 5, y: 5}
+    - {x: 5, y: 6}
+    - {x: 5, y: 7}
+  - Key: SOLDIER
+    Value:
+    - {x: 6, y: 1}
+    - {x: 6, y: 2}
+    - {x: 6, y: 3}
+    - {x: 6, y: 4}
+    - {x: 6, y: 5}
+    - {x: 6, y: 6}
+    - {x: 6, y: 7}
+  - Key: USA
+    Value:
+    - {x: 7, y: 4}
+    - {x: 7, y: 5}
+    - {x: 7, y: 6}
+  - Key: SOCCER
+    Value:
+    - {x: 8, y: 2}
+    - {x: 8, y: 3}
+    - {x: 8, y: 4}
+    - {x: 8, y: 5}
+    - {x: 8, y: 6}
+    - {x: 8, y: 7}
+  - Key: POLICE
+    Value:
+    - {x: 9, y: 0}
+    - {x: 9, y: 1}
+    - {x: 9, y: 2}
+    - {x: 9, y: 3}
+    - {x: 9, y: 4}
+    - {x: 9, y: 5}

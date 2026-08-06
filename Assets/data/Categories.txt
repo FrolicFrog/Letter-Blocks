@@ -3,6 +3,13 @@ Country
 Breakfast
 Colors
 Food
-Animals
 Clothes
 Vehicles
+Pets
+Furniture
+Drinks
+Boy Names
+Girl Names
+Countries
+Jobs
+Sports
