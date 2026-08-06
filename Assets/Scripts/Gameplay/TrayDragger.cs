@@ -21,6 +21,13 @@ public class GlobalTrayDragger : MonoBehaviour
     [Tooltip("Target layer for static blockers. Set this to 'Block' in the Inspector.")]
     public LayerMask blockLayer;
 
+    [Header("Snap Zone Settings")]
+    [Tooltip("Target layer for the green Snap area at the top of the board.")]
+    public LayerMask snapLayer;
+
+    [Tooltip("Distance from the absolute top edge of the board when snapped.")]
+    public float snapOffset = 0.05f;
+
     [Header("Drag Plane Mode")]
     [Tooltip("Select XZ for standard 3D top-down boards, or XY for 2D boards.")]
     public PlaneAxisMode planeMode = PlaneAxisMode.XZ_GroundPlane_3D;
@@ -80,10 +87,13 @@ public class GlobalTrayDragger : MonoBehaviour
     private Plane dragPlane;
     private float lockedAxisValue;
 
+    private float lockedSnapValue;
+    private bool isReadyToJump = false;
+    private bool canAutoRelease = true; // Tracks if the piece is allowed to auto-drop
+    private Dictionary<Transform, Coroutine> activeJumpRoutines = new Dictionary<Transform, Coroutine>();
+
     // Dynamically calculated boundaries
     private float bMinX, bMaxX, bMinAxis, bMaxAxis, bTopWallTriggerThreshold;
-    private bool hasTriggeredTopWall = false;
-    private Coroutine jumpCoroutine;
 
     // Snapshots to perfectly preserve tile scales across weirdly shaped walls
     private Dictionary<Transform, Vector3> wallDefaultPos = new Dictionary<Transform, Vector3>();
@@ -109,6 +119,7 @@ public class GlobalTrayDragger : MonoBehaviour
 
         if (trayLayer == 0) trayLayer = LayerMask.GetMask("Tray");
         if (blockLayer == 0) blockLayer = LayerMask.GetMask("Block");
+        if (snapLayer == 0) snapLayer = LayerMask.GetMask("Snap");
     }
 
     private void Update()
@@ -131,10 +142,16 @@ public class GlobalTrayDragger : MonoBehaviour
             if (hit.transform.parent != null)
             {
                 currentlyDraggedParent = hit.transform.parent;
-                hasTriggeredTopWall = false;
-                if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
+                isReadyToJump = false;
+                lockedSnapValue = 0f;
 
-                // --- SNAPSHOT TILE SCALES & POSITIONS ---
+                if (activeJumpRoutines.ContainsKey(currentlyDraggedParent))
+                {
+                    if (activeJumpRoutines[currentlyDraggedParent] != null)
+                        StopCoroutine(activeJumpRoutines[currentlyDraggedParent]);
+                    activeJumpRoutines.Remove(currentlyDraggedParent);
+                }
+
                 wallDefaultPos.Clear();
                 wallDefaultScale.Clear();
 
@@ -151,7 +168,6 @@ public class GlobalTrayDragger : MonoBehaviour
                     }
                 }
 
-                // Stop animations
                 currentlyDraggedParent.DOKill();
                 UpdateTrayLayers(currentlyDraggedParent, true);
 
@@ -177,6 +193,10 @@ public class GlobalTrayDragger : MonoBehaviour
 
                 CalculateDynamicBoundaries();
 
+                bool startedInSnapZone = IsInSnapZone(originalPosition, out _) ||
+                                         (planeMode == PlaneAxisMode.XZ_GroundPlane_3D ? originalPosition.z >= bTopWallTriggerThreshold : originalPosition.y >= bTopWallTriggerThreshold);
+                canAutoRelease = !startedInSnapZone;
+
                 Vector3 targetScale = new Vector3(originalScale.x, originalScale.y * dragScaleMultiplier, originalScale.z);
                 currentlyDraggedParent.DOScale(targetScale, scaleUpDuration).SetEase(Ease.OutQuad);
 
@@ -198,7 +218,7 @@ public class GlobalTrayDragger : MonoBehaviour
             Vector3 currentMouseWorldPoint = ray.GetPoint(enter);
             Vector3 targetPosition = currentMouseWorldPoint + clickOffset;
 
-            if (!ResultManager.Instance.startTimer)
+            if (ResultManager.Instance != null && !ResultManager.Instance.startTimer)
                 ResultManager.Instance.startTimer = true;
 
             targetPosition.x = Mathf.Clamp(targetPosition.x, bMinX, bMaxX);
@@ -225,39 +245,74 @@ public class GlobalTrayDragger : MonoBehaviour
                 targetStepPos = ResolveTrayCollisions(currentlyDraggedParent.position, targetPosition);
             }
 
-            currentlyDraggedParent.position = Vector3.Lerp(currentlyDraggedParent.position, targetStepPos, Time.deltaTime * slideSpeed);
+            // --- GREEN AREA SNAP VISUAL LOCK & OVERLAP PREVENTION ---
+            bool isTouchingSnapZone = IsInSnapZone(targetPosition, out Transform snapWall);
+            bool shouldSnap = false;
+            float proposedSnapValue = 0f;
 
-            // Check for Wall Trigger Limits
-            if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+            if (isTouchingSnapZone)
             {
-                if (currentlyDraggedParent.position.z >= bTopWallTriggerThreshold && !hasTriggeredTopWall)
+                // Align top of the piece dynamically relative to the board boundaries so all pieces sit completely flush
+                proposedSnapValue = bMaxAxis - snapOffset;
+                shouldSnap = true;
+            }
+            else
+            {
+                bool pastThreshold = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+                                     ? targetPosition.z >= bTopWallTriggerThreshold
+                                     : targetPosition.y >= bTopWallTriggerThreshold;
+
+                if (pastThreshold)
                 {
-                    TriggerJumpLogic();
+                    proposedSnapValue = bMaxAxis - snapOffset;
+                    shouldSnap = true;
                 }
-                else if (currentlyDraggedParent.position.z < bTopWallTriggerThreshold - 0.1f && hasTriggeredTopWall)
+            }
+
+            if (shouldSnap)
+            {
+                Vector3 testSnapPos = targetStepPos;
+
+                // Force the X position to perfectly align with the grid columns below
+                testSnapPos.x = GetNearestGridColumnX(testSnapPos.x);
+
+                if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) testSnapPos.z = proposedSnapValue;
+                else testSnapPos.y = proposedSnapValue;
+
+                if (!IsOverlappingTray(testSnapPos, true))
                 {
-                    CancelJumps();
+                    lockedSnapValue = proposedSnapValue;
+                    isReadyToJump = true;
+                    targetStepPos.x = testSnapPos.x; // Apply the perfect alignment
+                }
+                else
+                {
+                    isReadyToJump = false;
                 }
             }
             else
             {
-                if (currentlyDraggedParent.position.y >= bTopWallTriggerThreshold && !hasTriggeredTopWall)
-                {
-                    TriggerJumpLogic();
-                }
-                else if (currentlyDraggedParent.position.y < bTopWallTriggerThreshold - 0.1f && hasTriggeredTopWall)
-                {
-                    CancelJumps();
-                }
+                isReadyToJump = false;
+                canAutoRelease = true;
+            }
+
+            if (isReadyToJump)
+            {
+                if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+                    targetStepPos.z = lockedSnapValue;
+                else
+                    targetStepPos.y = lockedSnapValue;
+            }
+
+            if (currentlyDraggedParent == null) return;
+            currentlyDraggedParent.position = Vector3.Lerp(currentlyDraggedParent.position, targetStepPos, Time.deltaTime * slideSpeed);
+
+            if (isReadyToJump && canAutoRelease)
+            {
+                currentlyDraggedParent.position = targetStepPos;
+                ReleaseAndSnapBack();
             }
         }
-    }
-
-    private void CancelJumps()
-    {
-        hasTriggeredTopWall = false;
-        if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
-        CheckAndDestroyEmptyTray(currentlyDraggedParent);
     }
 
     #endregion
@@ -281,7 +336,19 @@ public class GlobalTrayDragger : MonoBehaviour
                 nextStep.x += dirX * gridCellSize;
                 nextStep.x = Mathf.Clamp(nextStep.x, bMinX, bMaxX);
 
-                if (!IsOverlappingTray(nextStep, true)) testPos = nextStep;
+                bool collisionFound = false;
+                int subSteps = Mathf.Max(1, Mathf.CeilToInt(Mathf.Abs(nextStep.x - testPos.x) / 0.2f));
+                for (int j = 1; j <= subSteps; j++)
+                {
+                    Vector3 subStepPos = Vector3.Lerp(testPos, nextStep, (float)j / subSteps);
+                    if (IsOverlappingTray(subStepPos, true))
+                    {
+                        collisionFound = true;
+                        break;
+                    }
+                }
+
+                if (!collisionFound) testPos = nextStep;
                 else break;
             }
             currentPos.x = testPos.x;
@@ -302,7 +369,19 @@ public class GlobalTrayDragger : MonoBehaviour
                     nextStep.z += dirZ * gridCellSize;
                     nextStep.z = Mathf.Clamp(nextStep.z, bMinAxis, bMaxAxis);
 
-                    if (!IsOverlappingTray(nextStep, true)) testPos = nextStep;
+                    bool collisionFound = false;
+                    int subSteps = Mathf.Max(1, Mathf.CeilToInt(Mathf.Abs(nextStep.z - testPos.z) / 0.2f));
+                    for (int j = 1; j <= subSteps; j++)
+                    {
+                        Vector3 subStepPos = Vector3.Lerp(testPos, nextStep, (float)j / subSteps);
+                        if (IsOverlappingTray(subStepPos, true))
+                        {
+                            collisionFound = true;
+                            break;
+                        }
+                    }
+
+                    if (!collisionFound) testPos = nextStep;
                     else break;
                 }
                 currentPos.z = testPos.z;
@@ -323,7 +402,19 @@ public class GlobalTrayDragger : MonoBehaviour
                     nextStep.y += dirY * gridCellSize;
                     nextStep.y = Mathf.Clamp(nextStep.y, bMinAxis, bMaxAxis);
 
-                    if (!IsOverlappingTray(nextStep, true)) testPos = nextStep;
+                    bool collisionFound = false;
+                    int subSteps = Mathf.Max(1, Mathf.CeilToInt(Mathf.Abs(nextStep.y - testPos.y) / 0.2f));
+                    for (int j = 1; j <= subSteps; j++)
+                    {
+                        Vector3 subStepPos = Vector3.Lerp(testPos, nextStep, (float)j / subSteps);
+                        if (IsOverlappingTray(subStepPos, true))
+                        {
+                            collisionFound = true;
+                            break;
+                        }
+                    }
+
+                    if (!collisionFound) testPos = nextStep;
                     else break;
                 }
                 currentPos.y = testPos.y;
@@ -338,19 +429,38 @@ public class GlobalTrayDragger : MonoBehaviour
         Vector3 finalPos = currentPos;
         Vector3 testPos = currentPos;
 
-        testPos.x = targetPos.x;
-        if (!IsOverlappingTray(testPos, true)) finalPos.x = targetPos.x;
+        float diffX = targetPos.x - currentPos.x;
+        int subStepsX = Mathf.Max(1, Mathf.CeilToInt(Mathf.Abs(diffX) / 0.2f));
+        for (int j = 1; j <= subStepsX; j++)
+        {
+            testPos.x = currentPos.x + (diffX * ((float)j / subStepsX));
+            if (!IsOverlappingTray(testPos, true)) finalPos.x = testPos.x;
+            else break;
+        }
 
         testPos = finalPos;
+
         if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
         {
-            testPos.z = targetPos.z;
-            if (!IsOverlappingTray(testPos, true)) finalPos.z = targetPos.z;
+            float diffZ = targetPos.z - currentPos.z;
+            int subStepsZ = Mathf.Max(1, Mathf.CeilToInt(Mathf.Abs(diffZ) / 0.2f));
+            for (int j = 1; j <= subStepsZ; j++)
+            {
+                testPos.z = currentPos.z + (diffZ * ((float)j / subStepsZ));
+                if (!IsOverlappingTray(testPos, true)) finalPos.z = testPos.z;
+                else break;
+            }
         }
         else
         {
-            testPos.y = targetPos.y;
-            if (!IsOverlappingTray(testPos, true)) finalPos.y = targetPos.y;
+            float diffY = targetPos.y - currentPos.y;
+            int subStepsY = Mathf.Max(1, Mathf.CeilToInt(Mathf.Abs(diffY) / 0.2f));
+            for (int j = 1; j <= subStepsY; j++)
+            {
+                testPos.y = currentPos.y + (diffY * ((float)j / subStepsY));
+                if (!IsOverlappingTray(testPos, true)) finalPos.y = testPos.y;
+                else break;
+            }
         }
 
         return finalPos;
@@ -395,6 +505,25 @@ public class GlobalTrayDragger : MonoBehaviour
                 {
                     if (!hit.transform.IsChildOf(currentlyDraggedParent)) return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private bool IsInSnapZone(Vector3 testPos, out Transform snapWall)
+    {
+        snapWall = null;
+        if (snapLayer == 0 || pieceColliders.Count == 0) return false;
+
+        foreach (var block in pieceColliders)
+        {
+            Vector3 checkCenter = testPos + block.unscaledLocalOffset;
+
+            Collider[] hits = Physics.OverlapBox(checkCenter, block.unscaledExtents * 0.8f, block.rotation, snapLayer);
+            if (hits.Length > 0)
+            {
+                snapWall = hits[0].transform;
+                return true;
             }
         }
         return false;
@@ -493,32 +622,27 @@ public class GlobalTrayDragger : MonoBehaviour
 
     #region Jumping & Tray Collapse Logic
 
-    private void TriggerJumpLogic()
+    private void TriggerJumpLogic(Transform trayToJump)
     {
-        if (currentlyDraggedParent == null || currentlyDraggedParent.childCount == 0) return;
-        hasTriggeredTopWall = true;
+        if (trayToJump == null || trayToJump.childCount == 0) return;
 
-        if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
-        jumpCoroutine = StartCoroutine(JumpRoutine());
+        if (activeJumpRoutines.ContainsKey(trayToJump) && activeJumpRoutines[trayToJump] != null)
+        {
+            StopCoroutine(activeJumpRoutines[trayToJump]);
+        }
+        activeJumpRoutines[trayToJump] = StartCoroutine(JumpRoutine(trayToJump));
     }
 
-    private IEnumerator JumpRoutine()
+    private IEnumerator JumpRoutine(Transform activeTray)
     {
-        Transform activeTray = currentlyDraggedParent;
-
-        while (hasTriggeredTopWall && activeTray != null)
+        while (activeTray != null)
         {
-            // NEW FIX: Only wait if the grid is LITERALLY shifting down (gravity), not when it's flying!
             while (WordChecker.instance != null && WordChecker.instance.isShifting)
             {
                 yield return null;
             }
 
-            // In case the player let go or the board finished destroying the tray while we waited
-            if (!hasTriggeredTopWall || activeTray == null)
-            {
-                yield break;
-            }
+            if (activeTray == null) break;
 
             List<Transform> allWalls = new List<Transform>();
             foreach (Transform child in activeTray)
@@ -527,16 +651,14 @@ public class GlobalTrayDragger : MonoBehaviour
             }
 
             bool jumpedAny = false;
-
-            // Gather available tiles from the tray
             List<Transform> availableTiles = new List<Transform>();
+
             foreach (Transform wall in allWalls)
             {
                 Transform t = GetValidTile(wall);
                 if (t != null) availableTiles.Add(t);
             }
 
-            // Check grid from BOTTOM to TOP and pull the needed letter
             Transform bestTileToJump = null;
             Transform bestSlotTransform = null;
             Vector2Int bestMatchedKey = default;
@@ -565,23 +687,13 @@ public class GlobalTrayDragger : MonoBehaviour
                                 if (textMesh != null && textMesh.text == neededLetter)
                                 {
                                     bestTileToJump = tile;
-
                                     int index = key.x * cols + key.y;
                                     Transform cellContainer = grid.transform.GetChild(index);
 
-                                    // FIX 2: Check array bounds to prevent UnityException: Transform child out of bounds
-                                    if (cellContainer.childCount > 1)
-                                    {
-                                        bestSlotTransform = cellContainer.GetChild(1);
-                                    }
-                                    else
-                                    {
-                                        // Fallback if the inner visual slot was destroyed but the block is empty
-                                        bestSlotTransform = cellContainer;
-                                    }
+                                    if (cellContainer.childCount > 1) bestSlotTransform = cellContainer.GetChild(1);
+                                    else bestSlotTransform = cellContainer;
 
                                     bestMatchedKey = key;
-
                                     lvlManager.excludedChar.Remove(key);
                                     WordChecker.reservedGridSlots.Add(key);
                                     break;
@@ -594,22 +706,17 @@ public class GlobalTrayDragger : MonoBehaviour
                 }
             }
 
-            // Jump the prioritized letter
             if (bestTileToJump != null && bestSlotTransform != null)
             {
                 bestTileToJump.name = "JumpingTile";
-
                 WordChecker.instance.AnimateTrayBlockToGrid(bestTileToJump, bestSlotTransform, bestMatchedKey);
-
-                // Immediately shift to dynamically fill the gap
                 CollapseTray(allWalls);
-
                 jumpedAny = true;
             }
 
             if (CheckAndDestroyEmptyTray(activeTray))
             {
-                yield break; // Stop routine completely, the tray is gone
+                break;
             }
 
             if (jumpedAny)
@@ -618,17 +725,11 @@ public class GlobalTrayDragger : MonoBehaviour
             }
             else
             {
-                // If nothing jumped, wait a frame so we don't lock the thread
                 yield return null;
             }
         }
-
-        CheckAndDestroyEmptyTray(activeTray);
     }
 
-    /// <summary>
-    /// Checks if a tray currently has zero active letters left in it. If true, initiates destruction.
-    /// </summary>
     private bool CheckAndDestroyEmptyTray(Transform tray)
     {
         if (tray == null) return true;
@@ -644,12 +745,14 @@ public class GlobalTrayDragger : MonoBehaviour
 
         if (totalRemaining == 0)
         {
-            hasTriggeredTopWall = false;
-            if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
-
-            // Detach it from being dragged right before blowing it up
             if (currentlyDraggedParent == tray) currentlyDraggedParent = null;
 
+            if (activeJumpRoutines.ContainsKey(tray))
+            {
+                activeJumpRoutines.Remove(tray);
+            }
+
+            tray.DOKill();
             tray.DOScale(Vector3.zero, snapBackDuration).SetEase(Ease.InBack).OnComplete(() =>
             {
                 if (tray != null) Destroy(tray.gameObject);
@@ -661,21 +764,16 @@ public class GlobalTrayDragger : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// DYNAMIC COLLAPSE LOGIC: Scans for empty spaces and dynamically pulls the physically closest lower block to fill it. 
-    /// </summary>
     private void CollapseTray(List<Transform> allWalls)
     {
         bool shiftedSomething = true;
-        int maxIterations = 10; // Safety catch to prevent infinite loops during chain reactions
+        int maxIterations = 10;
 
-        // Run until every gap that can possibly be filled, is filled.
         while (shiftedSomething && maxIterations > 0)
         {
             shiftedSomething = false;
             maxIterations--;
 
-            // 1. Calculate the max height of the tray to lock top-row tiles
             float maxHeight = float.MinValue;
             foreach (Transform wall in allWalls)
             {
@@ -683,7 +781,6 @@ public class GlobalTrayDragger : MonoBehaviour
                 if (h > maxHeight) maxHeight = h;
             }
 
-            // 2. Identify empty and filled walls
             List<Transform> emptyWalls = new List<Transform>();
             List<Transform> filledWalls = new List<Transform>();
 
@@ -693,34 +790,27 @@ public class GlobalTrayDragger : MonoBehaviour
                 else filledWalls.Add(wall);
             }
 
-            // Sort empty walls so we always prioritize filling the highest holes first
             emptyWalls.Sort((a, b) => {
                 float hA = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? a.localPosition.z : a.localPosition.y;
                 float hB = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? b.localPosition.z : b.localPosition.y;
                 return hB.CompareTo(hA);
             });
 
-            // 3. For each empty wall, find the closest valid tile to pull into it
             foreach (Transform emptyWall in emptyWalls)
             {
                 Transform bestTileWall = null;
                 float minDistance = float.MaxValue;
-
                 float emptyH = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? emptyWall.localPosition.z : emptyWall.localPosition.y;
 
                 foreach (Transform filledWall in filledWalls)
                 {
                     float filledH = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? filledWall.localPosition.z : filledWall.localPosition.y;
 
-                    // Rule 1: Do not pull a tile that is already sitting at the highest point of the tray.
                     if (filledH >= maxHeight - 0.1f) continue;
-
-                    // Rule 2: Do not pull tiles DOWNWARDS to fill holes.
                     if (filledH > emptyH + 0.1f) continue;
 
                     float dist = Vector3.Distance(emptyWall.localPosition, filledWall.localPosition);
 
-                    // Find the absolute closest block to the hole
                     if (dist < minDistance)
                     {
                         minDistance = dist;
@@ -728,7 +818,6 @@ public class GlobalTrayDragger : MonoBehaviour
                     }
                 }
 
-                // Move the closest block into the empty space
                 if (bestTileWall != null)
                 {
                     Transform tileToMove = GetValidTile(bestTileWall);
@@ -740,11 +829,12 @@ public class GlobalTrayDragger : MonoBehaviour
                         Vector3 targetPos = wallDefaultPos.ContainsKey(emptyWall) ? wallDefaultPos[emptyWall] : Vector3.zero;
                         Vector3 targetScale = wallDefaultScale.ContainsKey(emptyWall) ? wallDefaultScale[emptyWall] : Vector3.one;
 
+                        tileToMove.DOKill();
                         tileToMove.DOLocalMove(targetPos, shiftDuration).SetEase(Ease.OutQuad);
                         tileToMove.DOScale(targetScale, shiftDuration).SetEase(Ease.OutQuad);
 
                         shiftedSomething = true;
-                        filledWalls.Remove(bestTileWall); // Remove from pool so we don't try to move it twice in one frame
+                        filledWalls.Remove(bestTileWall);
                     }
                 }
             }
@@ -766,12 +856,21 @@ public class GlobalTrayDragger : MonoBehaviour
 
     private void ReleaseAndSnapBack()
     {
-        hasTriggeredTopWall = false;
-        if (jumpCoroutine != null) StopCoroutine(jumpCoroutine); // Stop any pending jumps when let go
-
         if (currentlyDraggedParent == null) return;
 
-        // If it's completely empty when released, just destroy it instead of snapping it back.
+        if (isReadyToJump)
+        {
+            Transform trayToJump = currentlyDraggedParent;
+            currentlyDraggedParent = null;
+            isReadyToJump = false;
+
+            trayToJump.DOScale(originalScale, snapBackDuration).SetEase(snapBackEase);
+
+            UpdateTrayLayers(trayToJump, false);
+            TriggerJumpLogic(trayToJump);
+            return;
+        }
+
         if (CheckAndDestroyEmptyTray(currentlyDraggedParent)) return;
 
         Vector3 finalTargetPos = originalPosition;
@@ -794,6 +893,36 @@ public class GlobalTrayDragger : MonoBehaviour
 
         UpdateTrayLayers(currentlyDraggedParent, false);
         currentlyDraggedParent = null;
+    }
+
+    private float GetNearestGridColumnX(float currentX)
+    {
+        if (BottomGridManager.Instance == null || currentlyDraggedParent == null || currentlyDraggedParent.childCount == 0)
+            return currentX;
+
+        Transform gridParent = BottomGridManager.Instance.transform;
+        if (gridParent.childCount == 0) return currentX;
+
+        Transform anchorChunk = currentlyDraggedParent.GetChild(0);
+        float anchorOffsetX = anchorChunk.position.x - currentlyDraggedParent.position.x;
+
+        float nearestX = currentX;
+        float minDiff = float.MaxValue;
+
+        for (int i = 0; i < gridParent.childCount; i++)
+        {
+            float slotX = gridParent.GetChild(i).position.x;
+            float proposedX = slotX - anchorOffsetX;
+            float diff = Mathf.Abs(proposedX - currentX);
+
+            if (diff < minDiff)
+            {
+                minDiff = diff;
+                nearestX = proposedX;
+            }
+        }
+
+        return nearestX;
     }
 
     private Vector3 GetForgivingSnapPosition(Transform anchorChunk)
@@ -843,7 +972,6 @@ public class GlobalTrayDragger : MonoBehaviour
 
     private void UpdateTrayLayers(Transform parent, bool isDragging)
     {
-        // Change layer to "TraySelected" if actively dragging, else back to "Tray"
         int targetLayer = LayerMask.NameToLayer(isDragging ? "TraySelected" : "Tray");
 
         foreach (Transform child in parent)

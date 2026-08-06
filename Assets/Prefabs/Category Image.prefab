@@ -378,7 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minFontSize: 10
-  maxFontSize: 25
+  maxFontSize: 18
   margin: 3
 --- !u!1 &8678158912313709650
 GameObject:
