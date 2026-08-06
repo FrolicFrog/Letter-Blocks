@@ -809,7 +809,7 @@ MonoBehaviour:
     Value: {fileID: 21300000, guid: 95162cf693b20a440ab9c5248adccaf7, type: 3}
   - Key: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
     Value: {fileID: 21300000, guid: ddf4c8a1263b12e429c13c51cf37ddb3, type: 3}
-  TestLevelToLoad: 100
+  TestLevelToLoad: 10
   hearts: 0
 --- !u!1 &630893620
 GameObject:
@@ -1877,7 +1877,7 @@ MonoBehaviour:
   snapLayer:
     serializedVersion: 2
     m_Bits: 1024
-  snapOffset: 1.15
+  snapOffset: 0.4
   planeMode: 0
   snapToGridWhileDragging: 0
   gridCellSize: 1
@@ -1886,7 +1886,7 @@ MonoBehaviour:
   staggeredJumpDelay: 0.4
   shiftDuration: 0.3
   boundaryPadding: 0.8
-  dragOffset: 0.2
+  dragOffset: 0
   dragScaleMultiplier: 1.1
   scaleUpDuration: 0.15
   snapBackDuration: 0.2

@@ -246,25 +246,23 @@ public class GlobalTrayDragger : MonoBehaviour
             }
 
             // --- GREEN AREA SNAP VISUAL LOCK & OVERLAP PREVENTION ---
-            bool isTouchingSnapZone = IsInSnapZone(targetPosition, out Transform snapWall);
+            bool isTouchingSnapZone = IsInSnapZone(targetStepPos, out Transform snapWall);
+            bool pastThreshold = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+                                 ? targetStepPos.z >= bTopWallTriggerThreshold
+                                 : targetStepPos.y >= bTopWallTriggerThreshold;
+
             bool shouldSnap = false;
-            float proposedSnapValue = 0f;
+            float proposedSnapValue = bMaxAxis - snapOffset;
 
-            if (isTouchingSnapZone)
+            if (isTouchingSnapZone || pastThreshold)
             {
-                // Align top of the piece dynamically relative to the board boundaries so all pieces sit completely flush
-                proposedSnapValue = bMaxAxis - snapOffset;
-                shouldSnap = true;
-            }
-            else
-            {
-                bool pastThreshold = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
-                                     ? targetPosition.z >= bTopWallTriggerThreshold
-                                     : targetPosition.y >= bTopWallTriggerThreshold;
+                // FIX: Only cancel the snap if the player purposefully drags the cursor DOWN by more than 60% of a grid tile.
+                bool isTryingToEscape = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+                                        ? targetPosition.z < proposedSnapValue - (gridCellSize * 0.6f)
+                                        : targetPosition.y < proposedSnapValue - (gridCellSize * 0.6f);
 
-                if (pastThreshold)
+                if (!isTryingToEscape)
                 {
-                    proposedSnapValue = bMaxAxis - snapOffset;
                     shouldSnap = true;
                 }
             }

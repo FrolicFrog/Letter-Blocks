@@ -94,6 +94,7 @@ public class WordChecker : MonoBehaviour
 
     private void Start()
     {
+        Application.targetFrameRate = 500;
         StartCoroutine(InitializeDictionary());
     }
 

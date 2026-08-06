@@ -12,7 +12,7 @@ Shader "Custom/StylizedBlockOptimized"
         _ShineColor ("Shine Color", Color) = (1.0, 1.0, 1.0, 0.4)
         _ShineSize ("Shine Size", Range(0.01, 1.0)) = 0.07
         _ShineSoftness ("Shine Softness", Range(0.0, 0.5)) = 0.15
-        _ShineAngle ("Shine Angle", Range(0.0, 360.0)) = 180.0 // Added Angle Slider
+        _ShineAngle ("Shine Angle", Range(0.0, 360.0)) = 180.0
 
         [Header(Fresnel Rim Light)]
         [Toggle] _Enable_Highlights ("Enable Rim Light", Float) = 1.0
@@ -35,32 +35,32 @@ Shader "Custom/StylizedBlockOptimized"
             struct appdata
             {
                 float4 vertex : POSITION;
-                half3 normal : NORMAL; 
+                float3 normal : NORMAL; // Upgraded to float3 for better vertex precision
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
             struct v2f
             {
                 float4 pos : SV_POSITION;
-                half3 worldNormal : TEXCOORD0; 
-                half3 viewDir : TEXCOORD1; 
+                float3 worldNormal : TEXCOORD0; // Upgraded to float3 to prevent truncation artifacts
+                float3 viewDir : TEXCOORD1;     // Upgraded to float3 to prevent truncation artifacts
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
             UNITY_INSTANCING_BUFFER_START(Props)
-                UNITY_DEFINE_INSTANCED_PROP(half4, _Color)
-                UNITY_DEFINE_INSTANCED_PROP(half, _SideDarkness)
-                UNITY_DEFINE_INSTANCED_PROP(half, _BottomDarkness)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
+                UNITY_DEFINE_INSTANCED_PROP(float, _SideDarkness)
+                UNITY_DEFINE_INSTANCED_PROP(float, _BottomDarkness)
                 
-                UNITY_DEFINE_INSTANCED_PROP(half, _Enable_Shine)
-                UNITY_DEFINE_INSTANCED_PROP(half4, _ShineColor)
-                UNITY_DEFINE_INSTANCED_PROP(half, _ShineSize)
-                UNITY_DEFINE_INSTANCED_PROP(half, _ShineSoftness)
-                UNITY_DEFINE_INSTANCED_PROP(half, _ShineAngle) // Instanced Angle
+                UNITY_DEFINE_INSTANCED_PROP(float, _Enable_Shine)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _ShineColor)
+                UNITY_DEFINE_INSTANCED_PROP(float, _ShineSize)
+                UNITY_DEFINE_INSTANCED_PROP(float, _ShineSoftness)
+                UNITY_DEFINE_INSTANCED_PROP(float, _ShineAngle)
 
-                UNITY_DEFINE_INSTANCED_PROP(half, _Enable_Highlights)
-                UNITY_DEFINE_INSTANCED_PROP(half4, _RimColor)
-                UNITY_DEFINE_INSTANCED_PROP(half, _FresnelPower)
+                UNITY_DEFINE_INSTANCED_PROP(float, _Enable_Highlights)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _RimColor)
+                UNITY_DEFINE_INSTANCED_PROP(float, _FresnelPower)
             UNITY_INSTANCING_BUFFER_END(Props)
 
             v2f vert (appdata v)
@@ -78,58 +78,57 @@ Shader "Custom/StylizedBlockOptimized"
                 return o;
             }
 
-            half4 frag (v2f i) : SV_Target 
+            float4 frag (v2f i) : SV_Target 
             {
                 UNITY_SETUP_INSTANCE_ID(i);
 
-                half3 normal = normalize(i.worldNormal);
-                half3 viewDir = normalize(i.viewDir);
+                // Use float3 for all directional math to eliminate highlight mismatch
+                float3 normal = normalize(i.worldNormal);
+                float3 viewDir = normalize(i.viewDir);
 
-                half topMask = saturate(normal.y);
-                half bottomMask = saturate(-normal.y);
+                float topMask = saturate(normal.y);
+                float bottomMask = saturate(-normal.y);
 
                 // Access Instanced Properties
-                half4 mainColor = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
-                half sideDark = UNITY_ACCESS_INSTANCED_PROP(Props, _SideDarkness);
-                half bottomDark = UNITY_ACCESS_INSTANCED_PROP(Props, _BottomDarkness);
+                float4 mainColor = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
+                float sideDark = UNITY_ACCESS_INSTANCED_PROP(Props, _SideDarkness);
+                float bottomDark = UNITY_ACCESS_INSTANCED_PROP(Props, _BottomDarkness);
                 
-                half enableShine = UNITY_ACCESS_INSTANCED_PROP(Props, _Enable_Shine);
-                half4 shineColor = UNITY_ACCESS_INSTANCED_PROP(Props, _ShineColor);
-                half shineSize = UNITY_ACCESS_INSTANCED_PROP(Props, _ShineSize);
-                half shineSoftness = UNITY_ACCESS_INSTANCED_PROP(Props, _ShineSoftness);
-                half shineAngle = UNITY_ACCESS_INSTANCED_PROP(Props, _ShineAngle); // Get the angle
+                float enableShine = UNITY_ACCESS_INSTANCED_PROP(Props, _Enable_Shine);
+                float4 shineColor = UNITY_ACCESS_INSTANCED_PROP(Props, _ShineColor);
+                float shineSize = UNITY_ACCESS_INSTANCED_PROP(Props, _ShineSize);
+                float shineSoftness = UNITY_ACCESS_INSTANCED_PROP(Props, _ShineSoftness);
+                float shineAngle = UNITY_ACCESS_INSTANCED_PROP(Props, _ShineAngle);
 
-                half enableHL = UNITY_ACCESS_INSTANCED_PROP(Props, _Enable_Highlights);
-                half4 rimColor = UNITY_ACCESS_INSTANCED_PROP(Props, _RimColor);
-                half fresnelPower = UNITY_ACCESS_INSTANCED_PROP(Props, _FresnelPower);
+                float enableHL = UNITY_ACCESS_INSTANCED_PROP(Props, _Enable_Highlights);
+                float4 rimColor = UNITY_ACCESS_INSTANCED_PROP(Props, _RimColor);
+                float fresnelPower = UNITY_ACCESS_INSTANCED_PROP(Props, _FresnelPower);
 
                 // --- 1. Base Shading ---
-                half4 sideColor = half4(mainColor.rgb * sideDark, mainColor.a);
-                half4 bottomColor = half4(mainColor.rgb * bottomDark, mainColor.a);
+                float4 sideColor = float4(mainColor.rgb * sideDark, mainColor.a);
+                float4 bottomColor = float4(mainColor.rgb * bottomDark, mainColor.a);
 
-                half4 finalColor = sideColor;
+                float4 finalColor = sideColor;
                 finalColor = lerp(finalColor, bottomColor, bottomMask);
                 finalColor = lerp(finalColor, mainColor, topMask);
 
                 // --- 2. Fake Shine (Glossy Specular) ---
-                // Convert degrees to radians (pi / 180 = 0.0174533)
-                half rad = shineAngle * 0.0174533h;
+                float rad = shineAngle * 0.0174533f;
                 
-                // Calculate the rotated light direction around the Y-axis
-                half3 fakeLightDir = normalize(half3(sin(rad), 1.0h, cos(rad)));
+                float3 fakeLightDir = normalize(float3(sin(rad), 1.0f, cos(rad)));
                 
-                half3 halfVector = normalize(fakeLightDir + viewDir);
-                half nDotH = saturate(dot(normal, halfVector));
+                float3 halfVector = normalize(fakeLightDir + viewDir);
+                float nDotH = saturate(dot(normal, halfVector));
                 
-                half shineThreshold = 1.0h - shineSize;
-                half shineIntensity = smoothstep(shineThreshold, shineThreshold + shineSoftness, nDotH);
+                float shineThreshold = 1.0f - shineSize;
+                float shineIntensity = smoothstep(shineThreshold, shineThreshold + shineSoftness, nDotH);
                 
                 finalColor.rgb += shineColor.rgb * shineIntensity * shineColor.a * enableShine;
 
                 // --- 3. Proper Fresnel Rim Light ---
-                half nDotV = saturate(dot(normal, viewDir));
-                half fresnel = pow(1.0h - nDotV, fresnelPower); 
-                half3 appliedRim = rimColor.rgb * fresnel * enableHL;
+                float nDotV = saturate(dot(normal, viewDir));
+                float fresnel = pow(1.0f - nDotV, fresnelPower); 
+                float3 appliedRim = rimColor.rgb * fresnel * enableHL;
                 
                 finalColor.rgb += appliedRim;
 
