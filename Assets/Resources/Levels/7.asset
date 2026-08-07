@@ -269,7 +269,7 @@ MonoBehaviour:
   - Key: {x: 3, y: 0}
     Value: E
   - Key: {x: 3, y: 2}
-    Value: A
+    Value: I
   - Key: {x: 4, y: 4}
     Value: A
   - Key: {x: 2, y: 0}
@@ -279,7 +279,7 @@ MonoBehaviour:
   - Key: {x: 1, y: 2}
     Value: N
   - Key: {x: 4, y: 2}
-    Value: I
+    Value: A
   - Key: {x: 2, y: 2}
     Value: A
   - Key: {x: 4, y: 0}

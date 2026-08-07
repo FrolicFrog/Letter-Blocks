@@ -215,17 +215,17 @@ MonoBehaviour:
   - Key: {x: 3, y: 0}
     Value: E
   - Key: {x: 2, y: 0}
-    Value: O
+    Value: C
   - Key: {x: 2, y: 1}
     Value: A
   - Key: {x: 3, y: 2}
     Value: O
   - Key: {x: 4, y: 1}
-    Value: E
+    Value: O
   - Key: {x: 4, y: 2}
     Value: A
   - Key: {x: 4, y: 3}
-    Value: C
+    Value: E
   trayName:
   - Key: {x: 3, y: 0}
     Value: Tray 1
