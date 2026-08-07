@@ -84,15 +84,15 @@ MonoBehaviour:
   - Key: {x: 9, y: 7}
     Value: A
   trayCells:
-  - Key: {x: 3, y: 2}
-    Value: L
   - Key: {x: 3, y: 1}
     Value: N
-  trayName:
   - Key: {x: 3, y: 2}
-    Value: Tray 2
+    Value: L
+  trayName:
   - Key: {x: 3, y: 1}
     Value: Tray 1
+  - Key: {x: 3, y: 2}
+    Value: Tray 2
   categoryColors:
   - Key: Fruit
     Value: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}

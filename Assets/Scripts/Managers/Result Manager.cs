@@ -65,15 +65,11 @@ public class ResultManager : MonoBehaviour
         if (incrementLevel)
         {
 
-            if (GameManager.Instance.IsTestMode)
-
+            if (!GameManager.Instance.IsTestMode)
             {
-                LevelManager.Instance.TestLevelToLoad++;
+                PlayerPrefs.SetInt("LastLevel", PlayerPrefs.GetInt("LastLevel", 1) + 1);
             }
-            else
-            {
-               PlayerPrefs.SetInt("LastLevel", PlayerPrefs.GetInt("LastLevel", 1)+1);
-            }
+          
         }
         LevelManager.Instance.UnloadInScene();
         StartCoroutine(Inittalize());

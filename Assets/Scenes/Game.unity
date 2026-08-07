@@ -1095,7 +1095,7 @@ MonoBehaviour:
     Value: {fileID: 21300000, guid: 95162cf693b20a440ab9c5248adccaf7, type: 3}
   - Key: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
     Value: {fileID: 21300000, guid: ddf4c8a1263b12e429c13c51cf37ddb3, type: 3}
-  TestLevelToLoad: 1
+  TestLevelToLoad: 10
   ticks: []
   hearts: 0
 --- !u!1 &630893620
@@ -2398,7 +2398,7 @@ MonoBehaviour:
       right: 1
   centerObject: {fileID: 408457067}
   autoScaleBorder: 1
-  borderPadding: {x: 3.94, y: 1.81, z: 4.33}
+  borderPadding: {x: 4.4, y: 1.81, z: 4.5}
   autoFitToScreen: 1
   mainCamera: {fileID: 330585545}
   floorHeight: 0
@@ -2414,7 +2414,7 @@ Grid:
   m_GameObject: {fileID: 1661794637}
   m_Enabled: 1
   m_CellSize: {x: 1, y: 1, z: 1}
-  m_CellGap: {x: 1.95, y: 2.1, z: 0}
+  m_CellGap: {x: 2.05, y: 2.1, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 1
 --- !u!114 &1661794641
@@ -2446,7 +2446,7 @@ MonoBehaviour:
   topWallTriggerOffset: 0.2
   staggeredJumpDelay: 0.4
   shiftDuration: 0.3
-  boundaryPadding: 0.8
+  boundaryPadding: 0.7
   dragOffset: 0
   dragScaleMultiplier: 1.1
   scaleUpDuration: 0.15

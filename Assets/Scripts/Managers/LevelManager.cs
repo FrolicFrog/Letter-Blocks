@@ -277,22 +277,22 @@ public class LevelManager : Manager<LevelManager>
 
                     if (dir.left)
                     {
-                        size.x -= .07f;
+                        size.x -= .058f;
                         pos.x += .078f;
                     }
                     if (dir.right)
                     {
-                        size.x -= .07f;
+                        size.x -= .058f;
                         pos.x -= .078f;
                     }
                     if (dir.front)
                     {
-                        size.z -= 0.07f;
+                        size.z -= 0.058f;
                         pos.z -= 0.078f;
                     }
                     if (dir.back)
                     {
-                        size.z -= 0.07f;
+                        size.z -= 0.058f;
                         pos.z += 0.078f;
                     }
                     letterBox.transform.localScale = size;
@@ -328,6 +328,7 @@ public class LevelManager : Manager<LevelManager>
                 chunk.transform.SetParent(trayParent.transform);
             }
          trayParent.transform.SetParent(trayList);
+            trayParent.AddComponent<TrayCubeScaler>();
         }
       
        
