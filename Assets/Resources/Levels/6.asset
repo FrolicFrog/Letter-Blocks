@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: f3c280131a8cfd248be5604224053358, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - COOFEE
   - TEA
@@ -51,7 +51,8 @@ MonoBehaviour:
   - {x: 7, y: 7}
   - {x: 5, y: 5}
   - {x: 3, y: 2}
-  blockedCells: []
+  blockedCells:
+  - {x: 0, y: 4}
   wordCategory:
   - Key: Drinks
     Value:

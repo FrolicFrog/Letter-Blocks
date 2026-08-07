@@ -139,7 +139,7 @@ MonoBehaviour:
   - Key: {x: 5, y: 5}
     Value: N
   trayCells:
-  - Key: {x: 3, y: 0}
+  - Key: {x: 3, y: 2}
     Value: O
   - Key: {x: 3, y: 1}
     Value: I
@@ -150,7 +150,7 @@ MonoBehaviour:
   - Key: {x: 4, y: 3}
     Value: E
   trayName:
-  - Key: {x: 3, y: 0}
+  - Key: {x: 3, y: 2}
     Value: Tray 1
   - Key: {x: 3, y: 1}
     Value: Tray 1

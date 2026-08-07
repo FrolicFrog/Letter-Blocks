@@ -13,6 +13,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
+  - _ENABLE_HIGHLIGHTS_ON
   - _ENABLE_SHINE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -26,16 +27,16 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _BottomDarkness: 0
-    - _Enable_Highlights: 0
+    - _BottomDarkness: 0.044
+    - _Enable_Highlights: 1
     - _Enable_Shine: 1
-    - _FresnelPower: 3
+    - _FresnelPower: 2.98
     - _ShineAngle: 180
-    - _ShineSize: 0.07
-    - _ShineSoftness: 0.15
-    - _SideDarkness: 0.705
+    - _ShineSize: 0.363
+    - _ShineSoftness: 0.227
+    - _SideDarkness: 0.651
     m_Colors:
-    - _Color: {r: 0.9716981, g: 0.9029459, b: 0.9029459, a: 1}
-    - _RimColor: {r: 1, g: 1, b: 1, a: 0.5}
+    - _Color: {r: 0.96862745, g: 0.9764706, b: 0.9882353, a: 1}
+    - _RimColor: {r: 0.8387771, g: 0.9138132, b: 0.9716981, a: 0.5}
     - _ShineColor: {r: 1, g: 1, b: 1, a: 0.4}
   m_BuildTextureStacks: []
