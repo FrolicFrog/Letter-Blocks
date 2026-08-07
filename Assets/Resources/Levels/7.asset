@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - HENRY
   - ISABELLA
@@ -42,6 +42,8 @@ MonoBehaviour:
   - Tray 6
   - Tray 7
   - Tray 8
+  - Tray 9
+  - Tray 10
   excludedChar:
   - {x: 9, y: 5}
   - {x: 7, y: 0}
@@ -53,7 +55,13 @@ MonoBehaviour:
   - {x: 1, y: 5}
   - {x: 2, y: 6}
   - {x: 0, y: 4}
-  blockedCells: []
+  blockedCells:
+  - {x: 4, y: 1}
+  - {x: 3, y: 1}
+  - {x: 2, y: 1}
+  - {x: 4, y: 3}
+  - {x: 3, y: 3}
+  - {x: 2, y: 3}
   wordCategory:
   - Key: Boy Names
     Value:
@@ -256,47 +264,47 @@ MonoBehaviour:
   - Key: {x: 0, y: 6}
     Value: Y
   trayCells:
-  - Key: {x: 3, y: 0}
-    Value: A
-  - Key: {x: 3, y: 1}
-    Value: E
-  - Key: {x: 3, y: 3}
-    Value: A
-  - Key: {x: 3, y: 4}
-    Value: O
-  - Key: {x: 4, y: 0}
-    Value: A
-  - Key: {x: 4, y: 3}
-    Value: I
-  - Key: {x: 2, y: 3}
-    Value: L
-  - Key: {x: 2, y: 2}
-    Value: A
-  - Key: {x: 3, y: 2}
-    Value: N
-  - Key: {x: 2, y: 1}
+  - Key: {x: 2, y: 4}
     Value: M
-  trayName:
   - Key: {x: 3, y: 0}
-    Value: Tray 1
-  - Key: {x: 3, y: 1}
-    Value: Tray 1
-  - Key: {x: 3, y: 3}
-    Value: Tray 2
+    Value: E
+  - Key: {x: 3, y: 2}
+    Value: A
+  - Key: {x: 4, y: 4}
+    Value: A
+  - Key: {x: 2, y: 0}
+    Value: O
   - Key: {x: 3, y: 4}
-    Value: Tray 2
+    Value: L
+  - Key: {x: 1, y: 2}
+    Value: N
+  - Key: {x: 4, y: 2}
+    Value: I
+  - Key: {x: 2, y: 2}
+    Value: A
   - Key: {x: 4, y: 0}
-    Value: Tray 3
-  - Key: {x: 4, y: 3}
+    Value: A
+  trayName:
+  - Key: {x: 2, y: 4}
+    Value: Tray 7
+  - Key: {x: 3, y: 0}
+    Value: Tray 2
+  - Key: {x: 3, y: 2}
     Value: Tray 4
-  - Key: {x: 2, y: 3}
-    Value: Tray 5
+  - Key: {x: 4, y: 4}
+    Value: Tray 9
+  - Key: {x: 2, y: 0}
+    Value: Tray 3
+  - Key: {x: 3, y: 4}
+    Value: Tray 8
+  - Key: {x: 1, y: 2}
+    Value: Tray 10
+  - Key: {x: 4, y: 2}
+    Value: Tray 6
   - Key: {x: 2, y: 2}
     Value: Tray 5
-  - Key: {x: 3, y: 2}
-    Value: Tray 5
-  - Key: {x: 2, y: 1}
-    Value: Tray 5
+  - Key: {x: 4, y: 0}
+    Value: Tray 1
   categoryColors:
   - Key: Boy Names
     Value: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}

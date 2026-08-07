@@ -26,16 +26,16 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _BottomDarkness: 0
+    - _BottomDarkness: 0.187
     - _Enable_Highlights: 0
     - _Enable_Shine: 1
-    - _FresnelPower: 3
-    - _ShineAngle: 82.5
-    - _ShineSize: 0.182
-    - _ShineSoftness: 0.312
-    - _SideDarkness: 0.675
+    - _FresnelPower: 5.73
+    - _ShineAngle: 103.8
+    - _ShineSize: 0.01
+    - _ShineSoftness: 0.227
+    - _SideDarkness: 0.483
     m_Colors:
-    - _Color: {r: 0.70361197, g: 0.5874866, b: 0.7735849, a: 1}
+    - _Color: {r: 0.40988785, g: 0.47296742, b: 0.5754717, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 0.5}
-    - _ShineColor: {r: 1, g: 1, b: 1, a: 0.4}
+    - _ShineColor: {r: 0.5801887, g: 0.6677034, b: 0.7735849, a: 0.4}
   m_BuildTextureStacks: []
