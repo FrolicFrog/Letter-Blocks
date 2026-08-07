@@ -16,12 +16,13 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private BottomGridManager letterGridManager;
     [SerializeField] private ResultManager resultManager;
     [SerializeField] private GameObject categoryHeading,arrow;
-    [SerializeField] private Transform categoryHeadingParent;
+    [SerializeField] private Transform categoryHeadingParent,trayList;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial,trayOutlineMat;
     [SerializeField] private List<KeyValueGroup<Material, Sprite>> colorSprite;
 
     [HideInInspector] public int TestLevelToLoad = 1;
+    [HideInInspector] public List<GameObject> ticks = new();
 
     private Dictionary<Material, Sprite> _colorSprite = new(); //Do not clear
     private Dictionary<Direction, GameObject> wallsDirectionDict = new();
@@ -110,9 +111,10 @@ public class LevelManager : Manager<LevelManager>
         gridManager.ArrangeChildren();
         letterGridManager.CreateChildren();
         letterGridManager.ArrangeChildren();
+        SetUIElements();
         ManageWords();
         ManageAlphabets();
-        SetUIElements();
+       
     }
 
     void SetUIElements()
@@ -128,6 +130,7 @@ public class LevelManager : Manager<LevelManager>
                 heading.GetComponentsInChildren<TextMeshProUGUI>()[0].text = category;
                 heading.GetComponentsInChildren<TextMeshProUGUI>()[1].text = wordsCategory[category].Count.ToString();
                 heading.transform.GetChild(1).GetComponent<Image>().color = categoryColors[category].color;
+                ticks.Add(heading.transform.GetChild(heading.transform.childCount - 1).gameObject);
             }
 
         }
@@ -300,7 +303,10 @@ public class LevelManager : Manager<LevelManager>
                 }
             }
         }
-
+        if(trayList == null)
+        {
+            Debug.LogError("Tray List is Null!");
+        }
         foreach (var key in trayChunks.Keys)
         {
             var trayParent = new GameObject(key);
@@ -321,7 +327,7 @@ public class LevelManager : Manager<LevelManager>
             {
                 chunk.transform.SetParent(trayParent.transform);
             }
-           
+         trayParent.transform.SetParent(trayList);
         }
       
        
@@ -340,8 +346,58 @@ public class LevelManager : Manager<LevelManager>
 
         return newObject;
     }
+
+    public void UnloadInScene()
+    {
+        ResetUIElements(); 
+        ResetWords();
+        ResetAlphabets();
+        ResetData();
+    }
+
     void ResetUIElements()
     {
+        for(int i = categoryHeadingParent.childCount-1; i>=0;i--)
+        {
+            Destroy(categoryHeadingParent.GetChild(i).gameObject);
+        }
+    }
 
+    void ResetWords()
+    {
+        for(int i = TopGridManager.instance.transform.childCount-1; i>=0;i--)
+        {
+            Destroy(TopGridManager.instance.transform.GetChild(i).gameObject);
+        }
+    }
+
+    void ResetAlphabets()
+    {
+        for(int i = BottomGridManager.Instance.transform.childCount-1; i>=0;i--)
+        {
+            Destroy(BottomGridManager.Instance.transform.GetChild(i).gameObject);
+        }
+        for (int i = trayList.childCount - 1; i >= 0; i--)
+        {
+            Debug.Log("Destroying");
+            Destroy (trayList.GetChild(i).gameObject);
+        }
+
+    }
+    void ResetData()
+    {
+    
+        excludedChar.Clear();
+        blockedCells.Clear();
+        cellCategory.Clear();// = _LevelData.cellCategory.ToDictionary(item => item.Key, item => item.Value);
+        cellTexts.Clear();// = _LevelData.cellTexts.ToDictionary(item => item.Key, item => item.Value);
+        categoryColors.Clear();// = _LevelData.categoryColors.ToDictionary(item => item.Key, item => item.Value);
+        trayCells.Clear();// = _LevelData.trayCells.ToDictionary(item => item.Key, item => item.Value);
+        trayName.Clear();// = _LevelData.trayName.ToDictionary(item => item.Key, item => item.Value);
+        trayColors.Clear();// = _LevelData.trayColors.ToDictionary(item => item.Key, item => item.Value);
+        wordPositions.Clear();
+        wordsCategory.Clear();
+        trayChunks.Clear();
+        
     }
 }
