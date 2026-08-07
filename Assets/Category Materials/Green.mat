@@ -86,7 +86,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _BottomDarkness: 0.5
+    - _BottomDarkness: 0.358
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -113,8 +113,8 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _ShineAngle: 180
-    - _ShineSize: 0.07
-    - _ShineSoftness: 0.15
+    - _ShineSize: 0.18
+    - _ShineSoftness: 0.408
     - _SideDarkness: 0.616
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0

@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - LION
   - PINK
@@ -40,7 +40,8 @@ MonoBehaviour:
   - {x: 9, y: 2}
   - {x: 7, y: 2}
   - {x: 5, y: 5}
-  blockedCells: []
+  blockedCells:
+  - {x: 2, y: 2}
   wordCategory:
   - Key: Animals
     Value:
@@ -138,22 +139,22 @@ MonoBehaviour:
   - Key: {x: 5, y: 5}
     Value: N
   trayCells:
-  - Key: {x: 2, y: 1}
+  - Key: {x: 3, y: 0}
     Value: O
-  - Key: {x: 2, y: 2}
-    Value: E
-  - Key: {x: 3, y: 2}
+  - Key: {x: 3, y: 1}
+    Value: I
+  - Key: {x: 3, y: 4}
     Value: N
   - Key: {x: 4, y: 2}
     Value: A
   - Key: {x: 4, y: 3}
-    Value: I
+    Value: E
   trayName:
-  - Key: {x: 2, y: 1}
+  - Key: {x: 3, y: 0}
     Value: Tray 1
-  - Key: {x: 2, y: 2}
+  - Key: {x: 3, y: 1}
     Value: Tray 1
-  - Key: {x: 3, y: 2}
+  - Key: {x: 3, y: 4}
     Value: Tray 2
   - Key: {x: 4, y: 2}
     Value: Tray 3

@@ -30,12 +30,12 @@ Material:
     - _Enable_Highlights: 0
     - _Enable_Shine: 1
     - _FresnelPower: 3
-    - _ShineAngle: 76.1
+    - _ShineAngle: 82.5
     - _ShineSize: 0.182
-    - _ShineSoftness: 0.335
+    - _ShineSoftness: 0.312
     - _SideDarkness: 0.675
     m_Colors:
-    - _Color: {r: 0.60176647, g: 0.29307583, b: 0.6981132, a: 1}
+    - _Color: {r: 0.70361197, g: 0.5874866, b: 0.7735849, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 0.5}
     - _ShineColor: {r: 1, g: 1, b: 1, a: 0.4}
   m_BuildTextureStacks: []
