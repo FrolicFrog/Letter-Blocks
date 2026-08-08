@@ -22,6 +22,15 @@ public class TrayCubeScaler : MonoBehaviour
     public float scaleMultiplierXZ = 1.0f;
     public float targetHeight = 2.65f;
 
+    // Helper class to store data between Pass 1 and Pass 2
+    private class CubeSpaceData
+    {
+        public Transform chunk;
+        public Transform cube;
+        public float rightSpace, leftSpace, forwardSpace, backSpace;
+        public Vector3 baseSize;
+    }
+
     void Start()
     {
         if (!scaleInUpdate) FitCubesToChunks();
@@ -40,13 +49,11 @@ public class TrayCubeScaler : MonoBehaviour
     {
         float maxLocalDist = cellSize / 2f;
 
-        // 1. GLOBAL WALL GATHERING: Get EVERY wall in the entire tray. 
-        // This is crucial because inner corners belong to neighboring chunks!
+        // 1. GLOBAL WALL GATHERING
         List<Collider> allTrayWalls = new List<Collider>();
         foreach (Collider col in transform.GetComponentsInChildren<Collider>())
         {
             bool isCube = false;
-            // Filter out any collider that belongs to any yellow cube in the tray
             foreach (Transform chunk in transform)
             {
                 foreach (Transform cube in chunk)
@@ -62,57 +69,132 @@ public class TrayCubeScaler : MonoBehaviour
             if (!isCube) allTrayWalls.Add(col);
         }
 
+        // --- PASS 1: Calculate Maximum Wall Bounds ---
+        List<CubeSpaceData> cubeDatas = new List<CubeSpaceData>();
+
         foreach (Transform chunk in transform)
         {
             foreach (Transform cube in chunk)
             {
-                // Elevate sensor purely in World Space so it sits above the floor
                 Vector3 origin = chunk.position + (Vector3.up * sensorElevation);
 
-                // --- PASS 1: Center rays to find raw extent limits ---
+                // Raw Extents
                 float rawRight = GetRawHit(chunk, Vector3.right, maxLocalDist, allTrayWalls, origin);
                 float rawLeft = GetRawHit(chunk, Vector3.left, maxLocalDist, allTrayWalls, origin);
                 float rawForward = GetRawHit(chunk, Vector3.forward, maxLocalDist, allTrayWalls, origin);
                 float rawBack = GetRawHit(chunk, Vector3.back, maxLocalDist, allTrayWalls, origin);
 
-                // --- PASS 2: 5-Ray sweeps using the raw extents to find exact safe space against inner corners ---
+                // Sweeps
                 float rightSpace = GetSweptSpace(chunk, Vector3.right, maxLocalDist, paddingX, allTrayWalls, origin, rawForward, rawBack);
                 float leftSpace = GetSweptSpace(chunk, Vector3.left, maxLocalDist, paddingX, allTrayWalls, origin, rawForward, rawBack);
                 float forwardSpace = GetSweptSpace(chunk, Vector3.forward, maxLocalDist, paddingZ, allTrayWalls, origin, rawRight, rawLeft);
                 float backSpace = GetSweptSpace(chunk, Vector3.back, maxLocalDist, paddingZ, allTrayWalls, origin, rawRight, rawLeft);
 
-                // Apply constraints and calculate offsets
-                rightSpace = Mathf.Max(0.01f, rightSpace);
-                leftSpace = Mathf.Max(0.01f, leftSpace);
-                forwardSpace = Mathf.Max(0.01f, forwardSpace);
-                backSpace = Mathf.Max(0.01f, backSpace);
-
-                float targetSizeX = rightSpace + leftSpace;
-                float targetSizeZ = forwardSpace + backSpace;
-                float offsetX = (rightSpace - leftSpace) / 2f;
-                float offsetZ = (forwardSpace - backSpace) / 2f;
-
-                cube.localPosition = new Vector3(offsetX, cube.localPosition.y, offsetZ);
-
                 MeshFilter mf = cube.GetComponentInChildren<MeshFilter>();
                 Vector3 baseSize = mf != null ? mf.sharedMesh.bounds.size : Vector3.one;
 
-                baseSize.x = Mathf.Max(0.01f, baseSize.x);
-                baseSize.y = Mathf.Max(0.01f, baseSize.y);
-                baseSize.z = Mathf.Max(0.01f, baseSize.z);
-
-                cube.localScale = new Vector3(
-                    (targetSizeX / baseSize.x) * scaleMultiplierXZ,
-                    targetHeight / baseSize.y,
-                    (targetSizeZ / baseSize.z) * scaleMultiplierXZ
-                );
+                // Store provisional sizes
+                cubeDatas.Add(new CubeSpaceData
+                {
+                    chunk = chunk,
+                    cube = cube,
+                    rightSpace = rightSpace,
+                    leftSpace = leftSpace,
+                    forwardSpace = forwardSpace,
+                    backSpace = backSpace,
+                    baseSize = new Vector3(Mathf.Max(0.01f, baseSize.x), Mathf.Max(0.01f, baseSize.y), Mathf.Max(0.01f, baseSize.z))
+                });
             }
+        }
+
+        // --- PASS 2: Check & Resolve Intersections (Overlaps) ---
+        float orthoTolerance = maxLocalDist * 0.8f;
+
+        for (int i = 0; i < cubeDatas.Count; i++)
+        {
+            for (int j = i + 1; j < cubeDatas.Count; j++)
+            {
+                CubeSpaceData A = cubeDatas[i];
+                CubeSpaceData B = cubeDatas[j];
+
+                // Get distance between chunks in local space
+                Vector3 toB = A.chunk.InverseTransformPoint(B.chunk.position);
+
+                // X-Axis Check (Right / Left Neighbors)
+                if (Mathf.Abs(toB.z) <= orthoTolerance)
+                {
+                    if (toB.x > 0.1f) // B is to the Right of A
+                    {
+                        float dist = toB.x;
+                        float overlap = (A.rightSpace + B.leftSpace) - dist;
+                        if (overlap > 0)
+                        {
+                            A.rightSpace -= overlap / 2f;
+                            B.leftSpace -= overlap / 2f;
+                        }
+                    }
+                    else if (toB.x < -0.1f) // B is to the Left of A
+                    {
+                        float dist = Mathf.Abs(toB.x);
+                        float overlap = (A.leftSpace + B.rightSpace) - dist;
+                        if (overlap > 0)
+                        {
+                            A.leftSpace -= overlap / 2f;
+                            B.rightSpace -= overlap / 2f;
+                        }
+                    }
+                }
+
+                // Z-Axis Check (Forward / Back Neighbors)
+                if (Mathf.Abs(toB.x) <= orthoTolerance)
+                {
+                    if (toB.z > 0.1f) // B is Forward of A
+                    {
+                        float dist = toB.z;
+                        float overlap = (A.forwardSpace + B.backSpace) - dist;
+                        if (overlap > 0)
+                        {
+                            A.forwardSpace -= overlap / 2f;
+                            B.backSpace -= overlap / 2f;
+                        }
+                    }
+                    else if (toB.z < -0.1f) // B is Back of A
+                    {
+                        float dist = Mathf.Abs(toB.z);
+                        float overlap = (A.backSpace + B.forwardSpace) - dist;
+                        if (overlap > 0)
+                        {
+                            A.backSpace -= overlap / 2f;
+                            B.forwardSpace -= overlap / 2f;
+                        }
+                    }
+                }
+            }
+        }
+
+        // --- PASS 3: Apply Final Adjusted Sizes & Positions ---
+        foreach (var data in cubeDatas)
+        {
+            data.rightSpace = Mathf.Max(0.01f, data.rightSpace);
+            data.leftSpace = Mathf.Max(0.01f, data.leftSpace);
+            data.forwardSpace = Mathf.Max(0.01f, data.forwardSpace);
+            data.backSpace = Mathf.Max(0.01f, data.backSpace);
+
+            float targetSizeX = data.rightSpace + data.leftSpace;
+            float targetSizeZ = data.forwardSpace + data.backSpace;
+            float offsetX = (data.rightSpace - data.leftSpace) / 2f;
+            float offsetZ = (data.forwardSpace - data.backSpace) / 2f;
+
+            data.cube.localPosition = new Vector3(offsetX, data.cube.localPosition.y, offsetZ);
+
+            data.cube.localScale = new Vector3(
+                (targetSizeX / data.baseSize.x) * scaleMultiplierXZ,
+                targetHeight / data.baseSize.y,
+                (targetSizeZ / data.baseSize.z) * scaleMultiplierXZ
+            );
         }
     }
 
-    /// <summary>
-    /// Shoots a single center ray to find the absolute maximum distance a face can travel.
-    /// </summary>
     private float GetRawHit(Transform chunk, Vector3 localDirection, float maxLocalDist, List<Collider> walls, Vector3 origin)
     {
         Vector3 worldDir = chunk.TransformDirection(localDirection).normalized;
@@ -139,9 +221,6 @@ public class TrayCubeScaler : MonoBehaviour
         return maxLocalDist;
     }
 
-    /// <summary>
-    /// Shoots 5 parallel rays across the width of the cube face to detect jutting corners.
-    /// </summary>
     private float GetSweptSpace(Transform chunk, Vector3 localDirection, float maxLocalDist, float padding, List<Collider> walls, Vector3 origin, float crossPosBound, float crossNegBound)
     {
         Vector3 worldDir = chunk.TransformDirection(localDirection).normalized;
@@ -159,12 +238,10 @@ public class TrayCubeScaler : MonoBehaviour
         float worldMaxDist = maxLocalDist * scaleInDir;
         float rayLength = worldMaxDist * 1.5f;
 
-        // Inset slightly to prevent scraping parallel walls
         float inset = 0.02f;
         float safeCrossPos = Mathf.Max(0, crossPosBound - inset) * scaleInCrossPos;
         float safeCrossNeg = Mathf.Max(0, crossNegBound - inset) * scaleInCrossNeg;
 
-        // 5-Ray Sweep: Center, 50% Edges, and 100% Edges
         Vector3[] rayOrigins = new Vector3[]
         {
             origin,
@@ -206,6 +283,7 @@ public class TrayCubeScaler : MonoBehaviour
 
         return maxLocalDist;
     }
+    
 
     IEnumerator CanceScale()
     {

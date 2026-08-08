@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.085
-  categoryMaterial: {fileID: 2100000, guid: f3c280131a8cfd248be5604224053358, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - JFG
   - KIWI
@@ -40,6 +40,8 @@ MonoBehaviour:
   - Tray 8
   - Tray 9
   - Tray 10
+  - Tray 11
+  - Tray 12
   excludedChar:
   - {x: 5, y: 3}
   - {x: 7, y: 4}
@@ -281,6 +283,22 @@ MonoBehaviour:
     Value: K
   - Key: {x: 9, y: 5}
     Value: K
+  - Key: {x: 6, y: 10}
+    Value: H
+  - Key: {x: 6, y: 9}
+    Value: H
+  - Key: {x: 7, y: 9}
+    Value: H
+  - Key: {x: 7, y: 8}
+    Value: J
+  - Key: {x: 5, y: 11}
+    Value: Z
+  - Key: {x: 4, y: 10}
+    Value: L
+  - Key: {x: 4, y: 9}
+    Value: L
+  - Key: {x: 5, y: 10}
+    Value: Y
   trayName:
   - Key: {x: 3, y: 2}
     Value: Tray 1
@@ -378,6 +396,22 @@ MonoBehaviour:
     Value: Tray 10
   - Key: {x: 9, y: 5}
     Value: Tray 10
+  - Key: {x: 6, y: 10}
+    Value: Tray 11
+  - Key: {x: 6, y: 9}
+    Value: Tray 11
+  - Key: {x: 7, y: 9}
+    Value: Tray 11
+  - Key: {x: 7, y: 8}
+    Value: Tray 11
+  - Key: {x: 5, y: 11}
+    Value: Tray 12
+  - Key: {x: 4, y: 10}
+    Value: Tray 12
+  - Key: {x: 4, y: 9}
+    Value: Tray 12
+  - Key: {x: 5, y: 10}
+    Value: Tray 12
   categoryColors:
   - Key: Food
     Value: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
@@ -431,3 +465,6 @@ MonoBehaviour:
     - {x: 9, y: 2}
     - {x: 9, y: 3}
     - {x: 9, y: 4}
+  freezedTray:
+  - Key: Tray 1
+    Value: 6

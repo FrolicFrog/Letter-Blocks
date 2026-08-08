@@ -13,6 +13,7 @@ public class LevelEditor : EditorWindow
     private int width = 8;  // Bottom Grid Columns
    
     private int minutes = 1, seconds = 30;
+    private int freezeCount;
     private bool timer = true;
     private float gap = 2f;
     private float horizontalMargin = 20f;
@@ -38,12 +39,18 @@ public class LevelEditor : EditorWindow
     private Dictionary<Vector2Int, string> cellCategory = new(), trayName = new();
     private Dictionary<Vector2Int, string> cellTexts = new(), trayCells = new();
     private Dictionary<string, Material> categoryColors = new();
+    private Dictionary<string, int> freezedTray = new();
+
 
     // Auto-generated colors for the trays
     private Dictionary<string, Color> trayDisplayColors = new();
 
     private Dictionary<string, List<Vector2Int>> wordPositions = new();
     private Dictionary<string, List<string>> wordCategory = new();
+
+
+    private string buttonText = "Freeze Tray";
+    private Color buttonColor = Color.green;
 
     SerializedObject window;
     SerializedProperty categoryList, trayList;
@@ -207,6 +214,8 @@ public class LevelEditor : EditorWindow
                 tray.Clear();
                 tray.Add("Tray 1");
                 trayDropdown = "Tray 1";
+                freezedTray.Clear();
+
                 CachedLvlData = null;
             }
             GUILayout.BeginHorizontal();
@@ -301,7 +310,7 @@ public class LevelEditor : EditorWindow
 
         currentData.trayName = trayName.Select(kvp => new KeyValueGroup<Vector2Int, string>(kvp.Key, kvp.Value)).ToList();
         currentData.trayCells = trayCells.Select(kvp => new KeyValueGroup<Vector2Int, string>(kvp.Key, kvp.Value)).ToList();
-
+        currentData.freezedTray = freezedTray.Select(kvg=>new KeyValueGroup<string, int>(kvg.Key, kvg.Value)).ToList();
         var list = new List<KeyValueGroup<string, List<Vector2Int>>>();
         foreach (var kvp in wordPositions)
         {
@@ -344,6 +353,7 @@ public class LevelEditor : EditorWindow
         cellCategory = CurLvlData.cellCategory.ToDictionary(item => item.Key, item => item.Value);
         cellTexts = CurLvlData.cellTexts.ToDictionary(item => item.Key, item => item.Value);
         categoryColors = CurLvlData.categoryColors.ToDictionary(item => item.Key, item => item.Value);
+        freezedTray = CurLvlData.freezedTray.ToDictionary(item=>item.Key, item => item.Value);
         wordPositions = new Dictionary<string, List<Vector2Int>>();
 
         foreach (var item in CurLvlData.wordPositions)
@@ -424,7 +434,9 @@ public class LevelEditor : EditorWindow
         EditorGUILayout.PropertyField(trayList);
         if (EditorGUI.EndChangeCheck())
         {
+        
             window.ApplyModifiedProperties();
+           
         }
         else
         {
@@ -445,7 +457,48 @@ public class LevelEditor : EditorWindow
             GUI.FocusControl(null);
         }
         GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
 
+        if (freezedTray.ContainsKey(trayDropdown))
+        {
+            EditorGUI.BeginChangeCheck();
+            freezeCount = EditorGUILayout.IntField("Freeze Count:", freezeCount);
+            if (EditorGUI.EndChangeCheck())
+            {
+               
+                freezedTray[trayDropdown] = freezeCount;
+
+            }
+           freezeCount= freezedTray[trayDropdown];
+            buttonColor = Color.yellow;
+            buttonText = "Unfreeze Tray";
+        }
+        else
+        {
+            buttonColor = Color.green;
+            buttonText = "Freeze Tray";
+        }
+        Color oldColor = GUI.backgroundColor;
+        GUI.backgroundColor = buttonColor;
+        if (GUILayout.Button(buttonText))
+        {
+            if (freezedTray.ContainsKey(trayDropdown))
+            {
+              
+                freezedTray.Remove(trayDropdown);
+            }
+            else
+            {
+
+                freezeCount = 1;
+                freezedTray[trayDropdown] = freezeCount;
+
+            }
+        }
+        GUI.backgroundColor = oldColor;
+        
+
+        GUILayout.EndHorizontal();
         totalGapWidth = (width - 1) * gap;
         totalGapHeight = (height - 1) * gap;
 
@@ -549,7 +602,6 @@ public class LevelEditor : EditorWindow
                         }
 
                         cellBgColor = trayDisplayColors[tName];
-
                         // Accumulate bounding box for the tray overlay label
                         if (trayBounds.ContainsKey(tName))
                         {
@@ -587,14 +639,26 @@ public class LevelEditor : EditorWindow
                 }
                 else if (!isPrimary && trayCells.ContainsKey(gridPos))
                 {
-                    cellText = trayCells[gridPos];
-                    activeStyle = boldLabelStyle;
+
+                    if (trayName.ContainsKey(gridPos) && freezedTray.ContainsKey(trayName[gridPos]))
+                    {
+                        cellText = trayCells[gridPos] + ", " + freezedTray[trayName[gridPos]];
+                        activeStyle = new GUIStyle(boldLabelStyle) { fontSize = 20 };
+                    }
+                    else
+                    {
+                        cellText = trayCells[gridPos];
+                        activeStyle = boldLabelStyle;
+                    }
+                  
                 }
                 else if (!isPrimary && blockedCells.Contains(gridPos))
                 {
                     cellText = "Blocked";
                     activeStyle = new GUIStyle(boldLabelStyle) { fontSize = 11 };
                 }
+
+               
 
                 Color previousContentColor = GUI.contentColor;
                 GUI.contentColor = cellHasText ? GetContrastColor(cellBgColor) : Color.white;
