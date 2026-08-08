@@ -1,0 +1,708 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 18
+  m_EditorClassIdentifier: 
+  timer: 0
+  LevelNumber: 18
+  rows: 25
+  columns: 8
+  height: 6
+  width: 5
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.12
+  categoryMaterial: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
+  words:
+  - CLASS
+  - ORCHID
+  - SITCOM
+  - TULIP
+  - MARINA
+  - ROMANCE
+  - WIND
+  - EXAM
+  - LILY
+  - EPISODES
+  - SAILOR
+  - DAISY
+  - TEACHER
+  - ROSE
+  - CRIME
+  - CAPTAIN
+  - VAMPIRE
+  - BOAT
+  - STUDENT
+  - BOOK
+  tray:
+  - Tray 1
+  excludedChar:
+  - {x: 24, y: 5}
+  - {x: 23, y: 3}
+  - {x: 22, y: 5}
+  - {x: 21, y: 5}
+  - {x: 20, y: 2}
+  - {x: 19, y: 4}
+  - {x: 18, y: 2}
+  - {x: 17, y: 4}
+  - {x: 16, y: 4}
+  - {x: 15, y: 5}
+  - {x: 14, y: 3}
+  - {x: 13, y: 3}
+  - {x: 12, y: 1}
+  - {x: 12, y: 5}
+  - {x: 11, y: 6}
+  - {x: 10, y: 4}
+  - {x: 9, y: 1}
+  - {x: 7, y: 5}
+  - {x: 8, y: 4}
+  - {x: 6, y: 4}
+  blockedCells: []
+  wordCategory:
+  - Key: School Life
+    Value:
+    - CLASS
+    - EXAM
+    - TEACHER
+    - STUDENT
+    - BOOK
+  - Key: Flowers
+    Value:
+    - ORCHID
+    - TULIP
+    - LILY
+    - DAISY
+    - ROSE
+  - Key: Tv Series
+    Value:
+    - SITCOM
+    - ROMANCE
+    - EPISODES
+    - CRIME
+    - VAMPIRE
+  - Key: Sailing
+    Value:
+    - MARINA
+    - WIND
+    - SAILOR
+    - CAPTAIN
+    - BOAT
+  cellCategory:
+  - Key: {x: 24, y: 3}
+    Value: School Life
+  - Key: {x: 24, y: 4}
+    Value: School Life
+  - Key: {x: 24, y: 5}
+    Value: School Life
+  - Key: {x: 24, y: 6}
+    Value: School Life
+  - Key: {x: 23, y: 1}
+    Value: School Life
+  - Key: {x: 23, y: 2}
+    Value: School Life
+  - Key: {x: 23, y: 3}
+    Value: School Life
+  - Key: {x: 23, y: 4}
+    Value: School Life
+  - Key: {x: 23, y: 5}
+    Value: School Life
+  - Key: {x: 23, y: 6}
+    Value: School Life
+  - Key: {x: 23, y: 7}
+    Value: School Life
+  - Key: {x: 22, y: 3}
+    Value: Sailing
+  - Key: {x: 22, y: 4}
+    Value: Sailing
+  - Key: {x: 22, y: 5}
+    Value: Sailing
+  - Key: {x: 22, y: 6}
+    Value: Sailing
+  - Key: {x: 21, y: 1}
+    Value: Tv Series
+  - Key: {x: 21, y: 2}
+    Value: Tv Series
+  - Key: {x: 21, y: 3}
+    Value: Tv Series
+  - Key: {x: 21, y: 4}
+    Value: Tv Series
+  - Key: {x: 21, y: 5}
+    Value: Tv Series
+  - Key: {x: 21, y: 6}
+    Value: Tv Series
+  - Key: {x: 21, y: 7}
+    Value: Tv Series
+  - Key: {x: 20, y: 0}
+    Value: Sailing
+  - Key: {x: 20, y: 1}
+    Value: Sailing
+  - Key: {x: 20, y: 2}
+    Value: Sailing
+  - Key: {x: 20, y: 3}
+    Value: Sailing
+  - Key: {x: 20, y: 4}
+    Value: Sailing
+  - Key: {x: 20, y: 5}
+    Value: Sailing
+  - Key: {x: 20, y: 6}
+    Value: Sailing
+  - Key: {x: 19, y: 3}
+    Value: Tv Series
+  - Key: {x: 19, y: 4}
+    Value: Tv Series
+  - Key: {x: 19, y: 5}
+    Value: Tv Series
+  - Key: {x: 19, y: 6}
+    Value: Tv Series
+  - Key: {x: 19, y: 7}
+    Value: Tv Series
+  - Key: {x: 18, y: 1}
+    Value: Flowers
+  - Key: {x: 18, y: 2}
+    Value: Flowers
+  - Key: {x: 18, y: 3}
+    Value: Flowers
+  - Key: {x: 18, y: 4}
+    Value: Flowers
+  - Key: {x: 17, y: 0}
+    Value: School Life
+  - Key: {x: 17, y: 1}
+    Value: School Life
+  - Key: {x: 17, y: 2}
+    Value: School Life
+  - Key: {x: 17, y: 3}
+    Value: School Life
+  - Key: {x: 17, y: 4}
+    Value: School Life
+  - Key: {x: 17, y: 5}
+    Value: School Life
+  - Key: {x: 17, y: 6}
+    Value: School Life
+  - Key: {x: 16, y: 3}
+    Value: Flowers
+  - Key: {x: 16, y: 4}
+    Value: Flowers
+  - Key: {x: 16, y: 5}
+    Value: Flowers
+  - Key: {x: 16, y: 6}
+    Value: Flowers
+  - Key: {x: 16, y: 7}
+    Value: Flowers
+  - Key: {x: 15, y: 2}
+    Value: Sailing
+  - Key: {x: 15, y: 3}
+    Value: Sailing
+  - Key: {x: 15, y: 4}
+    Value: Sailing
+  - Key: {x: 15, y: 5}
+    Value: Sailing
+  - Key: {x: 15, y: 6}
+    Value: Sailing
+  - Key: {x: 15, y: 7}
+    Value: Sailing
+  - Key: {x: 14, y: 0}
+    Value: Tv Series
+  - Key: {x: 14, y: 1}
+    Value: Tv Series
+  - Key: {x: 14, y: 2}
+    Value: Tv Series
+  - Key: {x: 14, y: 3}
+    Value: Tv Series
+  - Key: {x: 14, y: 4}
+    Value: Tv Series
+  - Key: {x: 14, y: 5}
+    Value: Tv Series
+  - Key: {x: 14, y: 6}
+    Value: Tv Series
+  - Key: {x: 14, y: 7}
+    Value: Tv Series
+  - Key: {x: 13, y: 2}
+    Value: Flowers
+  - Key: {x: 13, y: 3}
+    Value: Flowers
+  - Key: {x: 13, y: 4}
+    Value: Flowers
+  - Key: {x: 13, y: 5}
+    Value: Flowers
+  - Key: {x: 12, y: 0}
+    Value: Sailing
+  - Key: {x: 12, y: 1}
+    Value: Sailing
+  - Key: {x: 12, y: 2}
+    Value: Sailing
+  - Key: {x: 12, y: 3}
+    Value: Sailing
+  - Key: {x: 11, y: 1}
+    Value: Tv Series
+  - Key: {x: 11, y: 2}
+    Value: Tv Series
+  - Key: {x: 11, y: 3}
+    Value: Tv Series
+  - Key: {x: 11, y: 4}
+    Value: Tv Series
+  - Key: {x: 11, y: 5}
+    Value: Tv Series
+  - Key: {x: 11, y: 6}
+    Value: Tv Series
+  - Key: {x: 11, y: 7}
+    Value: Tv Series
+  - Key: {x: 10, y: 2}
+    Value: Sailing
+  - Key: {x: 10, y: 3}
+    Value: Sailing
+  - Key: {x: 10, y: 4}
+    Value: Sailing
+  - Key: {x: 10, y: 5}
+    Value: Sailing
+  - Key: {x: 10, y: 6}
+    Value: Sailing
+  - Key: {x: 10, y: 7}
+    Value: Sailing
+  - Key: {x: 9, y: 0}
+    Value: Flowers
+  - Key: {x: 9, y: 1}
+    Value: Flowers
+  - Key: {x: 9, y: 2}
+    Value: Flowers
+  - Key: {x: 9, y: 3}
+    Value: Flowers
+  - Key: {x: 9, y: 4}
+    Value: Flowers
+  - Key: {x: 8, y: 2}
+    Value: Tv Series
+  - Key: {x: 8, y: 3}
+    Value: Tv Series
+  - Key: {x: 8, y: 4}
+    Value: Tv Series
+  - Key: {x: 8, y: 5}
+    Value: Tv Series
+  - Key: {x: 8, y: 6}
+    Value: Tv Series
+  - Key: {x: 8, y: 7}
+    Value: Tv Series
+  - Key: {x: 12, y: 4}
+    Value: School Life
+  - Key: {x: 12, y: 5}
+    Value: School Life
+  - Key: {x: 12, y: 6}
+    Value: School Life
+  - Key: {x: 12, y: 7}
+    Value: School Life
+  - Key: {x: 7, y: 1}
+    Value: Flowers
+  - Key: {x: 7, y: 2}
+    Value: Flowers
+  - Key: {x: 7, y: 3}
+    Value: Flowers
+  - Key: {x: 7, y: 4}
+    Value: Flowers
+  - Key: {x: 7, y: 5}
+    Value: Flowers
+  - Key: {x: 7, y: 6}
+    Value: Flowers
+  - Key: {x: 6, y: 3}
+    Value: School Life
+  - Key: {x: 6, y: 4}
+    Value: School Life
+  - Key: {x: 6, y: 5}
+    Value: School Life
+  - Key: {x: 6, y: 6}
+    Value: School Life
+  - Key: {x: 6, y: 7}
+    Value: School Life
+  cellTexts:
+  - Key: {x: 24, y: 3}
+    Value: B
+  - Key: {x: 24, y: 4}
+    Value: O
+  - Key: {x: 24, y: 5}
+    Value: O
+  - Key: {x: 24, y: 6}
+    Value: K
+  - Key: {x: 23, y: 1}
+    Value: S
+  - Key: {x: 23, y: 2}
+    Value: T
+  - Key: {x: 23, y: 3}
+    Value: U
+  - Key: {x: 23, y: 4}
+    Value: D
+  - Key: {x: 23, y: 5}
+    Value: E
+  - Key: {x: 23, y: 6}
+    Value: N
+  - Key: {x: 23, y: 7}
+    Value: T
+  - Key: {x: 22, y: 3}
+    Value: B
+  - Key: {x: 22, y: 4}
+    Value: O
+  - Key: {x: 22, y: 5}
+    Value: A
+  - Key: {x: 22, y: 6}
+    Value: T
+  - Key: {x: 21, y: 1}
+    Value: V
+  - Key: {x: 21, y: 2}
+    Value: A
+  - Key: {x: 21, y: 3}
+    Value: M
+  - Key: {x: 21, y: 4}
+    Value: P
+  - Key: {x: 21, y: 5}
+    Value: I
+  - Key: {x: 21, y: 6}
+    Value: R
+  - Key: {x: 21, y: 7}
+    Value: E
+  - Key: {x: 20, y: 0}
+    Value: C
+  - Key: {x: 20, y: 1}
+    Value: A
+  - Key: {x: 20, y: 2}
+    Value: P
+  - Key: {x: 20, y: 3}
+    Value: T
+  - Key: {x: 20, y: 4}
+    Value: A
+  - Key: {x: 20, y: 5}
+    Value: I
+  - Key: {x: 20, y: 6}
+    Value: N
+  - Key: {x: 19, y: 3}
+    Value: C
+  - Key: {x: 19, y: 4}
+    Value: R
+  - Key: {x: 19, y: 5}
+    Value: I
+  - Key: {x: 19, y: 6}
+    Value: M
+  - Key: {x: 19, y: 7}
+    Value: E
+  - Key: {x: 18, y: 1}
+    Value: R
+  - Key: {x: 18, y: 2}
+    Value: O
+  - Key: {x: 18, y: 3}
+    Value: S
+  - Key: {x: 18, y: 4}
+    Value: E
+  - Key: {x: 17, y: 0}
+    Value: T
+  - Key: {x: 17, y: 1}
+    Value: E
+  - Key: {x: 17, y: 2}
+    Value: A
+  - Key: {x: 17, y: 3}
+    Value: C
+  - Key: {x: 17, y: 4}
+    Value: H
+  - Key: {x: 17, y: 5}
+    Value: E
+  - Key: {x: 17, y: 6}
+    Value: R
+  - Key: {x: 16, y: 3}
+    Value: D
+  - Key: {x: 16, y: 4}
+    Value: A
+  - Key: {x: 16, y: 5}
+    Value: I
+  - Key: {x: 16, y: 6}
+    Value: S
+  - Key: {x: 16, y: 7}
+    Value: Y
+  - Key: {x: 15, y: 2}
+    Value: S
+  - Key: {x: 15, y: 3}
+    Value: A
+  - Key: {x: 15, y: 4}
+    Value: I
+  - Key: {x: 15, y: 5}
+    Value: L
+  - Key: {x: 15, y: 6}
+    Value: O
+  - Key: {x: 15, y: 7}
+    Value: R
+  - Key: {x: 14, y: 0}
+    Value: E
+  - Key: {x: 14, y: 1}
+    Value: P
+  - Key: {x: 14, y: 2}
+    Value: I
+  - Key: {x: 14, y: 3}
+    Value: S
+  - Key: {x: 14, y: 4}
+    Value: O
+  - Key: {x: 14, y: 5}
+    Value: D
+  - Key: {x: 14, y: 6}
+    Value: E
+  - Key: {x: 14, y: 7}
+    Value: S
+  - Key: {x: 13, y: 2}
+    Value: L
+  - Key: {x: 13, y: 3}
+    Value: I
+  - Key: {x: 13, y: 4}
+    Value: L
+  - Key: {x: 13, y: 5}
+    Value: Y
+  - Key: {x: 12, y: 0}
+    Value: W
+  - Key: {x: 12, y: 1}
+    Value: I
+  - Key: {x: 12, y: 2}
+    Value: N
+  - Key: {x: 12, y: 3}
+    Value: D
+  - Key: {x: 11, y: 1}
+    Value: R
+  - Key: {x: 11, y: 2}
+    Value: O
+  - Key: {x: 11, y: 3}
+    Value: M
+  - Key: {x: 11, y: 4}
+    Value: A
+  - Key: {x: 11, y: 5}
+    Value: N
+  - Key: {x: 11, y: 6}
+    Value: C
+  - Key: {x: 11, y: 7}
+    Value: E
+  - Key: {x: 10, y: 2}
+    Value: M
+  - Key: {x: 10, y: 3}
+    Value: A
+  - Key: {x: 10, y: 4}
+    Value: R
+  - Key: {x: 10, y: 5}
+    Value: I
+  - Key: {x: 10, y: 6}
+    Value: N
+  - Key: {x: 10, y: 7}
+    Value: A
+  - Key: {x: 9, y: 0}
+    Value: T
+  - Key: {x: 9, y: 1}
+    Value: U
+  - Key: {x: 9, y: 2}
+    Value: L
+  - Key: {x: 9, y: 3}
+    Value: I
+  - Key: {x: 9, y: 4}
+    Value: P
+  - Key: {x: 8, y: 2}
+    Value: S
+  - Key: {x: 8, y: 3}
+    Value: I
+  - Key: {x: 8, y: 4}
+    Value: T
+  - Key: {x: 8, y: 5}
+    Value: C
+  - Key: {x: 8, y: 6}
+    Value: O
+  - Key: {x: 8, y: 7}
+    Value: M
+  - Key: {x: 12, y: 4}
+    Value: E
+  - Key: {x: 12, y: 5}
+    Value: X
+  - Key: {x: 12, y: 6}
+    Value: A
+  - Key: {x: 12, y: 7}
+    Value: M
+  - Key: {x: 7, y: 1}
+    Value: O
+  - Key: {x: 7, y: 2}
+    Value: R
+  - Key: {x: 7, y: 3}
+    Value: C
+  - Key: {x: 7, y: 4}
+    Value: H
+  - Key: {x: 7, y: 5}
+    Value: I
+  - Key: {x: 7, y: 6}
+    Value: D
+  - Key: {x: 6, y: 3}
+    Value: C
+  - Key: {x: 6, y: 4}
+    Value: L
+  - Key: {x: 6, y: 5}
+    Value: A
+  - Key: {x: 6, y: 6}
+    Value: S
+  - Key: {x: 6, y: 7}
+    Value: S
+  trayCells: []
+  trayName: []
+  categoryColors:
+  - Key: Sailing
+    Value: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
+  - Key: Flowers
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  - Key: Tv Series
+    Value: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
+  - Key: School Life
+    Value: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
+  trayColors: []
+  wordPositions:
+  - Key: CLASS
+    Value:
+    - {x: 6, y: 3}
+    - {x: 6, y: 4}
+    - {x: 6, y: 5}
+    - {x: 6, y: 6}
+    - {x: 6, y: 7}
+  - Key: ORCHID
+    Value:
+    - {x: 7, y: 1}
+    - {x: 7, y: 2}
+    - {x: 7, y: 3}
+    - {x: 7, y: 4}
+    - {x: 7, y: 5}
+    - {x: 7, y: 6}
+  - Key: SITCOM
+    Value:
+    - {x: 8, y: 2}
+    - {x: 8, y: 3}
+    - {x: 8, y: 4}
+    - {x: 8, y: 5}
+    - {x: 8, y: 6}
+    - {x: 8, y: 7}
+  - Key: TULIP
+    Value:
+    - {x: 9, y: 0}
+    - {x: 9, y: 1}
+    - {x: 9, y: 2}
+    - {x: 9, y: 3}
+    - {x: 9, y: 4}
+  - Key: MARINA
+    Value:
+    - {x: 10, y: 2}
+    - {x: 10, y: 3}
+    - {x: 10, y: 4}
+    - {x: 10, y: 5}
+    - {x: 10, y: 6}
+    - {x: 10, y: 7}
+  - Key: ROMANCE
+    Value:
+    - {x: 11, y: 1}
+    - {x: 11, y: 2}
+    - {x: 11, y: 3}
+    - {x: 11, y: 4}
+    - {x: 11, y: 5}
+    - {x: 11, y: 6}
+    - {x: 11, y: 7}
+  - Key: WIND
+    Value:
+    - {x: 12, y: 0}
+    - {x: 12, y: 1}
+    - {x: 12, y: 2}
+    - {x: 12, y: 3}
+  - Key: EXAM
+    Value:
+    - {x: 12, y: 4}
+    - {x: 12, y: 5}
+    - {x: 12, y: 6}
+    - {x: 12, y: 7}
+  - Key: LILY
+    Value:
+    - {x: 13, y: 2}
+    - {x: 13, y: 3}
+    - {x: 13, y: 4}
+    - {x: 13, y: 5}
+  - Key: EPISODES
+    Value:
+    - {x: 14, y: 0}
+    - {x: 14, y: 1}
+    - {x: 14, y: 2}
+    - {x: 14, y: 3}
+    - {x: 14, y: 4}
+    - {x: 14, y: 5}
+    - {x: 14, y: 6}
+    - {x: 14, y: 7}
+  - Key: SAILOR
+    Value:
+    - {x: 15, y: 2}
+    - {x: 15, y: 3}
+    - {x: 15, y: 4}
+    - {x: 15, y: 5}
+    - {x: 15, y: 6}
+    - {x: 15, y: 7}
+  - Key: DAISY
+    Value:
+    - {x: 16, y: 3}
+    - {x: 16, y: 4}
+    - {x: 16, y: 5}
+    - {x: 16, y: 6}
+    - {x: 16, y: 7}
+  - Key: TEACHER
+    Value:
+    - {x: 17, y: 0}
+    - {x: 17, y: 1}
+    - {x: 17, y: 2}
+    - {x: 17, y: 3}
+    - {x: 17, y: 4}
+    - {x: 17, y: 5}
+    - {x: 17, y: 6}
+  - Key: ROSE
+    Value:
+    - {x: 18, y: 1}
+    - {x: 18, y: 2}
+    - {x: 18, y: 3}
+    - {x: 18, y: 4}
+  - Key: CRIME
+    Value:
+    - {x: 19, y: 3}
+    - {x: 19, y: 4}
+    - {x: 19, y: 5}
+    - {x: 19, y: 6}
+    - {x: 19, y: 7}
+  - Key: CAPTAIN
+    Value:
+    - {x: 20, y: 0}
+    - {x: 20, y: 1}
+    - {x: 20, y: 2}
+    - {x: 20, y: 3}
+    - {x: 20, y: 4}
+    - {x: 20, y: 5}
+    - {x: 20, y: 6}
+  - Key: VAMPIRE
+    Value:
+    - {x: 21, y: 1}
+    - {x: 21, y: 2}
+    - {x: 21, y: 3}
+    - {x: 21, y: 4}
+    - {x: 21, y: 5}
+    - {x: 21, y: 6}
+    - {x: 21, y: 7}
+  - Key: BOAT
+    Value:
+    - {x: 22, y: 3}
+    - {x: 22, y: 4}
+    - {x: 22, y: 5}
+    - {x: 22, y: 6}
+  - Key: STUDENT
+    Value:
+    - {x: 23, y: 1}
+    - {x: 23, y: 2}
+    - {x: 23, y: 3}
+    - {x: 23, y: 4}
+    - {x: 23, y: 5}
+    - {x: 23, y: 6}
+    - {x: 23, y: 7}
+  - Key: BOOK
+    Value:
+    - {x: 24, y: 3}
+    - {x: 24, y: 4}
+    - {x: 24, y: 5}
+    - {x: 24, y: 6}

@@ -1,0 +1,281 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 17
+  m_EditorClassIdentifier: 
+  timer: 0
+  LevelNumber: 17
+  rows: 25
+  columns: 8
+  height: 6
+  width: 5
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.12
+  categoryMaterial: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
+  words:
+  - ZERO
+  - BEIGE
+  - FIVE
+  - PURPLE
+  - FOUR
+  - BLUE
+  - THREE
+  - TWO
+  - ONE
+  tray:
+  - Tray 1
+  excludedChar:
+  - {x: 24, y: 5}
+  - {x: 23, y: 3}
+  - {x: 22, y: 2}
+  - {x: 20, y: 2}
+  - {x: 18, y: 2}
+  - {x: 16, y: 4}
+  - {x: 16, y: 6}
+  - {x: 17, y: 5}
+  - {x: 19, y: 3}
+  - {x: 21, y: 5}
+  blockedCells: []
+  wordCategory:
+  - Key: Numbers
+    Value:
+    - ZERO
+    - FIVE
+    - FOUR
+    - THREE
+    - TWO
+    - ONE
+  - Key: Colors
+    Value:
+    - BEIGE
+    - PURPLE
+    - BLUE
+  cellCategory:
+  - Key: {x: 24, y: 4}
+    Value: Numbers
+  - Key: {x: 24, y: 5}
+    Value: Numbers
+  - Key: {x: 24, y: 6}
+    Value: Numbers
+  - Key: {x: 23, y: 2}
+    Value: Numbers
+  - Key: {x: 23, y: 3}
+    Value: Numbers
+  - Key: {x: 23, y: 4}
+    Value: Numbers
+  - Key: {x: 22, y: 1}
+    Value: Numbers
+  - Key: {x: 22, y: 2}
+    Value: Numbers
+  - Key: {x: 22, y: 3}
+    Value: Numbers
+  - Key: {x: 22, y: 4}
+    Value: Numbers
+  - Key: {x: 22, y: 5}
+    Value: Numbers
+  - Key: {x: 21, y: 3}
+    Value: Colors
+  - Key: {x: 21, y: 4}
+    Value: Colors
+  - Key: {x: 21, y: 5}
+    Value: Colors
+  - Key: {x: 21, y: 6}
+    Value: Colors
+  - Key: {x: 20, y: 1}
+    Value: Numbers
+  - Key: {x: 20, y: 2}
+    Value: Numbers
+  - Key: {x: 20, y: 3}
+    Value: Numbers
+  - Key: {x: 20, y: 4}
+    Value: Numbers
+  - Key: {x: 19, y: 2}
+    Value: Colors
+  - Key: {x: 19, y: 3}
+    Value: Colors
+  - Key: {x: 19, y: 4}
+    Value: Colors
+  - Key: {x: 19, y: 5}
+    Value: Colors
+  - Key: {x: 19, y: 6}
+    Value: Colors
+  - Key: {x: 19, y: 7}
+    Value: Colors
+  - Key: {x: 18, y: 0}
+    Value: Numbers
+  - Key: {x: 18, y: 1}
+    Value: Numbers
+  - Key: {x: 18, y: 2}
+    Value: Numbers
+  - Key: {x: 18, y: 3}
+    Value: Numbers
+  - Key: {x: 17, y: 2}
+    Value: Colors
+  - Key: {x: 17, y: 3}
+    Value: Colors
+  - Key: {x: 17, y: 4}
+    Value: Colors
+  - Key: {x: 17, y: 5}
+    Value: Colors
+  - Key: {x: 17, y: 6}
+    Value: Colors
+  - Key: {x: 16, y: 3}
+    Value: Numbers
+  - Key: {x: 16, y: 4}
+    Value: Numbers
+  - Key: {x: 16, y: 5}
+    Value: Numbers
+  - Key: {x: 16, y: 6}
+    Value: Numbers
+  cellTexts:
+  - Key: {x: 24, y: 4}
+    Value: O
+  - Key: {x: 24, y: 5}
+    Value: N
+  - Key: {x: 24, y: 6}
+    Value: E
+  - Key: {x: 23, y: 2}
+    Value: T
+  - Key: {x: 23, y: 3}
+    Value: W
+  - Key: {x: 23, y: 4}
+    Value: O
+  - Key: {x: 22, y: 1}
+    Value: T
+  - Key: {x: 22, y: 2}
+    Value: H
+  - Key: {x: 22, y: 3}
+    Value: R
+  - Key: {x: 22, y: 4}
+    Value: E
+  - Key: {x: 22, y: 5}
+    Value: E
+  - Key: {x: 21, y: 3}
+    Value: B
+  - Key: {x: 21, y: 4}
+    Value: L
+  - Key: {x: 21, y: 5}
+    Value: U
+  - Key: {x: 21, y: 6}
+    Value: E
+  - Key: {x: 20, y: 1}
+    Value: F
+  - Key: {x: 20, y: 2}
+    Value: O
+  - Key: {x: 20, y: 3}
+    Value: U
+  - Key: {x: 20, y: 4}
+    Value: R
+  - Key: {x: 19, y: 2}
+    Value: P
+  - Key: {x: 19, y: 3}
+    Value: U
+  - Key: {x: 19, y: 4}
+    Value: R
+  - Key: {x: 19, y: 5}
+    Value: P
+  - Key: {x: 19, y: 6}
+    Value: L
+  - Key: {x: 19, y: 7}
+    Value: E
+  - Key: {x: 18, y: 0}
+    Value: F
+  - Key: {x: 18, y: 1}
+    Value: I
+  - Key: {x: 18, y: 2}
+    Value: V
+  - Key: {x: 18, y: 3}
+    Value: E
+  - Key: {x: 17, y: 2}
+    Value: B
+  - Key: {x: 17, y: 3}
+    Value: E
+  - Key: {x: 17, y: 4}
+    Value: I
+  - Key: {x: 17, y: 5}
+    Value: G
+  - Key: {x: 17, y: 6}
+    Value: E
+  - Key: {x: 16, y: 3}
+    Value: Z
+  - Key: {x: 16, y: 4}
+    Value: E
+  - Key: {x: 16, y: 5}
+    Value: R
+  - Key: {x: 16, y: 6}
+    Value: O
+  trayCells: []
+  trayName: []
+  categoryColors:
+  - Key: Numbers
+    Value: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
+  - Key: Colors
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  trayColors: []
+  wordPositions:
+  - Key: ZERO
+    Value:
+    - {x: 16, y: 3}
+    - {x: 16, y: 4}
+    - {x: 16, y: 5}
+    - {x: 16, y: 6}
+  - Key: BEIGE
+    Value:
+    - {x: 17, y: 2}
+    - {x: 17, y: 3}
+    - {x: 17, y: 4}
+    - {x: 17, y: 5}
+    - {x: 17, y: 6}
+  - Key: FIVE
+    Value:
+    - {x: 18, y: 0}
+    - {x: 18, y: 1}
+    - {x: 18, y: 2}
+    - {x: 18, y: 3}
+  - Key: PURPLE
+    Value:
+    - {x: 19, y: 2}
+    - {x: 19, y: 3}
+    - {x: 19, y: 4}
+    - {x: 19, y: 5}
+    - {x: 19, y: 6}
+    - {x: 19, y: 7}
+  - Key: FOUR
+    Value:
+    - {x: 20, y: 1}
+    - {x: 20, y: 2}
+    - {x: 20, y: 3}
+    - {x: 20, y: 4}
+  - Key: BLUE
+    Value:
+    - {x: 21, y: 3}
+    - {x: 21, y: 4}
+    - {x: 21, y: 5}
+    - {x: 21, y: 6}
+  - Key: THREE
+    Value:
+    - {x: 22, y: 1}
+    - {x: 22, y: 2}
+    - {x: 22, y: 3}
+    - {x: 22, y: 4}
+    - {x: 22, y: 5}
+  - Key: TWO
+    Value:
+    - {x: 23, y: 2}
+    - {x: 23, y: 3}
+    - {x: 23, y: 4}
+  - Key: ONE
+    Value:
+    - {x: 24, y: 4}
+    - {x: 24, y: 5}
+    - {x: 24, y: 6}

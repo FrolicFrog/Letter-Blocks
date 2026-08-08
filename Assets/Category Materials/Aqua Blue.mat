@@ -113,8 +113,8 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _ShineAngle: 180
-    - _ShineSize: 0.18
-    - _ShineSoftness: 0.408
+    - _ShineSize: 0.061
+    - _ShineSoftness: 0.156
     - _SideDarkness: 0.616
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0

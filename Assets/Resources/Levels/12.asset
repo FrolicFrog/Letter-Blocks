@@ -1,0 +1,685 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 12
+  m_EditorClassIdentifier: 
+  timer: 0
+  LevelNumber: 12
+  rows: 20
+  columns: 8
+  height: 6
+  width: 5
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.12
+  categoryMaterial: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  words:
+  - CHICAGO
+  - SHOWER
+  - LONDON
+  - FREEZE
+  - TOWEL
+  - BARISTA
+  - SOAP
+  - BREW
+  - DALLAS
+  - SNOWBALL
+  - CUP
+  - BOOTS
+  - SHAMPOO
+  - ICE
+  - BLEND
+  - FROST
+  - MIAMI
+  - ESPRESSO
+  - NEWYORK
+  tray:
+  - Tray 1
+  excludedChar:
+  - {x: 19, y: 2}
+  - {x: 19, y: 5}
+  - {x: 18, y: 4}
+  - {x: 17, y: 3}
+  - {x: 16, y: 6}
+  - {x: 15, y: 5}
+  - {x: 14, y: 4}
+  - {x: 13, y: 3}
+  - {x: 12, y: 6}
+  - {x: 11, y: 3}
+  - {x: 10, y: 3}
+  - {x: 9, y: 4}
+  - {x: 8, y: 5}
+  - {x: 7, y: 2}
+  - {x: 6, y: 5}
+  - {x: 5, y: 5}
+  - {x: 4, y: 2}
+  - {x: 3, y: 3}
+  - {x: 3, y: 7}
+  - {x: 2, y: 4}
+  - {x: 1, y: 5}
+  blockedCells: []
+  wordCategory:
+  - Key: Big Cities
+    Value:
+    - CHICAGO
+    - LONDON
+    - DALLAS
+    - MIAMI
+    - NEWYORK
+  - Key: Bathroom
+    Value:
+    - SHOWER
+    - TOWEL
+    - SOAP
+    - SHAMPOO
+  - Key: Winter
+    Value:
+    - FREEZE
+    - SNOWBALL
+    - BOOTS
+    - ICE
+    - FROST
+  - Key: Coffee
+    Value:
+    - BARISTA
+    - BREW
+    - CUP
+    - BLEND
+    - ESPRESSO
+  cellCategory:
+  - Key: {x: 19, y: 1}
+    Value: Big Cities
+  - Key: {x: 19, y: 2}
+    Value: Big Cities
+  - Key: {x: 19, y: 3}
+    Value: Big Cities
+  - Key: {x: 19, y: 4}
+    Value: Big Cities
+  - Key: {x: 19, y: 5}
+    Value: Big Cities
+  - Key: {x: 19, y: 6}
+    Value: Big Cities
+  - Key: {x: 19, y: 7}
+    Value: Big Cities
+  - Key: {x: 18, y: 0}
+    Value: Coffee
+  - Key: {x: 18, y: 1}
+    Value: Coffee
+  - Key: {x: 18, y: 2}
+    Value: Coffee
+  - Key: {x: 18, y: 3}
+    Value: Coffee
+  - Key: {x: 18, y: 4}
+    Value: Coffee
+  - Key: {x: 18, y: 5}
+    Value: Coffee
+  - Key: {x: 18, y: 6}
+    Value: Coffee
+  - Key: {x: 18, y: 7}
+    Value: Coffee
+  - Key: {x: 17, y: 0}
+    Value: Big Cities
+  - Key: {x: 17, y: 1}
+    Value: Big Cities
+  - Key: {x: 17, y: 2}
+    Value: Big Cities
+  - Key: {x: 17, y: 3}
+    Value: Big Cities
+  - Key: {x: 16, y: 2}
+    Value: Winter
+  - Key: {x: 17, y: 4}
+    Value: Big Cities
+  - Key: {x: 16, y: 3}
+    Value: Winter
+  - Key: {x: 16, y: 4}
+    Value: Winter
+  - Key: {x: 16, y: 5}
+    Value: Winter
+  - Key: {x: 16, y: 6}
+    Value: Winter
+  - Key: {x: 15, y: 3}
+    Value: Coffee
+  - Key: {x: 15, y: 4}
+    Value: Coffee
+  - Key: {x: 15, y: 5}
+    Value: Coffee
+  - Key: {x: 15, y: 6}
+    Value: Coffee
+  - Key: {x: 15, y: 7}
+    Value: Coffee
+  - Key: {x: 14, y: 2}
+    Value: Winter
+  - Key: {x: 14, y: 3}
+    Value: Winter
+  - Key: {x: 14, y: 4}
+    Value: Winter
+  - Key: {x: 13, y: 1}
+    Value: Bathroom
+  - Key: {x: 13, y: 2}
+    Value: Bathroom
+  - Key: {x: 13, y: 3}
+    Value: Bathroom
+  - Key: {x: 13, y: 4}
+    Value: Bathroom
+  - Key: {x: 13, y: 5}
+    Value: Bathroom
+  - Key: {x: 13, y: 6}
+    Value: Bathroom
+  - Key: {x: 13, y: 7}
+    Value: Bathroom
+  - Key: {x: 12, y: 4}
+    Value: Winter
+  - Key: {x: 12, y: 3}
+    Value: Winter
+  - Key: {x: 12, y: 5}
+    Value: Winter
+  - Key: {x: 12, y: 6}
+    Value: Winter
+  - Key: {x: 12, y: 7}
+    Value: Winter
+  - Key: {x: 11, y: 2}
+    Value: Coffee
+  - Key: {x: 11, y: 3}
+    Value: Coffee
+  - Key: {x: 11, y: 4}
+    Value: Coffee
+  - Key: {x: 10, y: 0}
+    Value: Winter
+  - Key: {x: 10, y: 1}
+    Value: Winter
+  - Key: {x: 10, y: 2}
+    Value: Winter
+  - Key: {x: 10, y: 3}
+    Value: Winter
+  - Key: {x: 10, y: 4}
+    Value: Winter
+  - Key: {x: 10, y: 5}
+    Value: Winter
+  - Key: {x: 10, y: 6}
+    Value: Winter
+  - Key: {x: 10, y: 7}
+    Value: Winter
+  - Key: {x: 9, y: 2}
+    Value: Big Cities
+  - Key: {x: 9, y: 3}
+    Value: Big Cities
+  - Key: {x: 9, y: 4}
+    Value: Big Cities
+  - Key: {x: 9, y: 5}
+    Value: Big Cities
+  - Key: {x: 9, y: 6}
+    Value: Big Cities
+  - Key: {x: 9, y: 7}
+    Value: Big Cities
+  - Key: {x: 8, y: 3}
+    Value: Coffee
+  - Key: {x: 8, y: 4}
+    Value: Coffee
+  - Key: {x: 8, y: 5}
+    Value: Coffee
+  - Key: {x: 8, y: 6}
+    Value: Coffee
+  - Key: {x: 7, y: 1}
+    Value: Bathroom
+  - Key: {x: 7, y: 2}
+    Value: Bathroom
+  - Key: {x: 7, y: 3}
+    Value: Bathroom
+  - Key: {x: 7, y: 4}
+    Value: Bathroom
+  - Key: {x: 6, y: 0}
+    Value: Coffee
+  - Key: {x: 6, y: 1}
+    Value: Coffee
+  - Key: {x: 6, y: 2}
+    Value: Coffee
+  - Key: {x: 6, y: 3}
+    Value: Coffee
+  - Key: {x: 6, y: 4}
+    Value: Coffee
+  - Key: {x: 6, y: 5}
+    Value: Coffee
+  - Key: {x: 6, y: 6}
+    Value: Coffee
+  - Key: {x: 5, y: 2}
+    Value: Bathroom
+  - Key: {x: 5, y: 3}
+    Value: Bathroom
+  - Key: {x: 5, y: 4}
+    Value: Bathroom
+  - Key: {x: 5, y: 5}
+    Value: Bathroom
+  - Key: {x: 5, y: 6}
+    Value: Bathroom
+  - Key: {x: 4, y: 1}
+    Value: Winter
+  - Key: {x: 4, y: 2}
+    Value: Winter
+  - Key: {x: 4, y: 3}
+    Value: Winter
+  - Key: {x: 4, y: 4}
+    Value: Winter
+  - Key: {x: 4, y: 5}
+    Value: Winter
+  - Key: {x: 4, y: 6}
+    Value: Winter
+  - Key: {x: 3, y: 2}
+    Value: Big Cities
+  - Key: {x: 3, y: 3}
+    Value: Big Cities
+  - Key: {x: 3, y: 4}
+    Value: Big Cities
+  - Key: {x: 3, y: 5}
+    Value: Big Cities
+  - Key: {x: 3, y: 6}
+    Value: Big Cities
+  - Key: {x: 3, y: 7}
+    Value: Big Cities
+  - Key: {x: 2, y: 0}
+    Value: Bathroom
+  - Key: {x: 2, y: 1}
+    Value: Bathroom
+  - Key: {x: 2, y: 2}
+    Value: Bathroom
+  - Key: {x: 2, y: 3}
+    Value: Bathroom
+  - Key: {x: 2, y: 4}
+    Value: Bathroom
+  - Key: {x: 2, y: 5}
+    Value: Bathroom
+  - Key: {x: 1, y: 1}
+    Value: Big Cities
+  - Key: {x: 1, y: 2}
+    Value: Big Cities
+  - Key: {x: 1, y: 3}
+    Value: Big Cities
+  - Key: {x: 1, y: 4}
+    Value: Big Cities
+  - Key: {x: 1, y: 5}
+    Value: Big Cities
+  - Key: {x: 1, y: 6}
+    Value: Big Cities
+  - Key: {x: 1, y: 7}
+    Value: Big Cities
+  cellTexts:
+  - Key: {x: 19, y: 1}
+    Value: N
+  - Key: {x: 19, y: 2}
+    Value: E
+  - Key: {x: 19, y: 3}
+    Value: W
+  - Key: {x: 19, y: 4}
+    Value: Y
+  - Key: {x: 19, y: 5}
+    Value: O
+  - Key: {x: 19, y: 6}
+    Value: R
+  - Key: {x: 19, y: 7}
+    Value: K
+  - Key: {x: 18, y: 0}
+    Value: E
+  - Key: {x: 18, y: 1}
+    Value: S
+  - Key: {x: 18, y: 2}
+    Value: P
+  - Key: {x: 18, y: 3}
+    Value: R
+  - Key: {x: 18, y: 4}
+    Value: E
+  - Key: {x: 18, y: 5}
+    Value: S
+  - Key: {x: 18, y: 6}
+    Value: S
+  - Key: {x: 18, y: 7}
+    Value: O
+  - Key: {x: 17, y: 0}
+    Value: M
+  - Key: {x: 17, y: 1}
+    Value: I
+  - Key: {x: 17, y: 2}
+    Value: A
+  - Key: {x: 17, y: 3}
+    Value: M
+  - Key: {x: 16, y: 2}
+    Value: F
+  - Key: {x: 17, y: 4}
+    Value: I
+  - Key: {x: 16, y: 3}
+    Value: R
+  - Key: {x: 16, y: 4}
+    Value: O
+  - Key: {x: 16, y: 5}
+    Value: S
+  - Key: {x: 16, y: 6}
+    Value: T
+  - Key: {x: 15, y: 3}
+    Value: B
+  - Key: {x: 15, y: 4}
+    Value: L
+  - Key: {x: 15, y: 5}
+    Value: E
+  - Key: {x: 15, y: 6}
+    Value: N
+  - Key: {x: 15, y: 7}
+    Value: D
+  - Key: {x: 14, y: 2}
+    Value: I
+  - Key: {x: 14, y: 3}
+    Value: C
+  - Key: {x: 14, y: 4}
+    Value: E
+  - Key: {x: 13, y: 1}
+    Value: S
+  - Key: {x: 13, y: 2}
+    Value: H
+  - Key: {x: 13, y: 3}
+    Value: A
+  - Key: {x: 13, y: 4}
+    Value: M
+  - Key: {x: 13, y: 5}
+    Value: P
+  - Key: {x: 13, y: 6}
+    Value: O
+  - Key: {x: 13, y: 7}
+    Value: O
+  - Key: {x: 12, y: 4}
+    Value: O
+  - Key: {x: 12, y: 3}
+    Value: B
+  - Key: {x: 12, y: 5}
+    Value: O
+  - Key: {x: 12, y: 6}
+    Value: T
+  - Key: {x: 12, y: 7}
+    Value: S
+  - Key: {x: 11, y: 2}
+    Value: C
+  - Key: {x: 11, y: 3}
+    Value: U
+  - Key: {x: 11, y: 4}
+    Value: P
+  - Key: {x: 10, y: 0}
+    Value: S
+  - Key: {x: 10, y: 1}
+    Value: N
+  - Key: {x: 10, y: 2}
+    Value: O
+  - Key: {x: 10, y: 3}
+    Value: W
+  - Key: {x: 10, y: 4}
+    Value: B
+  - Key: {x: 10, y: 5}
+    Value: A
+  - Key: {x: 10, y: 6}
+    Value: L
+  - Key: {x: 10, y: 7}
+    Value: L
+  - Key: {x: 9, y: 2}
+    Value: D
+  - Key: {x: 9, y: 3}
+    Value: A
+  - Key: {x: 9, y: 4}
+    Value: L
+  - Key: {x: 9, y: 5}
+    Value: L
+  - Key: {x: 9, y: 6}
+    Value: A
+  - Key: {x: 9, y: 7}
+    Value: S
+  - Key: {x: 8, y: 3}
+    Value: B
+  - Key: {x: 8, y: 4}
+    Value: R
+  - Key: {x: 8, y: 5}
+    Value: E
+  - Key: {x: 8, y: 6}
+    Value: W
+  - Key: {x: 7, y: 1}
+    Value: S
+  - Key: {x: 7, y: 2}
+    Value: O
+  - Key: {x: 7, y: 3}
+    Value: A
+  - Key: {x: 7, y: 4}
+    Value: P
+  - Key: {x: 6, y: 0}
+    Value: B
+  - Key: {x: 6, y: 1}
+    Value: A
+  - Key: {x: 6, y: 2}
+    Value: R
+  - Key: {x: 6, y: 3}
+    Value: I
+  - Key: {x: 6, y: 4}
+    Value: S
+  - Key: {x: 6, y: 5}
+    Value: T
+  - Key: {x: 6, y: 6}
+    Value: A
+  - Key: {x: 5, y: 2}
+    Value: T
+  - Key: {x: 5, y: 3}
+    Value: O
+  - Key: {x: 5, y: 4}
+    Value: W
+  - Key: {x: 5, y: 5}
+    Value: E
+  - Key: {x: 5, y: 6}
+    Value: L
+  - Key: {x: 4, y: 1}
+    Value: F
+  - Key: {x: 4, y: 2}
+    Value: R
+  - Key: {x: 4, y: 3}
+    Value: E
+  - Key: {x: 4, y: 4}
+    Value: E
+  - Key: {x: 4, y: 5}
+    Value: Z
+  - Key: {x: 4, y: 6}
+    Value: E
+  - Key: {x: 3, y: 2}
+    Value: L
+  - Key: {x: 3, y: 3}
+    Value: O
+  - Key: {x: 3, y: 4}
+    Value: N
+  - Key: {x: 3, y: 5}
+    Value: D
+  - Key: {x: 3, y: 6}
+    Value: O
+  - Key: {x: 3, y: 7}
+    Value: N
+  - Key: {x: 2, y: 0}
+    Value: S
+  - Key: {x: 2, y: 1}
+    Value: H
+  - Key: {x: 2, y: 2}
+    Value: O
+  - Key: {x: 2, y: 3}
+    Value: W
+  - Key: {x: 2, y: 4}
+    Value: E
+  - Key: {x: 2, y: 5}
+    Value: R
+  - Key: {x: 1, y: 1}
+    Value: C
+  - Key: {x: 1, y: 2}
+    Value: H
+  - Key: {x: 1, y: 3}
+    Value: I
+  - Key: {x: 1, y: 4}
+    Value: C
+  - Key: {x: 1, y: 5}
+    Value: A
+  - Key: {x: 1, y: 6}
+    Value: G
+  - Key: {x: 1, y: 7}
+    Value: O
+  trayCells: []
+  trayName: []
+  categoryColors:
+  - Key: Big Cities
+    Value: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  - Key: Winter
+    Value: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
+  - Key: Bathroom
+    Value: {fileID: 2100000, guid: 74a701c54a3fc14469104bed730e8899, type: 2}
+  - Key: Coffee
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  trayColors: []
+  wordPositions:
+  - Key: CHICAGO
+    Value:
+    - {x: 1, y: 1}
+    - {x: 1, y: 2}
+    - {x: 1, y: 3}
+    - {x: 1, y: 4}
+    - {x: 1, y: 5}
+    - {x: 1, y: 6}
+    - {x: 1, y: 7}
+  - Key: SHOWER
+    Value:
+    - {x: 2, y: 0}
+    - {x: 2, y: 1}
+    - {x: 2, y: 2}
+    - {x: 2, y: 3}
+    - {x: 2, y: 4}
+    - {x: 2, y: 5}
+  - Key: LONDON
+    Value:
+    - {x: 3, y: 2}
+    - {x: 3, y: 3}
+    - {x: 3, y: 4}
+    - {x: 3, y: 5}
+    - {x: 3, y: 6}
+    - {x: 3, y: 7}
+  - Key: FREEZE
+    Value:
+    - {x: 4, y: 1}
+    - {x: 4, y: 2}
+    - {x: 4, y: 3}
+    - {x: 4, y: 4}
+    - {x: 4, y: 5}
+    - {x: 4, y: 6}
+  - Key: TOWEL
+    Value:
+    - {x: 5, y: 2}
+    - {x: 5, y: 3}
+    - {x: 5, y: 4}
+    - {x: 5, y: 5}
+    - {x: 5, y: 6}
+  - Key: BARISTA
+    Value:
+    - {x: 6, y: 0}
+    - {x: 6, y: 1}
+    - {x: 6, y: 2}
+    - {x: 6, y: 3}
+    - {x: 6, y: 4}
+    - {x: 6, y: 5}
+    - {x: 6, y: 6}
+  - Key: SOAP
+    Value:
+    - {x: 7, y: 1}
+    - {x: 7, y: 2}
+    - {x: 7, y: 3}
+    - {x: 7, y: 4}
+  - Key: BREW
+    Value:
+    - {x: 8, y: 3}
+    - {x: 8, y: 4}
+    - {x: 8, y: 5}
+    - {x: 8, y: 6}
+  - Key: DALLAS
+    Value:
+    - {x: 9, y: 2}
+    - {x: 9, y: 3}
+    - {x: 9, y: 4}
+    - {x: 9, y: 5}
+    - {x: 9, y: 6}
+    - {x: 9, y: 7}
+  - Key: SNOWBALL
+    Value:
+    - {x: 10, y: 0}
+    - {x: 10, y: 1}
+    - {x: 10, y: 2}
+    - {x: 10, y: 3}
+    - {x: 10, y: 4}
+    - {x: 10, y: 5}
+    - {x: 10, y: 6}
+    - {x: 10, y: 7}
+  - Key: CUP
+    Value:
+    - {x: 11, y: 2}
+    - {x: 11, y: 3}
+    - {x: 11, y: 4}
+  - Key: BOOTS
+    Value:
+    - {x: 12, y: 3}
+    - {x: 12, y: 4}
+    - {x: 12, y: 5}
+    - {x: 12, y: 6}
+    - {x: 12, y: 7}
+  - Key: SHAMPOO
+    Value:
+    - {x: 13, y: 1}
+    - {x: 13, y: 2}
+    - {x: 13, y: 3}
+    - {x: 13, y: 4}
+    - {x: 13, y: 5}
+    - {x: 13, y: 6}
+    - {x: 13, y: 7}
+  - Key: ICE
+    Value:
+    - {x: 14, y: 2}
+    - {x: 14, y: 3}
+    - {x: 14, y: 4}
+  - Key: BLEND
+    Value:
+    - {x: 15, y: 3}
+    - {x: 15, y: 4}
+    - {x: 15, y: 5}
+    - {x: 15, y: 6}
+    - {x: 15, y: 7}
+  - Key: FROST
+    Value:
+    - {x: 16, y: 2}
+    - {x: 16, y: 3}
+    - {x: 16, y: 4}
+    - {x: 16, y: 5}
+    - {x: 16, y: 6}
+  - Key: MIAMI
+    Value:
+    - {x: 17, y: 0}
+    - {x: 17, y: 1}
+    - {x: 17, y: 2}
+    - {x: 17, y: 3}
+    - {x: 17, y: 4}
+  - Key: ESPRESSO
+    Value:
+    - {x: 18, y: 0}
+    - {x: 18, y: 1}
+    - {x: 18, y: 2}
+    - {x: 18, y: 3}
+    - {x: 18, y: 4}
+    - {x: 18, y: 5}
+    - {x: 18, y: 6}
+    - {x: 18, y: 7}
+  - Key: NEWYORK
+    Value:
+    - {x: 19, y: 1}
+    - {x: 19, y: 2}
+    - {x: 19, y: 3}
+    - {x: 19, y: 4}
+    - {x: 19, y: 5}
+    - {x: 19, y: 6}
+    - {x: 19, y: 7}

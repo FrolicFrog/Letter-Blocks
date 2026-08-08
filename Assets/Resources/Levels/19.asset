@@ -1,0 +1,745 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 19
+  m_EditorClassIdentifier: 
+  timer: 0
+  LevelNumber: 19
+  rows: 25
+  columns: 8
+  height: 6
+  width: 5
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.12
+  categoryMaterial: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
+  words:
+  - SCORE
+  - STARDUST
+  - PASS
+  - TERMITE
+  - HOOP
+  - METEOR
+  - BEETLE
+  - SPADE
+  - REBOUND
+  - ASTEROID
+  - SPIDER
+  - GARDENER
+  - DUNK
+  - NBA
+  - TREE
+  - STAR
+  - HORNET
+  - GRASS
+  - GALAXY
+  - WASP
+  - FLOWER
+  tray:
+  - Tray 1
+  excludedChar:
+  - {x: 24, y: 3}
+  - {x: 21, y: 1}
+  - {x: 19, y: 5}
+  - {x: 22, y: 6}
+  - {x: 23, y: 5}
+  - {x: 20, y: 6}
+  - {x: 18, y: 5}
+  - {x: 16, y: 1}
+  - {x: 16, y: 4}
+  - {x: 18, y: 2}
+  - {x: 17, y: 5}
+  - {x: 15, y: 3}
+  - {x: 14, y: 2}
+  - {x: 14, y: 6}
+  - {x: 13, y: 2}
+  - {x: 13, y: 5}
+  - {x: 12, y: 6}
+  - {x: 11, y: 4}
+  - {x: 9, y: 7}
+  - {x: 10, y: 6}
+  - {x: 8, y: 2}
+  - {x: 8, y: 4}
+  - {x: 7, y: 2}
+  - {x: 6, y: 3}
+  - {x: 6, y: 5}
+  - {x: 5, y: 5}
+  blockedCells: []
+  wordCategory:
+  - Key: basketball
+    Value:
+    - SCORE
+    - PASS
+    - HOOP
+    - REBOUND
+    - DUNK
+    - NBA
+  - Key: Space
+    Value:
+    - STARDUST
+    - METEOR
+    - ASTEROID
+    - STAR
+    - GALAXY
+  - Key: Bugs
+    Value:
+    - TERMITE
+    - BEETLE
+    - SPIDER
+    - HORNET
+    - WASP
+  - Key: Garden
+    Value:
+    - SPADE
+    - GARDENER
+    - TREE
+    - GRASS
+    - FLOWER
+  cellCategory:
+  - Key: {x: 24, y: 2}
+    Value: Garden
+  - Key: {x: 24, y: 3}
+    Value: Garden
+  - Key: {x: 24, y: 4}
+    Value: Garden
+  - Key: {x: 24, y: 5}
+    Value: Garden
+  - Key: {x: 24, y: 6}
+    Value: Garden
+  - Key: {x: 24, y: 7}
+    Value: Garden
+  - Key: {x: 23, y: 4}
+    Value: Bugs
+  - Key: {x: 23, y: 5}
+    Value: Bugs
+  - Key: {x: 23, y: 6}
+    Value: Bugs
+  - Key: {x: 23, y: 7}
+    Value: Bugs
+  - Key: {x: 22, y: 2}
+    Value: Space
+  - Key: {x: 22, y: 3}
+    Value: Space
+  - Key: {x: 22, y: 4}
+    Value: Space
+  - Key: {x: 22, y: 5}
+    Value: Space
+  - Key: {x: 22, y: 6}
+    Value: Space
+  - Key: {x: 22, y: 7}
+    Value: Space
+  - Key: {x: 21, y: 0}
+    Value: Garden
+  - Key: {x: 21, y: 1}
+    Value: Garden
+  - Key: {x: 21, y: 2}
+    Value: Garden
+  - Key: {x: 21, y: 3}
+    Value: Garden
+  - Key: {x: 21, y: 4}
+    Value: Garden
+  - Key: {x: 20, y: 2}
+    Value: Bugs
+  - Key: {x: 20, y: 3}
+    Value: Bugs
+  - Key: {x: 20, y: 4}
+    Value: Bugs
+  - Key: {x: 20, y: 5}
+    Value: Bugs
+  - Key: {x: 20, y: 6}
+    Value: Bugs
+  - Key: {x: 20, y: 7}
+    Value: Bugs
+  - Key: {x: 19, y: 3}
+    Value: Space
+  - Key: {x: 19, y: 4}
+    Value: Space
+  - Key: {x: 19, y: 5}
+    Value: Space
+  - Key: {x: 19, y: 6}
+    Value: Space
+  - Key: {x: 18, y: 0}
+    Value: basketball
+  - Key: {x: 18, y: 1}
+    Value: basketball
+  - Key: {x: 18, y: 2}
+    Value: basketball
+  - Key: {x: 18, y: 4}
+    Value: Garden
+  - Key: {x: 18, y: 5}
+    Value: Garden
+  - Key: {x: 18, y: 6}
+    Value: Garden
+  - Key: {x: 18, y: 7}
+    Value: Garden
+  - Key: {x: 17, y: 2}
+    Value: basketball
+  - Key: {x: 17, y: 3}
+    Value: basketball
+  - Key: {x: 17, y: 4}
+    Value: basketball
+  - Key: {x: 17, y: 5}
+    Value: basketball
+  - Key: {x: 16, y: 0}
+    Value: Garden
+  - Key: {x: 16, y: 1}
+    Value: Garden
+  - Key: {x: 16, y: 2}
+    Value: Garden
+  - Key: {x: 16, y: 3}
+    Value: Garden
+  - Key: {x: 16, y: 4}
+    Value: Garden
+  - Key: {x: 16, y: 5}
+    Value: Garden
+  - Key: {x: 16, y: 6}
+    Value: Garden
+  - Key: {x: 16, y: 7}
+    Value: Garden
+  - Key: {x: 15, y: 2}
+    Value: Bugs
+  - Key: {x: 15, y: 3}
+    Value: Bugs
+  - Key: {x: 15, y: 4}
+    Value: Bugs
+  - Key: {x: 15, y: 5}
+    Value: Bugs
+  - Key: {x: 15, y: 6}
+    Value: Bugs
+  - Key: {x: 15, y: 7}
+    Value: Bugs
+  - Key: {x: 14, y: 0}
+    Value: Space
+  - Key: {x: 14, y: 1}
+    Value: Space
+  - Key: {x: 14, y: 2}
+    Value: Space
+  - Key: {x: 14, y: 3}
+    Value: Space
+  - Key: {x: 14, y: 4}
+    Value: Space
+  - Key: {x: 14, y: 5}
+    Value: Space
+  - Key: {x: 14, y: 6}
+    Value: Space
+  - Key: {x: 14, y: 7}
+    Value: Space
+  - Key: {x: 13, y: 1}
+    Value: basketball
+  - Key: {x: 13, y: 2}
+    Value: basketball
+  - Key: {x: 13, y: 3}
+    Value: basketball
+  - Key: {x: 13, y: 4}
+    Value: basketball
+  - Key: {x: 13, y: 5}
+    Value: basketball
+  - Key: {x: 13, y: 6}
+    Value: basketball
+  - Key: {x: 13, y: 7}
+    Value: basketball
+  - Key: {x: 12, y: 2}
+    Value: Garden
+  - Key: {x: 12, y: 3}
+    Value: Garden
+  - Key: {x: 12, y: 4}
+    Value: Garden
+  - Key: {x: 12, y: 5}
+    Value: Garden
+  - Key: {x: 12, y: 6}
+    Value: Garden
+  - Key: {x: 11, y: 1}
+    Value: Bugs
+  - Key: {x: 11, y: 2}
+    Value: Bugs
+  - Key: {x: 11, y: 3}
+    Value: Bugs
+  - Key: {x: 11, y: 4}
+    Value: Bugs
+  - Key: {x: 11, y: 5}
+    Value: Bugs
+  - Key: {x: 11, y: 6}
+    Value: Bugs
+  - Key: {x: 10, y: 2}
+    Value: Space
+  - Key: {x: 10, y: 3}
+    Value: Space
+  - Key: {x: 10, y: 4}
+    Value: Space
+  - Key: {x: 10, y: 5}
+    Value: Space
+  - Key: {x: 10, y: 6}
+    Value: Space
+  - Key: {x: 10, y: 7}
+    Value: Space
+  - Key: {x: 9, y: 4}
+    Value: basketball
+  - Key: {x: 9, y: 5}
+    Value: basketball
+  - Key: {x: 9, y: 6}
+    Value: basketball
+  - Key: {x: 9, y: 7}
+    Value: basketball
+  - Key: {x: 8, y: 0}
+    Value: Bugs
+  - Key: {x: 8, y: 1}
+    Value: Bugs
+  - Key: {x: 8, y: 2}
+    Value: Bugs
+  - Key: {x: 8, y: 3}
+    Value: Bugs
+  - Key: {x: 8, y: 4}
+    Value: Bugs
+  - Key: {x: 8, y: 5}
+    Value: Bugs
+  - Key: {x: 8, y: 6}
+    Value: Bugs
+  - Key: {x: 7, y: 1}
+    Value: basketball
+  - Key: {x: 7, y: 2}
+    Value: basketball
+  - Key: {x: 7, y: 3}
+    Value: basketball
+  - Key: {x: 7, y: 4}
+    Value: basketball
+  - Key: {x: 6, y: 0}
+    Value: Space
+  - Key: {x: 6, y: 1}
+    Value: Space
+  - Key: {x: 6, y: 2}
+    Value: Space
+  - Key: {x: 6, y: 3}
+    Value: Space
+  - Key: {x: 6, y: 4}
+    Value: Space
+  - Key: {x: 6, y: 5}
+    Value: Space
+  - Key: {x: 6, y: 6}
+    Value: Space
+  - Key: {x: 6, y: 7}
+    Value: Space
+  - Key: {x: 5, y: 3}
+    Value: basketball
+  - Key: {x: 5, y: 4}
+    Value: basketball
+  - Key: {x: 5, y: 5}
+    Value: basketball
+  - Key: {x: 5, y: 6}
+    Value: basketball
+  - Key: {x: 5, y: 7}
+    Value: basketball
+  cellTexts:
+  - Key: {x: 24, y: 2}
+    Value: F
+  - Key: {x: 24, y: 3}
+    Value: L
+  - Key: {x: 24, y: 4}
+    Value: O
+  - Key: {x: 24, y: 5}
+    Value: W
+  - Key: {x: 24, y: 6}
+    Value: E
+  - Key: {x: 24, y: 7}
+    Value: R
+  - Key: {x: 23, y: 4}
+    Value: W
+  - Key: {x: 23, y: 5}
+    Value: A
+  - Key: {x: 23, y: 6}
+    Value: S
+  - Key: {x: 23, y: 7}
+    Value: P
+  - Key: {x: 22, y: 2}
+    Value: G
+  - Key: {x: 22, y: 3}
+    Value: A
+  - Key: {x: 22, y: 4}
+    Value: L
+  - Key: {x: 22, y: 5}
+    Value: A
+  - Key: {x: 22, y: 6}
+    Value: X
+  - Key: {x: 22, y: 7}
+    Value: Y
+  - Key: {x: 21, y: 0}
+    Value: G
+  - Key: {x: 21, y: 1}
+    Value: R
+  - Key: {x: 21, y: 2}
+    Value: A
+  - Key: {x: 21, y: 3}
+    Value: S
+  - Key: {x: 21, y: 4}
+    Value: S
+  - Key: {x: 20, y: 2}
+    Value: H
+  - Key: {x: 20, y: 3}
+    Value: O
+  - Key: {x: 20, y: 4}
+    Value: R
+  - Key: {x: 20, y: 5}
+    Value: N
+  - Key: {x: 20, y: 6}
+    Value: E
+  - Key: {x: 20, y: 7}
+    Value: T
+  - Key: {x: 19, y: 3}
+    Value: S
+  - Key: {x: 19, y: 4}
+    Value: T
+  - Key: {x: 19, y: 5}
+    Value: A
+  - Key: {x: 19, y: 6}
+    Value: R
+  - Key: {x: 18, y: 0}
+    Value: N
+  - Key: {x: 18, y: 1}
+    Value: B
+  - Key: {x: 18, y: 2}
+    Value: A
+  - Key: {x: 18, y: 4}
+    Value: T
+  - Key: {x: 18, y: 5}
+    Value: R
+  - Key: {x: 18, y: 6}
+    Value: E
+  - Key: {x: 18, y: 7}
+    Value: E
+  - Key: {x: 17, y: 2}
+    Value: D
+  - Key: {x: 17, y: 3}
+    Value: U
+  - Key: {x: 17, y: 4}
+    Value: N
+  - Key: {x: 17, y: 5}
+    Value: K
+  - Key: {x: 16, y: 0}
+    Value: G
+  - Key: {x: 16, y: 1}
+    Value: A
+  - Key: {x: 16, y: 2}
+    Value: R
+  - Key: {x: 16, y: 3}
+    Value: D
+  - Key: {x: 16, y: 4}
+    Value: E
+  - Key: {x: 16, y: 5}
+    Value: N
+  - Key: {x: 16, y: 6}
+    Value: E
+  - Key: {x: 16, y: 7}
+    Value: R
+  - Key: {x: 15, y: 2}
+    Value: S
+  - Key: {x: 15, y: 3}
+    Value: P
+  - Key: {x: 15, y: 4}
+    Value: I
+  - Key: {x: 15, y: 5}
+    Value: D
+  - Key: {x: 15, y: 6}
+    Value: E
+  - Key: {x: 15, y: 7}
+    Value: R
+  - Key: {x: 14, y: 0}
+    Value: A
+  - Key: {x: 14, y: 1}
+    Value: S
+  - Key: {x: 14, y: 2}
+    Value: T
+  - Key: {x: 14, y: 3}
+    Value: E
+  - Key: {x: 14, y: 4}
+    Value: R
+  - Key: {x: 14, y: 5}
+    Value: O
+  - Key: {x: 14, y: 6}
+    Value: I
+  - Key: {x: 14, y: 7}
+    Value: D
+  - Key: {x: 13, y: 1}
+    Value: R
+  - Key: {x: 13, y: 2}
+    Value: E
+  - Key: {x: 13, y: 3}
+    Value: B
+  - Key: {x: 13, y: 4}
+    Value: O
+  - Key: {x: 13, y: 5}
+    Value: U
+  - Key: {x: 13, y: 6}
+    Value: N
+  - Key: {x: 13, y: 7}
+    Value: D
+  - Key: {x: 12, y: 2}
+    Value: S
+  - Key: {x: 12, y: 3}
+    Value: P
+  - Key: {x: 12, y: 4}
+    Value: A
+  - Key: {x: 12, y: 5}
+    Value: D
+  - Key: {x: 12, y: 6}
+    Value: E
+  - Key: {x: 11, y: 1}
+    Value: B
+  - Key: {x: 11, y: 2}
+    Value: E
+  - Key: {x: 11, y: 3}
+    Value: E
+  - Key: {x: 11, y: 4}
+    Value: T
+  - Key: {x: 11, y: 5}
+    Value: L
+  - Key: {x: 11, y: 6}
+    Value: E
+  - Key: {x: 10, y: 2}
+    Value: M
+  - Key: {x: 10, y: 3}
+    Value: E
+  - Key: {x: 10, y: 4}
+    Value: T
+  - Key: {x: 10, y: 5}
+    Value: E
+  - Key: {x: 10, y: 6}
+    Value: O
+  - Key: {x: 10, y: 7}
+    Value: R
+  - Key: {x: 9, y: 4}
+    Value: H
+  - Key: {x: 9, y: 5}
+    Value: O
+  - Key: {x: 9, y: 6}
+    Value: O
+  - Key: {x: 9, y: 7}
+    Value: P
+  - Key: {x: 8, y: 0}
+    Value: T
+  - Key: {x: 8, y: 1}
+    Value: E
+  - Key: {x: 8, y: 2}
+    Value: R
+  - Key: {x: 8, y: 3}
+    Value: M
+  - Key: {x: 8, y: 4}
+    Value: I
+  - Key: {x: 8, y: 5}
+    Value: T
+  - Key: {x: 8, y: 6}
+    Value: E
+  - Key: {x: 7, y: 1}
+    Value: P
+  - Key: {x: 7, y: 2}
+    Value: A
+  - Key: {x: 7, y: 3}
+    Value: S
+  - Key: {x: 7, y: 4}
+    Value: S
+  - Key: {x: 6, y: 0}
+    Value: S
+  - Key: {x: 6, y: 1}
+    Value: T
+  - Key: {x: 6, y: 2}
+    Value: A
+  - Key: {x: 6, y: 3}
+    Value: R
+  - Key: {x: 6, y: 4}
+    Value: D
+  - Key: {x: 6, y: 5}
+    Value: U
+  - Key: {x: 6, y: 6}
+    Value: S
+  - Key: {x: 6, y: 7}
+    Value: T
+  - Key: {x: 5, y: 3}
+    Value: S
+  - Key: {x: 5, y: 4}
+    Value: C
+  - Key: {x: 5, y: 5}
+    Value: O
+  - Key: {x: 5, y: 6}
+    Value: R
+  - Key: {x: 5, y: 7}
+    Value: E
+  trayCells: []
+  trayName: []
+  categoryColors:
+  - Key: Garden
+    Value: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
+  - Key: Bugs
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  - Key: basketball
+    Value: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
+  - Key: Space
+    Value: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  - Key: Basketball
+    Value: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
+  trayColors: []
+  wordPositions:
+  - Key: SCORE
+    Value:
+    - {x: 5, y: 3}
+    - {x: 5, y: 4}
+    - {x: 5, y: 5}
+    - {x: 5, y: 6}
+    - {x: 5, y: 7}
+  - Key: STARDUST
+    Value:
+    - {x: 6, y: 0}
+    - {x: 6, y: 1}
+    - {x: 6, y: 2}
+    - {x: 6, y: 3}
+    - {x: 6, y: 4}
+    - {x: 6, y: 5}
+    - {x: 6, y: 6}
+    - {x: 6, y: 7}
+  - Key: PASS
+    Value:
+    - {x: 7, y: 1}
+    - {x: 7, y: 2}
+    - {x: 7, y: 3}
+    - {x: 7, y: 4}
+  - Key: TERMITE
+    Value:
+    - {x: 8, y: 0}
+    - {x: 8, y: 1}
+    - {x: 8, y: 2}
+    - {x: 8, y: 3}
+    - {x: 8, y: 4}
+    - {x: 8, y: 5}
+    - {x: 8, y: 6}
+  - Key: HOOP
+    Value:
+    - {x: 9, y: 4}
+    - {x: 9, y: 5}
+    - {x: 9, y: 6}
+    - {x: 9, y: 7}
+  - Key: METEOR
+    Value:
+    - {x: 10, y: 2}
+    - {x: 10, y: 3}
+    - {x: 10, y: 4}
+    - {x: 10, y: 5}
+    - {x: 10, y: 6}
+    - {x: 10, y: 7}
+  - Key: BEETLE
+    Value:
+    - {x: 11, y: 1}
+    - {x: 11, y: 2}
+    - {x: 11, y: 3}
+    - {x: 11, y: 4}
+    - {x: 11, y: 5}
+    - {x: 11, y: 6}
+  - Key: SPADE
+    Value:
+    - {x: 12, y: 2}
+    - {x: 12, y: 3}
+    - {x: 12, y: 4}
+    - {x: 12, y: 5}
+    - {x: 12, y: 6}
+  - Key: REBOUND
+    Value:
+    - {x: 13, y: 1}
+    - {x: 13, y: 2}
+    - {x: 13, y: 3}
+    - {x: 13, y: 4}
+    - {x: 13, y: 5}
+    - {x: 13, y: 6}
+    - {x: 13, y: 7}
+  - Key: ASTEROID
+    Value:
+    - {x: 14, y: 0}
+    - {x: 14, y: 1}
+    - {x: 14, y: 2}
+    - {x: 14, y: 3}
+    - {x: 14, y: 4}
+    - {x: 14, y: 5}
+    - {x: 14, y: 6}
+    - {x: 14, y: 7}
+  - Key: SPIDER
+    Value:
+    - {x: 15, y: 2}
+    - {x: 15, y: 3}
+    - {x: 15, y: 4}
+    - {x: 15, y: 5}
+    - {x: 15, y: 6}
+    - {x: 15, y: 7}
+  - Key: GARDENER
+    Value:
+    - {x: 16, y: 0}
+    - {x: 16, y: 1}
+    - {x: 16, y: 2}
+    - {x: 16, y: 3}
+    - {x: 16, y: 4}
+    - {x: 16, y: 5}
+    - {x: 16, y: 6}
+    - {x: 16, y: 7}
+  - Key: DUNK
+    Value:
+    - {x: 17, y: 2}
+    - {x: 17, y: 3}
+    - {x: 17, y: 4}
+    - {x: 17, y: 5}
+  - Key: NBA
+    Value:
+    - {x: 18, y: 0}
+    - {x: 18, y: 1}
+    - {x: 18, y: 2}
+  - Key: TREE
+    Value:
+    - {x: 18, y: 4}
+    - {x: 18, y: 5}
+    - {x: 18, y: 6}
+    - {x: 18, y: 7}
+  - Key: STAR
+    Value:
+    - {x: 19, y: 3}
+    - {x: 19, y: 4}
+    - {x: 19, y: 5}
+    - {x: 19, y: 6}
+  - Key: HORNET
+    Value:
+    - {x: 20, y: 2}
+    - {x: 20, y: 3}
+    - {x: 20, y: 4}
+    - {x: 20, y: 5}
+    - {x: 20, y: 6}
+    - {x: 20, y: 7}
+  - Key: GRASS
+    Value:
+    - {x: 21, y: 0}
+    - {x: 21, y: 1}
+    - {x: 21, y: 2}
+    - {x: 21, y: 3}
+    - {x: 21, y: 4}
+  - Key: GALAXY
+    Value:
+    - {x: 22, y: 2}
+    - {x: 22, y: 3}
+    - {x: 22, y: 4}
+    - {x: 22, y: 5}
+    - {x: 22, y: 6}
+    - {x: 22, y: 7}
+  - Key: WASP
+    Value:
+    - {x: 23, y: 4}
+    - {x: 23, y: 5}
+    - {x: 23, y: 6}
+    - {x: 23, y: 7}
+  - Key: FLOWER
+    Value:
+    - {x: 24, y: 2}
+    - {x: 24, y: 3}
+    - {x: 24, y: 4}
+    - {x: 24, y: 5}
+    - {x: 24, y: 6}
+    - {x: 24, y: 7}

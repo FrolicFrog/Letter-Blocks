@@ -1,0 +1,942 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 20
+  m_EditorClassIdentifier: 
+  timer: 0
+  LevelNumber: 20
+  rows: 27
+  columns: 8
+  height: 6
+  width: 5
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.12
+  categoryMaterial: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
+  words:
+  - ANIME
+  - NATIONAL
+  - RAMEN
+  - TOMB
+  - KIMONO
+  - BRUSH
+  - WASABI
+  - ANCIENT
+  - GLIDER
+  - MUSEUM
+  - SKULL
+  - SUMO
+  - PYRAMID
+  - WATER
+  - AIRPLANE
+  - SAMURAI
+  - SUSHI
+  - WILDLIFE
+  - JET
+  - SAFARI
+  - FOSSIL
+  - TREX
+  - BONE
+  - DRONE
+  - JURASSIC
+  - RAPTOR
+  tray:
+  - Tray 1
+  excludedChar:
+  - {x: 2, y: 5}
+  - {x: 4, y: 5}
+  - {x: 6, y: 2}
+  - {x: 8, y: 3}
+  - {x: 8, y: 6}
+  - {x: 13, y: 3}
+  - {x: 17, y: 1}
+  - {x: 17, y: 3}
+  - {x: 18, y: 5}
+  - {x: 7, y: 4}
+  - {x: 5, y: 3}
+  - {x: 9, y: 1}
+  - {x: 11, y: 2}
+  - {x: 12, y: 5}
+  - {x: 14, y: 6}
+  - {x: 22, y: 2}
+  - {x: 23, y: 6}
+  - {x: 24, y: 4}
+  - {x: 20, y: 4}
+  - {x: 16, y: 1}
+  - {x: 16, y: 4}
+  - {x: 10, y: 5}
+  - {x: 26, y: 2}
+  - {x: 26, y: 5}
+  - {x: 23, y: 2}
+  - {x: 25, y: 6}
+  - {x: 21, y: 4}
+  - {x: 19, y: 2}
+  - {x: 19, y: 6}
+  - {x: 15, y: 1}
+  - {x: 3, y: 1}
+  - {x: 3, y: 4}
+  blockedCells: []
+  wordCategory:
+  - Key: Japanese
+    Value:
+    - ANIME
+    - RAMEN
+    - KIMONO
+    - WASABI
+    - SUMO
+    - SAMURAI
+    - SUSHI
+  - Key: Parks
+    Value:
+    - NATIONAL
+    - WATER
+    - WILDLIFE
+    - SAFARI
+    - JURASSIC
+  - Key: Archaeology
+    Value:
+    - TOMB
+    - BRUSH
+    - ANCIENT
+    - MUSEUM
+    - SKULL
+    - PYRAMID
+    - FOSSIL
+    - BONE
+  - Key: Aircrafts
+    Value:
+    - GLIDER
+    - AIRPLANE
+    - JET
+    - DRONE
+  - Key: Dinosaurs
+    Value:
+    - TREX
+    - RAPTOR
+  cellCategory:
+  - Key: {x: 26, y: 1}
+    Value: Dinosaurs
+  - Key: {x: 26, y: 2}
+    Value: Dinosaurs
+  - Key: {x: 26, y: 3}
+    Value: Dinosaurs
+  - Key: {x: 26, y: 4}
+    Value: Dinosaurs
+  - Key: {x: 26, y: 5}
+    Value: Dinosaurs
+  - Key: {x: 26, y: 6}
+    Value: Dinosaurs
+  - Key: {x: 25, y: 0}
+    Value: Parks
+  - Key: {x: 25, y: 1}
+    Value: Parks
+  - Key: {x: 25, y: 2}
+    Value: Parks
+  - Key: {x: 25, y: 3}
+    Value: Parks
+  - Key: {x: 25, y: 4}
+    Value: Parks
+  - Key: {x: 25, y: 5}
+    Value: Parks
+  - Key: {x: 25, y: 6}
+    Value: Parks
+  - Key: {x: 25, y: 7}
+    Value: Parks
+  - Key: {x: 24, y: 2}
+    Value: Aircrafts
+  - Key: {x: 24, y: 3}
+    Value: Aircrafts
+  - Key: {x: 24, y: 4}
+    Value: Aircrafts
+  - Key: {x: 24, y: 5}
+    Value: Aircrafts
+  - Key: {x: 24, y: 6}
+    Value: Aircrafts
+  - Key: {x: 23, y: 0}
+    Value: Dinosaurs
+  - Key: {x: 23, y: 1}
+    Value: Dinosaurs
+  - Key: {x: 23, y: 2}
+    Value: Dinosaurs
+  - Key: {x: 23, y: 3}
+    Value: Dinosaurs
+  - Key: {x: 23, y: 4}
+    Value: Archaeology
+  - Key: {x: 23, y: 5}
+    Value: Archaeology
+  - Key: {x: 23, y: 6}
+    Value: Archaeology
+  - Key: {x: 23, y: 7}
+    Value: Archaeology
+  - Key: {x: 22, y: 1}
+    Value: Archaeology
+  - Key: {x: 22, y: 2}
+    Value: Archaeology
+  - Key: {x: 22, y: 3}
+    Value: Archaeology
+  - Key: {x: 22, y: 4}
+    Value: Archaeology
+  - Key: {x: 22, y: 5}
+    Value: Archaeology
+  - Key: {x: 22, y: 6}
+    Value: Archaeology
+  - Key: {x: 21, y: 2}
+    Value: Parks
+  - Key: {x: 21, y: 3}
+    Value: Parks
+  - Key: {x: 21, y: 4}
+    Value: Parks
+  - Key: {x: 21, y: 5}
+    Value: Parks
+  - Key: {x: 21, y: 6}
+    Value: Parks
+  - Key: {x: 21, y: 7}
+    Value: Parks
+  - Key: {x: 20, y: 3}
+    Value: Aircrafts
+  - Key: {x: 20, y: 4}
+    Value: Aircrafts
+  - Key: {x: 20, y: 5}
+    Value: Aircrafts
+  - Key: {x: 19, y: 0}
+    Value: Parks
+  - Key: {x: 19, y: 1}
+    Value: Parks
+  - Key: {x: 19, y: 2}
+    Value: Parks
+  - Key: {x: 19, y: 3}
+    Value: Parks
+  - Key: {x: 19, y: 4}
+    Value: Parks
+  - Key: {x: 19, y: 5}
+    Value: Parks
+  - Key: {x: 19, y: 6}
+    Value: Parks
+  - Key: {x: 19, y: 7}
+    Value: Parks
+  - Key: {x: 18, y: 2}
+    Value: Japanese
+  - Key: {x: 18, y: 3}
+    Value: Japanese
+  - Key: {x: 18, y: 4}
+    Value: Japanese
+  - Key: {x: 18, y: 5}
+    Value: Japanese
+  - Key: {x: 18, y: 6}
+    Value: Japanese
+  - Key: {x: 17, y: 0}
+    Value: Japanese
+  - Key: {x: 17, y: 1}
+    Value: Japanese
+  - Key: {x: 17, y: 2}
+    Value: Japanese
+  - Key: {x: 17, y: 3}
+    Value: Japanese
+  - Key: {x: 17, y: 4}
+    Value: Japanese
+  - Key: {x: 17, y: 5}
+    Value: Japanese
+  - Key: {x: 17, y: 6}
+    Value: Japanese
+  - Key: {x: 16, y: 0}
+    Value: Aircrafts
+  - Key: {x: 16, y: 1}
+    Value: Aircrafts
+  - Key: {x: 16, y: 2}
+    Value: Aircrafts
+  - Key: {x: 16, y: 3}
+    Value: Aircrafts
+  - Key: {x: 16, y: 4}
+    Value: Aircrafts
+  - Key: {x: 16, y: 5}
+    Value: Aircrafts
+  - Key: {x: 16, y: 6}
+    Value: Aircrafts
+  - Key: {x: 16, y: 7}
+    Value: Aircrafts
+  - Key: {x: 15, y: 0}
+    Value: Parks
+  - Key: {x: 15, y: 1}
+    Value: Parks
+  - Key: {x: 15, y: 2}
+    Value: Parks
+  - Key: {x: 15, y: 3}
+    Value: Parks
+  - Key: {x: 15, y: 4}
+    Value: Parks
+  - Key: {x: 14, y: 2}
+    Value: Archaeology
+  - Key: {x: 14, y: 3}
+    Value: Archaeology
+  - Key: {x: 14, y: 4}
+    Value: Archaeology
+  - Key: {x: 14, y: 5}
+    Value: Archaeology
+  - Key: {x: 14, y: 1}
+    Value: Archaeology
+  - Key: {x: 14, y: 6}
+    Value: Archaeology
+  - Key: {x: 14, y: 7}
+    Value: Archaeology
+  - Key: {x: 13, y: 2}
+    Value: Japanese
+  - Key: {x: 13, y: 3}
+    Value: Japanese
+  - Key: {x: 13, y: 4}
+    Value: Japanese
+  - Key: {x: 13, y: 5}
+    Value: Japanese
+  - Key: {x: 12, y: 3}
+    Value: Archaeology
+  - Key: {x: 12, y: 4}
+    Value: Archaeology
+  - Key: {x: 12, y: 5}
+    Value: Archaeology
+  - Key: {x: 12, y: 6}
+    Value: Archaeology
+  - Key: {x: 12, y: 7}
+    Value: Archaeology
+  - Key: {x: 11, y: 0}
+    Value: Archaeology
+  - Key: {x: 11, y: 1}
+    Value: Archaeology
+  - Key: {x: 11, y: 2}
+    Value: Archaeology
+  - Key: {x: 11, y: 3}
+    Value: Archaeology
+  - Key: {x: 11, y: 4}
+    Value: Archaeology
+  - Key: {x: 11, y: 5}
+    Value: Archaeology
+  - Key: {x: 10, y: 2}
+    Value: Aircrafts
+  - Key: {x: 10, y: 3}
+    Value: Aircrafts
+  - Key: {x: 10, y: 4}
+    Value: Aircrafts
+  - Key: {x: 10, y: 5}
+    Value: Aircrafts
+  - Key: {x: 10, y: 6}
+    Value: Aircrafts
+  - Key: {x: 10, y: 7}
+    Value: Aircrafts
+  - Key: {x: 9, y: 0}
+    Value: Archaeology
+  - Key: {x: 9, y: 1}
+    Value: Archaeology
+  - Key: {x: 9, y: 2}
+    Value: Archaeology
+  - Key: {x: 9, y: 3}
+    Value: Archaeology
+  - Key: {x: 9, y: 4}
+    Value: Archaeology
+  - Key: {x: 9, y: 5}
+    Value: Archaeology
+  - Key: {x: 9, y: 6}
+    Value: Archaeology
+  - Key: {x: 7, y: 2}
+    Value: Archaeology
+  - Key: {x: 7, y: 3}
+    Value: Archaeology
+  - Key: {x: 7, y: 4}
+    Value: Archaeology
+  - Key: {x: 7, y: 5}
+    Value: Archaeology
+  - Key: {x: 7, y: 6}
+    Value: Archaeology
+  - Key: {x: 8, y: 1}
+    Value: Japanese
+  - Key: {x: 8, y: 2}
+    Value: Japanese
+  - Key: {x: 8, y: 3}
+    Value: Japanese
+  - Key: {x: 8, y: 4}
+    Value: Japanese
+  - Key: {x: 8, y: 5}
+    Value: Japanese
+  - Key: {x: 8, y: 6}
+    Value: Japanese
+  - Key: {x: 6, y: 1}
+    Value: Japanese
+  - Key: {x: 6, y: 2}
+    Value: Japanese
+  - Key: {x: 6, y: 3}
+    Value: Japanese
+  - Key: {x: 6, y: 4}
+    Value: Japanese
+  - Key: {x: 6, y: 5}
+    Value: Japanese
+  - Key: {x: 6, y: 6}
+    Value: Japanese
+  - Key: {x: 5, y: 0}
+    Value: Archaeology
+  - Key: {x: 5, y: 1}
+    Value: Archaeology
+  - Key: {x: 5, y: 2}
+    Value: Archaeology
+  - Key: {x: 5, y: 3}
+    Value: Archaeology
+  - Key: {x: 4, y: 2}
+    Value: Japanese
+  - Key: {x: 4, y: 4}
+    Value: Japanese
+  - Key: {x: 4, y: 3}
+    Value: Japanese
+  - Key: {x: 4, y: 5}
+    Value: Japanese
+  - Key: {x: 4, y: 6}
+    Value: Japanese
+  - Key: {x: 3, y: 0}
+    Value: Parks
+  - Key: {x: 3, y: 1}
+    Value: Parks
+  - Key: {x: 3, y: 2}
+    Value: Parks
+  - Key: {x: 3, y: 3}
+    Value: Parks
+  - Key: {x: 3, y: 4}
+    Value: Parks
+  - Key: {x: 3, y: 5}
+    Value: Parks
+  - Key: {x: 3, y: 6}
+    Value: Parks
+  - Key: {x: 3, y: 7}
+    Value: Parks
+  - Key: {x: 2, y: 2}
+    Value: Japanese
+  - Key: {x: 2, y: 3}
+    Value: Japanese
+  - Key: {x: 2, y: 4}
+    Value: Japanese
+  - Key: {x: 2, y: 5}
+    Value: Japanese
+  - Key: {x: 2, y: 6}
+    Value: Japanese
+  cellTexts:
+  - Key: {x: 26, y: 1}
+    Value: R
+  - Key: {x: 26, y: 2}
+    Value: A
+  - Key: {x: 26, y: 3}
+    Value: P
+  - Key: {x: 26, y: 4}
+    Value: T
+  - Key: {x: 26, y: 5}
+    Value: O
+  - Key: {x: 26, y: 6}
+    Value: R
+  - Key: {x: 25, y: 0}
+    Value: J
+  - Key: {x: 25, y: 1}
+    Value: U
+  - Key: {x: 25, y: 2}
+    Value: R
+  - Key: {x: 25, y: 3}
+    Value: A
+  - Key: {x: 25, y: 4}
+    Value: S
+  - Key: {x: 25, y: 5}
+    Value: S
+  - Key: {x: 25, y: 6}
+    Value: I
+  - Key: {x: 25, y: 7}
+    Value: C
+  - Key: {x: 24, y: 2}
+    Value: D
+  - Key: {x: 24, y: 3}
+    Value: R
+  - Key: {x: 24, y: 4}
+    Value: O
+  - Key: {x: 24, y: 5}
+    Value: N
+  - Key: {x: 24, y: 6}
+    Value: E
+  - Key: {x: 23, y: 0}
+    Value: T
+  - Key: {x: 23, y: 1}
+    Value: R
+  - Key: {x: 23, y: 2}
+    Value: E
+  - Key: {x: 23, y: 3}
+    Value: X
+  - Key: {x: 23, y: 4}
+    Value: B
+  - Key: {x: 23, y: 5}
+    Value: O
+  - Key: {x: 23, y: 6}
+    Value: N
+  - Key: {x: 23, y: 7}
+    Value: E
+  - Key: {x: 22, y: 1}
+    Value: F
+  - Key: {x: 22, y: 2}
+    Value: O
+  - Key: {x: 22, y: 3}
+    Value: S
+  - Key: {x: 22, y: 4}
+    Value: S
+  - Key: {x: 22, y: 5}
+    Value: I
+  - Key: {x: 22, y: 6}
+    Value: L
+  - Key: {x: 21, y: 2}
+    Value: S
+  - Key: {x: 21, y: 3}
+    Value: A
+  - Key: {x: 21, y: 4}
+    Value: F
+  - Key: {x: 21, y: 5}
+    Value: A
+  - Key: {x: 21, y: 6}
+    Value: R
+  - Key: {x: 21, y: 7}
+    Value: I
+  - Key: {x: 20, y: 3}
+    Value: J
+  - Key: {x: 20, y: 4}
+    Value: E
+  - Key: {x: 20, y: 5}
+    Value: T
+  - Key: {x: 19, y: 0}
+    Value: W
+  - Key: {x: 19, y: 1}
+    Value: I
+  - Key: {x: 19, y: 2}
+    Value: L
+  - Key: {x: 19, y: 3}
+    Value: D
+  - Key: {x: 19, y: 4}
+    Value: L
+  - Key: {x: 19, y: 5}
+    Value: I
+  - Key: {x: 19, y: 6}
+    Value: F
+  - Key: {x: 19, y: 7}
+    Value: E
+  - Key: {x: 18, y: 2}
+    Value: S
+  - Key: {x: 18, y: 3}
+    Value: U
+  - Key: {x: 18, y: 4}
+    Value: S
+  - Key: {x: 18, y: 5}
+    Value: H
+  - Key: {x: 18, y: 6}
+    Value: I
+  - Key: {x: 17, y: 0}
+    Value: S
+  - Key: {x: 17, y: 1}
+    Value: A
+  - Key: {x: 17, y: 2}
+    Value: M
+  - Key: {x: 17, y: 3}
+    Value: U
+  - Key: {x: 17, y: 4}
+    Value: R
+  - Key: {x: 17, y: 5}
+    Value: A
+  - Key: {x: 17, y: 6}
+    Value: I
+  - Key: {x: 16, y: 0}
+    Value: A
+  - Key: {x: 16, y: 1}
+    Value: I
+  - Key: {x: 16, y: 2}
+    Value: R
+  - Key: {x: 16, y: 3}
+    Value: P
+  - Key: {x: 16, y: 4}
+    Value: L
+  - Key: {x: 16, y: 5}
+    Value: A
+  - Key: {x: 16, y: 6}
+    Value: N
+  - Key: {x: 16, y: 7}
+    Value: E
+  - Key: {x: 15, y: 0}
+    Value: W
+  - Key: {x: 15, y: 1}
+    Value: A
+  - Key: {x: 15, y: 2}
+    Value: T
+  - Key: {x: 15, y: 3}
+    Value: E
+  - Key: {x: 15, y: 4}
+    Value: R
+  - Key: {x: 14, y: 2}
+    Value: Y
+  - Key: {x: 14, y: 3}
+    Value: R
+  - Key: {x: 14, y: 4}
+    Value: A
+  - Key: {x: 14, y: 5}
+    Value: M
+  - Key: {x: 14, y: 1}
+    Value: P
+  - Key: {x: 14, y: 6}
+    Value: I
+  - Key: {x: 14, y: 7}
+    Value: D
+  - Key: {x: 13, y: 2}
+    Value: S
+  - Key: {x: 13, y: 3}
+    Value: U
+  - Key: {x: 13, y: 4}
+    Value: M
+  - Key: {x: 13, y: 5}
+    Value: O
+  - Key: {x: 12, y: 3}
+    Value: S
+  - Key: {x: 12, y: 4}
+    Value: K
+  - Key: {x: 12, y: 5}
+    Value: U
+  - Key: {x: 12, y: 6}
+    Value: L
+  - Key: {x: 12, y: 7}
+    Value: L
+  - Key: {x: 11, y: 0}
+    Value: M
+  - Key: {x: 11, y: 1}
+    Value: U
+  - Key: {x: 11, y: 2}
+    Value: S
+  - Key: {x: 11, y: 3}
+    Value: E
+  - Key: {x: 11, y: 4}
+    Value: U
+  - Key: {x: 11, y: 5}
+    Value: M
+  - Key: {x: 10, y: 2}
+    Value: G
+  - Key: {x: 10, y: 3}
+    Value: L
+  - Key: {x: 10, y: 4}
+    Value: I
+  - Key: {x: 10, y: 5}
+    Value: D
+  - Key: {x: 10, y: 6}
+    Value: E
+  - Key: {x: 10, y: 7}
+    Value: R
+  - Key: {x: 9, y: 0}
+    Value: A
+  - Key: {x: 9, y: 1}
+    Value: N
+  - Key: {x: 9, y: 2}
+    Value: C
+  - Key: {x: 9, y: 3}
+    Value: I
+  - Key: {x: 9, y: 4}
+    Value: E
+  - Key: {x: 9, y: 5}
+    Value: N
+  - Key: {x: 9, y: 6}
+    Value: T
+  - Key: {x: 7, y: 2}
+    Value: B
+  - Key: {x: 7, y: 3}
+    Value: R
+  - Key: {x: 7, y: 4}
+    Value: U
+  - Key: {x: 7, y: 5}
+    Value: S
+  - Key: {x: 7, y: 6}
+    Value: H
+  - Key: {x: 8, y: 1}
+    Value: W
+  - Key: {x: 8, y: 2}
+    Value: A
+  - Key: {x: 8, y: 3}
+    Value: S
+  - Key: {x: 8, y: 4}
+    Value: A
+  - Key: {x: 8, y: 5}
+    Value: B
+  - Key: {x: 8, y: 6}
+    Value: I
+  - Key: {x: 6, y: 1}
+    Value: K
+  - Key: {x: 6, y: 2}
+    Value: I
+  - Key: {x: 6, y: 3}
+    Value: M
+  - Key: {x: 6, y: 4}
+    Value: O
+  - Key: {x: 6, y: 5}
+    Value: N
+  - Key: {x: 6, y: 6}
+    Value: O
+  - Key: {x: 5, y: 0}
+    Value: T
+  - Key: {x: 5, y: 1}
+    Value: O
+  - Key: {x: 5, y: 2}
+    Value: M
+  - Key: {x: 5, y: 3}
+    Value: B
+  - Key: {x: 4, y: 2}
+    Value: R
+  - Key: {x: 4, y: 4}
+    Value: M
+  - Key: {x: 4, y: 3}
+    Value: A
+  - Key: {x: 4, y: 5}
+    Value: E
+  - Key: {x: 4, y: 6}
+    Value: N
+  - Key: {x: 3, y: 0}
+    Value: N
+  - Key: {x: 3, y: 1}
+    Value: A
+  - Key: {x: 3, y: 2}
+    Value: T
+  - Key: {x: 3, y: 3}
+    Value: I
+  - Key: {x: 3, y: 4}
+    Value: O
+  - Key: {x: 3, y: 5}
+    Value: N
+  - Key: {x: 3, y: 6}
+    Value: A
+  - Key: {x: 3, y: 7}
+    Value: L
+  - Key: {x: 2, y: 2}
+    Value: A
+  - Key: {x: 2, y: 3}
+    Value: N
+  - Key: {x: 2, y: 4}
+    Value: I
+  - Key: {x: 2, y: 5}
+    Value: M
+  - Key: {x: 2, y: 6}
+    Value: E
+  trayCells: []
+  trayName: []
+  categoryColors:
+  - Key: Family
+    Value: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
+  - Key: Garden
+    Value: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
+  - Key: Dinosaurs
+    Value: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
+  - Key: Aircrafts
+    Value: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  - Key: Archaeology
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  - Key: Japanese
+    Value: {fileID: 2100000, guid: 74a701c54a3fc14469104bed730e8899, type: 2}
+  - Key: Parks
+    Value: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
+  trayColors: []
+  wordPositions:
+  - Key: ANIME
+    Value:
+    - {x: 2, y: 2}
+    - {x: 2, y: 3}
+    - {x: 2, y: 4}
+    - {x: 2, y: 5}
+    - {x: 2, y: 6}
+  - Key: NATIONAL
+    Value:
+    - {x: 3, y: 0}
+    - {x: 3, y: 1}
+    - {x: 3, y: 2}
+    - {x: 3, y: 3}
+    - {x: 3, y: 4}
+    - {x: 3, y: 5}
+    - {x: 3, y: 6}
+    - {x: 3, y: 7}
+  - Key: RAMEN
+    Value:
+    - {x: 4, y: 2}
+    - {x: 4, y: 3}
+    - {x: 4, y: 4}
+    - {x: 4, y: 5}
+    - {x: 4, y: 6}
+  - Key: TOMB
+    Value:
+    - {x: 5, y: 0}
+    - {x: 5, y: 1}
+    - {x: 5, y: 2}
+    - {x: 5, y: 3}
+  - Key: KIMONO
+    Value:
+    - {x: 6, y: 1}
+    - {x: 6, y: 2}
+    - {x: 6, y: 3}
+    - {x: 6, y: 4}
+    - {x: 6, y: 5}
+    - {x: 6, y: 6}
+  - Key: BRUSH
+    Value:
+    - {x: 7, y: 2}
+    - {x: 7, y: 3}
+    - {x: 7, y: 4}
+    - {x: 7, y: 5}
+    - {x: 7, y: 6}
+  - Key: WASABI
+    Value:
+    - {x: 8, y: 1}
+    - {x: 8, y: 2}
+    - {x: 8, y: 3}
+    - {x: 8, y: 4}
+    - {x: 8, y: 5}
+    - {x: 8, y: 6}
+  - Key: ANCIENT
+    Value:
+    - {x: 9, y: 0}
+    - {x: 9, y: 1}
+    - {x: 9, y: 2}
+    - {x: 9, y: 3}
+    - {x: 9, y: 4}
+    - {x: 9, y: 5}
+    - {x: 9, y: 6}
+  - Key: GLIDER
+    Value:
+    - {x: 10, y: 2}
+    - {x: 10, y: 3}
+    - {x: 10, y: 4}
+    - {x: 10, y: 5}
+    - {x: 10, y: 6}
+    - {x: 10, y: 7}
+  - Key: MUSEUM
+    Value:
+    - {x: 11, y: 0}
+    - {x: 11, y: 1}
+    - {x: 11, y: 2}
+    - {x: 11, y: 3}
+    - {x: 11, y: 4}
+    - {x: 11, y: 5}
+  - Key: SKULL
+    Value:
+    - {x: 12, y: 3}
+    - {x: 12, y: 4}
+    - {x: 12, y: 5}
+    - {x: 12, y: 6}
+    - {x: 12, y: 7}
+  - Key: SUMO
+    Value:
+    - {x: 13, y: 2}
+    - {x: 13, y: 3}
+    - {x: 13, y: 4}
+    - {x: 13, y: 5}
+  - Key: PYRAMID
+    Value:
+    - {x: 14, y: 1}
+    - {x: 14, y: 2}
+    - {x: 14, y: 3}
+    - {x: 14, y: 4}
+    - {x: 14, y: 5}
+    - {x: 14, y: 6}
+    - {x: 14, y: 7}
+  - Key: WATER
+    Value:
+    - {x: 15, y: 0}
+    - {x: 15, y: 1}
+    - {x: 15, y: 2}
+    - {x: 15, y: 3}
+    - {x: 15, y: 4}
+  - Key: AIRPLANE
+    Value:
+    - {x: 16, y: 0}
+    - {x: 16, y: 1}
+    - {x: 16, y: 2}
+    - {x: 16, y: 3}
+    - {x: 16, y: 4}
+    - {x: 16, y: 5}
+    - {x: 16, y: 6}
+    - {x: 16, y: 7}
+  - Key: SAMURAI
+    Value:
+    - {x: 17, y: 0}
+    - {x: 17, y: 1}
+    - {x: 17, y: 2}
+    - {x: 17, y: 3}
+    - {x: 17, y: 4}
+    - {x: 17, y: 5}
+    - {x: 17, y: 6}
+  - Key: SUSHI
+    Value:
+    - {x: 18, y: 2}
+    - {x: 18, y: 3}
+    - {x: 18, y: 4}
+    - {x: 18, y: 5}
+    - {x: 18, y: 6}
+  - Key: WILDLIFE
+    Value:
+    - {x: 19, y: 0}
+    - {x: 19, y: 1}
+    - {x: 19, y: 2}
+    - {x: 19, y: 3}
+    - {x: 19, y: 4}
+    - {x: 19, y: 5}
+    - {x: 19, y: 6}
+    - {x: 19, y: 7}
+  - Key: JET
+    Value:
+    - {x: 20, y: 3}
+    - {x: 20, y: 4}
+    - {x: 20, y: 5}
+  - Key: SAFARI
+    Value:
+    - {x: 21, y: 2}
+    - {x: 21, y: 3}
+    - {x: 21, y: 4}
+    - {x: 21, y: 5}
+    - {x: 21, y: 6}
+    - {x: 21, y: 7}
+  - Key: FOSSIL
+    Value:
+    - {x: 22, y: 1}
+    - {x: 22, y: 2}
+    - {x: 22, y: 3}
+    - {x: 22, y: 4}
+    - {x: 22, y: 5}
+    - {x: 22, y: 6}
+  - Key: TREX
+    Value:
+    - {x: 23, y: 0}
+    - {x: 23, y: 1}
+    - {x: 23, y: 2}
+    - {x: 23, y: 3}
+  - Key: BONE
+    Value:
+    - {x: 23, y: 4}
+    - {x: 23, y: 5}
+    - {x: 23, y: 6}
+    - {x: 23, y: 7}
+  - Key: DRONE
+    Value:
+    - {x: 24, y: 2}
+    - {x: 24, y: 3}
+    - {x: 24, y: 4}
+    - {x: 24, y: 5}
+    - {x: 24, y: 6}
+  - Key: JURASSIC
+    Value:
+    - {x: 25, y: 0}
+    - {x: 25, y: 1}
+    - {x: 25, y: 2}
+    - {x: 25, y: 3}
+    - {x: 25, y: 4}
+    - {x: 25, y: 5}
+    - {x: 25, y: 6}
+    - {x: 25, y: 7}
+  - Key: RAPTOR
+    Value:
+    - {x: 26, y: 1}
+    - {x: 26, y: 2}
+    - {x: 26, y: 3}
+    - {x: 26, y: 4}
+    - {x: 26, y: 5}
+    - {x: 26, y: 6}
