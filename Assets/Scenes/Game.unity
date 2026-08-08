@@ -1064,6 +1064,8 @@ MonoBehaviour:
   trayMaterial: {fileID: 2100000, guid: d18d9efa4d68cc94382408f4900c9d75, type: 2}
   boxMaterial: {fileID: 2100000, guid: cd1310db1c5b9c14aa82b65e44c4d216, type: 2}
   trayOutlineMat: {fileID: 2100000, guid: dfb0e59f768f18540a92e3b5ee5394c3, type: 2}
+  freezeTray: {fileID: 2100000, guid: 8dcab66ba6b320e4abc2004a11971ac4, type: 2}
+  freezeBox: {fileID: 2100000, guid: f39dcc99623d06f4f862ddd0b168b685, type: 2}
   colorSprite:
   - Key: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
     Value: {fileID: 21300000, guid: cc126640703e18e4d8d898bdd337ed7f, type: 3}
@@ -1095,7 +1097,7 @@ MonoBehaviour:
     Value: {fileID: 21300000, guid: 95162cf693b20a440ab9c5248adccaf7, type: 3}
   - Key: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
     Value: {fileID: 21300000, guid: ddf4c8a1263b12e429c13c51cf37ddb3, type: 3}
-  TestLevelToLoad: 100
+  TestLevelToLoad: 11
   ticks: []
   hearts: 0
 --- !u!1 &630893620

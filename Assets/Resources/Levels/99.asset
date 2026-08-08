@@ -283,4 +283,4 @@ MonoBehaviour:
     - {x: 9, y: 4}
   freezedTray:
   - Key: Tray 1
-    Value: 1
+    Value: 2

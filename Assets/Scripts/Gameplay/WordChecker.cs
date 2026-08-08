@@ -238,6 +238,7 @@ public class WordChecker : MonoBehaviour
             block.localRotation = Quaternion.identity;
 
             block.gameObject.layer = LayerMask.NameToLayer("Word");
+            FreezeManager.DecreaseFreezeCount();
             reservedGridSlots.Remove(matchedKey);
 
             if (TopGridManager.instance != null)

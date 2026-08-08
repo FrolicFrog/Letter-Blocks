@@ -18,7 +18,7 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private GameObject categoryHeading,arrow;
     [SerializeField] private Transform categoryHeadingParent,trayList;
     [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial,trayOutlineMat;
+    [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial,trayOutlineMat,freezeTray,freezeBox;
     [SerializeField] private List<KeyValueGroup<Material, Sprite>> colorSprite;
 
     [HideInInspector] public int TestLevelToLoad = 1;
@@ -27,7 +27,7 @@ public class LevelManager : Manager<LevelManager>
     private Dictionary<Material, Sprite> _colorSprite = new(); //Do not clear
     private Dictionary<Direction, GameObject> wallsDirectionDict = new();
     private Dictionary<string, List<GameObject>> trayChunks = new();
-
+    private Dictionary<string, int> freezedTray = new();
 
     private LevelData _LevelData;
 
@@ -81,7 +81,7 @@ public class LevelManager : Manager<LevelManager>
         resultManager.timer = _LevelData.timer;
         resultManager.time = _LevelData.minutes*60+_LevelData.seconds;
         letterGridManager.screenPadding = _LevelData.bottomGridSize;
-
+        freezedTray = _LevelData.freezedTray.ToDictionary(item => item.Key, item => item.Value);
         foreach (var item in CurLvlData.wordPositions)
         {
             wordPositions[item.Key] = new List<Vector2Int>( item.Value);
@@ -104,6 +104,9 @@ public class LevelManager : Manager<LevelManager>
         {
             wallsDirectionDict[wallDirection.facing] = wallDirection.mesh;
         }
+
+        FreezeManager.box = boxMaterial;
+        FreezeManager.tray = trayMaterial;
     }
     void LoadInScene()
     {
@@ -258,8 +261,15 @@ public class LevelManager : Manager<LevelManager>
                    // Debug.Log((dir.front, dir.left, dir.back, dir.right));
                     var trayChunk = Instantiate(wallsDirectionDict[dir], gridChild);
                     trayChunk.transform.localPosition = Vector3.zero;
-                    trayChunk.GetComponent<MeshRenderer>().material = trayMaterial;
-                   
+                    if (freezedTray.ContainsKey(trayName[key]))
+                    {
+                        trayChunk.GetComponent<MeshRenderer>().material = freezeTray;
+                        trayChunk.layer = LayerMask.NameToLayer("Default");
+                    }
+                    else
+                    {
+                        trayChunk.GetComponent<MeshRenderer>().material = trayMaterial;
+                    }
                     if (!trayChunks.ContainsKey(trayName[key]))
                     {
                         trayChunks[trayName[key]] = new List<GameObject>();
@@ -267,9 +277,21 @@ public class LevelManager : Manager<LevelManager>
                     trayChunks[trayName[key]].Add(trayChunk);
 
                     var letterBox = Instantiate(letterGridManager.letter, trayChunk.transform);
-                    letterBox.GetComponent<MeshRenderer>().material = boxMaterial;
-                    letterBox.transform.localPosition = Vector3.zero;
                     letterBox.GetComponentInChildren<TextMeshPro>().text = trayCells[key];
+                    if (freezedTray.ContainsKey(trayName[key]))
+                    {
+                        letterBox.GetComponent<MeshRenderer>().material = freezeBox;
+                       var count = Instantiate(letterBox.GetComponentInChildren<TextMeshPro>(), letterBox.transform).text = freezedTray[trayName[key]].ToString();
+                        letterBox.GetComponentInChildren<TextMeshPro>().gameObject.SetActive(false);
+
+
+                    }
+                    else
+                    {
+                        letterBox.GetComponent<MeshRenderer>().material = boxMaterial;
+                    }
+                    letterBox.transform.localPosition = Vector3.zero;
+                
                     Vector3 size = new Vector3(1, 2.4f, 1);
                     Vector3 pos = Vector3.zero;
 
@@ -310,6 +332,7 @@ public class LevelManager : Manager<LevelManager>
         foreach (var key in trayChunks.Keys)
         {
             var trayParent = new GameObject(key);
+            
             List<Vector3> positions = new List<Vector3>();
             Vector3 avgPosition = Vector3.zero;
             foreach(var chunk in trayChunks[key] )
@@ -328,6 +351,11 @@ public class LevelManager : Manager<LevelManager>
                 chunk.transform.SetParent(trayParent.transform);
             }
          trayParent.transform.SetParent(trayList);
+            if(freezedTray.ContainsKey(key))
+            {
+              var fm =  trayParent.AddComponent<FreezeManager>();
+                fm.totalCount = freezedTray[key];
+            }
             trayParent.AddComponent<TrayCubeScaler>();
         }
       
