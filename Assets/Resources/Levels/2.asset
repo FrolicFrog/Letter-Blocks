@@ -23,8 +23,10 @@ MonoBehaviour:
   bottomGridSize: 0.12
   categoryMaterial: {fileID: 2100000, guid: 74a701c54a3fc14469104bed730e8899, type: 2}
   words:
+  - BLUE
+  - POTATO
   - RED
-  - PEPPER
+  - BURGER
   - ORANGE
   - PUMPKIN
   tray:
@@ -37,15 +39,19 @@ MonoBehaviour:
   - {x: 6, y: 3}
   - {x: 9, y: 5}
   - {x: 7, y: 4}
+  - {x: 5, y: 4}
+  - {x: 4, y: 5}
   blockedCells: []
   wordCategory:
   - Key: Colors
     Value:
+    - BLUE
     - RED
     - ORANGE
   - Key: Food
     Value:
-    - PEPPER
+    - POTATO
+    - BURGER
     - PUMPKIN
   cellCategory:
   - Key: {x: 9, y: 0}
@@ -92,6 +98,26 @@ MonoBehaviour:
     Value: Colors
   - Key: {x: 6, y: 4}
     Value: Colors
+  - Key: {x: 5, y: 1}
+    Value: Food
+  - Key: {x: 5, y: 2}
+    Value: Food
+  - Key: {x: 5, y: 3}
+    Value: Food
+  - Key: {x: 5, y: 4}
+    Value: Food
+  - Key: {x: 5, y: 5}
+    Value: Food
+  - Key: {x: 5, y: 6}
+    Value: Food
+  - Key: {x: 4, y: 2}
+    Value: Colors
+  - Key: {x: 4, y: 3}
+    Value: Colors
+  - Key: {x: 4, y: 4}
+    Value: Colors
+  - Key: {x: 4, y: 5}
+    Value: Colors
   cellTexts:
   - Key: {x: 9, y: 0}
     Value: P
@@ -120,13 +146,13 @@ MonoBehaviour:
   - Key: {x: 8, y: 7}
     Value: E
   - Key: {x: 7, y: 0}
-    Value: P
+    Value: B
   - Key: {x: 7, y: 1}
-    Value: E
+    Value: U
   - Key: {x: 7, y: 3}
-    Value: P
+    Value: G
   - Key: {x: 7, y: 2}
-    Value: P
+    Value: R
   - Key: {x: 7, y: 4}
     Value: E
   - Key: {x: 7, y: 5}
@@ -137,6 +163,26 @@ MonoBehaviour:
     Value: E
   - Key: {x: 6, y: 4}
     Value: D
+  - Key: {x: 5, y: 1}
+    Value: P
+  - Key: {x: 5, y: 2}
+    Value: O
+  - Key: {x: 5, y: 3}
+    Value: T
+  - Key: {x: 5, y: 4}
+    Value: A
+  - Key: {x: 5, y: 5}
+    Value: T
+  - Key: {x: 5, y: 6}
+    Value: O
+  - Key: {x: 4, y: 2}
+    Value: B
+  - Key: {x: 4, y: 3}
+    Value: L
+  - Key: {x: 4, y: 4}
+    Value: U
+  - Key: {x: 4, y: 5}
+    Value: E
   trayCells:
   - Key: {x: 2, y: 1}
     Value: I
@@ -144,7 +190,11 @@ MonoBehaviour:
     Value: R
   - Key: {x: 4, y: 1}
     Value: E
-  - Key: {x: 4, y: 3}
+  - Key: {x: 2, y: 0}
+    Value: A
+  - Key: {x: 2, y: 4}
+    Value: E
+  - Key: {x: 4, y: 2}
     Value: E
   trayName:
   - Key: {x: 2, y: 1}
@@ -153,8 +203,12 @@ MonoBehaviour:
     Value: Tray 2
   - Key: {x: 4, y: 1}
     Value: Tray 3
-  - Key: {x: 4, y: 3}
-    Value: Tray 4
+  - Key: {x: 2, y: 0}
+    Value: Tray 1
+  - Key: {x: 2, y: 4}
+    Value: Tray 2
+  - Key: {x: 4, y: 2}
+    Value: Tray 3
   categoryColors:
   - Key: Food
     Value: {fileID: 2100000, guid: 74a701c54a3fc14469104bed730e8899, type: 2}
@@ -162,12 +216,26 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
   trayColors: []
   wordPositions:
+  - Key: BLUE
+    Value:
+    - {x: 4, y: 2}
+    - {x: 4, y: 3}
+    - {x: 4, y: 4}
+    - {x: 4, y: 5}
+  - Key: POTATO
+    Value:
+    - {x: 5, y: 1}
+    - {x: 5, y: 2}
+    - {x: 5, y: 3}
+    - {x: 5, y: 4}
+    - {x: 5, y: 5}
+    - {x: 5, y: 6}
   - Key: RED
     Value:
     - {x: 6, y: 2}
     - {x: 6, y: 3}
     - {x: 6, y: 4}
-  - Key: PEPPER
+  - Key: BURGER
     Value:
     - {x: 7, y: 0}
     - {x: 7, y: 1}
@@ -192,3 +260,4 @@ MonoBehaviour:
     - {x: 9, y: 4}
     - {x: 9, y: 5}
     - {x: 9, y: 6}
+  freezedTray: []

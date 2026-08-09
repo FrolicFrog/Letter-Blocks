@@ -16,13 +16,17 @@ MonoBehaviour:
   LevelNumber: 3
   rows: 10
   columns: 8
-  height: 5
+  height: 6
   width: 5
   minutes: 1
   seconds: 30
   bottomGridSize: 0.12
-  categoryMaterial: {fileID: 0}
+  categoryMaterial: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
   words:
+  - WOLF
+  - CYAN
+  - EAGLE
+  - YELLOW
   - LION
   - PINK
   - SHARK
@@ -40,16 +44,23 @@ MonoBehaviour:
   - {x: 9, y: 2}
   - {x: 7, y: 2}
   - {x: 5, y: 5}
-  blockedCells:
-  - {x: 2, y: 2}
+  - {x: 4, y: 5}
+  - {x: 2, y: 3}
+  - {x: 3, y: 2}
+  - {x: 1, y: 7}
+  blockedCells: []
   wordCategory:
   - Key: Animals
     Value:
+    - WOLF
+    - EAGLE
     - LION
     - SHARK
     - DOG
   - Key: Colors
     Value:
+    - CYAN
+    - YELLOW
     - PINK
     - WHITE
   cellCategory:
@@ -95,6 +106,44 @@ MonoBehaviour:
     Value: Animals
   - Key: {x: 5, y: 5}
     Value: Animals
+  - Key: {x: 4, y: 1}
+    Value: Colors
+  - Key: {x: 4, y: 2}
+    Value: Colors
+  - Key: {x: 4, y: 3}
+    Value: Colors
+  - Key: {x: 4, y: 4}
+    Value: Colors
+  - Key: {x: 4, y: 5}
+    Value: Colors
+  - Key: {x: 4, y: 6}
+    Value: Colors
+  - Key: {x: 2, y: 2}
+    Value: Colors
+  - Key: {x: 2, y: 3}
+    Value: Colors
+  - Key: {x: 2, y: 4}
+    Value: Colors
+  - Key: {x: 2, y: 5}
+    Value: Colors
+  - Key: {x: 3, y: 0}
+    Value: Animals
+  - Key: {x: 3, y: 1}
+    Value: Animals
+  - Key: {x: 3, y: 2}
+    Value: Animals
+  - Key: {x: 3, y: 3}
+    Value: Animals
+  - Key: {x: 3, y: 4}
+    Value: Animals
+  - Key: {x: 1, y: 4}
+    Value: Animals
+  - Key: {x: 1, y: 5}
+    Value: Animals
+  - Key: {x: 1, y: 6}
+    Value: Animals
+  - Key: {x: 1, y: 7}
+    Value: Animals
   cellTexts:
   - Key: {x: 9, y: 1}
     Value: D
@@ -138,6 +187,44 @@ MonoBehaviour:
     Value: O
   - Key: {x: 5, y: 5}
     Value: N
+  - Key: {x: 4, y: 1}
+    Value: Y
+  - Key: {x: 4, y: 2}
+    Value: E
+  - Key: {x: 4, y: 3}
+    Value: L
+  - Key: {x: 4, y: 4}
+    Value: L
+  - Key: {x: 4, y: 5}
+    Value: O
+  - Key: {x: 4, y: 6}
+    Value: W
+  - Key: {x: 2, y: 2}
+    Value: C
+  - Key: {x: 2, y: 3}
+    Value: Y
+  - Key: {x: 2, y: 4}
+    Value: A
+  - Key: {x: 2, y: 5}
+    Value: N
+  - Key: {x: 3, y: 0}
+    Value: E
+  - Key: {x: 3, y: 1}
+    Value: A
+  - Key: {x: 3, y: 2}
+    Value: G
+  - Key: {x: 3, y: 3}
+    Value: L
+  - Key: {x: 3, y: 4}
+    Value: E
+  - Key: {x: 1, y: 4}
+    Value: W
+  - Key: {x: 1, y: 5}
+    Value: O
+  - Key: {x: 1, y: 6}
+    Value: L
+  - Key: {x: 1, y: 7}
+    Value: F
   trayCells:
   - Key: {x: 3, y: 2}
     Value: O
@@ -149,6 +236,14 @@ MonoBehaviour:
     Value: A
   - Key: {x: 4, y: 3}
     Value: E
+  - Key: {x: 3, y: 3}
+    Value: O
+  - Key: {x: 4, y: 1}
+    Value: G
+  - Key: {x: 1, y: 1}
+    Value: Y
+  - Key: {x: 2, y: 1}
+    Value: F
   trayName:
   - Key: {x: 3, y: 2}
     Value: Tray 1
@@ -160,6 +255,14 @@ MonoBehaviour:
     Value: Tray 3
   - Key: {x: 4, y: 3}
     Value: Tray 3
+  - Key: {x: 3, y: 3}
+    Value: Tray 1
+  - Key: {x: 4, y: 1}
+    Value: Tray 3
+  - Key: {x: 1, y: 1}
+    Value: Tray 4
+  - Key: {x: 2, y: 1}
+    Value: Tray 4
   categoryColors:
   - Key: Colors
     Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
@@ -167,6 +270,33 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
   trayColors: []
   wordPositions:
+  - Key: WOLF
+    Value:
+    - {x: 1, y: 4}
+    - {x: 1, y: 5}
+    - {x: 1, y: 6}
+    - {x: 1, y: 7}
+  - Key: CYAN
+    Value:
+    - {x: 2, y: 2}
+    - {x: 2, y: 3}
+    - {x: 2, y: 4}
+    - {x: 2, y: 5}
+  - Key: EAGLE
+    Value:
+    - {x: 3, y: 0}
+    - {x: 3, y: 1}
+    - {x: 3, y: 2}
+    - {x: 3, y: 3}
+    - {x: 3, y: 4}
+  - Key: YELLOW
+    Value:
+    - {x: 4, y: 1}
+    - {x: 4, y: 2}
+    - {x: 4, y: 3}
+    - {x: 4, y: 4}
+    - {x: 4, y: 5}
+    - {x: 4, y: 6}
   - Key: LION
     Value:
     - {x: 5, y: 2}
@@ -198,3 +328,4 @@ MonoBehaviour:
     - {x: 9, y: 1}
     - {x: 9, y: 2}
     - {x: 9, y: 3}
+  freezedTray: []

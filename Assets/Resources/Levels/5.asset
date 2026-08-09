@@ -17,10 +17,10 @@ MonoBehaviour:
   rows: 10
   columns: 8
   height: 5
-  width: 5
+  width: 4
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.12
+  bottomGridSize: 0.13
   categoryMaterial: {fileID: 0}
   words:
   - RHINO
@@ -48,9 +48,7 @@ MonoBehaviour:
   - {x: 8, y: 6}
   - {x: 6, y: 5}
   - {x: 4, y: 5}
-  blockedCells:
-  - {x: 0, y: 0}
-  - {x: 0, y: 4}
+  blockedCells: []
   wordCategory:
   - Key: Animals
     Value:
@@ -256,41 +254,41 @@ MonoBehaviour:
   trayCells:
   - Key: {x: 2, y: 0}
     Value: K
-  - Key: {x: 2, y: 1}
-    Value: I
-  - Key: {x: 2, y: 3}
-    Value: O
-  - Key: {x: 2, y: 4}
-    Value: A
-  - Key: {x: 3, y: 1}
+  - Key: {x: 3, y: 0}
     Value: G
-  - Key: {x: 4, y: 1}
+  - Key: {x: 3, y: 1}
     Value: U
-  - Key: {x: 3, y: 3}
-    Value: E
-  - Key: {x: 4, y: 3}
-    Value: E
   - Key: {x: 4, y: 2}
     Value: O
+  - Key: {x: 2, y: 3}
+    Value: A
+  - Key: {x: 2, y: 2}
+    Value: O
+  - Key: {x: 3, y: 2}
+    Value: E
+  - Key: {x: 3, y: 3}
+    Value: E
+  - Key: {x: 2, y: 1}
+    Value: I
   trayName:
   - Key: {x: 2, y: 0}
     Value: Tray 1
-  - Key: {x: 2, y: 1}
-    Value: Tray 1
-  - Key: {x: 2, y: 3}
-    Value: Tray 2
-  - Key: {x: 2, y: 4}
-    Value: Tray 2
+  - Key: {x: 3, y: 0}
+    Value: Tray 3
   - Key: {x: 3, y: 1}
     Value: Tray 3
-  - Key: {x: 4, y: 1}
-    Value: Tray 3
-  - Key: {x: 3, y: 3}
-    Value: Tray 4
-  - Key: {x: 4, y: 3}
-    Value: Tray 4
   - Key: {x: 4, y: 2}
     Value: Tray 5
+  - Key: {x: 2, y: 3}
+    Value: Tray 2
+  - Key: {x: 2, y: 2}
+    Value: Tray 2
+  - Key: {x: 3, y: 2}
+    Value: Tray 4
+  - Key: {x: 3, y: 3}
+    Value: Tray 4
+  - Key: {x: 2, y: 1}
+    Value: Tray 1
   categoryColors:
   - Key: Vehicles
     Value: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
@@ -364,3 +362,4 @@ MonoBehaviour:
     - {x: 9, y: 5}
     - {x: 9, y: 6}
     - {x: 9, y: 7}
+  freezedTray: []

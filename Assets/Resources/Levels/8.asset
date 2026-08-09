@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - DOCTOR
   - TENNIS
@@ -282,47 +282,47 @@ MonoBehaviour:
   - Key: {x: 0, y: 6}
     Value: R
   trayCells:
-  - Key: {x: 1, y: 3}
-    Value: U
-  - Key: {x: 1, y: 4}
+  - Key: {x: 4, y: 3}
     Value: N
-  - Key: {x: 2, y: 0}
-    Value: E
-  - Key: {x: 2, y: 1}
-    Value: O
-  - Key: {x: 2, y: 3}
-    Value: S
-  - Key: {x: 3, y: 3}
-    Value: E
-  - Key: {x: 4, y: 3}
-    Value: O
-  - Key: {x: 3, y: 1}
-    Value: E
-  - Key: {x: 4, y: 2}
+  - Key: {x: 4, y: 4}
     Value: C
-  - Key: {x: 3, y: 4}
-    Value: I
-  trayName:
-  - Key: {x: 1, y: 3}
-    Value: Tray 1
-  - Key: {x: 1, y: 4}
-    Value: Tray 2
   - Key: {x: 2, y: 0}
-    Value: Tray 3
+    Value: I
   - Key: {x: 2, y: 1}
-    Value: Tray 3
+    Value: S
+  - Key: {x: 4, y: 1}
+    Value: O
+  - Key: {x: 3, y: 2}
+    Value: E
   - Key: {x: 2, y: 3}
-    Value: Tray 4
-  - Key: {x: 3, y: 3}
-    Value: Tray 4
+    Value: E
+  - Key: {x: 3, y: 1}
+    Value: E
+  - Key: {x: 2, y: 4}
+    Value: O
+  - Key: {x: 4, y: 0}
+    Value: U
+  trayName:
   - Key: {x: 4, y: 3}
     Value: Tray 4
-  - Key: {x: 3, y: 1}
+  - Key: {x: 4, y: 4}
+    Value: Tray 4
+  - Key: {x: 2, y: 0}
+    Value: Tray 1
+  - Key: {x: 2, y: 1}
+    Value: Tray 1
+  - Key: {x: 4, y: 1}
+    Value: Tray 3
+  - Key: {x: 3, y: 2}
     Value: Tray 5
-  - Key: {x: 4, y: 2}
-    Value: Tray 6
-  - Key: {x: 3, y: 4}
-    Value: Tray 7
+  - Key: {x: 2, y: 3}
+    Value: Tray 2
+  - Key: {x: 3, y: 1}
+    Value: Tray 1
+  - Key: {x: 2, y: 4}
+    Value: Tray 2
+  - Key: {x: 4, y: 0}
+    Value: Tray 3
   categoryColors:
   - Key: Countries
     Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
@@ -404,3 +404,10 @@ MonoBehaviour:
     - {x: 9, y: 3}
     - {x: 9, y: 4}
     - {x: 9, y: 5}
+  freezedTray:
+  - Key: Tray 3
+    Value: 3
+  - Key: Tray 4
+    Value: 4
+  - Key: Tray 5
+    Value: 2

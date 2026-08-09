@@ -21,17 +21,22 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.12
-  categoryMaterial: {fileID: 0}
+  categoryMaterial: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
   words:
   - HENRY
   - ISABELLA
+  - MIA
   - LIAM
   - EMMA
+  - ELI
+  - AVA
   - JOHN
   - LILY
+  - LEO
   - JACK
   - EMILY
   - ADAM
+  - KAI
   - MARY
   tray:
   - Tray 1
@@ -55,25 +60,29 @@ MonoBehaviour:
   - {x: 1, y: 5}
   - {x: 2, y: 6}
   - {x: 0, y: 4}
-  blockedCells:
-  - {x: 4, y: 1}
-  - {x: 3, y: 1}
-  - {x: 2, y: 1}
-  - {x: 4, y: 3}
-  - {x: 3, y: 3}
-  - {x: 2, y: 3}
+  - {x: 9, y: 1}
+  - {x: 3, y: 7}
+  - {x: 6, y: 2}
+  - {x: 4, y: 0}
+  - {x: 2, y: 2}
+  blockedCells: []
   wordCategory:
   - Key: Boy Names
     Value:
     - HENRY
     - LIAM
+    - ELI
     - JOHN
+    - LEO
     - JACK
     - ADAM
+    - KAI
   - Key: Girl Names
     Value:
     - ISABELLA
+    - MIA
     - EMMA
+    - AVA
     - LILY
     - EMILY
     - MARY
@@ -170,6 +179,36 @@ MonoBehaviour:
     Value: Boy Names
   - Key: {x: 0, y: 6}
     Value: Boy Names
+  - Key: {x: 9, y: 0}
+    Value: Boy Names
+  - Key: {x: 9, y: 1}
+    Value: Boy Names
+  - Key: {x: 9, y: 2}
+    Value: Boy Names
+  - Key: {x: 3, y: 6}
+    Value: Boy Names
+  - Key: {x: 3, y: 5}
+    Value: Boy Names
+  - Key: {x: 3, y: 7}
+    Value: Boy Names
+  - Key: {x: 6, y: 0}
+    Value: Boy Names
+  - Key: {x: 6, y: 1}
+    Value: Boy Names
+  - Key: {x: 6, y: 2}
+    Value: Boy Names
+  - Key: {x: 4, y: 0}
+    Value: Girl Names
+  - Key: {x: 4, y: 1}
+    Value: Girl Names
+  - Key: {x: 4, y: 2}
+    Value: Girl Names
+  - Key: {x: 2, y: 1}
+    Value: Girl Names
+  - Key: {x: 2, y: 2}
+    Value: Girl Names
+  - Key: {x: 2, y: 3}
+    Value: Girl Names
   cellTexts:
   - Key: {x: 9, y: 4}
     Value: M
@@ -263,6 +302,36 @@ MonoBehaviour:
     Value: R
   - Key: {x: 0, y: 6}
     Value: Y
+  - Key: {x: 9, y: 0}
+    Value: K
+  - Key: {x: 9, y: 1}
+    Value: A
+  - Key: {x: 9, y: 2}
+    Value: I
+  - Key: {x: 3, y: 6}
+    Value: L
+  - Key: {x: 3, y: 5}
+    Value: E
+  - Key: {x: 3, y: 7}
+    Value: I
+  - Key: {x: 6, y: 0}
+    Value: L
+  - Key: {x: 6, y: 1}
+    Value: E
+  - Key: {x: 6, y: 2}
+    Value: O
+  - Key: {x: 4, y: 0}
+    Value: A
+  - Key: {x: 4, y: 1}
+    Value: V
+  - Key: {x: 4, y: 2}
+    Value: A
+  - Key: {x: 2, y: 1}
+    Value: M
+  - Key: {x: 2, y: 2}
+    Value: I
+  - Key: {x: 2, y: 3}
+    Value: A
   trayCells:
   - Key: {x: 2, y: 4}
     Value: M
@@ -283,6 +352,16 @@ MonoBehaviour:
   - Key: {x: 2, y: 2}
     Value: A
   - Key: {x: 4, y: 0}
+    Value: A
+  - Key: {x: 1, y: 3}
+    Value: O
+  - Key: {x: 1, y: 4}
+    Value: I
+  - Key: {x: 3, y: 1}
+    Value: A
+  - Key: {x: 4, y: 3}
+    Value: I
+  - Key: {x: 2, y: 1}
     Value: A
   trayName:
   - Key: {x: 2, y: 4}
@@ -305,6 +384,16 @@ MonoBehaviour:
     Value: Tray 5
   - Key: {x: 4, y: 0}
     Value: Tray 1
+  - Key: {x: 1, y: 3}
+    Value: Tray 10
+  - Key: {x: 1, y: 4}
+    Value: Tray 10
+  - Key: {x: 3, y: 1}
+    Value: Tray 2
+  - Key: {x: 4, y: 3}
+    Value: Tray 6
+  - Key: {x: 2, y: 1}
+    Value: Tray 5
   categoryColors:
   - Key: Boy Names
     Value: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}
@@ -329,6 +418,11 @@ MonoBehaviour:
     - {x: 1, y: 5}
     - {x: 1, y: 6}
     - {x: 1, y: 7}
+  - Key: MIA
+    Value:
+    - {x: 2, y: 1}
+    - {x: 2, y: 2}
+    - {x: 2, y: 3}
   - Key: LIAM
     Value:
     - {x: 2, y: 4}
@@ -341,6 +435,16 @@ MonoBehaviour:
     - {x: 3, y: 1}
     - {x: 3, y: 2}
     - {x: 3, y: 3}
+  - Key: ELI
+    Value:
+    - {x: 3, y: 5}
+    - {x: 3, y: 6}
+    - {x: 3, y: 7}
+  - Key: AVA
+    Value:
+    - {x: 4, y: 0}
+    - {x: 4, y: 1}
+    - {x: 4, y: 2}
   - Key: JOHN
     Value:
     - {x: 4, y: 4}
@@ -353,6 +457,11 @@ MonoBehaviour:
     - {x: 5, y: 3}
     - {x: 5, y: 4}
     - {x: 5, y: 5}
+  - Key: LEO
+    Value:
+    - {x: 6, y: 0}
+    - {x: 6, y: 1}
+    - {x: 6, y: 2}
   - Key: JACK
     Value:
     - {x: 6, y: 4}
@@ -372,9 +481,15 @@ MonoBehaviour:
     - {x: 8, y: 3}
     - {x: 8, y: 4}
     - {x: 8, y: 5}
+  - Key: KAI
+    Value:
+    - {x: 9, y: 0}
+    - {x: 9, y: 1}
+    - {x: 9, y: 2}
   - Key: MARY
     Value:
     - {x: 9, y: 4}
     - {x: 9, y: 5}
     - {x: 9, y: 6}
     - {x: 9, y: 7}
+  freezedTray: []

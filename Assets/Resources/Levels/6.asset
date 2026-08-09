@@ -14,16 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timer: 0
   LevelNumber: 6
-  rows: 10
+  rows: 17
   columns: 8
-  height: 6
-  width: 5
+  height: 7
+  width: 4
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.12
-  categoryMaterial: {fileID: 0}
+  bottomGridSize: 0.1
+  categoryMaterial: {fileID: 2100000, guid: f3c280131a8cfd248be5604224053358, type: 2}
   words:
-  - COOFEE
+  - RABBIT
+  - SODA
+  - WARDROBE
+  - TURTLE
+  - JUICE
+  - CHAIR
+  - HAMSTER
+  - COFFEE
   - TEA
   - PARROT
   - TABLE
@@ -40,42 +47,175 @@ MonoBehaviour:
   - Tray 4
   - Tray 5
   - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
+  - Tray 11
   excludedChar:
-  - {x: 9, y: 6}
-  - {x: 6, y: 2}
-  - {x: 2, y: 7}
-  - {x: 8, y: 5}
+  - {x: 8, y: 2}
+  - {x: 9, y: 7}
+  - {x: 9, y: 5}
+  - {x: 10, y: 2}
+  - {x: 11, y: 5}
+  - {x: 11, y: 3}
+  - {x: 1, y: 5}
+  - {x: 12, y: 5}
+  - {x: 13, y: 2}
+  - {x: 14, y: 7}
+  - {x: 15, y: 5}
+  - {x: 16, y: 6}
   - {x: 4, y: 3}
-  - {x: 1, y: 2}
-  - {x: 0, y: 5}
+  - {x: 7, y: 5}
   - {x: 7, y: 7}
-  - {x: 5, y: 5}
-  - {x: 3, y: 2}
-  blockedCells:
+  - {x: 6, y: 3}
+  - {x: 3, y: 4}
   - {x: 0, y: 4}
+  - {x: 5, y: 5}
+  - {x: 2, y: 3}
+  blockedCells: []
   wordCategory:
-  - Key: Drinks
-    Value:
-    - COOFEE
-    - TEA
-    - LEMONADE
-    - WATER
   - Key: Pets
     Value:
+    - RABBIT
+    - TURTLE
+    - HAMSTER
     - PARROT
     - FISH
     - CAT
+  - Key: Drinks
+    Value:
+    - SODA
+    - JUICE
+    - COFFEE
+    - TEA
+    - LEMONADE
+    - WATER
   - Key: Furniture
     Value:
+    - WARDROBE
+    - CHAIR
     - TABLE
     - DESK
     - COUCH
   cellCategory:
-  - Key: {x: 9, y: 5}
+  - Key: {x: 8, y: 2}
+    Value: Drinks
+  - Key: {x: 8, y: 1}
+    Value: Drinks
+  - Key: {x: 8, y: 0}
+    Value: Drinks
+  - Key: {x: 9, y: 7}
     Value: Pets
   - Key: {x: 9, y: 6}
     Value: Pets
-  - Key: {x: 9, y: 7}
+  - Key: {x: 9, y: 5}
+    Value: Pets
+  - Key: {x: 9, y: 3}
+    Value: Pets
+  - Key: {x: 9, y: 4}
+    Value: Pets
+  - Key: {x: 9, y: 2}
+    Value: Pets
+  - Key: {x: 10, y: 4}
+    Value: Furniture
+  - Key: {x: 10, y: 5}
+    Value: Furniture
+  - Key: {x: 10, y: 3}
+    Value: Furniture
+  - Key: {x: 10, y: 2}
+    Value: Furniture
+  - Key: {x: 10, y: 1}
+    Value: Furniture
+  - Key: {x: 11, y: 7}
+    Value: Drinks
+  - Key: {x: 11, y: 6}
+    Value: Drinks
+  - Key: {x: 11, y: 5}
+    Value: Drinks
+  - Key: {x: 11, y: 4}
+    Value: Drinks
+  - Key: {x: 11, y: 3}
+    Value: Drinks
+  - Key: {x: 11, y: 2}
+    Value: Drinks
+  - Key: {x: 11, y: 1}
+    Value: Drinks
+  - Key: {x: 11, y: 0}
+    Value: Drinks
+  - Key: {x: 12, y: 7}
+    Value: Furniture
+  - Key: {x: 12, y: 6}
+    Value: Furniture
+  - Key: {x: 12, y: 5}
+    Value: Furniture
+  - Key: {x: 12, y: 4}
+    Value: Furniture
+  - Key: {x: 13, y: 4}
+    Value: Pets
+  - Key: {x: 13, y: 3}
+    Value: Pets
+  - Key: {x: 13, y: 2}
+    Value: Pets
+  - Key: {x: 1, y: 4}
+    Value: Drinks
+  - Key: {x: 4, y: 5}
+    Value: Drinks
+  - Key: {x: 4, y: 4}
+    Value: Drinks
+  - Key: {x: 4, y: 3}
+    Value: Drinks
+  - Key: {x: 4, y: 2}
+    Value: Drinks
+  - Key: {x: 4, y: 1}
+    Value: Drinks
+  - Key: {x: 13, y: 1}
+    Value: Pets
+  - Key: {x: 14, y: 7}
+    Value: Furniture
+  - Key: {x: 14, y: 6}
+    Value: Furniture
+  - Key: {x: 14, y: 5}
+    Value: Furniture
+  - Key: {x: 14, y: 4}
+    Value: Furniture
+  - Key: {x: 14, y: 3}
+    Value: Furniture
+  - Key: {x: 15, y: 5}
+    Value: Drinks
+  - Key: {x: 15, y: 4}
+    Value: Drinks
+  - Key: {x: 15, y: 3}
+    Value: Drinks
+  - Key: {x: 15, y: 2}
+    Value: Drinks
+  - Key: {x: 15, y: 1}
+    Value: Drinks
+  - Key: {x: 16, y: 7}
+    Value: Pets
+  - Key: {x: 16, y: 6}
+    Value: Pets
+  - Key: {x: 16, y: 5}
+    Value: Pets
+  - Key: {x: 7, y: 2}
+    Value: Drinks
+  - Key: {x: 7, y: 3}
+    Value: Drinks
+  - Key: {x: 7, y: 4}
+    Value: Drinks
+  - Key: {x: 7, y: 5}
+    Value: Drinks
+  - Key: {x: 7, y: 6}
+    Value: Drinks
+  - Key: {x: 7, y: 7}
+    Value: Drinks
+  - Key: {x: 1, y: 5}
+    Value: Drinks
+  - Key: {x: 1, y: 6}
+    Value: Drinks
+  - Key: {x: 1, y: 7}
+    Value: Drinks
+  - Key: {x: 6, y: 0}
     Value: Pets
   - Key: {x: 6, y: 1}
     Value: Pets
@@ -85,71 +225,35 @@ MonoBehaviour:
     Value: Pets
   - Key: {x: 6, y: 4}
     Value: Pets
-  - Key: {x: 2, y: 2}
+  - Key: {x: 6, y: 5}
     Value: Pets
-  - Key: {x: 2, y: 3}
+  - Key: {x: 6, y: 6}
     Value: Pets
-  - Key: {x: 2, y: 4}
+  - Key: {x: 3, y: 1}
     Value: Pets
-  - Key: {x: 2, y: 5}
+  - Key: {x: 3, y: 2}
     Value: Pets
-  - Key: {x: 2, y: 6}
+  - Key: {x: 3, y: 3}
     Value: Pets
-  - Key: {x: 2, y: 7}
+  - Key: {x: 3, y: 4}
     Value: Pets
-  - Key: {x: 8, y: 1}
-    Value: Drinks
-  - Key: {x: 8, y: 2}
-    Value: Drinks
-  - Key: {x: 8, y: 3}
-    Value: Drinks
-  - Key: {x: 8, y: 4}
-    Value: Drinks
-  - Key: {x: 8, y: 5}
-    Value: Drinks
-  - Key: {x: 4, y: 0}
-    Value: Drinks
-  - Key: {x: 4, y: 1}
-    Value: Drinks
-  - Key: {x: 4, y: 2}
-    Value: Drinks
-  - Key: {x: 4, y: 3}
-    Value: Drinks
-  - Key: {x: 4, y: 4}
-    Value: Drinks
-  - Key: {x: 4, y: 5}
-    Value: Drinks
-  - Key: {x: 4, y: 6}
-    Value: Drinks
-  - Key: {x: 4, y: 7}
-    Value: Drinks
-  - Key: {x: 1, y: 0}
-    Value: Drinks
-  - Key: {x: 1, y: 1}
-    Value: Drinks
-  - Key: {x: 1, y: 2}
-    Value: Drinks
+  - Key: {x: 3, y: 5}
+    Value: Pets
+  - Key: {x: 3, y: 6}
+    Value: Pets
+  - Key: {x: 0, y: 1}
+    Value: Pets
   - Key: {x: 0, y: 2}
-    Value: Drinks
+    Value: Pets
   - Key: {x: 0, y: 3}
-    Value: Drinks
+    Value: Pets
   - Key: {x: 0, y: 4}
-    Value: Drinks
+    Value: Pets
   - Key: {x: 0, y: 5}
-    Value: Drinks
+    Value: Pets
   - Key: {x: 0, y: 6}
-    Value: Drinks
-  - Key: {x: 0, y: 7}
-    Value: Drinks
-  - Key: {x: 7, y: 3}
-    Value: Furniture
-  - Key: {x: 7, y: 4}
-    Value: Furniture
-  - Key: {x: 7, y: 5}
-    Value: Furniture
-  - Key: {x: 7, y: 6}
-    Value: Furniture
-  - Key: {x: 7, y: 7}
+    Value: Pets
+  - Key: {x: 5, y: 3}
     Value: Furniture
   - Key: {x: 5, y: 4}
     Value: Furniture
@@ -159,157 +263,285 @@ MonoBehaviour:
     Value: Furniture
   - Key: {x: 5, y: 7}
     Value: Furniture
-  - Key: {x: 3, y: 1}
+  - Key: {x: 2, y: 4}
     Value: Furniture
-  - Key: {x: 3, y: 2}
+  - Key: {x: 2, y: 5}
     Value: Furniture
-  - Key: {x: 3, y: 3}
+  - Key: {x: 2, y: 3}
     Value: Furniture
-  - Key: {x: 3, y: 4}
+  - Key: {x: 2, y: 2}
     Value: Furniture
-  - Key: {x: 3, y: 5}
+  - Key: {x: 2, y: 1}
+    Value: Furniture
+  - Key: {x: 2, y: 0}
+    Value: Furniture
+  - Key: {x: 2, y: 6}
+    Value: Furniture
+  - Key: {x: 2, y: 7}
     Value: Furniture
   cellTexts:
-  - Key: {x: 9, y: 5}
-    Value: C
-  - Key: {x: 9, y: 6}
-    Value: A
-  - Key: {x: 9, y: 7}
-    Value: T
-  - Key: {x: 8, y: 1}
-    Value: W
   - Key: {x: 8, y: 2}
     Value: A
-  - Key: {x: 8, y: 3}
-    Value: T
-  - Key: {x: 8, y: 4}
+  - Key: {x: 8, y: 1}
     Value: E
-  - Key: {x: 8, y: 5}
-    Value: R
-  - Key: {x: 7, y: 3}
-    Value: C
-  - Key: {x: 7, y: 4}
+  - Key: {x: 8, y: 0}
+    Value: T
+  - Key: {x: 9, y: 7}
+    Value: T
+  - Key: {x: 9, y: 6}
     Value: O
-  - Key: {x: 7, y: 5}
-    Value: U
-  - Key: {x: 7, y: 6}
+  - Key: {x: 9, y: 5}
+    Value: R
+  - Key: {x: 9, y: 3}
+    Value: A
+  - Key: {x: 9, y: 4}
+    Value: R
+  - Key: {x: 9, y: 2}
+    Value: P
+  - Key: {x: 10, y: 4}
+    Value: L
+  - Key: {x: 10, y: 5}
+    Value: E
+  - Key: {x: 10, y: 3}
+    Value: B
+  - Key: {x: 10, y: 2}
+    Value: A
+  - Key: {x: 10, y: 1}
+    Value: T
+  - Key: {x: 11, y: 7}
+    Value: E
+  - Key: {x: 11, y: 6}
+    Value: D
+  - Key: {x: 11, y: 5}
+    Value: A
+  - Key: {x: 11, y: 4}
+    Value: N
+  - Key: {x: 11, y: 3}
+    Value: O
+  - Key: {x: 11, y: 2}
+    Value: M
+  - Key: {x: 11, y: 1}
+    Value: E
+  - Key: {x: 11, y: 0}
+    Value: L
+  - Key: {x: 12, y: 7}
+    Value: K
+  - Key: {x: 12, y: 6}
+    Value: S
+  - Key: {x: 12, y: 5}
+    Value: E
+  - Key: {x: 12, y: 4}
+    Value: D
+  - Key: {x: 13, y: 4}
+    Value: H
+  - Key: {x: 13, y: 3}
+    Value: S
+  - Key: {x: 13, y: 2}
+    Value: I
+  - Key: {x: 13, y: 1}
+    Value: F
+  - Key: {x: 14, y: 7}
+    Value: H
+  - Key: {x: 14, y: 6}
     Value: C
+  - Key: {x: 14, y: 5}
+    Value: U
+  - Key: {x: 14, y: 4}
+    Value: O
+  - Key: {x: 14, y: 3}
+    Value: C
+  - Key: {x: 15, y: 5}
+    Value: R
+  - Key: {x: 15, y: 4}
+    Value: E
+  - Key: {x: 15, y: 3}
+    Value: T
+  - Key: {x: 15, y: 2}
+    Value: A
+  - Key: {x: 15, y: 1}
+    Value: W
+  - Key: {x: 16, y: 7}
+    Value: T
+  - Key: {x: 16, y: 6}
+    Value: A
+  - Key: {x: 16, y: 5}
+    Value: C
+  - Key: {x: 4, y: 5}
+    Value: E
+  - Key: {x: 1, y: 4}
+    Value: S
+  - Key: {x: 4, y: 4}
+    Value: C
+  - Key: {x: 4, y: 3}
+    Value: I
+  - Key: {x: 4, y: 2}
+    Value: U
+  - Key: {x: 4, y: 1}
+    Value: J
+  - Key: {x: 7, y: 2}
+    Value: C
+  - Key: {x: 7, y: 3}
+    Value: O
+  - Key: {x: 7, y: 4}
+    Value: F
+  - Key: {x: 7, y: 5}
+    Value: F
+  - Key: {x: 7, y: 6}
+    Value: E
   - Key: {x: 7, y: 7}
+    Value: E
+  - Key: {x: 1, y: 5}
+    Value: O
+  - Key: {x: 1, y: 6}
+    Value: D
+  - Key: {x: 1, y: 7}
+    Value: A
+  - Key: {x: 6, y: 0}
     Value: H
   - Key: {x: 6, y: 1}
-    Value: F
+    Value: A
   - Key: {x: 6, y: 2}
-    Value: I
+    Value: M
   - Key: {x: 6, y: 3}
     Value: S
   - Key: {x: 6, y: 4}
-    Value: H
-  - Key: {x: 5, y: 4}
-    Value: D
-  - Key: {x: 5, y: 5}
+    Value: T
+  - Key: {x: 6, y: 5}
     Value: E
-  - Key: {x: 5, y: 6}
-    Value: S
-  - Key: {x: 5, y: 7}
-    Value: K
-  - Key: {x: 4, y: 0}
-    Value: L
-  - Key: {x: 4, y: 1}
-    Value: E
-  - Key: {x: 4, y: 2}
-    Value: M
-  - Key: {x: 4, y: 3}
-    Value: O
-  - Key: {x: 4, y: 4}
-    Value: N
-  - Key: {x: 4, y: 5}
-    Value: A
-  - Key: {x: 4, y: 6}
-    Value: D
-  - Key: {x: 4, y: 7}
-    Value: E
+  - Key: {x: 6, y: 6}
+    Value: R
   - Key: {x: 3, y: 1}
     Value: T
   - Key: {x: 3, y: 2}
-    Value: A
+    Value: U
   - Key: {x: 3, y: 3}
-    Value: B
+    Value: R
   - Key: {x: 3, y: 4}
-    Value: L
+    Value: T
   - Key: {x: 3, y: 5}
+    Value: L
+  - Key: {x: 3, y: 6}
     Value: E
-  - Key: {x: 2, y: 2}
-    Value: P
-  - Key: {x: 2, y: 3}
+  - Key: {x: 0, y: 1}
+    Value: R
+  - Key: {x: 0, y: 2}
     Value: A
+  - Key: {x: 0, y: 3}
+    Value: B
+  - Key: {x: 0, y: 4}
+    Value: B
+  - Key: {x: 0, y: 5}
+    Value: I
+  - Key: {x: 0, y: 6}
+    Value: T
+  - Key: {x: 5, y: 3}
+    Value: C
+  - Key: {x: 5, y: 4}
+    Value: H
+  - Key: {x: 5, y: 5}
+    Value: A
+  - Key: {x: 5, y: 6}
+    Value: I
+  - Key: {x: 5, y: 7}
+    Value: R
   - Key: {x: 2, y: 4}
     Value: R
   - Key: {x: 2, y: 5}
+    Value: O
+  - Key: {x: 2, y: 3}
+    Value: D
+  - Key: {x: 2, y: 2}
     Value: R
-  - Key: {x: 2, y: 6}
-    Value: O
-  - Key: {x: 2, y: 7}
-    Value: T
-  - Key: {x: 1, y: 0}
-    Value: T
-  - Key: {x: 1, y: 1}
-    Value: E
-  - Key: {x: 1, y: 2}
+  - Key: {x: 2, y: 1}
     Value: A
-  - Key: {x: 0, y: 3}
-    Value: O
-  - Key: {x: 0, y: 2}
-    Value: C
-  - Key: {x: 0, y: 4}
-    Value: O
-  - Key: {x: 0, y: 5}
-    Value: F
-  - Key: {x: 0, y: 6}
-    Value: E
-  - Key: {x: 0, y: 7}
+  - Key: {x: 2, y: 0}
+    Value: W
+  - Key: {x: 2, y: 6}
+    Value: B
+  - Key: {x: 2, y: 7}
     Value: E
   trayCells:
-  - Key: {x: 2, y: 0}
-    Value: I
-  - Key: {x: 2, y: 1}
+  - Key: {x: 2, y: 3}
+    Value: A
+  - Key: {x: 3, y: 1}
     Value: E
-  - Key: {x: 2, y: 2}
-    Value: O
-  - Key: {x: 2, y: 3}
-    Value: T
-  - Key: {x: 2, y: 4}
-    Value: A
-  - Key: {x: 3, y: 4}
-    Value: A
-  - Key: {x: 3, y: 0}
+  - Key: {x: 3, y: 2}
+    Value: F
+  - Key: {x: 3, y: 3}
     Value: R
+  - Key: {x: 5, y: 0}
+    Value: A
   - Key: {x: 4, y: 0}
+    Value: O
+  - Key: {x: 2, y: 2}
+    Value: E
+  - Key: {x: 2, y: 1}
+    Value: I
+  - Key: {x: 2, y: 0}
+    Value: R
+  - Key: {x: 3, y: 0}
+    Value: A
+  - Key: {x: 5, y: 3}
     Value: H
+  - Key: {x: 6, y: 3}
+    Value: T
+  - Key: {x: 4, y: 3}
+    Value: A
+  - Key: {x: 4, y: 2}
+    Value: S
   - Key: {x: 4, y: 1}
     Value: A
   - Key: {x: 5, y: 2}
-    Value: F
+    Value: I
+  - Key: {x: 5, y: 1}
+    Value: T
+  - Key: {x: 6, y: 0}
+    Value: D
+  - Key: {x: 6, y: 1}
+    Value: O
+  - Key: {x: 6, y: 2}
+    Value: B
   trayName:
-  - Key: {x: 2, y: 0}
-    Value: Tray 1
+  - Key: {x: 2, y: 3}
+    Value: Tray 2
+  - Key: {x: 3, y: 1}
+    Value: Tray 3
+  - Key: {x: 3, y: 2}
+    Value: Tray 3
+  - Key: {x: 3, y: 3}
+    Value: Tray 3
+  - Key: {x: 5, y: 0}
+    Value: Tray 4
+  - Key: {x: 4, y: 0}
+    Value: Tray 4
+  - Key: {x: 2, y: 2}
+    Value: Tray 2
   - Key: {x: 2, y: 1}
     Value: Tray 1
-  - Key: {x: 2, y: 2}
+  - Key: {x: 2, y: 0}
     Value: Tray 1
-  - Key: {x: 2, y: 3}
-    Value: Tray 1
-  - Key: {x: 2, y: 4}
-    Value: Tray 2
-  - Key: {x: 3, y: 4}
-    Value: Tray 2
   - Key: {x: 3, y: 0}
-    Value: Tray 3
-  - Key: {x: 4, y: 0}
-    Value: Tray 4
-  - Key: {x: 4, y: 1}
-    Value: Tray 4
-  - Key: {x: 5, y: 2}
+    Value: Tray 1
+  - Key: {x: 5, y: 3}
+    Value: Tray 5
+  - Key: {x: 6, y: 3}
+    Value: Tray 5
+  - Key: {x: 4, y: 3}
     Value: Tray 6
+  - Key: {x: 4, y: 2}
+    Value: Tray 7
+  - Key: {x: 4, y: 1}
+    Value: Tray 8
+  - Key: {x: 5, y: 2}
+    Value: Tray 9
+  - Key: {x: 5, y: 1}
+    Value: Tray 10
+  - Key: {x: 6, y: 0}
+    Value: Tray 11
+  - Key: {x: 6, y: 1}
+    Value: Tray 11
+  - Key: {x: 6, y: 2}
+    Value: Tray 11
   categoryColors:
   - Key: Pets
     Value: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
@@ -319,72 +551,128 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
   trayColors: []
   wordPositions:
-  - Key: COOFEE
+  - Key: RABBIT
     Value:
+    - {x: 0, y: 1}
     - {x: 0, y: 2}
     - {x: 0, y: 3}
     - {x: 0, y: 4}
     - {x: 0, y: 5}
     - {x: 0, y: 6}
-    - {x: 0, y: 7}
-  - Key: TEA
+  - Key: SODA
     Value:
-    - {x: 1, y: 0}
-    - {x: 1, y: 1}
-    - {x: 1, y: 2}
-  - Key: PARROT
+    - {x: 1, y: 4}
+    - {x: 1, y: 5}
+    - {x: 1, y: 6}
+    - {x: 1, y: 7}
+  - Key: WARDROBE
     Value:
+    - {x: 2, y: 0}
+    - {x: 2, y: 1}
     - {x: 2, y: 2}
     - {x: 2, y: 3}
     - {x: 2, y: 4}
     - {x: 2, y: 5}
     - {x: 2, y: 6}
     - {x: 2, y: 7}
-  - Key: TABLE
+  - Key: TURTLE
     Value:
     - {x: 3, y: 1}
     - {x: 3, y: 2}
     - {x: 3, y: 3}
     - {x: 3, y: 4}
     - {x: 3, y: 5}
-  - Key: LEMONADE
+    - {x: 3, y: 6}
+  - Key: JUICE
     Value:
-    - {x: 4, y: 0}
     - {x: 4, y: 1}
     - {x: 4, y: 2}
     - {x: 4, y: 3}
     - {x: 4, y: 4}
     - {x: 4, y: 5}
-    - {x: 4, y: 6}
-    - {x: 4, y: 7}
-  - Key: DESK
+  - Key: CHAIR
     Value:
+    - {x: 5, y: 3}
     - {x: 5, y: 4}
     - {x: 5, y: 5}
     - {x: 5, y: 6}
     - {x: 5, y: 7}
-  - Key: FISH
+  - Key: HAMSTER
     Value:
+    - {x: 6, y: 0}
     - {x: 6, y: 1}
     - {x: 6, y: 2}
     - {x: 6, y: 3}
     - {x: 6, y: 4}
-  - Key: COUCH
+    - {x: 6, y: 5}
+    - {x: 6, y: 6}
+  - Key: COFFEE
     Value:
+    - {x: 7, y: 2}
     - {x: 7, y: 3}
     - {x: 7, y: 4}
     - {x: 7, y: 5}
     - {x: 7, y: 6}
     - {x: 7, y: 7}
-  - Key: WATER
+  - Key: TEA
     Value:
+    - {x: 8, y: 0}
     - {x: 8, y: 1}
     - {x: 8, y: 2}
-    - {x: 8, y: 3}
-    - {x: 8, y: 4}
-    - {x: 8, y: 5}
-  - Key: CAT
+  - Key: PARROT
     Value:
+    - {x: 9, y: 2}
+    - {x: 9, y: 3}
+    - {x: 9, y: 4}
     - {x: 9, y: 5}
     - {x: 9, y: 6}
     - {x: 9, y: 7}
+  - Key: TABLE
+    Value:
+    - {x: 10, y: 1}
+    - {x: 10, y: 2}
+    - {x: 10, y: 3}
+    - {x: 10, y: 4}
+    - {x: 10, y: 5}
+  - Key: LEMONADE
+    Value:
+    - {x: 11, y: 0}
+    - {x: 11, y: 1}
+    - {x: 11, y: 2}
+    - {x: 11, y: 3}
+    - {x: 11, y: 4}
+    - {x: 11, y: 5}
+    - {x: 11, y: 6}
+    - {x: 11, y: 7}
+  - Key: DESK
+    Value:
+    - {x: 12, y: 4}
+    - {x: 12, y: 5}
+    - {x: 12, y: 6}
+    - {x: 12, y: 7}
+  - Key: FISH
+    Value:
+    - {x: 13, y: 1}
+    - {x: 13, y: 2}
+    - {x: 13, y: 3}
+    - {x: 13, y: 4}
+  - Key: COUCH
+    Value:
+    - {x: 14, y: 3}
+    - {x: 14, y: 4}
+    - {x: 14, y: 5}
+    - {x: 14, y: 6}
+    - {x: 14, y: 7}
+  - Key: WATER
+    Value:
+    - {x: 15, y: 1}
+    - {x: 15, y: 2}
+    - {x: 15, y: 3}
+    - {x: 15, y: 4}
+    - {x: 15, y: 5}
+  - Key: CAT
+    Value:
+    - {x: 16, y: 5}
+    - {x: 16, y: 6}
+    - {x: 16, y: 7}
+  freezedTray: []
