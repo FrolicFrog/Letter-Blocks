@@ -468,12 +468,12 @@ public class BottomGridManager : MonoBehaviour
 
     #region Procedural Tray Generation
 
-    public void CreateTray(List<Vector2Int> gridPos, float wallHeight, Material trayMaterial, Vector3 scale, bool openTray = true, Dictionary<Vector2Int, string> charcter = null)
+    public GameObject CreateTray(List<Vector2Int> gridPos, float wallHeight, Material trayMaterial, Vector3 scale, bool openTray = true, Dictionary<Vector2Int, string> charcter = null)
     {
         ArrangeChildren();
 
         if (grid == null) grid = GetComponent<Grid>();
-        if (grid == null || gridPos == null || gridPos.Count == 0) return;
+        if (grid == null || gridPos == null || gridPos.Count == 0) return null;
 
         float floorThickness = 0.1f;
         float maxBevel = Mathf.Min(wallThickness / 2f, wallHeight / 2f) * 0.95f;
@@ -649,6 +649,9 @@ public class BottomGridManager : MonoBehaviour
                 }
             }
         }
+
+        // Return the created tray object
+        return trayObj;
     }
     private struct CrossSection
     {

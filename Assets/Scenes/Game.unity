@@ -1057,6 +1057,8 @@ MonoBehaviour:
   categoryHeading: {fileID: 5452144091389951654, guid: 1fe16f4275ecced4ab258d0bc794677a,
     type: 3}
   arrow: {fileID: 4731289781313844071, guid: 6892f9a3114784648af1dd139d0fde23, type: 3}
+  freezeCount: {fileID: 6370668080385544879, guid: cac797342e0d1a6498c6049a1b1f8faf,
+    type: 3}
   categoryHeadingParent: {fileID: 1855233887}
   trayList: {fileID: 1895217350}
   levelText: {fileID: 1825650881}
@@ -1097,7 +1099,7 @@ MonoBehaviour:
     Value: {fileID: 21300000, guid: 95162cf693b20a440ab9c5248adccaf7, type: 3}
   - Key: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
     Value: {fileID: 21300000, guid: ddf4c8a1263b12e429c13c51cf37ddb3, type: 3}
-  TestLevelToLoad: 99
+  TestLevelToLoad: 12
   ticks: []
   hearts: 0
 --- !u!1 &630893620
@@ -2445,7 +2447,7 @@ MonoBehaviour:
   snapLayer:
     serializedVersion: 2
     m_Bits: 1024
-  snapOffset: 0.4
+  snapOffset: 0
   planeMode: 0
   snapToGridWhileDragging: 0
   gridCellSize: 1

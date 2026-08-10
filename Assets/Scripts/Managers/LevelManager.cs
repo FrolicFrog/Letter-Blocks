@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,12 +16,12 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private TopGridManager gridManager;
     [SerializeField] private BottomGridManager letterGridManager;
     [SerializeField] private ResultManager resultManager;
-    [SerializeField] private GameObject categoryHeading,arrow;
+    [SerializeField] private GameObject categoryHeading,arrow,freezeCount;
     [SerializeField] private Transform categoryHeadingParent,trayList;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial,trayOutlineMat,freezeTray,freezeBox;
     [SerializeField] private List<KeyValueGroup<Material, Sprite>> colorSprite;
-
+  
     [HideInInspector] public int TestLevelToLoad = 1;
     [HideInInspector] public List<GameObject> ticks = new();
 
@@ -104,9 +105,7 @@ public class LevelManager : Manager<LevelManager>
         {
             wallsDirectionDict[wallDirection.facing] = wallDirection.mesh;
         }
-
-        FreezeManager.box = boxMaterial;
-        FreezeManager.tray = trayMaterial;
+        FreezeManager.trayMat = trayMaterial;
     }
     void LoadInScene()
     {
@@ -228,10 +227,26 @@ public class LevelManager : Manager<LevelManager>
               }
           }
 
-          foreach(var tray in trayPos.Keys)
-          {
-              letterGridManager.CreateTray(trayPos[tray],2.4f,trayMaterial,new Vector3(.995f,.988f,.988f),true,trayCells);
-          }
+        foreach (var tray in trayPos.Keys)
+        {
+            if (freezedTray.ContainsKey(tray))
+            {
+               var trayMesh = letterGridManager.CreateTray(trayPos[tray], 2.4f, freezeTray, new Vector3(.995f, .988f, .988f), false);
+                trayMesh.layer = LayerMask.NameToLayer("Block");
+                var tmp = Instantiate(freezeCount, trayMesh.transform);
+                tmp.transform.localPosition = new Vector3(0,2.75f,0);
+                tmp.transform.localScale = Vector3.one;
+                tmp.GetComponentInChildren<TextMeshPro>().text = freezedTray[tray].ToString();
+                var FM = trayMesh.AddComponent<FreezeManager>();
+                FM.totalCount = freezedTray[tray];
+                FM.trayCells = trayCells;
+                FM.trayPos = trayPos[tray];
+            }
+            else
+            {
+                letterGridManager.CreateTray(trayPos[tray], 2.4f, trayMaterial, new Vector3(.995f, .988f, .988f), true, trayCells);
+            }
+        }
         /*for (int height = 0; height < letterGridManager.height; height++)
         {
             for (int width = 0; width < letterGridManager.width; width++)
@@ -447,6 +462,8 @@ public class LevelManager : Manager<LevelManager>
         wordPositions.Clear();
         wordsCategory.Clear();
         trayChunks.Clear();
+        freezedTray.Clear();
+        trayPos.Clear();
         
     }
 }

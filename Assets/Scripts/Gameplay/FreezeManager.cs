@@ -7,8 +7,9 @@ using UnityEngine;
 public class FreezeManager : MonoBehaviour
 {
     [HideInInspector] public int totalCount;
-    public static int subtractCount;
-    public static Material tray, box;
+    [HideInInspector] public List<Vector2Int> trayPos;
+    [HideInInspector] public Dictionary<Vector2Int, string> trayCells;
+    public static Material trayMat;
     public static List<FreezeManager> instances = new List<FreezeManager>();
     void Start()
     {
@@ -27,18 +28,9 @@ public class FreezeManager : MonoBehaviour
             instance.totalCount--;
             if (instance.totalCount <= 0)
             {
-                foreach (var tmp in tmps.ToList())
-                {
-                    Destroy(tmp);
-
-                }
-                for (int i = 0; i < instance.transform.childCount; i++)
-                {
-                    instance.transform.GetChild(i).GetComponent<MeshRenderer>().material = tray;
-                    instance.transform.GetChild(i).GetChild(0).GetComponent<MeshRenderer>().material = box;
-                    instance.transform.GetChild(i).GetChild(0).GetChild(1).gameObject.SetActive(true);
-                    instance.transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("Tray");
-                }
+                BottomGridManager.Instance.CreateTray(instance.trayPos, 2.4f,trayMat, new Vector3(.995f, .988f, .988f), true,instance. trayCells);
+                Debug.Log(instance.gameObject.name);
+               Destroy(instance.gameObject);
 
                 instances.Remove(instance);
             }
