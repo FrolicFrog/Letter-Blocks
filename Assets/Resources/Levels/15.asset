@@ -16,13 +16,18 @@ MonoBehaviour:
   LevelNumber: 15
   rows: 25
   columns: 8
-  height: 6
-  width: 5
+  height: 8
+  width: 6
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
+  bottomGridSize: 0.1
+  categoryMaterial: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
   words:
+  - HORSE
+  - SPATULA
+  - GOLD
+  - SPOONS
+  - TURKEY
   - GOBLIN
   - DISH
   - ROOSTER
@@ -47,6 +52,21 @@ MonoBehaviour:
   - DIAMOND
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
+  - Tray 11
+  - Tray 12
+  - Tray 13
+  - Tray 14
+  - Tray 15
+  - Tray 16
   excludedChar:
   - {x: 24, y: 4}
   - {x: 23, y: 2}
@@ -76,8 +96,47 @@ MonoBehaviour:
   - {x: 7, y: 4}
   - {x: 6, y: 3}
   - {x: 5, y: 3}
+  - {x: 4, y: 4}
+  - {x: 4, y: 1}
+  - {x: 0, y: 3}
+  - {x: 1, y: 1}
+  - {x: 1, y: 5}
+  - {x: 3, y: 7}
+  - {x: 3, y: 5}
+  - {x: 2, y: 4}
+  - {x: 5, y: 7}
+  - {x: 12, y: 1}
+  - {x: 0, y: 6}
+  - {x: 24, y: 7}
   blockedCells: []
   wordCategory:
+  - Key: farm Animals
+    Value:
+    - HORSE
+    - TURKEY
+    - ROOSTER
+    - GOAT
+    - COW
+    - CHICKEN
+    - PIG
+  - Key: Kitchen
+    Value:
+    - SPATULA
+    - SPOONS
+    - DISH
+    - FRIDGE
+    - TOASTER
+    - POT
+    - FORK
+    - KNIFE
+  - Key: Jewels
+    Value:
+    - GOLD
+    - NECKLACE
+    - CHARM
+    - PEARL
+    - EARRINGS
+    - DIAMOND
   - Key: Fantastic
     Value:
     - GOBLIN
@@ -86,28 +145,6 @@ MonoBehaviour:
     - ELF
     - TROLL
     - UNICORN
-  - Key: Kitchen
-    Value:
-    - DISH
-    - FRIDGE
-    - TOASTER
-    - POT
-    - FORK
-    - KNIFE
-  - Key: farm Animals
-    Value:
-    - ROOSTER
-    - GOAT
-    - COW
-    - CHICKEN
-    - PIG
-  - Key: Jewels
-    Value:
-    - NECKLACE
-    - CHARM
-    - PEARL
-    - EARRINGS
-    - DIAMOND
   cellCategory:
   - Key: {x: 24, y: 2}
     Value: Jewels
@@ -349,6 +386,62 @@ MonoBehaviour:
     Value: Fantastic
   - Key: {x: 5, y: 7}
     Value: Fantastic
+  - Key: {x: 4, y: 0}
+    Value: farm Animals
+  - Key: {x: 4, y: 1}
+    Value: farm Animals
+  - Key: {x: 4, y: 2}
+    Value: farm Animals
+  - Key: {x: 4, y: 3}
+    Value: farm Animals
+  - Key: {x: 4, y: 4}
+    Value: farm Animals
+  - Key: {x: 4, y: 5}
+    Value: farm Animals
+  - Key: {x: 0, y: 2}
+    Value: farm Animals
+  - Key: {x: 0, y: 3}
+    Value: farm Animals
+  - Key: {x: 0, y: 4}
+    Value: farm Animals
+  - Key: {x: 0, y: 5}
+    Value: farm Animals
+  - Key: {x: 0, y: 6}
+    Value: farm Animals
+  - Key: {x: 1, y: 0}
+    Value: Kitchen
+  - Key: {x: 1, y: 1}
+    Value: Kitchen
+  - Key: {x: 1, y: 2}
+    Value: Kitchen
+  - Key: {x: 1, y: 3}
+    Value: Kitchen
+  - Key: {x: 1, y: 4}
+    Value: Kitchen
+  - Key: {x: 1, y: 5}
+    Value: Kitchen
+  - Key: {x: 1, y: 6}
+    Value: Kitchen
+  - Key: {x: 3, y: 2}
+    Value: Kitchen
+  - Key: {x: 3, y: 3}
+    Value: Kitchen
+  - Key: {x: 3, y: 4}
+    Value: Kitchen
+  - Key: {x: 3, y: 5}
+    Value: Kitchen
+  - Key: {x: 3, y: 6}
+    Value: Kitchen
+  - Key: {x: 3, y: 7}
+    Value: Kitchen
+  - Key: {x: 2, y: 1}
+    Value: Jewels
+  - Key: {x: 2, y: 2}
+    Value: Jewels
+  - Key: {x: 2, y: 3}
+    Value: Jewels
+  - Key: {x: 2, y: 4}
+    Value: Jewels
   cellTexts:
   - Key: {x: 24, y: 2}
     Value: I
@@ -590,8 +683,224 @@ MonoBehaviour:
     Value: I
   - Key: {x: 5, y: 7}
     Value: N
-  trayCells: []
-  trayName: []
+  - Key: {x: 4, y: 0}
+    Value: T
+  - Key: {x: 4, y: 1}
+    Value: U
+  - Key: {x: 4, y: 2}
+    Value: R
+  - Key: {x: 4, y: 3}
+    Value: K
+  - Key: {x: 4, y: 4}
+    Value: E
+  - Key: {x: 4, y: 5}
+    Value: Y
+  - Key: {x: 0, y: 2}
+    Value: H
+  - Key: {x: 0, y: 3}
+    Value: O
+  - Key: {x: 0, y: 4}
+    Value: R
+  - Key: {x: 0, y: 5}
+    Value: S
+  - Key: {x: 0, y: 6}
+    Value: E
+  - Key: {x: 1, y: 0}
+    Value: S
+  - Key: {x: 1, y: 1}
+    Value: P
+  - Key: {x: 1, y: 2}
+    Value: A
+  - Key: {x: 1, y: 3}
+    Value: T
+  - Key: {x: 1, y: 4}
+    Value: U
+  - Key: {x: 1, y: 5}
+    Value: L
+  - Key: {x: 1, y: 6}
+    Value: A
+  - Key: {x: 3, y: 2}
+    Value: S
+  - Key: {x: 3, y: 3}
+    Value: P
+  - Key: {x: 3, y: 4}
+    Value: O
+  - Key: {x: 3, y: 5}
+    Value: O
+  - Key: {x: 3, y: 6}
+    Value: N
+  - Key: {x: 3, y: 7}
+    Value: S
+  - Key: {x: 2, y: 1}
+    Value: G
+  - Key: {x: 2, y: 2}
+    Value: O
+  - Key: {x: 2, y: 3}
+    Value: L
+  - Key: {x: 2, y: 4}
+    Value: D
+  trayCells:
+  - Key: {x: 0, y: 0}
+    Value: N
+  - Key: {x: 0, y: 1}
+    Value: H
+  - Key: {x: 1, y: 1}
+    Value: A
+  - Key: {x: 1, y: 0}
+    Value: R
+  - Key: {x: 3, y: 1}
+    Value: O
+  - Key: {x: 2, y: 1}
+    Value: O
+  - Key: {x: 2, y: 2}
+    Value: O
+  - Key: {x: 3, y: 2}
+    Value: O
+  - Key: {x: 4, y: 3}
+    Value: K
+  - Key: {x: 4, y: 4}
+    Value: O
+  - Key: {x: 5, y: 4}
+    Value: S
+  - Key: {x: 5, y: 3}
+    Value: A
+  - Key: {x: 6, y: 4}
+    Value: C
+  - Key: {x: 7, y: 4}
+    Value: D
+  - Key: {x: 6, y: 5}
+    Value: T
+  - Key: {x: 7, y: 5}
+    Value: O
+  - Key: {x: 0, y: 3}
+    Value: G
+  - Key: {x: 1, y: 3}
+    Value: E
+  - Key: {x: 0, y: 5}
+    Value: A
+  - Key: {x: 1, y: 5}
+    Value: E
+  - Key: {x: 2, y: 3}
+    Value: I
+  - Key: {x: 3, y: 3}
+    Value: S
+  - Key: {x: 2, y: 5}
+    Value: O
+  - Key: {x: 3, y: 5}
+    Value: E
+  - Key: {x: 2, y: 4}
+    Value: M
+  - Key: {x: 3, y: 4}
+    Value: O
+  - Key: {x: 4, y: 5}
+    Value: I
+  - Key: {x: 5, y: 5}
+    Value: I
+  - Key: {x: 4, y: 2}
+    Value: D
+  - Key: {x: 5, y: 2}
+    Value: O
+  - Key: {x: 4, y: 1}
+    Value: S
+  - Key: {x: 5, y: 1}
+    Value: D
+  - Key: {x: 3, y: 0}
+    Value: N
+  - Key: {x: 4, y: 0}
+    Value: E
+  - Key: {x: 6, y: 0}
+    Value: O
+  - Key: {x: 6, y: 1}
+    Value: E
+  - Key: {x: 6, y: 2}
+    Value: U
+  - Key: {x: 7, y: 2}
+    Value: L
+  - Key: {x: 6, y: 3}
+    Value: P
+  - Key: {x: 7, y: 3}
+    Value: E
+  trayName:
+  - Key: {x: 0, y: 0}
+    Value: Tray 1
+  - Key: {x: 0, y: 1}
+    Value: Tray 1
+  - Key: {x: 1, y: 1}
+    Value: Tray 1
+  - Key: {x: 1, y: 0}
+    Value: Tray 1
+  - Key: {x: 3, y: 1}
+    Value: Tray 2
+  - Key: {x: 2, y: 1}
+    Value: Tray 2
+  - Key: {x: 2, y: 2}
+    Value: Tray 2
+  - Key: {x: 3, y: 2}
+    Value: Tray 2
+  - Key: {x: 4, y: 3}
+    Value: Tray 3
+  - Key: {x: 4, y: 4}
+    Value: Tray 3
+  - Key: {x: 5, y: 4}
+    Value: Tray 3
+  - Key: {x: 5, y: 3}
+    Value: Tray 3
+  - Key: {x: 6, y: 4}
+    Value: Tray 4
+  - Key: {x: 7, y: 4}
+    Value: Tray 4
+  - Key: {x: 6, y: 5}
+    Value: Tray 4
+  - Key: {x: 7, y: 5}
+    Value: Tray 4
+  - Key: {x: 0, y: 3}
+    Value: Tray 5
+  - Key: {x: 1, y: 3}
+    Value: Tray 5
+  - Key: {x: 0, y: 5}
+    Value: Tray 6
+  - Key: {x: 1, y: 5}
+    Value: Tray 6
+  - Key: {x: 2, y: 3}
+    Value: Tray 7
+  - Key: {x: 3, y: 3}
+    Value: Tray 7
+  - Key: {x: 2, y: 5}
+    Value: Tray 8
+  - Key: {x: 3, y: 5}
+    Value: Tray 8
+  - Key: {x: 2, y: 4}
+    Value: Tray 9
+  - Key: {x: 3, y: 4}
+    Value: Tray 9
+  - Key: {x: 4, y: 5}
+    Value: Tray 10
+  - Key: {x: 5, y: 5}
+    Value: Tray 10
+  - Key: {x: 4, y: 2}
+    Value: Tray 11
+  - Key: {x: 5, y: 2}
+    Value: Tray 11
+  - Key: {x: 4, y: 1}
+    Value: Tray 12
+  - Key: {x: 5, y: 1}
+    Value: Tray 12
+  - Key: {x: 3, y: 0}
+    Value: Tray 13
+  - Key: {x: 4, y: 0}
+    Value: Tray 13
+  - Key: {x: 6, y: 0}
+    Value: Tray 14
+  - Key: {x: 6, y: 1}
+    Value: Tray 14
+  - Key: {x: 6, y: 2}
+    Value: Tray 15
+  - Key: {x: 7, y: 2}
+    Value: Tray 15
+  - Key: {x: 6, y: 3}
+    Value: Tray 16
+  - Key: {x: 7, y: 3}
+    Value: Tray 16
   categoryColors:
   - Key: Jewels
     Value: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
@@ -603,6 +912,44 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
   trayColors: []
   wordPositions:
+  - Key: HORSE
+    Value:
+    - {x: 0, y: 2}
+    - {x: 0, y: 3}
+    - {x: 0, y: 4}
+    - {x: 0, y: 5}
+    - {x: 0, y: 6}
+  - Key: SPATULA
+    Value:
+    - {x: 1, y: 0}
+    - {x: 1, y: 1}
+    - {x: 1, y: 2}
+    - {x: 1, y: 3}
+    - {x: 1, y: 4}
+    - {x: 1, y: 5}
+    - {x: 1, y: 6}
+  - Key: GOLD
+    Value:
+    - {x: 2, y: 1}
+    - {x: 2, y: 2}
+    - {x: 2, y: 3}
+    - {x: 2, y: 4}
+  - Key: SPOONS
+    Value:
+    - {x: 3, y: 2}
+    - {x: 3, y: 3}
+    - {x: 3, y: 4}
+    - {x: 3, y: 5}
+    - {x: 3, y: 6}
+    - {x: 3, y: 7}
+  - Key: TURKEY
+    Value:
+    - {x: 4, y: 0}
+    - {x: 4, y: 1}
+    - {x: 4, y: 2}
+    - {x: 4, y: 3}
+    - {x: 4, y: 4}
+    - {x: 4, y: 5}
   - Key: GOBLIN
     Value:
     - {x: 5, y: 2}
@@ -767,3 +1114,12 @@ MonoBehaviour:
     - {x: 24, y: 5}
     - {x: 24, y: 6}
     - {x: 24, y: 7}
+  freezedTray:
+  - Key: Tray 1
+    Value: 5
+  - Key: Tray 2
+    Value: 7
+  - Key: Tray 3
+    Value: 8
+  - Key: Tray 4
+    Value: 9

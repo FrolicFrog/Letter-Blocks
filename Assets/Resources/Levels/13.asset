@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: ca799e8bd8421c3489f37623cd01a3e0, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - CALENDAR
   - ZEBRA
@@ -46,6 +46,21 @@ MonoBehaviour:
   - HONEY
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
+  - Tray 11
+  - Tray 12
+  - Tray 13
+  - Tray 14
+  - Tray 15
+  - Tray 16
   excludedChar:
   - {x: 24, y: 3}
   - {x: 23, y: 3}
@@ -566,8 +581,112 @@ MonoBehaviour:
     Value: A
   - Key: {x: 5, y: 7}
     Value: R
-  trayCells: []
-  trayName: []
+  trayCells:
+  - Key: {x: 5, y: 0}
+    Value: A
+  - Key: {x: 4, y: 0}
+    Value: E
+  - Key: {x: 4, y: 1}
+    Value: E
+  - Key: {x: 5, y: 1}
+    Value: D
+  - Key: {x: 5, y: 3}
+    Value: P
+  - Key: {x: 4, y: 3}
+    Value: L
+  - Key: {x: 4, y: 4}
+    Value: A
+  - Key: {x: 5, y: 4}
+    Value: O
+  - Key: {x: 5, y: 2}
+    Value: E
+  - Key: {x: 4, y: 2}
+    Value: E
+  - Key: {x: 3, y: 0}
+    Value: U
+  - Key: {x: 3, y: 3}
+    Value: C
+  - Key: {x: 3, y: 1}
+    Value: P
+  - Key: {x: 3, y: 4}
+    Value: R
+  - Key: {x: 3, y: 2}
+    Value: C
+  - Key: {x: 2, y: 0}
+    Value: O
+  - Key: {x: 2, y: 1}
+    Value: C
+  - Key: {x: 2, y: 2}
+    Value: A
+  - Key: {x: 2, y: 3}
+    Value: O
+  - Key: {x: 2, y: 4}
+    Value: P
+  - Key: {x: 1, y: 4}
+    Value: E
+  - Key: {x: 0, y: 4}
+    Value: E
+  - Key: {x: 0, y: 0}
+    Value: R
+  - Key: {x: 1, y: 0}
+    Value: I
+  - Key: {x: 1, y: 1}
+    Value: O
+  - Key: {x: 1, y: 3}
+    Value: L
+  trayName:
+  - Key: {x: 5, y: 0}
+    Value: Tray 1
+  - Key: {x: 4, y: 0}
+    Value: Tray 1
+  - Key: {x: 4, y: 1}
+    Value: Tray 1
+  - Key: {x: 5, y: 1}
+    Value: Tray 1
+  - Key: {x: 5, y: 3}
+    Value: Tray 2
+  - Key: {x: 4, y: 3}
+    Value: Tray 2
+  - Key: {x: 4, y: 4}
+    Value: Tray 2
+  - Key: {x: 5, y: 4}
+    Value: Tray 2
+  - Key: {x: 5, y: 2}
+    Value: Tray 3
+  - Key: {x: 4, y: 2}
+    Value: Tray 3
+  - Key: {x: 3, y: 0}
+    Value: Tray 4
+  - Key: {x: 3, y: 3}
+    Value: Tray 5
+  - Key: {x: 3, y: 1}
+    Value: Tray 6
+  - Key: {x: 3, y: 4}
+    Value: Tray 7
+  - Key: {x: 3, y: 2}
+    Value: Tray 8
+  - Key: {x: 2, y: 0}
+    Value: Tray 9
+  - Key: {x: 2, y: 1}
+    Value: Tray 9
+  - Key: {x: 2, y: 2}
+    Value: Tray 9
+  - Key: {x: 2, y: 3}
+    Value: Tray 10
+  - Key: {x: 2, y: 4}
+    Value: Tray 11
+  - Key: {x: 1, y: 4}
+    Value: Tray 12
+  - Key: {x: 0, y: 4}
+    Value: Tray 12
+  - Key: {x: 0, y: 0}
+    Value: Tray 13
+  - Key: {x: 1, y: 0}
+    Value: Tray 14
+  - Key: {x: 1, y: 1}
+    Value: Tray 15
+  - Key: {x: 1, y: 3}
+    Value: Tray 16
   categoryColors:
   - Key: Desert
     Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
@@ -736,3 +855,4 @@ MonoBehaviour:
     - {x: 24, y: 4}
     - {x: 24, y: 5}
     - {x: 24, y: 6}
+  freezedTray: []

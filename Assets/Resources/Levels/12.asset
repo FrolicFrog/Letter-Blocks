@@ -16,13 +16,14 @@ MonoBehaviour:
   LevelNumber: 12
   rows: 20
   columns: 8
-  height: 6
-  width: 5
+  height: 5
+  width: 8
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  bottomGridSize: 0.09
+  categoryMaterial: {fileID: 2100000, guid: 74a701c54a3fc14469104bed730e8899, type: 2}
   words:
+  - TOKYO
   - CHICAGO
   - SHOWER
   - LONDON
@@ -30,10 +31,12 @@ MonoBehaviour:
   - TOWEL
   - BARISTA
   - SOAP
+  - COAT
   - BREW
   - DALLAS
   - SNOWBALL
   - CUP
+  - RUGS
   - BOOTS
   - SHAMPOO
   - ICE
@@ -44,6 +47,18 @@ MonoBehaviour:
   - NEWYORK
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
+  - Tray 11
+  - Tray 12
+  - Tray 13
   excludedChar:
   - {x: 19, y: 2}
   - {x: 19, y: 5}
@@ -54,7 +69,7 @@ MonoBehaviour:
   - {x: 14, y: 4}
   - {x: 13, y: 3}
   - {x: 12, y: 6}
-  - {x: 11, y: 3}
+  - {x: 11, y: 1}
   - {x: 10, y: 3}
   - {x: 9, y: 4}
   - {x: 8, y: 5}
@@ -66,10 +81,18 @@ MonoBehaviour:
   - {x: 3, y: 7}
   - {x: 2, y: 4}
   - {x: 1, y: 5}
-  blockedCells: []
+  - {x: 0, y: 4}
+  - {x: 11, y: 6}
+  - {x: 18, y: 7}
+  - {x: 1, y: 2}
+  - {x: 7, y: 6}
+  blockedCells:
+  - {x: 0, y: 2}
+  - {x: 0, y: 6}
   wordCategory:
   - Key: Big Cities
     Value:
+    - TOKYO
     - CHICAGO
     - LONDON
     - DALLAS
@@ -80,10 +103,12 @@ MonoBehaviour:
     - SHOWER
     - TOWEL
     - SOAP
+    - RUGS
     - SHAMPOO
   - Key: Winter
     Value:
     - FREEZE
+    - COAT
     - SNOWBALL
     - BOOTS
     - ICE
@@ -188,9 +213,9 @@ MonoBehaviour:
     Value: Winter
   - Key: {x: 11, y: 2}
     Value: Coffee
-  - Key: {x: 11, y: 3}
+  - Key: {x: 11, y: 1}
     Value: Coffee
-  - Key: {x: 11, y: 4}
+  - Key: {x: 11, y: 0}
     Value: Coffee
   - Key: {x: 10, y: 0}
     Value: Winter
@@ -228,13 +253,13 @@ MonoBehaviour:
     Value: Coffee
   - Key: {x: 8, y: 6}
     Value: Coffee
-  - Key: {x: 7, y: 1}
+  - Key: {x: 7, y: 3}
     Value: Bathroom
   - Key: {x: 7, y: 2}
     Value: Bathroom
-  - Key: {x: 7, y: 3}
+  - Key: {x: 7, y: 1}
     Value: Bathroom
-  - Key: {x: 7, y: 4}
+  - Key: {x: 7, y: 0}
     Value: Bathroom
   - Key: {x: 6, y: 0}
     Value: Coffee
@@ -310,6 +335,32 @@ MonoBehaviour:
     Value: Big Cities
   - Key: {x: 1, y: 7}
     Value: Big Cities
+  - Key: {x: 0, y: 3}
+    Value: Big Cities
+  - Key: {x: 0, y: 4}
+    Value: Big Cities
+  - Key: {x: 0, y: 5}
+    Value: Big Cities
+  - Key: {x: 0, y: 6}
+    Value: Big Cities
+  - Key: {x: 0, y: 7}
+    Value: Big Cities
+  - Key: {x: 11, y: 4}
+    Value: Bathroom
+  - Key: {x: 11, y: 5}
+    Value: Bathroom
+  - Key: {x: 11, y: 6}
+    Value: Bathroom
+  - Key: {x: 11, y: 7}
+    Value: Bathroom
+  - Key: {x: 7, y: 4}
+    Value: Winter
+  - Key: {x: 7, y: 5}
+    Value: Winter
+  - Key: {x: 7, y: 6}
+    Value: Winter
+  - Key: {x: 7, y: 7}
+    Value: Winter
   cellTexts:
   - Key: {x: 19, y: 1}
     Value: N
@@ -402,11 +453,11 @@ MonoBehaviour:
   - Key: {x: 12, y: 7}
     Value: S
   - Key: {x: 11, y: 2}
-    Value: C
-  - Key: {x: 11, y: 3}
-    Value: U
-  - Key: {x: 11, y: 4}
     Value: P
+  - Key: {x: 11, y: 1}
+    Value: U
+  - Key: {x: 11, y: 0}
+    Value: C
   - Key: {x: 10, y: 0}
     Value: S
   - Key: {x: 10, y: 1}
@@ -443,14 +494,14 @@ MonoBehaviour:
     Value: E
   - Key: {x: 8, y: 6}
     Value: W
-  - Key: {x: 7, y: 1}
-    Value: S
-  - Key: {x: 7, y: 2}
-    Value: O
   - Key: {x: 7, y: 3}
-    Value: A
-  - Key: {x: 7, y: 4}
     Value: P
+  - Key: {x: 7, y: 2}
+    Value: A
+  - Key: {x: 7, y: 1}
+    Value: O
+  - Key: {x: 7, y: 0}
+    Value: S
   - Key: {x: 6, y: 0}
     Value: B
   - Key: {x: 6, y: 1}
@@ -525,8 +576,138 @@ MonoBehaviour:
     Value: G
   - Key: {x: 1, y: 7}
     Value: O
-  trayCells: []
-  trayName: []
+  - Key: {x: 0, y: 3}
+    Value: T
+  - Key: {x: 0, y: 4}
+    Value: O
+  - Key: {x: 0, y: 5}
+    Value: K
+  - Key: {x: 0, y: 6}
+    Value: Y
+  - Key: {x: 0, y: 7}
+    Value: O
+  - Key: {x: 11, y: 4}
+    Value: R
+  - Key: {x: 11, y: 5}
+    Value: U
+  - Key: {x: 11, y: 6}
+    Value: G
+  - Key: {x: 11, y: 7}
+    Value: S
+  - Key: {x: 7, y: 4}
+    Value: C
+  - Key: {x: 7, y: 5}
+    Value: O
+  - Key: {x: 7, y: 6}
+    Value: A
+  - Key: {x: 7, y: 7}
+    Value: T
+  trayCells:
+  - Key: {x: 4, y: 0}
+    Value: O
+  - Key: {x: 4, y: 1}
+    Value: N
+  - Key: {x: 4, y: 2}
+    Value: E
+  - Key: {x: 2, y: 1}
+    Value: T
+  - Key: {x: 2, y: 0}
+    Value: T
+  - Key: {x: 4, y: 5}
+    Value: O
+  - Key: {x: 4, y: 6}
+    Value: E
+  - Key: {x: 4, y: 7}
+    Value: A
+  - Key: {x: 3, y: 0}
+    Value: E
+  - Key: {x: 3, y: 1}
+    Value: E
+  - Key: {x: 3, y: 2}
+    Value: U
+  - Key: {x: 3, y: 3}
+    Value: W
+  - Key: {x: 3, y: 4}
+    Value: O
+  - Key: {x: 3, y: 5}
+    Value: E
+  - Key: {x: 3, y: 6}
+    Value: L
+  - Key: {x: 3, y: 7}
+    Value: E
+  - Key: {x: 2, y: 3}
+    Value: M
+  - Key: {x: 2, y: 4}
+    Value: T
+  - Key: {x: 2, y: 5}
+    Value: R
+  - Key: {x: 2, y: 6}
+    Value: E
+  - Key: {x: 1, y: 1}
+    Value: G
+  - Key: {x: 1, y: 2}
+    Value: A
+  - Key: {x: 1, y: 4}
+    Value: H
+  - Key: {x: 1, y: 5}
+    Value: A
+  - Key: {x: 1, y: 7}
+    Value: O
+  - Key: {x: 1, y: 6}
+    Value: A
+  trayName:
+  - Key: {x: 4, y: 0}
+    Value: Tray 1
+  - Key: {x: 4, y: 1}
+    Value: Tray 1
+  - Key: {x: 4, y: 2}
+    Value: Tray 1
+  - Key: {x: 2, y: 1}
+    Value: Tray 7
+  - Key: {x: 2, y: 0}
+    Value: Tray 7
+  - Key: {x: 4, y: 5}
+    Value: Tray 2
+  - Key: {x: 4, y: 6}
+    Value: Tray 2
+  - Key: {x: 4, y: 7}
+    Value: Tray 2
+  - Key: {x: 3, y: 0}
+    Value: Tray 3
+  - Key: {x: 3, y: 1}
+    Value: Tray 3
+  - Key: {x: 3, y: 2}
+    Value: Tray 4
+  - Key: {x: 3, y: 3}
+    Value: Tray 4
+  - Key: {x: 3, y: 4}
+    Value: Tray 5
+  - Key: {x: 3, y: 5}
+    Value: Tray 5
+  - Key: {x: 3, y: 6}
+    Value: Tray 6
+  - Key: {x: 3, y: 7}
+    Value: Tray 6
+  - Key: {x: 2, y: 3}
+    Value: Tray 8
+  - Key: {x: 2, y: 4}
+    Value: Tray 9
+  - Key: {x: 2, y: 5}
+    Value: Tray 9
+  - Key: {x: 2, y: 6}
+    Value: Tray 10
+  - Key: {x: 1, y: 1}
+    Value: Tray 11
+  - Key: {x: 1, y: 2}
+    Value: Tray 11
+  - Key: {x: 1, y: 4}
+    Value: Tray 12
+  - Key: {x: 1, y: 5}
+    Value: Tray 12
+  - Key: {x: 1, y: 7}
+    Value: Tray 13
+  - Key: {x: 1, y: 6}
+    Value: Tray 13
   categoryColors:
   - Key: Big Cities
     Value: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
@@ -538,6 +719,13 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
   trayColors: []
   wordPositions:
+  - Key: TOKYO
+    Value:
+    - {x: 0, y: 3}
+    - {x: 0, y: 4}
+    - {x: 0, y: 5}
+    - {x: 0, y: 6}
+    - {x: 0, y: 7}
   - Key: CHICAGO
     Value:
     - {x: 1, y: 1}
@@ -589,10 +777,16 @@ MonoBehaviour:
     - {x: 6, y: 6}
   - Key: SOAP
     Value:
+    - {x: 7, y: 0}
     - {x: 7, y: 1}
     - {x: 7, y: 2}
     - {x: 7, y: 3}
+  - Key: COAT
+    Value:
     - {x: 7, y: 4}
+    - {x: 7, y: 5}
+    - {x: 7, y: 6}
+    - {x: 7, y: 7}
   - Key: BREW
     Value:
     - {x: 8, y: 3}
@@ -619,9 +813,15 @@ MonoBehaviour:
     - {x: 10, y: 7}
   - Key: CUP
     Value:
+    - {x: 11, y: 0}
+    - {x: 11, y: 1}
     - {x: 11, y: 2}
-    - {x: 11, y: 3}
+  - Key: RUGS
+    Value:
     - {x: 11, y: 4}
+    - {x: 11, y: 5}
+    - {x: 11, y: 6}
+    - {x: 11, y: 7}
   - Key: BOOTS
     Value:
     - {x: 12, y: 3}
@@ -683,3 +883,4 @@ MonoBehaviour:
     - {x: 19, y: 5}
     - {x: 19, y: 6}
     - {x: 19, y: 7}
+  freezedTray: []
