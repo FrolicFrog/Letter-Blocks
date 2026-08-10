@@ -1099,7 +1099,7 @@ MonoBehaviour:
     Value: {fileID: 21300000, guid: 95162cf693b20a440ab9c5248adccaf7, type: 3}
   - Key: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
     Value: {fileID: 21300000, guid: ddf4c8a1263b12e429c13c51cf37ddb3, type: 3}
-  TestLevelToLoad: 12
+  TestLevelToLoad: 5
   ticks: []
   hearts: 0
 --- !u!1 &630893620
@@ -2447,7 +2447,7 @@ MonoBehaviour:
   snapLayer:
     serializedVersion: 2
     m_Bits: 1024
-  snapOffset: 0
+  snapOffset: 0.8
   planeMode: 0
   snapToGridWhileDragging: 0
   gridCellSize: 1
