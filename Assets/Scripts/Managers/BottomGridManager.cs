@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Grid))]
@@ -50,6 +52,25 @@ public class BottomGridManager : MonoBehaviour
     [Tooltip("The upper boundary percentage for the bottom grid (Set to 0.35 to align directly below TopGridManager). Grid grows DOWNWARDS from this line.")]
     [Range(0.05f, 0.95f)] public float topBoundaryReserved = 0.35f;
 
+    [Header("Tray Mesh Settings")]
+    [Tooltip("Size of the chamfer/bevel applied to the outer top edge of the procedural tray walls.")]
+    [Min(0f)] public float wallBevelSize = 0.04f;
+
+    [Tooltip("Number of steps to round out the bevel. 1 = flat chamfer. 3+ = smooth rounded corner.")]
+    [Min(1)] public int wallBevelSmoothness = 3;
+
+    [Header("Corner Bevel Settings")]
+    [Tooltip("Size of the rounded corners on the outer boundary of the tray.")]
+    [Min(0f)] public float cornerBevelSize = 0.1f;
+    [Tooltip("Number of steps to smooth the tray's corner curves.")]
+    [Min(1)] public int cornerBevelSmoothness = 5;
+
+    [Header("Tray Mesh Settings")]
+    [Tooltip("Thickness of the procedural tray walls.")]
+    [Min(0.01f)] public float wallThickness = 0.15f;
+
+
+
     public static BottomGridManager Instance;
 
     private Grid grid;
@@ -88,7 +109,6 @@ public class BottomGridManager : MonoBehaviour
 
     private void Update()
     {
-        // Only run the checks if the game is actually playing
         if (Application.isPlaying)
         {
             bool screenChanged = CheckScreenAndCameraChanges();
@@ -103,7 +123,6 @@ public class BottomGridManager : MonoBehaviour
 
     private void OnValidate()
     {
-        // Strictly just to ensure the reference exists if working in the inspector
         if (grid == null) grid = GetComponent<Grid>();
     }
 
@@ -270,7 +289,6 @@ public class BottomGridManager : MonoBehaviour
 
                     if (gridUnscaledHeight > 0)
                     {
-                        // Account for the border extending below the bottom cell
                         if (autoScaleBorder && centerObject != null)
                         {
                             gridUnscaledHeight += (borderPadding.y / 2f);
@@ -398,13 +416,11 @@ public class BottomGridManager : MonoBehaviour
                     );
                 }
 
-                // STRICTLY ONLY checking the centerObject itself, ignoring children
                 SpriteRenderer sr = centerObject.GetComponent<SpriteRenderer>();
                 MeshFilter mf = centerObject.GetComponent<MeshFilter>();
 
                 if (sr != null && sr.drawMode != SpriteDrawMode.Simple)
                 {
-                    // Reset the scale to 1 on X and Y, maintaining Z
                     centerObject.transform.localScale = new Vector3(1f, 1f, targetLocalSize.z > 0 ? targetLocalSize.z : centerObject.transform.localScale.z);
                     sr.size = new Vector2(targetLocalSize.x, targetLocalSize.y);
                 }
@@ -433,7 +449,6 @@ public class BottomGridManager : MonoBehaviour
                 }
                 else
                 {
-                    // Fallback to directly setting local scale if no relevant visual component is found
                     centerObject.transform.localScale = targetLocalSize;
                 }
             }
@@ -449,4 +464,353 @@ public class BottomGridManager : MonoBehaviour
         }
         return ray.GetPoint(mainCamera.farClipPlane);
     }
+
+    #region Procedural Tray Generation
+
+    public void CreateTray(List<Vector2Int> gridPos, float wallHeight, Material trayMaterial, Vector3 scale)
+    {
+        ArrangeChildren();
+
+        if (grid == null) grid = GetComponent<Grid>();
+        if (grid == null || gridPos == null || gridPos.Count == 0) return;
+
+        // Note: float wallThickness = 0.15f; was removed from here to use the public class variable
+        float floorThickness = 0.1f;
+
+        float maxBevel = Mathf.Min(wallThickness / 2f, wallHeight / 2f) * 0.95f;
+        float bevel = Mathf.Clamp(wallBevelSize, 0f, maxBevel);
+
+        // Safety clamp for corner radius to prevent it from exceeding half a cell width
+        float cellWidth = grid.cellSize.x + grid.cellGap.x;
+        float cellDepth = grid.cellSize.y + grid.cellGap.y;
+        float safeCornerRadius = Mathf.Clamp(cornerBevelSize, 0.001f, Mathf.Min(cellWidth, cellDepth) / 2.1f);
+
+        Vector3 totalAlignmentOffset = Vector3.zero;
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform child = transform.GetChild(i);
+            if (centerObject != null && child == centerObject.transform) continue;
+            if (child.name.StartsWith("Procedural_Tray")) continue;
+
+            int physical_col = 0;
+            int physical_row = (startCorner == StartCorner.TopLeft) ? (height - 1) : 0;
+            Vector3 rawPos = grid.CellToLocal(new Vector3Int(physical_col, physical_row, 0));
+            totalAlignmentOffset = child.localPosition - rawPos;
+            break;
+        }
+
+        HashSet<Vector2Int> shape = new HashSet<Vector2Int>();
+        foreach (Vector2Int pos in gridPos)
+        {
+            int gridX = pos.y;
+            int gridY = (startCorner == StartCorner.TopLeft) ? (height - 1 - pos.x) : pos.x;
+            shape.Add(new Vector2Int(gridX, gridY));
+        }
+
+        Vector3 minBounds = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+        Vector3 maxBounds = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
+        foreach (Vector2Int p in shape)
+        {
+            Vector3 cellWorld = grid.CellToLocal(new Vector3Int(p.x, p.y, 0)) + totalAlignmentOffset;
+            minBounds = Vector3.Min(minBounds, cellWorld);
+            maxBounds = Vector3.Max(maxBounds, cellWorld);
+        }
+        Vector3 shapeCenter = (minBounds + maxBounds) / 2f;
+
+        GameObject trayObj = new GameObject("Procedural_Tray");
+        trayObj.transform.SetParent(this.transform);
+        trayObj.transform.localPosition = shapeCenter;
+        trayObj.transform.localRotation = Quaternion.identity;
+        trayObj.transform.localScale = scale;
+        trayObj.layer = LayerMask.NameToLayer("Tray") != -1 ? LayerMask.NameToLayer("Tray") : 0;
+
+        List<Vector3> vertices = new List<Vector3>();
+        List<int> triangles = new List<int>();
+        List<Vector2> uvs = new List<Vector2>();
+
+        Vector3 CellLocalPos(int col, int row) =>
+            grid.CellToLocal(new Vector3Int(col, row, 0)) + totalAlignmentOffset - shapeCenter;
+
+        // --- 1. Base Floor Generation ---
+        float floorCornerCut = safeCornerRadius;
+
+        foreach (Vector2Int p in shape)
+        {
+            Vector3 cellCenter = CellLocalPos(p.x, p.y);
+
+            bool cutTL = !shape.Contains(p + Vector2Int.left) && !shape.Contains(p + Vector2Int.up);
+            bool cutTR = !shape.Contains(p + Vector2Int.right) && !shape.Contains(p + Vector2Int.up);
+            bool cutBR = !shape.Contains(p + Vector2Int.right) && !shape.Contains(p + Vector2Int.down);
+            bool cutBL = !shape.Contains(p + Vector2Int.left) && !shape.Contains(p + Vector2Int.down);
+
+            AddFloorTileMesh(
+                cellCenter + new Vector3(0, floorThickness / 2f, 0),
+                cellWidth / 2f, cellDepth / 2f, floorThickness,
+                cutTL ? floorCornerCut : 0f, cutTR ? floorCornerCut : 0f,
+                cutBR ? floorCornerCut : 0f, cutBL ? floorCornerCut : 0f,
+                vertices, triangles, uvs
+            );
+        }
+
+        // --- 2. Generate Continuous Swept Walls with Rounded Corners ---
+        GenerateContinuousWalls(shape, cellWidth, cellDepth, wallThickness, wallHeight, bevel, wallBevelSmoothness, safeCornerRadius, cornerBevelSmoothness, totalAlignmentOffset, shapeCenter, vertices, triangles, uvs);
+
+        // --- 3. Build and Apply Mesh ---
+        Mesh proceduralMesh = new Mesh { name = "Procedural_Tray_Mesh" };
+        proceduralMesh.vertices = vertices.ToArray();
+        proceduralMesh.triangles = triangles.ToArray();
+        proceduralMesh.uv = uvs.ToArray();
+        proceduralMesh.RecalculateNormals();
+        proceduralMesh.RecalculateBounds();
+
+        MeshFilter mf = trayObj.AddComponent<MeshFilter>();
+        mf.mesh = proceduralMesh;
+
+        MeshRenderer mr = trayObj.AddComponent<MeshRenderer>();
+        if (trayMaterial != null)
+            mr.sharedMaterial = trayMaterial;
+        else if (cell1 != null && cell1.GetComponentInChildren<MeshRenderer>() != null)
+            mr.sharedMaterial = cell1.GetComponentInChildren<MeshRenderer>().sharedMaterial;
+        else
+            mr.sharedMaterial = new Material(Shader.Find("Standard"));
+
+        MeshCollider mc = trayObj.AddComponent<MeshCollider>();
+        mc.sharedMesh = proceduralMesh;
+    }
+    private struct CrossSection
+    {
+        public Vector2 Outer, Inner;
+        public CrossSection(Vector2 outer, Vector2 inner) { Outer = outer; Inner = inner; }
+    }
+
+    private void GenerateContinuousWalls(HashSet<Vector2Int> shape, float cellW, float cellD, float wallThickness, float height, float bevel, int wallSmoothness, float cornerRadius, int cornerSmoothness, Vector3 offset, Vector3 center, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
+    {
+        Dictionary<Vector2Int, List<Vector2Int>> edgeMap = new Dictionary<Vector2Int, List<Vector2Int>>();
+        void AddEdge(Vector2Int from, Vector2Int to) { if (!edgeMap.ContainsKey(from)) edgeMap[from] = new List<Vector2Int>(); edgeMap[from].Add(to); }
+
+        foreach (Vector2Int p in shape)
+        {
+            if (!shape.Contains(p + Vector2Int.up)) AddEdge(new Vector2Int(p.x, p.y + 1), new Vector2Int(p.x + 1, p.y + 1));
+            if (!shape.Contains(p + Vector2Int.right)) AddEdge(new Vector2Int(p.x + 1, p.y + 1), new Vector2Int(p.x + 1, p.y));
+            if (!shape.Contains(p + Vector2Int.down)) AddEdge(new Vector2Int(p.x + 1, p.y), new Vector2Int(p.x, p.y));
+            if (!shape.Contains(p + Vector2Int.left)) AddEdge(new Vector2Int(p.x, p.y), new Vector2Int(p.x, p.y + 1));
+        }
+
+        List<List<Vector2Int>> loops = new List<List<Vector2Int>>();
+        while (edgeMap.Count > 0)
+        {
+            Vector2Int startNode = edgeMap.Keys.First();
+            List<Vector2Int> loop = new List<Vector2Int>();
+            Vector2Int curr = startNode;
+
+            while (edgeMap.ContainsKey(curr))
+            {
+                loop.Add(curr);
+                List<Vector2Int> nextList = edgeMap[curr];
+                Vector2Int next = nextList[0];
+                nextList.RemoveAt(0);
+                if (nextList.Count == 0) edgeMap.Remove(curr);
+                curr = next;
+                if (curr == startNode) break;
+            }
+            loops.Add(loop);
+        }
+
+        // Define 2D Profile (Top/Bottom Bevels)
+        List<Vector2> profile = new List<Vector2>();
+        profile.Add(new Vector2(0, 0));
+        profile.Add(new Vector2(0, height - bevel));
+
+        wallSmoothness = Mathf.Max(1, wallSmoothness);
+        for (int s = 1; s <= wallSmoothness; s++)
+        {
+            float t = s / (float)wallSmoothness;
+            profile.Add(new Vector2(bevel - bevel * Mathf.Cos(t * Mathf.PI / 2f), height - bevel + bevel * Mathf.Sin(t * Mathf.PI / 2f)));
+        }
+        for (int s = 0; s <= wallSmoothness; s++)
+        {
+            float t = s / (float)wallSmoothness;
+            float angle = Mathf.PI / 2f * (1f - t);
+            profile.Add(new Vector2(wallThickness - bevel + bevel * Mathf.Cos(angle), height - bevel + bevel * Mathf.Sin(angle)));
+        }
+        profile.Add(new Vector2(wallThickness, 0));
+
+        int P = profile.Count;
+        cornerSmoothness = Mathf.Max(1, cornerSmoothness);
+
+        Vector2 GetIntersection(Vector2 p1, Vector2 d1, Vector2 p2, Vector2 d2)
+        {
+            float det = d1.x * d2.y - d1.y * d2.x;
+            if (Mathf.Abs(det) < 0.0001f) return p1;
+            float t = ((p2.x - p1.x) * d2.y - (p2.y - p1.y) * d2.x) / det;
+            return p1 + d1 * t;
+        }
+
+        foreach (var loop in loops)
+        {
+            int N = loop.Count;
+            if (N < 2) continue;
+
+            List<CrossSection> sections = new List<CrossSection>();
+
+            for (int i = 0; i < N; i++)
+            {
+                Vector2Int prev = loop[(i - 1 + N) % N];
+                Vector2Int curr = loop[i];
+                Vector2Int next = loop[(i + 1) % N];
+
+                Vector3 cell00 = grid.CellToLocal(Vector3Int.zero) + offset - center;
+                Vector2 v0 = new Vector2(cell00.x + prev.x * cellW - cellW / 2f, cell00.z + prev.y * cellD - cellD / 2f);
+                Vector2 v1 = new Vector2(cell00.x + curr.x * cellW - cellW / 2f, cell00.z + curr.y * cellD - cellD / 2f);
+                Vector2 v2 = new Vector2(cell00.x + next.x * cellW - cellW / 2f, cell00.z + next.y * cellD - cellD / 2f);
+
+                Vector2 dirIn = (v1 - v0).normalized;
+                Vector2 dirOut = (v2 - v1).normalized;
+                Vector2 normIn = new Vector2(dirIn.y, -dirIn.x);
+                Vector2 normOut = new Vector2(dirOut.y, -dirOut.x);
+
+                float cross = dirIn.x * dirOut.y - dirIn.y * dirOut.x;
+
+                Vector2 startOut = v1 - dirIn * cornerRadius;
+                Vector2 endOut = v1 + dirOut * cornerRadius;
+                Vector2 startIn = startOut + normIn * wallThickness;
+                Vector2 endIn = endOut + normOut * wallThickness;
+
+                if (cross < -0.01f) // Convex Corner (Right Turn)
+                {
+                    Vector2 pivot = startOut + normIn * cornerRadius;
+                    float rOut = cornerRadius;
+                    float rIn = cornerRadius - wallThickness;
+                    Vector2 miter = GetIntersection(startIn, dirIn, endIn, dirOut);
+
+                    for (int s = 0; s <= cornerSmoothness; s++)
+                    {
+                        float t = s / (float)cornerSmoothness;
+                        Vector3 slerpDir = Vector3.Slerp(new Vector3(startOut.x - pivot.x, startOut.y - pivot.y, 0).normalized,
+                                                         new Vector3(endOut.x - pivot.x, endOut.y - pivot.y, 0).normalized, t);
+                        Vector2 dir = new Vector2(slerpDir.x, slerpDir.y);
+
+                        Vector2 O = pivot + dir * rOut;
+                        Vector2 I = (rIn <= 0f) ? miter : (pivot + dir * rIn);
+                        sections.Add(new CrossSection(O, I));
+                    }
+                }
+                else if (cross > 0.01f) // Concave Corner (Left Turn)
+                {
+                    Vector2 pivot = startOut - normIn * cornerRadius;
+                    float rOut = cornerRadius;
+                    float rIn = cornerRadius + wallThickness;
+
+                    for (int s = 0; s <= cornerSmoothness; s++)
+                    {
+                        float t = s / (float)cornerSmoothness;
+                        Vector3 slerpDir = Vector3.Slerp(new Vector3(startOut.x - pivot.x, startOut.y - pivot.y, 0).normalized,
+                                                         new Vector3(endOut.x - pivot.x, endOut.y - pivot.y, 0).normalized, t);
+                        Vector2 dir = new Vector2(slerpDir.x, slerpDir.y);
+
+                        Vector2 O = pivot + dir * rOut;
+                        Vector2 I = pivot + dir * rIn;
+                        sections.Add(new CrossSection(O, I));
+                    }
+                }
+                else // Straight Line (Fallback)
+                {
+                    sections.Add(new CrossSection(v1, v1 + normIn * wallThickness));
+                }
+            }
+
+            // Build Quads from Cross Sections
+            int baseIndex = verts.Count;
+            for (int i = 0; i < sections.Count; i++)
+            {
+                CrossSection sec = sections[i];
+
+                // FIX: Changed sec.O to sec.Outer
+                float sectionLength = Vector2.Distance(sec.Outer, sec.Inner);
+                Vector2 sectionNorm = (sec.Inner - sec.Outer).normalized;
+
+                for (int p = 0; p < P; p++)
+                {
+                    float mappedX = (profile[p].x / wallThickness) * sectionLength;
+
+                    // FIX: Changed sec.O to sec.Outer
+                    Vector2 pt2D = sec.Outer + sectionNorm * mappedX;
+
+                    verts.Add(new Vector3(pt2D.x, profile[p].y, pt2D.y));
+                    uvs.Add(new Vector2(mappedX, profile[p].y));
+                }
+
+                int next_i = (i + 1) % sections.Count;
+                for (int p = 0; p < P - 1; p++)
+                {
+                    int v0 = baseIndex + i * P + p;
+                    int v1 = baseIndex + i * P + p + 1;
+                    int v2 = baseIndex + next_i * P + p;
+                    int v3 = baseIndex + next_i * P + p + 1;
+
+                    tris.Add(v0); tris.Add(v2); tris.Add(v1);
+                    tris.Add(v1); tris.Add(v2); tris.Add(v3);
+                }
+            }
+        }
+        }
+
+    private void AddFloorTileMesh(Vector3 cellCenter, float exX, float exZ, float thickness, float cutTL, float cutTR, float cutBR, float cutBL, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
+    {
+        List<Vector2> pts = new List<Vector2>
+    {
+        new Vector2(-exX + cutTL, exZ),
+        new Vector2( exX - cutTR, exZ),
+        new Vector2( exX,  exZ - cutTR),
+        new Vector2( exX, -exZ + cutBR),
+        new Vector2( exX - cutBR, -exZ),
+        new Vector2(-exX + cutBL, -exZ),
+        new Vector2(-exX, -exZ + cutBL),
+        new Vector2(-exX,  exZ - cutTL)
+    };
+
+        float topY = thickness / 2f;
+        float botY = -thickness / 2f;
+
+        void AddFace(Vector3 bl, Vector3 tl, Vector3 tr, Vector3 br)
+        {
+            int i = verts.Count;
+            verts.AddRange(new[] { bl, tl, tr, br });
+            uvs.AddRange(new[] { new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0) });
+            tris.AddRange(new[] { i, i + 2, i + 1, i, i + 3, i + 2 });
+        }
+
+        void AddNGon(List<Vector2> p, float y, bool reversed)
+        {
+            int start = verts.Count;
+            int n = p.Count;
+            for (int k = 0; k < n; k++)
+            {
+                int idx = reversed ? (n - 1 - k) : k;
+                verts.Add(cellCenter + new Vector3(p[idx].x, y, p[idx].y));
+                uvs.Add(new Vector2((float)k / (n - 1), 0f));
+            }
+            for (int k = 1; k < n - 1; k++)
+            {
+                tris.AddRange(new[] { start, start + k + 1, start + k });
+            }
+        }
+
+        // Build sides
+        for (int i = 0; i < pts.Count; i++)
+        {
+            Vector2 a = pts[i];
+            Vector2 b = pts[(i + 1) % pts.Count];
+            if ((a - b).sqrMagnitude < 1e-8f) continue;
+
+            AddFace(cellCenter + new Vector3(a.x, botY, a.y), cellCenter + new Vector3(a.x, topY, a.y),
+                    cellCenter + new Vector3(b.x, topY, b.y), cellCenter + new Vector3(b.x, botY, b.y));
+        }
+
+        AddNGon(pts, topY, true);
+        AddNGon(pts, botY, false);
+    }
+
+    #endregion
 }

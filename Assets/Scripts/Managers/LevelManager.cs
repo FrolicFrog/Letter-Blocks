@@ -37,7 +37,7 @@ public class LevelManager : Manager<LevelManager>
 
     public Dictionary<Vector2Int, string> cellCategory = new(), cellTexts = new(),trayCells=new(),trayName = new();
     public Dictionary<string, Material> categoryColors = new(),trayColors = new();
-    public Dictionary<string, List<Vector2Int>> wordPositions = new();
+    public Dictionary<string, List<Vector2Int>> wordPositions = new(),trayPos = new();
     public Dictionary<string, List<string>> wordsCategory = new();
 
 
@@ -216,6 +216,22 @@ public class LevelManager : Manager<LevelManager>
             }
         }
 
+        /*  foreach(var pos in trayName.Keys)
+          {
+              if(!trayPos.ContainsKey(trayName[pos]))
+              {
+                  trayPos.Add(trayName[pos], new List<Vector2Int> { pos});
+              }
+              else
+              {
+                  trayPos[trayName[pos]].Add(pos);
+              }
+          }
+
+          foreach(var tray in trayPos.Keys)
+          {
+              letterGridManager.CreateTray(trayPos[tray],2.4f,trayMaterial,new Vector3(.995f,.988f,.988f));
+          }*/
         for (int height = 0; height < letterGridManager.height; height++)
         {
             for (int width = 0; width < letterGridManager.width; width++)
@@ -223,7 +239,11 @@ public class LevelManager : Manager<LevelManager>
                 Vector2Int key = new Vector2Int(height, width);
                 int linearIndex = key.x * letterGridManager.width + key.y;
                 var gridChild = letterGridManager.transform.GetChild(linearIndex);
-               if(trayCells.ContainsKey(key))
+
+
+
+
+                if (trayCells.ContainsKey(key))
                 {
                     Direction dir = new();
                     List<Vector2Int> keys = new();
@@ -234,12 +254,12 @@ public class LevelManager : Manager<LevelManager>
 
                     for (int i = 0; i < keys.Count; i++)
                     {
-                       
+
                         if (!trayCells.ContainsKey(keys[i]) || trayName[keys[i]] != trayName[key])
                         {
                             switch (i)
                             {
-                                
+
                                 case 0:
                                     dir.front = true;
                                     break;
@@ -256,15 +276,15 @@ public class LevelManager : Manager<LevelManager>
 
 
                         }
-                       
+
                     }
-                   // Debug.Log((dir.front, dir.left, dir.back, dir.right));
+                    // Debug.Log((dir.front, dir.left, dir.back, dir.right));
                     var trayChunk = Instantiate(wallsDirectionDict[dir], gridChild);
                     trayChunk.transform.localPosition = Vector3.zero;
                     if (freezedTray.ContainsKey(trayName[key]))
                     {
                         trayChunk.GetComponent<MeshRenderer>().material = freezeTray;
-                        trayChunk.layer = LayerMask.NameToLayer("Default");
+                        trayChunk.layer = LayerMask.NameToLayer("Block");
                     }
                     else
                     {
@@ -281,7 +301,7 @@ public class LevelManager : Manager<LevelManager>
                     if (freezedTray.ContainsKey(trayName[key]))
                     {
                         letterBox.GetComponent<MeshRenderer>().material = freezeBox;
-                       var count = Instantiate(letterBox.GetComponentInChildren<TextMeshPro>(), letterBox.transform).text = freezedTray[trayName[key]].ToString();
+                        var count = Instantiate(letterBox.GetComponentInChildren<TextMeshPro>(), letterBox.transform).text = freezedTray[trayName[key]].ToString();
                         letterBox.GetComponentInChildren<TextMeshPro>().gameObject.SetActive(false);
 
 
@@ -291,11 +311,11 @@ public class LevelManager : Manager<LevelManager>
                         letterBox.GetComponent<MeshRenderer>().material = boxMaterial;
                     }
                     letterBox.transform.localPosition = Vector3.zero;
-                
+
                     Vector3 size = new Vector3(1, 2.4f, 1);
                     Vector3 pos = Vector3.zero;
 
-                  
+
 
                     if (dir.left)
                     {
@@ -321,44 +341,44 @@ public class LevelManager : Manager<LevelManager>
                     letterBox.transform.localPosition = pos;
 
 
-                   
+
+
                 }
             }
+            if (trayList == null)
+            {
+                Debug.LogError("Tray List is Null!");
+            }
+            foreach (var key in trayChunks.Keys)
+            {
+                var trayParent = new GameObject(key);
+
+                List<Vector3> positions = new List<Vector3>();
+                Vector3 avgPosition = Vector3.zero;
+                foreach (var chunk in trayChunks[key])
+                {
+                    positions.Add(chunk.transform.position);
+                }
+                foreach (var pos in positions)
+                {
+                    avgPosition += pos;
+                }
+                avgPosition /= positions.Count;
+                trayParent.transform.position = avgPosition;
+
+                foreach (var chunk in trayChunks[key])
+                {
+                    chunk.transform.SetParent(trayParent.transform);
+                }
+                trayParent.transform.SetParent(trayList);
+                if (freezedTray.ContainsKey(key))
+                {
+                    var fm = trayParent.AddComponent<FreezeManager>();
+                    fm.totalCount = freezedTray[key];
+                }
+                trayParent.AddComponent<TrayCubeScaler>();
+            }
         }
-        if(trayList == null)
-        {
-            Debug.LogError("Tray List is Null!");
-        }
-        foreach (var key in trayChunks.Keys)
-        {
-            var trayParent = new GameObject(key);
-            
-            List<Vector3> positions = new List<Vector3>();
-            Vector3 avgPosition = Vector3.zero;
-            foreach(var chunk in trayChunks[key] )
-            {
-                positions.Add(chunk.transform.position);
-            }
-            foreach(var pos in positions)
-            {
-                avgPosition += pos;
-            }
-            avgPosition /= positions.Count;
-            trayParent.transform.position = avgPosition;
-       
-            foreach (var chunk in trayChunks[key])
-            {
-                chunk.transform.SetParent(trayParent.transform);
-            }
-         trayParent.transform.SetParent(trayList);
-            if(freezedTray.ContainsKey(key))
-            {
-              var fm =  trayParent.AddComponent<FreezeManager>();
-                fm.totalCount = freezedTray[key];
-            }
-            trayParent.AddComponent<TrayCubeScaler>();
-        }
-      
        
     }
     public GameObject ReplaceGameObject(GameObject oldObject, GameObject prefab)

@@ -17,7 +17,7 @@ MonoBehaviour:
   rows: 10
   columns: 8
   height: 9
-  width: 9
+  width: 8
   minutes: 1
   seconds: 30
   bottomGridSize: 0.085
@@ -205,6 +205,14 @@ MonoBehaviour:
     Value: K
   - Key: {x: 5, y: 6}
     Value: K
+  - Key: {x: 5, y: 1}
+    Value: G
+  - Key: {x: 5, y: 2}
+    Value: G
+  - Key: {x: 5, y: 3}
+    Value: G
+  - Key: {x: 6, y: 2}
+    Value: G
   trayName:
   - Key: {x: 1, y: 2}
     Value: Tray 2
@@ -228,6 +236,14 @@ MonoBehaviour:
     Value: Tray 3
   - Key: {x: 5, y: 6}
     Value: Tray 3
+  - Key: {x: 5, y: 1}
+    Value: Tray 4
+  - Key: {x: 5, y: 2}
+    Value: Tray 4
+  - Key: {x: 5, y: 3}
+    Value: Tray 4
+  - Key: {x: 6, y: 2}
+    Value: Tray 4
   categoryColors:
   - Key: Food
     Value: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}

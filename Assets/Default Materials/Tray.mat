@@ -26,14 +26,14 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _BottomDarkness: 0.424
+    - _BottomDarkness: 0.338
     - _Enable_Highlights: 0
     - _Enable_Shine: 1
-    - _FresnelPower: 3
+    - _FresnelPower: 8.99
     - _ShineAngle: 0
-    - _ShineSize: 0.072
-    - _ShineSoftness: 0.31
-    - _SideDarkness: 0.304
+    - _ShineSize: 0.238
+    - _ShineSoftness: 0.5
+    - _SideDarkness: 0.553
     m_Colors:
     - _Color: {r: 0.5297879, g: 0.27058828, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 0.5}
