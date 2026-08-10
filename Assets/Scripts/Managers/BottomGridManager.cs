@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Grid))]
@@ -467,20 +468,17 @@ public class BottomGridManager : MonoBehaviour
 
     #region Procedural Tray Generation
 
-    public void CreateTray(List<Vector2Int> gridPos, float wallHeight, Material trayMaterial, Vector3 scale)
+    public void CreateTray(List<Vector2Int> gridPos, float wallHeight, Material trayMaterial, Vector3 scale, bool openTray = true, Dictionary<Vector2Int, string> charcter = null)
     {
         ArrangeChildren();
 
         if (grid == null) grid = GetComponent<Grid>();
         if (grid == null || gridPos == null || gridPos.Count == 0) return;
 
-        // Note: float wallThickness = 0.15f; was removed from here to use the public class variable
         float floorThickness = 0.1f;
-
         float maxBevel = Mathf.Min(wallThickness / 2f, wallHeight / 2f) * 0.95f;
         float bevel = Mathf.Clamp(wallBevelSize, 0f, maxBevel);
 
-        // Safety clamp for corner radius to prevent it from exceeding half a cell width
         float cellWidth = grid.cellSize.x + grid.cellGap.x;
         float cellDepth = grid.cellSize.y + grid.cellGap.y;
         float safeCornerRadius = Mathf.Clamp(cornerBevelSize, 0.001f, Mathf.Min(cellWidth, cellDepth) / 2.1f);
@@ -553,10 +551,47 @@ public class BottomGridManager : MonoBehaviour
             );
         }
 
-        // --- 2. Generate Continuous Swept Walls with Rounded Corners ---
-        GenerateContinuousWalls(shape, cellWidth, cellDepth, wallThickness, wallHeight, bevel, wallBevelSmoothness, safeCornerRadius, cornerBevelSmoothness, totalAlignmentOffset, shapeCenter, vertices, triangles, uvs);
+        // --- 2. Generate Continuous Swept Walls ---
+        GenerateContinuousWalls(shape, cellWidth, cellDepth, wallThickness, wallHeight, bevel, wallBevelSmoothness, safeCornerRadius, cornerBevelSmoothness, totalAlignmentOffset, shapeCenter, vertices, triangles, uvs, openTray);
 
-        // --- 3. Build and Apply Mesh ---
+        // --- 3. Flat Seamless Roof Generation (If Closed) ---
+        if (!openTray)
+        {
+            foreach (Vector2Int p in shape)
+            {
+                Vector3 cellCenter = CellLocalPos(p.x, p.y);
+
+                bool outT = !shape.Contains(p + Vector2Int.up);
+                bool outR = !shape.Contains(p + Vector2Int.right);
+                bool outB = !shape.Contains(p + Vector2Int.down);
+                bool outL = !shape.Contains(p + Vector2Int.left);
+
+                bool convexTL = outL && outT;
+                bool concaveTL = !outL && !outT && !shape.Contains(p + new Vector2Int(-1, 1));
+
+                bool convexTR = outR && outT;
+                bool concaveTR = !outR && !outT && !shape.Contains(p + new Vector2Int(1, 1));
+
+                bool convexBR = outR && outB;
+                bool concaveBR = !outR && !outB && !shape.Contains(p + new Vector2Int(1, -1));
+
+                bool convexBL = outL && outB;
+                bool concaveBL = !outL && !outB && !shape.Contains(p + new Vector2Int(-1, -1));
+
+                AddFlatTopMesh(
+                    cellCenter + new Vector3(0, wallHeight, 0),
+                    cellWidth / 2f, cellDepth / 2f, bevel, safeCornerRadius, cornerBevelSmoothness,
+                    outT, outR, outB, outL,
+                    convexTL, concaveTL,
+                    convexTR, concaveTR,
+                    convexBR, concaveBR,
+                    convexBL, concaveBL,
+                    vertices, triangles, uvs
+                );
+            }
+        }
+
+        // --- 4. Build and Apply Mesh ---
         Mesh proceduralMesh = new Mesh { name = "Procedural_Tray_Mesh" };
         proceduralMesh.vertices = vertices.ToArray();
         proceduralMesh.triangles = triangles.ToArray();
@@ -568,15 +603,52 @@ public class BottomGridManager : MonoBehaviour
         mf.mesh = proceduralMesh;
 
         MeshRenderer mr = trayObj.AddComponent<MeshRenderer>();
-        if (trayMaterial != null)
-            mr.sharedMaterial = trayMaterial;
-        else if (cell1 != null && cell1.GetComponentInChildren<MeshRenderer>() != null)
-            mr.sharedMaterial = cell1.GetComponentInChildren<MeshRenderer>().sharedMaterial;
-        else
-            mr.sharedMaterial = new Material(Shader.Find("Standard"));
+        if (trayMaterial != null) mr.sharedMaterial = trayMaterial;
+        else if (cell1 != null && cell1.GetComponentInChildren<MeshRenderer>() != null) mr.sharedMaterial = cell1.GetComponentInChildren<MeshRenderer>().sharedMaterial;
+        else mr.sharedMaterial = new Material(Shader.Find("Standard"));
 
         MeshCollider mc = trayObj.AddComponent<MeshCollider>();
         mc.sharedMesh = proceduralMesh;
+
+        // Reset tray to perfectly match the cell size boundaries on the floor
+        trayObj.transform.localScale = scale;
+
+        // --- 5. Spawn Letters Based on Dictionary ---
+        if (charcter != null && letter != null)
+        {
+            // Loop ONLY through the grid positions that belong to this specific tray
+            foreach (Vector2Int pos in gridPos)
+            {
+                // Check if our dictionary has a character assigned to this specific position
+                if (charcter.TryGetValue(pos, out string textValue))
+                {
+                    // Map logical grid pos to physical mapping exactly like the 'shape' HashSet above
+                    int gridX = pos.y;
+                    int gridY = (startCorner == StartCorner.TopLeft) ? (height - 1 - pos.x) : pos.x;
+
+                    // Get local position relative to the newly created trayObj center
+                    Vector3 letterLocalPos = CellLocalPos(gridX, gridY);
+
+                    // Add an offset so it sits properly on top of the procedural floor
+                    letterLocalPos.y += floorThickness;
+
+                    // Instantiate letter and set it as a child of the Tray
+                    GameObject instantiatedLetter = Instantiate(letter, trayObj.transform);
+                    instantiatedLetter.transform.localPosition = letterLocalPos;
+
+                    // Find the TMP_Text component in the prefab's children
+                    TMP_Text textMesh = instantiatedLetter.GetComponentInChildren<TMP_Text>();
+                    if (textMesh != null)
+                    {
+                        textMesh.text = textValue;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"No TextMeshPro component found in the children of the 'letter' prefab at grid position {pos}.");
+                    }
+                }
+            }
+        }
     }
     private struct CrossSection
     {
@@ -584,7 +656,7 @@ public class BottomGridManager : MonoBehaviour
         public CrossSection(Vector2 outer, Vector2 inner) { Outer = outer; Inner = inner; }
     }
 
-    private void GenerateContinuousWalls(HashSet<Vector2Int> shape, float cellW, float cellD, float wallThickness, float height, float bevel, int wallSmoothness, float cornerRadius, int cornerSmoothness, Vector3 offset, Vector3 center, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
+    private void GenerateContinuousWalls(HashSet<Vector2Int> shape, float cellW, float cellD, float wallThickness, float height, float bevel, int wallSmoothness, float cornerRadius, int cornerSmoothness, Vector3 offset, Vector3 center, List<Vector3> verts, List<int> tris, List<Vector2> uvs, bool openTray)
     {
         Dictionary<Vector2Int, List<Vector2Int>> edgeMap = new Dictionary<Vector2Int, List<Vector2Int>>();
         void AddEdge(Vector2Int from, Vector2Int to) { if (!edgeMap.ContainsKey(from)) edgeMap[from] = new List<Vector2Int>(); edgeMap[from].Add(to); }
@@ -617,7 +689,6 @@ public class BottomGridManager : MonoBehaviour
             loops.Add(loop);
         }
 
-        // Define 2D Profile (Top/Bottom Bevels)
         List<Vector2> profile = new List<Vector2>();
         profile.Add(new Vector2(0, 0));
         profile.Add(new Vector2(0, height - bevel));
@@ -628,13 +699,21 @@ public class BottomGridManager : MonoBehaviour
             float t = s / (float)wallSmoothness;
             profile.Add(new Vector2(bevel - bevel * Mathf.Cos(t * Mathf.PI / 2f), height - bevel + bevel * Mathf.Sin(t * Mathf.PI / 2f)));
         }
-        for (int s = 0; s <= wallSmoothness; s++)
+
+        if (openTray)
         {
-            float t = s / (float)wallSmoothness;
-            float angle = Mathf.PI / 2f * (1f - t);
-            profile.Add(new Vector2(wallThickness - bevel + bevel * Mathf.Cos(angle), height - bevel + bevel * Mathf.Sin(angle)));
+            for (int s = 0; s <= wallSmoothness; s++)
+            {
+                float t = s / (float)wallSmoothness;
+                float angle = Mathf.PI / 2f * (1f - t);
+                profile.Add(new Vector2(wallThickness - bevel + bevel * Mathf.Cos(angle), height - bevel + bevel * Mathf.Sin(angle)));
+            }
+            profile.Add(new Vector2(wallThickness, 0));
         }
-        profile.Add(new Vector2(wallThickness, 0));
+        else
+        {
+            profile.Add(new Vector2(bevel, 0));
+        }
 
         int P = profile.Count;
         cornerSmoothness = Mathf.Max(1, cornerSmoothness);
@@ -677,7 +756,7 @@ public class BottomGridManager : MonoBehaviour
                 Vector2 startIn = startOut + normIn * wallThickness;
                 Vector2 endIn = endOut + normOut * wallThickness;
 
-                if (cross < -0.01f) // Convex Corner (Right Turn)
+                if (cross < -0.01f) // Convex Corners
                 {
                     Vector2 pivot = startOut + normIn * cornerRadius;
                     float rOut = cornerRadius;
@@ -696,45 +775,23 @@ public class BottomGridManager : MonoBehaviour
                         sections.Add(new CrossSection(O, I));
                     }
                 }
-                else if (cross > 0.01f) // Concave Corner (Left Turn)
+                else // Concave Corners & Straights
                 {
-                    Vector2 pivot = startOut - normIn * cornerRadius;
-                    float rOut = cornerRadius;
-                    float rIn = cornerRadius + wallThickness;
-
-                    for (int s = 0; s <= cornerSmoothness; s++)
-                    {
-                        float t = s / (float)cornerSmoothness;
-                        Vector3 slerpDir = Vector3.Slerp(new Vector3(startOut.x - pivot.x, startOut.y - pivot.y, 0).normalized,
-                                                         new Vector3(endOut.x - pivot.x, endOut.y - pivot.y, 0).normalized, t);
-                        Vector2 dir = new Vector2(slerpDir.x, slerpDir.y);
-
-                        Vector2 O = pivot + dir * rOut;
-                        Vector2 I = pivot + dir * rIn;
-                        sections.Add(new CrossSection(O, I));
-                    }
-                }
-                else // Straight Line (Fallback)
-                {
-                    sections.Add(new CrossSection(v1, v1 + normIn * wallThickness));
+                    Vector2 miter = GetIntersection(startIn, dirIn, endIn, dirOut);
+                    sections.Add(new CrossSection(v1, miter));
                 }
             }
 
-            // Build Quads from Cross Sections
             int baseIndex = verts.Count;
             for (int i = 0; i < sections.Count; i++)
             {
                 CrossSection sec = sections[i];
-
-                // FIX: Changed sec.O to sec.Outer
                 float sectionLength = Vector2.Distance(sec.Outer, sec.Inner);
                 Vector2 sectionNorm = (sec.Inner - sec.Outer).normalized;
 
                 for (int p = 0; p < P; p++)
                 {
                     float mappedX = (profile[p].x / wallThickness) * sectionLength;
-
-                    // FIX: Changed sec.O to sec.Outer
                     Vector2 pt2D = sec.Outer + sectionNorm * mappedX;
 
                     verts.Add(new Vector3(pt2D.x, profile[p].y, pt2D.y));
@@ -754,7 +811,126 @@ public class BottomGridManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void AddFlatTopMesh(Vector3 cellCenter, float exX, float exZ, float inset, float cornerRadius, int cornerSteps,
+      bool outT, bool outR, bool outB, bool outL,
+      bool convexTL, bool concaveTL, bool convexTR, bool concaveTR,
+      bool convexBR, bool concaveBR, bool convexBL, bool concaveBL,
+      List<Vector3> verts, List<int> tris, List<Vector2> uvs)
+    {
+        float top = exZ - (outT ? inset : 0);
+        float bot = -exZ + (outB ? inset : 0);
+        float right = exX - (outR ? inset : 0);
+        float left = -exX + (outL ? inset : 0);
+
+        List<Vector2> pts = new List<Vector2>();
+
+        // TL
+        if (convexTL)
+        {
+            Vector2 center = new Vector2(-exX + cornerRadius, exZ - cornerRadius);
+            float r = Mathf.Max(0f, cornerRadius - inset);
+            for (int i = 0; i <= cornerSteps; i++)
+            {
+                float angle = Mathf.Lerp(Mathf.PI, Mathf.PI / 2f, i / (float)cornerSteps);
+                pts.Add(center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * r);
+            }
         }
+        else if (concaveTL)
+        {
+            pts.Add(new Vector2(-exX, exZ - inset));
+            pts.Add(new Vector2(-exX + inset, exZ - inset));
+            pts.Add(new Vector2(-exX + inset, exZ));
+        }
+        else
+        {
+            pts.Add(new Vector2(left, top));
+        }
+
+        // TR
+        if (convexTR)
+        {
+            Vector2 center = new Vector2(exX - cornerRadius, exZ - cornerRadius);
+            float r = Mathf.Max(0f, cornerRadius - inset);
+            for (int i = 0; i <= cornerSteps; i++)
+            {
+                float angle = Mathf.Lerp(Mathf.PI / 2f, 0f, i / (float)cornerSteps);
+                pts.Add(center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * r);
+            }
+        }
+        else if (concaveTR)
+        {
+            pts.Add(new Vector2(exX - inset, exZ));
+            pts.Add(new Vector2(exX - inset, exZ - inset));
+            pts.Add(new Vector2(exX, exZ - inset));
+        }
+        else
+        {
+            pts.Add(new Vector2(right, top));
+        }
+
+        // BR
+        if (convexBR)
+        {
+            Vector2 center = new Vector2(exX - cornerRadius, -exZ + cornerRadius);
+            float r = Mathf.Max(0f, cornerRadius - inset);
+            for (int i = 0; i <= cornerSteps; i++)
+            {
+                float angle = Mathf.Lerp(0f, -Mathf.PI / 2f, i / (float)cornerSteps);
+                pts.Add(center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * r);
+            }
+        }
+        else if (concaveBR)
+        {
+            pts.Add(new Vector2(exX, -exZ + inset));
+            pts.Add(new Vector2(exX - inset, -exZ + inset));
+            pts.Add(new Vector2(exX - inset, -exZ));
+        }
+        else
+        {
+            pts.Add(new Vector2(right, bot));
+        }
+
+        // BL
+        if (convexBL)
+        {
+            Vector2 center = new Vector2(-exX + cornerRadius, -exZ + cornerRadius);
+            float r = Mathf.Max(0f, cornerRadius - inset);
+            for (int i = 0; i <= cornerSteps; i++)
+            {
+                float angle = Mathf.Lerp(-Mathf.PI / 2f, -Mathf.PI, i / (float)cornerSteps);
+                pts.Add(center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * r);
+            }
+        }
+        else if (concaveBL)
+        {
+            pts.Add(new Vector2(-exX + inset, -exZ));
+            pts.Add(new Vector2(-exX + inset, -exZ + inset));
+            pts.Add(new Vector2(-exX, -exZ + inset));
+        }
+        else
+        {
+            pts.Add(new Vector2(left, bot));
+        }
+
+        int start = verts.Count;
+        int n = pts.Count;
+        for (int k = 0; k < n; k++)
+        {
+            verts.Add(cellCenter + new Vector3(pts[k].x, 0, pts[k].y));
+            uvs.Add(new Vector2(pts[k].x, pts[k].y));
+        }
+
+        // Proper Upward Winding Order
+        for (int k = 1; k < n - 1; k++)
+        {
+            tris.Add(start);
+            tris.Add(start + k);
+            tris.Add(start + k + 1);
+        }
+    }
+
 
     private void AddFloorTileMesh(Vector3 cellCenter, float exX, float exZ, float thickness, float cutTL, float cutTR, float cutBR, float cutBL, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
     {
@@ -797,7 +973,6 @@ public class BottomGridManager : MonoBehaviour
             }
         }
 
-        // Build sides
         for (int i = 0; i < pts.Count; i++)
         {
             Vector2 a = pts[i];

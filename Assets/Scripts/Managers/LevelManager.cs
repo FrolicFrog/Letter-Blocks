@@ -216,7 +216,7 @@ public class LevelManager : Manager<LevelManager>
             }
         }
 
-        /*  foreach(var pos in trayName.Keys)
+         foreach(var pos in trayName.Keys)
           {
               if(!trayPos.ContainsKey(trayName[pos]))
               {
@@ -230,9 +230,9 @@ public class LevelManager : Manager<LevelManager>
 
           foreach(var tray in trayPos.Keys)
           {
-              letterGridManager.CreateTray(trayPos[tray],2.4f,trayMaterial,new Vector3(.995f,.988f,.988f));
-          }*/
-        for (int height = 0; height < letterGridManager.height; height++)
+              letterGridManager.CreateTray(trayPos[tray],2.4f,trayMaterial,new Vector3(.995f,.988f,.988f),true,trayCells);
+          }
+        /*for (int height = 0; height < letterGridManager.height; height++)
         {
             for (int width = 0; width < letterGridManager.width; width++)
             {
@@ -378,7 +378,7 @@ public class LevelManager : Manager<LevelManager>
                 }
                 trayParent.AddComponent<TrayCubeScaler>();
             }
-        }
+        }*/
        
     }
     public GameObject ReplaceGameObject(GameObject oldObject, GameObject prefab)

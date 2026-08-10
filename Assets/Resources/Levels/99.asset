@@ -213,6 +213,16 @@ MonoBehaviour:
     Value: G
   - Key: {x: 6, y: 2}
     Value: G
+  - Key: {x: 2, y: 6}
+    Value: O
+  - Key: {x: 2, y: 5}
+    Value: O
+  - Key: {x: 3, y: 5}
+    Value: O
+  - Key: {x: 2, y: 4}
+    Value: P
+  - Key: {x: 1, y: 5}
+    Value: P
   trayName:
   - Key: {x: 1, y: 2}
     Value: Tray 2
@@ -244,6 +254,16 @@ MonoBehaviour:
     Value: Tray 4
   - Key: {x: 6, y: 2}
     Value: Tray 4
+  - Key: {x: 2, y: 6}
+    Value: Tray 5
+  - Key: {x: 2, y: 5}
+    Value: Tray 5
+  - Key: {x: 3, y: 5}
+    Value: Tray 5
+  - Key: {x: 2, y: 4}
+    Value: Tray 5
+  - Key: {x: 1, y: 5}
+    Value: Tray 5
   categoryColors:
   - Key: Food
     Value: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}

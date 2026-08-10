@@ -74,7 +74,9 @@ public class GlobalTrayDragger : MonoBehaviour
 
     [Tooltip("Easing function for the return animation.")]
     public Ease snapBackEase = Ease.OutBack;
-
+    [Header("Debug")]
+    [Tooltip("Draw wireframes of the physics overlap checks in the Scene view while dragging.")]
+    public bool showPhysicsGizmos = true;
     #endregion
 
     #region Private State Variables
@@ -95,9 +97,9 @@ public class GlobalTrayDragger : MonoBehaviour
     // Dynamically calculated boundaries
     private float bMinX, bMaxX, bMinAxis, bMaxAxis, bTopWallTriggerThreshold;
 
-    // Snapshots to perfectly preserve tile scales across weirdly shaped walls
-    private Dictionary<Transform, Vector3> wallDefaultPos = new Dictionary<Transform, Vector3>();
-    private Dictionary<Transform, Vector3> wallDefaultScale = new Dictionary<Transform, Vector3>();
+    // Recorded local positions to act as virtual "slots" for the unified mesh
+    private List<Vector3> slotDefaultPos = new List<Vector3>();
+    private List<Vector3> slotDefaultScale = new List<Vector3>();
 
     // --- COLLISION & JUMP TRACKING ---
     private struct BlockColliderData
@@ -139,9 +141,19 @@ public class GlobalTrayDragger : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, trayLayer))
         {
-            if (hit.transform.parent != null)
+            // If the raycast hits a child tile, redirect the selection to the Procedural_Tray parent
+            if (hit.transform.parent != null && hit.transform.name.Contains("Tile letter"))
             {
                 currentlyDraggedParent = hit.transform.parent;
+            }
+            else
+            {
+                // Otherwise, we hit the Procedural_Tray directly
+                currentlyDraggedParent = hit.transform;
+            }
+
+            if (currentlyDraggedParent != null)
+            {
                 isReadyToJump = false;
                 lockedSnapValue = 0f;
 
@@ -152,20 +164,26 @@ public class GlobalTrayDragger : MonoBehaviour
                     activeJumpRoutines.Remove(currentlyDraggedParent);
                 }
 
-                wallDefaultPos.Clear();
-                wallDefaultScale.Clear();
+                // Record initial slot positions for the direct tile children
+                slotDefaultPos.Clear();
+                slotDefaultScale.Clear();
 
+                List<Transform> initialTiles = new List<Transform>();
                 foreach (Transform child in currentlyDraggedParent)
                 {
-                    if (child.name.Contains("Wall"))
+                    if (child.name.Contains("Tile letter"))
                     {
-                        Transform t = GetValidTile(child);
-                        if (t != null)
-                        {
-                            wallDefaultPos[child] = t.localPosition;
-                            wallDefaultScale[child] = t.localScale;
-                        }
+                        initialTiles.Add(child);
                     }
+                }
+
+                // Sort horizontally to map our virtual slots from Left to Right
+                initialTiles.Sort((a, b) => a.localPosition.x.CompareTo(b.localPosition.x));
+
+                foreach (Transform tile in initialTiles)
+                {
+                    slotDefaultPos.Add(tile.localPosition);
+                    slotDefaultScale.Add(tile.localScale);
                 }
 
                 currentlyDraggedParent.DOKill();
@@ -256,7 +274,7 @@ public class GlobalTrayDragger : MonoBehaviour
 
             if (isTouchingSnapZone || pastThreshold)
             {
-                // FIX: Only cancel the snap if the player purposefully drags the cursor DOWN by more than 60% of a grid tile.
+                // Only cancel the snap if the player purposefully drags the cursor DOWN by more than 60% of a grid tile.
                 bool isTryingToEscape = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
                                         ? targetPosition.z < proposedSnapValue - (gridCellSize * 0.6f)
                                         : targetPosition.y < proposedSnapValue - (gridCellSize * 0.6f);
@@ -490,7 +508,7 @@ public class GlobalTrayDragger : MonoBehaviour
                 Collider[] hits = Physics.OverlapBox(checkCenter, checkExtents, block.rotation, combinedCollisionLayers);
                 foreach (Collider hit in hits)
                 {
-                    if (!hit.transform.IsChildOf(currentlyDraggedParent)) return true;
+                    if (!hit.transform.IsChildOf(currentlyDraggedParent) && hit.transform != currentlyDraggedParent) return true;
                 }
             }
             else
@@ -501,7 +519,7 @@ public class GlobalTrayDragger : MonoBehaviour
                 Collider[] hits = Physics.OverlapSphere(checkCenter, 0.1f, combinedCollisionLayers);
                 foreach (Collider hit in hits)
                 {
-                    if (!hit.transform.IsChildOf(currentlyDraggedParent)) return true;
+                    if (!hit.transform.IsChildOf(currentlyDraggedParent) && hit.transform != currentlyDraggedParent) return true;
                 }
             }
         }
@@ -558,8 +576,6 @@ public class GlobalTrayDragger : MonoBehaviour
         if (currentlyDraggedParent != null)
         {
             Renderer[] renderers = currentlyDraggedParent.GetComponentsInChildren<Renderer>();
-            Collider[] colliders = currentlyDraggedParent.GetComponentsInChildren<Collider>();
-
             Vector3 pivotPos = currentlyDraggedParent.position;
 
             float extLeft = 0, extRight = 0, extBottom = 0, extTop = 0;
@@ -602,20 +618,67 @@ public class GlobalTrayDragger : MonoBehaviour
 
             bTopWallTriggerThreshold = bMaxAxis - topWallTriggerOffset;
 
-            foreach (Collider col in colliders)
+            // --- NEW VOXEL SCANNER LOGIC ---
+            // Scans the Tray's MeshCollider to perfectly map the rigid plastic shape
+            Collider trayCollider = currentlyDraggedParent.GetComponent<Collider>();
+
+            if (trayCollider != null)
             {
-                if (((1 << col.gameObject.layer) & trayLayer) != 0)
+                Bounds b = trayCollider.bounds;
+                float step = gridCellSize;
+                float halfStep = step * 0.5f;
+
+                // Calculate the true grid dimensions of the mesh
+                int gridX = Mathf.Max(1, Mathf.RoundToInt(b.size.x / step));
+                int gridAxis = Mathf.Max(1, Mathf.RoundToInt((planeMode == PlaneAxisMode.XZ_GroundPlane_3D ? b.size.z : b.size.y) / step));
+
+                // Anchor the scanner to the exact center of the mesh bounds
+                float startX = b.center.x - (gridX * halfStep) + halfStep;
+                float startAxis = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D ? b.center.z : b.center.y) - (gridAxis * halfStep) + halfStep;
+
+                for (int x = 0; x < gridX; x++)
                 {
-                    BlockColliderData blockData = new BlockColliderData();
-                    blockData.unscaledLocalOffset = col.transform.position - pivotPos;
-                    blockData.unscaledExtents = col.bounds.extents;
-                    blockData.rotation = col.transform.rotation;
-                    pieceColliders.Add(blockData);
+                    for (int a = 0; a < gridAxis; a++)
+                    {
+                        float probeX = startX + (x * step);
+                        float probeAxis = startAxis + (a * step);
+
+                        Ray ray;
+                        if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+                        {
+                            ray = new Ray(new Vector3(probeX, b.max.y + 1f, probeAxis), Vector3.down);
+                        }
+                        else
+                        {
+                            ray = new Ray(new Vector3(probeX, probeAxis, b.min.z - 1f), Vector3.forward);
+                        }
+
+                        // Shoot a ray directly through this grid coordinate to see if the tray mesh exists here
+                        if (trayCollider.Raycast(ray, out RaycastHit hit, 5f))
+                        {
+                            BlockColliderData blockData = new BlockColliderData();
+                            Vector3 centerBox;
+
+                            if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+                            {
+                                centerBox = new Vector3(probeX, currentlyDraggedParent.position.y, probeAxis);
+                                blockData.unscaledExtents = new Vector3(halfStep, 0.25f, halfStep);
+                            }
+                            else
+                            {
+                                centerBox = new Vector3(probeX, probeAxis, currentlyDraggedParent.position.z);
+                                blockData.unscaledExtents = new Vector3(halfStep, halfStep, 0.25f);
+                            }
+
+                            blockData.unscaledLocalOffset = centerBox - pivotPos;
+                            blockData.rotation = currentlyDraggedParent.rotation;
+                            pieceColliders.Add(blockData);
+                        }
+                    }
                 }
             }
         }
     }
-
     #endregion
 
     #region Jumping & Tray Collapse Logic
@@ -642,19 +705,12 @@ public class GlobalTrayDragger : MonoBehaviour
 
             if (activeTray == null) break;
 
-            List<Transform> allWalls = new List<Transform>();
-            foreach (Transform child in activeTray)
-            {
-                if (child.name.Contains("Wall")) allWalls.Add(child);
-            }
-
             bool jumpedAny = false;
             List<Transform> availableTiles = new List<Transform>();
 
-            foreach (Transform wall in allWalls)
+            foreach (Transform child in activeTray)
             {
-                Transform t = GetValidTile(wall);
-                if (t != null) availableTiles.Add(t);
+                if (child.name.Contains("Tile letter")) availableTiles.Add(child);
             }
 
             Transform bestTileToJump = null;
@@ -708,7 +764,7 @@ public class GlobalTrayDragger : MonoBehaviour
             {
                 bestTileToJump.name = "JumpingTile";
                 WordChecker.instance.AnimateTrayBlockToGrid(bestTileToJump, bestSlotTransform, bestMatchedKey);
-                CollapseTray(allWalls);
+                CollapseTray(activeTray);
                 jumpedAny = true;
             }
 
@@ -735,7 +791,7 @@ public class GlobalTrayDragger : MonoBehaviour
         int totalRemaining = 0;
         foreach (Transform child in tray)
         {
-            if (child.name.Contains("Wall") && GetValidTile(child) != null)
+            if (child.name.Contains("Tile letter"))
             {
                 totalRemaining++;
             }
@@ -762,90 +818,40 @@ public class GlobalTrayDragger : MonoBehaviour
         return false;
     }
 
-    private void CollapseTray(List<Transform> allWalls)
+    private void CollapseTray(Transform trayObj)
     {
-        bool shiftedSomething = true;
-        int maxIterations = 10;
+        if (trayObj == null) return;
 
-        while (shiftedSomething && maxIterations > 0)
+        // Gather all remaining tiles on the tray
+        List<Transform> currentTiles = new List<Transform>();
+        foreach (Transform child in trayObj)
         {
-            shiftedSomething = false;
-            maxIterations--;
-
-            float maxHeight = float.MinValue;
-            foreach (Transform wall in allWalls)
+            if (child.name.Contains("Tile letter"))
             {
-                float h = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? wall.localPosition.z : wall.localPosition.y;
-                if (h > maxHeight) maxHeight = h;
-            }
-
-            List<Transform> emptyWalls = new List<Transform>();
-            List<Transform> filledWalls = new List<Transform>();
-
-            foreach (Transform wall in allWalls)
-            {
-                if (GetValidTile(wall) == null) emptyWalls.Add(wall);
-                else filledWalls.Add(wall);
-            }
-
-            emptyWalls.Sort((a, b) => {
-                float hA = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? a.localPosition.z : a.localPosition.y;
-                float hB = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? b.localPosition.z : b.localPosition.y;
-                return hB.CompareTo(hA);
-            });
-
-            foreach (Transform emptyWall in emptyWalls)
-            {
-                Transform bestTileWall = null;
-                float minDistance = float.MaxValue;
-                float emptyH = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? emptyWall.localPosition.z : emptyWall.localPosition.y;
-
-                foreach (Transform filledWall in filledWalls)
-                {
-                    float filledH = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? filledWall.localPosition.z : filledWall.localPosition.y;
-
-                    if (filledH >= maxHeight - 0.1f) continue;
-                    if (filledH > emptyH + 0.1f) continue;
-
-                    float dist = Vector3.Distance(emptyWall.localPosition, filledWall.localPosition);
-
-                    if (dist < minDistance)
-                    {
-                        minDistance = dist;
-                        bestTileWall = filledWall;
-                    }
-                }
-
-                if (bestTileWall != null)
-                {
-                    Transform tileToMove = GetValidTile(bestTileWall);
-                    if (tileToMove != null)
-                    {
-                        tileToMove.SetParent(emptyWall, true);
-                        tileToMove.SetAsFirstSibling();
-
-                        Vector3 targetPos = wallDefaultPos.ContainsKey(emptyWall) ? wallDefaultPos[emptyWall] : Vector3.zero;
-                        Vector3 targetScale = wallDefaultScale.ContainsKey(emptyWall) ? wallDefaultScale[emptyWall] : Vector3.one;
-
-                        tileToMove.DOKill();
-                        tileToMove.DOLocalMove(targetPos, shiftDuration).SetEase(Ease.OutQuad);
-                        tileToMove.DOScale(targetScale, shiftDuration).SetEase(Ease.OutQuad);
-
-                        shiftedSomething = true;
-                        filledWalls.Remove(bestTileWall);
-                    }
-                }
+                currentTiles.Add(child);
             }
         }
-    }
 
-    private Transform GetValidTile(Transform wall)
-    {
-        foreach (Transform child in wall)
+        // Sort the remaining tiles Left to Right
+        currentTiles.Sort((a, b) => a.localPosition.x.CompareTo(b.localPosition.x));
+
+        // Slide the sorted remaining tiles into the pre-recorded default slot positions
+        for (int i = 0; i < currentTiles.Count; i++)
         {
-            if (child.name.Contains("Tile letter")) return child;
+            if (i >= slotDefaultPos.Count) break; // Safety check in case we have more tiles than recorded slots
+
+            Transform tile = currentTiles[i];
+            Vector3 targetPos = slotDefaultPos[i];
+            Vector3 targetScale = slotDefaultScale[i];
+
+            // If the tile is not already at its target default slot, shift it down
+            if (Vector3.Distance(tile.localPosition, targetPos) > 0.01f)
+            {
+                tile.DOKill();
+                tile.DOLocalMove(targetPos, shiftDuration).SetEase(Ease.OutQuad);
+                tile.DOScale(targetScale, shiftDuration).SetEase(Ease.OutQuad);
+            }
         }
-        return null;
     }
 
     #endregion
@@ -876,9 +882,22 @@ public class GlobalTrayDragger : MonoBehaviour
         if (BottomGridManager.Instance != null && currentlyDraggedParent.childCount > 0)
         {
             currentlyDraggedParent.localScale = originalScale;
-            Transform anchorChunk = currentlyDraggedParent.GetChild(0);
+            Transform anchorChunk = null;
 
-            finalTargetPos = GetForgivingSnapPosition(anchorChunk);
+            // Find the first available child tile to use as an anchor
+            foreach (Transform child in currentlyDraggedParent)
+            {
+                if (child.name.Contains("Tile letter"))
+                {
+                    anchorChunk = child;
+                    break;
+                }
+            }
+
+            if (anchorChunk != null)
+            {
+                finalTargetPos = GetForgivingSnapPosition(anchorChunk);
+            }
 
             currentlyDraggedParent.localScale = new Vector3(originalScale.x, originalScale.y * dragScaleMultiplier, originalScale.z);
         }
@@ -901,9 +920,19 @@ public class GlobalTrayDragger : MonoBehaviour
         Transform gridParent = BottomGridManager.Instance.transform;
         if (gridParent.childCount == 0) return currentX;
 
-        Transform anchorChunk = currentlyDraggedParent.GetChild(0);
-        float anchorOffsetX = anchorChunk.position.x - currentlyDraggedParent.position.x;
+        Transform anchorChunk = null;
+        foreach (Transform child in currentlyDraggedParent)
+        {
+            if (child.name.Contains("Tile letter"))
+            {
+                anchorChunk = child;
+                break;
+            }
+        }
 
+        if (anchorChunk == null) return currentX;
+
+        float anchorOffsetX = anchorChunk.position.x - currentlyDraggedParent.position.x;
         float nearestX = currentX;
         float minDiff = float.MaxValue;
 
@@ -972,9 +1001,53 @@ public class GlobalTrayDragger : MonoBehaviour
     {
         int targetLayer = LayerMask.NameToLayer(isDragging ? "TraySelected" : "Tray");
 
-        foreach (Transform child in parent)
+        // Change the layer of the Procedural_Tray itself, instead of its children
+        parent.gameObject.layer = targetLayer;
+    }
+
+    #endregion
+    #region Debug & Gizmos
+
+    private void OnDrawGizmos()
+    {
+        if (!showPhysicsGizmos || !Application.isPlaying || currentlyDraggedParent == null || pieceColliders == null) return;
+
+        Vector3 currentPos = currentlyDraggedParent.position;
+
+        // Draw Drag Collision Checks (Red)
+        Gizmos.color = Color.red;
+        foreach (var block in pieceColliders)
         {
-            child.gameObject.layer = targetLayer;
+            Vector3 checkCenter = currentPos + block.unscaledLocalOffset;
+            Vector3 checkExtents = block.unscaledExtents * 0.82f;
+
+            if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+            {
+                checkCenter.y -= dragOffset;
+                checkExtents.y += 2f;
+            }
+            else
+            {
+                checkCenter.z -= dragOffset;
+                checkExtents.z += 2f;
+            }
+
+            // Apply the position and rotation matrix, then draw the box (Extents * 2 = Full Size)
+            Gizmos.matrix = Matrix4x4.TRS(checkCenter, block.rotation, Vector3.one);
+            Gizmos.DrawWireCube(Vector3.zero, checkExtents * 2f);
+            Gizmos.matrix = Matrix4x4.identity; // Reset matrix
+        }
+
+        // Draw Snap Zone Checks (Green)
+        Gizmos.color = Color.green;
+        foreach (var block in pieceColliders)
+        {
+            Vector3 checkCenter = currentPos + block.unscaledLocalOffset;
+            Vector3 checkExtents = block.unscaledExtents * 0.8f;
+
+            Gizmos.matrix = Matrix4x4.TRS(checkCenter, block.rotation, Vector3.one);
+            Gizmos.DrawWireCube(Vector3.zero, checkExtents * 2f);
+            Gizmos.matrix = Matrix4x4.identity; // Reset matrix
         }
     }
 
