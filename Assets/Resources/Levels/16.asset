@@ -16,12 +16,12 @@ MonoBehaviour:
   LevelNumber: 16
   rows: 25
   columns: 8
-  height: 6
+  height: 5
   width: 5
   minutes: 1
   seconds: 30
   bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - MOON
   - PLANET
@@ -31,6 +31,13 @@ MonoBehaviour:
   - MARS
   - SPACE
   tray:
+  - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  horizontal:
+  - Tray 2
   - Tray 1
   excludedChar:
   - {x: 24, y: 6}
@@ -186,8 +193,40 @@ MonoBehaviour:
     Value: O
   - Key: {x: 18, y: 7}
     Value: N
-  trayCells: []
-  trayName: []
+  trayCells:
+  - Key: {x: 3, y: 1}
+    Value: E
+  - Key: {x: 4, y: 1}
+    Value: E
+  - Key: {x: 3, y: 3}
+    Value: A
+  - Key: {x: 4, y: 3}
+    Value: A
+  - Key: {x: 1, y: 0}
+    Value: T
+  - Key: {x: 1, y: 1}
+    Value: U
+  - Key: {x: 1, y: 3}
+    Value: U
+  - Key: {x: 1, y: 4}
+    Value: O
+  trayName:
+  - Key: {x: 3, y: 1}
+    Value: Tray 1
+  - Key: {x: 4, y: 1}
+    Value: Tray 1
+  - Key: {x: 3, y: 3}
+    Value: Tray 2
+  - Key: {x: 4, y: 3}
+    Value: Tray 2
+  - Key: {x: 1, y: 0}
+    Value: Tray 3
+  - Key: {x: 1, y: 1}
+    Value: Tray 3
+  - Key: {x: 1, y: 3}
+    Value: Tray 4
+  - Key: {x: 1, y: 4}
+    Value: Tray 4
   categoryColors:
   - Key: Space
     Value: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
@@ -240,3 +279,4 @@ MonoBehaviour:
     - {x: 24, y: 4}
     - {x: 24, y: 5}
     - {x: 24, y: 6}
+  freezedTray: []
