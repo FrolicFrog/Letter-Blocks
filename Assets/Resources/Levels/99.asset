@@ -16,7 +16,7 @@ MonoBehaviour:
   LevelNumber: 99
   rows: 10
   columns: 8
-  height: 9
+  height: 8
   width: 8
   minutes: 1
   seconds: 30
@@ -40,6 +40,8 @@ MonoBehaviour:
   - Tray 8
   - Tray 9
   - Tray 10
+  horizontal:
+  - Tray 1
   excludedChar:
   - {x: 5, y: 3}
   - {x: 7, y: 4}

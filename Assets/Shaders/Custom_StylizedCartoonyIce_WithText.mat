@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Custom_StylizedCartoonyIce_WithText
+  m_Shader: {fileID: 4800000, guid: bd7f5ca6bd822db42aca3275ab1f24d7, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _ENABLE_HIGHLIGHTS_ON
+  - _ENABLE_PROCEDURAL_ON
+  - _ENABLE_SHINE_ON
+  - _MULTIPLYTEXT_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BottomDarkness: 0.5
+    - _Cull: 2
+    - _DstBlend: 0
+    - _Enable_Highlights: 1
+    - _Enable_Procedural: 1
+    - _Enable_Shine: 1
+    - _FresnelPower: 4
+    - _FrostIntensity: 0.3
+    - _MultiplyText: 1
+    - _ProceduralScale: 15
+    - _ShineAngle: 210
+    - _ShineSize: 0.1
+    - _ShineSoftness: 0.05
+    - _SrcBlend: 1
+    - _TextOpacity: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.34999996, g: 0.75, b: 1, a: 1}
+    - _CoreColor: {r: 0.09999997, g: 0.45, b: 0.8, a: 1}
+    - _FrostColor: {r: 0.8, g: 0.95, b: 1, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShineColor: {r: 1, g: 1, b: 1, a: 0.8}
+  m_BuildTextureStacks: []

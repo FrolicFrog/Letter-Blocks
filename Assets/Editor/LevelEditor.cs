@@ -48,9 +48,9 @@ public class LevelEditor : EditorWindow
     private Dictionary<string, List<Vector2Int>> wordPositions = new();
     private Dictionary<string, List<string>> wordCategory = new();
 
-
-    private string buttonText = "Freeze Tray";
-    private Color buttonColor = Color.green;
+    private HashSet<string> horizontalTrays = new();
+    private string buttonText = "Freeze Tray",horizontalButton = "Lock Horizontal";
+    private Color buttonColor = Color.green,horizontalColor = Color.green;
 
     SerializedObject window;
     SerializedProperty categoryList, trayList;
@@ -215,7 +215,7 @@ public class LevelEditor : EditorWindow
                 tray.Add("Tray 1");
                 trayDropdown = "Tray 1";
                 freezedTray.Clear();
-
+                horizontalTrays.Clear();
                 CachedLvlData = null;
             }
             GUILayout.BeginHorizontal();
@@ -297,7 +297,7 @@ public class LevelEditor : EditorWindow
         currentData.timer = timer;
         currentData.words = words.ToList();
         currentData.excludedChar = excludedChar.ToList();
-
+        currentData.horizontal = horizontalTrays.ToList();
         // Save blocked cells data
         currentData.blockedCells = blockedCells.ToList();
 
@@ -344,7 +344,7 @@ public class LevelEditor : EditorWindow
         timer = CurLvlData.timer;
         words = CurLvlData.words.ToHashSet();
         excludedChar = CurLvlData.excludedChar.ToHashSet();
-
+        horizontalTrays = CurLvlData.horizontal.ToHashSet();
         // Load blocked cells data
         blockedCells = CurLvlData.blockedCells != null ? CurLvlData.blockedCells.ToHashSet() : new HashSet<Vector2Int>();
 
@@ -354,7 +354,7 @@ public class LevelEditor : EditorWindow
         cellTexts = CurLvlData.cellTexts.ToDictionary(item => item.Key, item => item.Value);
         categoryColors = CurLvlData.categoryColors.ToDictionary(item => item.Key, item => item.Value);
         freezedTray = CurLvlData.freezedTray.ToDictionary(item=>item.Key, item => item.Value);
-        wordPositions = new Dictionary<string, List<Vector2Int>>();
+        wordPositions.Clear();
 
         foreach (var item in CurLvlData.wordPositions)
         {
@@ -478,6 +478,18 @@ public class LevelEditor : EditorWindow
             buttonColor = Color.green;
             buttonText = "Freeze Tray";
         }
+
+        if (horizontalTrays.Contains(trayDropdown))
+        {
+            horizontalButton = "Unlock Horizontal";
+            horizontalColor = Color.red;
+        }
+        else
+        {
+            horizontalButton = "Lock Horizontal";
+            horizontalColor= Color.green;
+        }
+
         Color oldColor = GUI.backgroundColor;
         GUI.backgroundColor = buttonColor;
         if (GUILayout.Button(buttonText))
@@ -497,6 +509,25 @@ public class LevelEditor : EditorWindow
         }
         GUI.backgroundColor = oldColor;
         
+
+        GUILayout.EndHorizontal();
+        GUI.backgroundColor = horizontalColor;
+        if (GUILayout.Button(horizontalButton))
+        {
+            if(horizontalTrays.Contains(trayDropdown))
+            {
+                horizontalTrays.Remove(trayDropdown);
+            }
+            else
+            {
+                horizontalTrays.Add(trayDropdown);
+            }
+
+        }
+        GUI.backgroundColor = oldColor;
+            GUILayout.BeginHorizontal();
+        
+
 
         GUILayout.EndHorizontal();
         totalGapWidth = (width - 1) * gap;
@@ -675,7 +706,7 @@ public class LevelEditor : EditorWindow
             GUIStyle overlayTrayStyle = new GUIStyle(EditorStyles.boldLabel)
             {
                 alignment = TextAnchor.UpperCenter,
-                fontSize = 11,
+                fontSize = 15,
                 fontStyle = FontStyle.Bold
             };
 
@@ -690,9 +721,14 @@ public class LevelEditor : EditorWindow
                 // Draw Drop Shadow
                 Rect shadowRect = new Rect(tagRect.x + 1, tagRect.y + 1, tagRect.width, tagRect.height);
                 overlayTrayStyle.normal.textColor = new Color(0f, 0f, 0f, 0.85f);
+
+                if (horizontalTrays.Contains(kvp.Key))
+                {
+                    tName += " ↑↓";
+                }
                 GUI.Label(shadowRect, tName, overlayTrayStyle);
 
-                // Draw Main Label
+
                 overlayTrayStyle.normal.textColor = Color.white;
                 GUI.Label(tagRect, tName, overlayTrayStyle);
             }

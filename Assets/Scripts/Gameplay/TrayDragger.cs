@@ -74,6 +74,7 @@ public class GlobalTrayDragger : MonoBehaviour
 
     [Tooltip("Easing function for the return animation.")]
     public Ease snapBackEase = Ease.OutBack;
+
     [Header("Debug")]
     [Tooltip("Draw wireframes of the physics overlap checks in the Scene view while dragging.")]
     public bool showPhysicsGizmos = true;
@@ -239,7 +240,17 @@ public class GlobalTrayDragger : MonoBehaviour
             if (ResultManager.Instance != null && !ResultManager.Instance.startTimer)
                 ResultManager.Instance.startTimer = true;
 
-            targetPosition.x = Mathf.Clamp(targetPosition.x, bMinX, bMaxX);
+            // --- VERTICAL LOCK CHECK ---
+            bool isVerticalOnly = currentlyDraggedParent.CompareTag("Vertical");
+
+            if (isVerticalOnly)
+            {
+                targetPosition.x = originalPosition.x; // Lock X strictly to original position
+            }
+            else
+            {
+                targetPosition.x = Mathf.Clamp(targetPosition.x, bMinX, bMaxX);
+            }
 
             if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
             {
@@ -289,8 +300,15 @@ public class GlobalTrayDragger : MonoBehaviour
             {
                 Vector3 testSnapPos = targetStepPos;
 
-                // Force the X position to perfectly align with the grid columns below
-                testSnapPos.x = GetNearestGridColumnX(testSnapPos.x);
+                // Force the X position to perfectly align with the grid columns below (unless vertically locked)
+                if (isVerticalOnly)
+                {
+                    testSnapPos.x = originalPosition.x;
+                }
+                else
+                {
+                    testSnapPos.x = GetNearestGridColumnX(testSnapPos.x);
+                }
 
                 if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) testSnapPos.z = proposedSnapValue;
                 else testSnapPos.y = proposedSnapValue;
@@ -446,15 +464,17 @@ public class GlobalTrayDragger : MonoBehaviour
         Vector3 testPos = currentPos;
 
         float diffX = targetPos.x - currentPos.x;
-        int subStepsX = Mathf.Max(1, Mathf.CeilToInt(Mathf.Abs(diffX) / 0.2f));
-        for (int j = 1; j <= subStepsX; j++)
+        if (Mathf.Abs(diffX) > 0.001f) // Only calculate if there's actual X movement target
         {
-            testPos.x = currentPos.x + (diffX * ((float)j / subStepsX));
-            if (!IsOverlappingTray(testPos, true)) finalPos.x = testPos.x;
-            else break;
+            int subStepsX = Mathf.Max(1, Mathf.CeilToInt(Mathf.Abs(diffX) / 0.2f));
+            for (int j = 1; j <= subStepsX; j++)
+            {
+                testPos.x = currentPos.x + (diffX * ((float)j / subStepsX));
+                if (!IsOverlappingTray(testPos, true)) finalPos.x = testPos.x;
+                else break;
+            }
+            testPos = finalPos;
         }
-
-        testPos = finalPos;
 
         if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
         {
@@ -575,27 +595,69 @@ public class GlobalTrayDragger : MonoBehaviour
 
         if (currentlyDraggedParent != null)
         {
-            Renderer[] renderers = currentlyDraggedParent.GetComponentsInChildren<Renderer>();
             Vector3 pivotPos = currentlyDraggedParent.position;
+            float halfCell = gridCellSize * 0.5f;
 
-            float extLeft = 0, extRight = 0, extBottom = 0, extTop = 0;
-            if (renderers.Length > 0)
+            // FIX: measure the piece footprint from the LOGICAL grid positions of
+            // its tiles (world position +/- half a grid cell), not from mesh
+            // Renderer.bounds. The rendered mesh includes the tray's rim/wall,
+            // which is shaped differently per piece and per rotation, so it was
+            // never a consistent measurement — it silently changed extTop (and
+            // therefore the final snap gap) from piece to piece. Tile positions
+            // are exact and grid-aligned, so this is shape-independent.
+            float minWorldX = float.MaxValue, maxWorldX = float.MinValue;
+            float minWorldAxis = float.MaxValue, maxWorldAxis = float.MinValue;
+            bool foundTile = false;
+
+            foreach (Transform child in currentlyDraggedParent)
             {
-                Bounds pieceBounds = renderers[0].bounds;
-                foreach (Renderer r in renderers) pieceBounds.Encapsulate(r.bounds);
+                if (!child.name.Contains("Tile letter")) continue;
+                foundTile = true;
 
-                extLeft = (pivotPos.x - pieceBounds.min.x);
-                extRight = (pieceBounds.max.x - pivotPos.x);
+                float worldX = child.position.x;
+                float worldAxis = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? child.position.z : child.position.y;
 
-                if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+                if (worldX < minWorldX) minWorldX = worldX;
+                if (worldX > maxWorldX) maxWorldX = worldX;
+                if (worldAxis < minWorldAxis) minWorldAxis = worldAxis;
+                if (worldAxis > maxWorldAxis) maxWorldAxis = worldAxis;
+            }
+
+            float extLeft, extRight, extBottom, extTop;
+
+            if (foundTile)
+            {
+                extLeft = pivotPos.x - (minWorldX - halfCell);
+                extRight = (maxWorldX + halfCell) - pivotPos.x;
+
+                float pivotAxis = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? pivotPos.z : pivotPos.y;
+                extBottom = pivotAxis - (minWorldAxis - halfCell);
+                extTop = (maxWorldAxis + halfCell) - pivotAxis;
+            }
+            else
+            {
+                // Fallback: no tile children found, use old renderer-bounds method.
+                Renderer[] renderers = currentlyDraggedParent.GetComponentsInChildren<Renderer>();
+                extLeft = extRight = extBottom = extTop = 0f;
+
+                if (renderers.Length > 0)
                 {
-                    extBottom = (pivotPos.z - pieceBounds.min.z);
-                    extTop = (pieceBounds.max.z - pivotPos.z);
-                }
-                else
-                {
-                    extBottom = (pivotPos.y - pieceBounds.min.y);
-                    extTop = (pieceBounds.max.y - pivotPos.y);
+                    Bounds pieceBounds = renderers[0].bounds;
+                    foreach (Renderer r in renderers) pieceBounds.Encapsulate(r.bounds);
+
+                    extLeft = (pivotPos.x - pieceBounds.min.x);
+                    extRight = (pieceBounds.max.x - pivotPos.x);
+
+                    if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+                    {
+                        extBottom = (pivotPos.z - pieceBounds.min.z);
+                        extTop = (pieceBounds.max.z - pivotPos.z);
+                    }
+                    else
+                    {
+                        extBottom = (pivotPos.y - pieceBounds.min.y);
+                        extTop = (pieceBounds.max.y - pivotPos.y);
+                    }
                 }
             }
 
@@ -626,15 +688,15 @@ public class GlobalTrayDragger : MonoBehaviour
             {
                 Bounds b = trayCollider.bounds;
                 float step = gridCellSize;
-                float halfStep = step * 0.5f;
+                float scannerHalfStep = step * 0.5f;
 
                 // Calculate the true grid dimensions of the mesh
                 int gridX = Mathf.Max(1, Mathf.RoundToInt(b.size.x / step));
                 int gridAxis = Mathf.Max(1, Mathf.RoundToInt((planeMode == PlaneAxisMode.XZ_GroundPlane_3D ? b.size.z : b.size.y) / step));
 
                 // Anchor the scanner to the exact center of the mesh bounds
-                float startX = b.center.x - (gridX * halfStep) + halfStep;
-                float startAxis = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D ? b.center.z : b.center.y) - (gridAxis * halfStep) + halfStep;
+                float startX = b.center.x - (gridX * scannerHalfStep) + scannerHalfStep;
+                float startAxis = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D ? b.center.z : b.center.y) - (gridAxis * scannerHalfStep) + scannerHalfStep;
 
                 for (int x = 0; x < gridX; x++)
                 {
@@ -662,12 +724,12 @@ public class GlobalTrayDragger : MonoBehaviour
                             if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
                             {
                                 centerBox = new Vector3(probeX, currentlyDraggedParent.position.y, probeAxis);
-                                blockData.unscaledExtents = new Vector3(halfStep, 0.25f, halfStep);
+                                blockData.unscaledExtents = new Vector3(scannerHalfStep, 0.25f, scannerHalfStep);
                             }
                             else
                             {
                                 centerBox = new Vector3(probeX, probeAxis, currentlyDraggedParent.position.z);
-                                blockData.unscaledExtents = new Vector3(halfStep, halfStep, 0.25f);
+                                blockData.unscaledExtents = new Vector3(scannerHalfStep, scannerHalfStep, 0.25f);
                             }
 
                             blockData.unscaledLocalOffset = centerBox - pivotPos;
@@ -936,7 +998,12 @@ public class GlobalTrayDragger : MonoBehaviour
         float nearestX = currentX;
         float minDiff = float.MaxValue;
 
-        for (int i = 0; i < gridParent.childCount; i++)
+        // FIX: only consider the true grid slots, not any extra children
+        // (borders, markers, etc.) that may exist under BottomGridManager.
+        int totalTrueSlots = BottomGridManager.Instance.width * BottomGridManager.Instance.height;
+        int slotCount = Mathf.Min(totalTrueSlots, gridParent.childCount);
+
+        for (int i = 0; i < slotCount; i++)
         {
             float slotX = gridParent.GetChild(i).position.x;
             float proposedX = slotX - anchorOffsetX;
@@ -1006,6 +1073,7 @@ public class GlobalTrayDragger : MonoBehaviour
     }
 
     #endregion
+
     #region Debug & Gizmos
 
     private void OnDrawGizmos()

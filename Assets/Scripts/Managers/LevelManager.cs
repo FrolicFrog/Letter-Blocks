@@ -40,7 +40,7 @@ public class LevelManager : Manager<LevelManager>
     public Dictionary<string, Material> categoryColors = new(),trayColors = new();
     public Dictionary<string, List<Vector2Int>> wordPositions = new(),trayPos = new();
     public Dictionary<string, List<string>> wordsCategory = new();
-
+    public HashSet<string> horizontal = new();
 
     [HideInInspector] public int hearts;
    
@@ -83,6 +83,7 @@ public class LevelManager : Manager<LevelManager>
         resultManager.time = _LevelData.minutes*60+_LevelData.seconds;
         letterGridManager.screenPadding = _LevelData.bottomGridSize;
         freezedTray = _LevelData.freezedTray.ToDictionary(item => item.Key, item => item.Value);
+        horizontal = _LevelData.horizontal.ToHashSet();
         foreach (var item in CurLvlData.wordPositions)
         {
             wordPositions[item.Key] = new List<Vector2Int>( item.Value);
@@ -106,6 +107,7 @@ public class LevelManager : Manager<LevelManager>
             wallsDirectionDict[wallDirection.facing] = wallDirection.mesh;
         }
         FreezeManager.trayMat = trayMaterial;
+        FreezeManager.arrow = arrow;
     }
     void LoadInScene()
     {
@@ -231,20 +233,30 @@ public class LevelManager : Manager<LevelManager>
         {
             if (freezedTray.ContainsKey(tray))
             {
-               var trayMesh = letterGridManager.CreateTray(trayPos[tray], 2.4f, freezeTray, new Vector3(.995f, .988f, .988f), false);
+                var trayMesh = letterGridManager.CreateTray(trayPos[tray], 2.4f, freezeTray, new Vector3(.995f, .988f, .988f), false);
                 trayMesh.layer = LayerMask.NameToLayer("Block");
                 var tmp = Instantiate(freezeCount, trayMesh.transform);
-                tmp.transform.localPosition = new Vector3(0,2.75f,0);
+                tmp.transform.localPosition = new Vector3(0, 2.75f, 0);
                 tmp.transform.localScale = Vector3.one;
                 tmp.GetComponentInChildren<TextMeshPro>().text = freezedTray[tray].ToString();
                 var FM = trayMesh.AddComponent<FreezeManager>();
                 FM.totalCount = freezedTray[tray];
                 FM.trayCells = trayCells;
                 FM.trayPos = trayPos[tray];
+                if (horizontal.Contains(tray))
+                {
+                    FM.horizontalLock=true;
+                }
+
             }
             else
             {
-                letterGridManager.CreateTray(trayPos[tray], 2.4f, trayMaterial, new Vector3(.995f, .988f, .988f), true, trayCells);
+               var trayMesh= letterGridManager.CreateTray(trayPos[tray], 2.4f, trayMaterial, new Vector3(.995f, .988f, .988f), true, trayCells);
+                if (horizontal.Contains(tray))
+                {
+                    trayMesh.tag = "Vertical";
+                    Instantiate(arrow,trayMesh.transform);
+                }
             }
         }
         /*for (int height = 0; height < letterGridManager.height; height++)
@@ -464,6 +476,6 @@ public class LevelManager : Manager<LevelManager>
         trayChunks.Clear();
         freezedTray.Clear();
         trayPos.Clear();
-        
+        horizontal.Clear();
     }
 }

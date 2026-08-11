@@ -9,7 +9,9 @@ public class FreezeManager : MonoBehaviour
     [HideInInspector] public int totalCount;
     [HideInInspector] public List<Vector2Int> trayPos;
     [HideInInspector] public Dictionary<Vector2Int, string> trayCells;
+    [HideInInspector] public bool horizontalLock = false;
     public static Material trayMat;
+    public static GameObject arrow;
     public static List<FreezeManager> instances = new List<FreezeManager>();
     void Start()
     {
@@ -28,8 +30,13 @@ public class FreezeManager : MonoBehaviour
             instance.totalCount--;
             if (instance.totalCount <= 0)
             {
-                BottomGridManager.Instance.CreateTray(instance.trayPos, 2.4f,trayMat, new Vector3(.995f, .988f, .988f), true,instance. trayCells);
-                Debug.Log(instance.gameObject.name);
+                if (instance.horizontalLock)
+                {
+                   var tray = BottomGridManager.Instance.CreateTray(instance.trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, instance.trayCells);
+                    tray.tag = "Vertical";
+                    Instantiate(arrow, tray.transform);
+                }
+              
                Destroy(instance.gameObject);
 
                 instances.Remove(instance);

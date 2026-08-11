@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timer: 1
   LevelNumber: 98
-  rows: 20
+  rows: 17
   columns: 8
-  height: 5
+  height: 8
   width: 8
   minutes: 1
   seconds: 30
@@ -25,75 +25,13 @@ MonoBehaviour:
   words: []
   tray:
   - Tray 1
-  - Tray 2
-  - Tray 3
   excludedChar: []
   blockedCells: []
   wordCategory: []
   cellCategory: []
   cellTexts: []
-  trayCells:
-  - Key: {x: 2, y: 6}
-    Value: K
-  - Key: {x: 1, y: 7}
-    Value: K
-  - Key: {x: 2, y: 7}
-    Value: K
-  - Key: {x: 2, y: 3}
-    Value: A
-  - Key: {x: 2, y: 4}
-    Value: A
-  - Key: {x: 3, y: 4}
-    Value: A
-  - Key: {x: 3, y: 5}
-    Value: A
-  - Key: {x: 2, y: 0}
-    Value: H
-  - Key: {x: 2, y: 1}
-    Value: H
-  - Key: {x: 3, y: 1}
-    Value: H
-  - Key: {x: 1, y: 6}
-    Value: K
-  - Key: {x: 1, y: 1}
-    Value: H
-  - Key: {x: 3, y: 7}
-    Value: K
-  - Key: {x: 4, y: 7}
-    Value: K
-  - Key: {x: 4, y: 6}
-    Value: K
-  trayName:
-  - Key: {x: 2, y: 6}
-    Value: Tray 3
-  - Key: {x: 1, y: 7}
-    Value: Tray 3
-  - Key: {x: 2, y: 7}
-    Value: Tray 3
-  - Key: {x: 2, y: 3}
-    Value: Tray 1
-  - Key: {x: 2, y: 4}
-    Value: Tray 1
-  - Key: {x: 3, y: 4}
-    Value: Tray 1
-  - Key: {x: 3, y: 5}
-    Value: Tray 1
-  - Key: {x: 2, y: 0}
-    Value: Tray 2
-  - Key: {x: 2, y: 1}
-    Value: Tray 2
-  - Key: {x: 3, y: 1}
-    Value: Tray 2
-  - Key: {x: 1, y: 6}
-    Value: Tray 3
-  - Key: {x: 1, y: 1}
-    Value: Tray 2
-  - Key: {x: 3, y: 7}
-    Value: Tray 3
-  - Key: {x: 4, y: 7}
-    Value: Tray 3
-  - Key: {x: 4, y: 6}
-    Value: Tray 3
+  trayCells: []
+  trayName: []
   categoryColors: []
   trayColors: []
   wordPositions: []

@@ -14,7 +14,9 @@ Material:
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _ENABLE_HIGHLIGHTS_ON
+  - _ENABLE_PROCEDURAL_ON
   - _ENABLE_SHINE_ON
+  - _MULTIPLYTEXT_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -24,10 +26,14 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BottomDarkness: 0.562
+    - _BottomDarkness: 0.558
     - _ChromaticAberration: 0.015
     - _CrackCutoff: 0.371
     - _CrackDepth: 0.0023
@@ -39,29 +45,35 @@ Material:
     - _Cull: 2
     - _DstBlend: 10
     - _Enable_Highlights: 1
+    - _Enable_Procedural: 1
     - _Enable_Shine: 1
-    - _FresnelPower: 3.47
+    - _FresnelPower: 9.17
     - _FrostBumpScale: 0.256
+    - _FrostIntensity: 0.501
     - _FrostScale: 420.2
     - _IceGlossiness: 1
     - _LightFeather: 0.5
     - _LightStep: -1
+    - _MultiplyText: 1
+    - _ProceduralScale: 1
     - _RefractionStrength: 0.1
     - _RimPower: 2.97
     - _ScatterPower: 3.68
-    - _ShineAngle: 174
-    - _ShineSize: 0.137
-    - _ShineSoftness: 0.261
+    - _ShineAngle: 128
+    - _ShineSize: 0.298
+    - _ShineSoftness: 0.124
     - _Smoothness: 0.95
     - _SpecularFeather: 0.0458
     - _SpecularSize: 0.795
     - _SrcBlend: 5
+    - _TextOpacity: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.19433957, g: 0.8736219, b: 1, a: 0.92156863}
     - _Color: {r: 0.035848916, g: 0.74353373, b: 1, a: 1}
     - _CoreColor: {r: 0.29999998, g: 0.6, b: 0.9, a: 0.95}
     - _CrackColor: {r: 0, g: 0.6796117, b: 1, a: 1}
+    - _FrostColor: {r: 0.8, g: 0.95, b: 1, a: 1}
     - _RimColor: {r: 0.8, g: 0.95, b: 1, a: 1}
     - _ScatterColor: {r: 0.6, g: 0.88, b: 1, a: 1}
     - _ShadowColor: {r: 0, g: 0.3642857, b: 1, a: 0.7}
