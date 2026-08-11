@@ -258,6 +258,10 @@ public class BottomGridManager : MonoBehaviour
         Vector3 horizontalCenterOffset = Vector3.zero;
 
         // 1. Determine horizontal center offset
+        // 1. Determine horizontal center offset
+        // Grid.CellToLocal returns a cell's corner, not its center — add half a cell width so
+        // centering is based on the true outer edge of the last column, not its near corner.
+        // 1. Determine horizontal center offset
         if (width > 0)
         {
             Vector3 rightmostCellPos = grid.CellToLocal(new Vector3Int(width - 1, 0, 0));
@@ -371,12 +375,18 @@ public class BottomGridManager : MonoBehaviour
         // 4. Position & Auto-Size Center Border Object
         if (centerObject != null)
         {
-            Vector3 posMin = grid.CellToLocal(new Vector3Int(0, 0, 0));
-            Vector3 posMax = grid.CellToLocal(new Vector3Int(width - 1, height - 1, 0));
+            // Use the SAME corrected reference frame the tiles are placed in (horizontalCenterOffset +
+            // safeAreaAnchorOffset), then pad by half a cell each side. This ties the border directly
+            // to where the tiles actually render, instead of re-deriving corner math independently —
+            // which is what caused the size/position mismatch (and the asymmetric gap) before.
+            Vector3 firstTileRef = grid.CellToLocal(new Vector3Int(0, 0, 0)) - horizontalCenterOffset + safeAreaAnchorOffset;
+            Vector3 lastTileRef = grid.CellToLocal(new Vector3Int(width - 1, height - 1, 0)) - horizontalCenterOffset + safeAreaAnchorOffset;
 
-            Vector3 gridLocalCenter = (posMin + posMax) / 2f;
-            gridLocalCenter -= horizontalCenterOffset;
-            gridLocalCenter += safeAreaAnchorOffset;
+            Vector3 halfCell = grid.cellSize / 2f;
+            Vector3 tileBoundsMin = Vector3.Min(firstTileRef, lastTileRef) - halfCell;
+            Vector3 tileBoundsMax = Vector3.Max(firstTileRef, lastTileRef) + halfCell;
+
+            Vector3 gridLocalCenter = (tileBoundsMin + tileBoundsMax) / 2f;
 
             if (centerObject.transform.parent == transform)
             {
@@ -389,13 +399,13 @@ public class BottomGridManager : MonoBehaviour
 
             if (autoScaleBorder)
             {
-                Vector3 diff = posMax - posMin;
+                // diff already spans the full outer extent (padded by halfCell on both sides above),
+                // so do NOT add cellSize again here like the old formula did.
+                Vector3 diff = tileBoundsMax - tileBoundsMin;
 
-                float cellZSize = grid.cellSize.z > 0 ? grid.cellSize.z : 0f;
-
-                float totalOuterWidth = Mathf.Abs(diff.x) + grid.cellSize.x + borderPadding.x;
-                float totalOuterHeight = Mathf.Abs(diff.y) + grid.cellSize.y + borderPadding.y;
-                float totalOuterDepth = Mathf.Abs(diff.z) + cellZSize + borderPadding.z;
+                float totalOuterWidth = Mathf.Abs(diff.x) + borderPadding.x;
+                float totalOuterHeight = Mathf.Abs(diff.y) + borderPadding.y;
+                float totalOuterDepth = Mathf.Abs(diff.z) + borderPadding.z;
 
                 bool isChild = centerObject.transform.parent == transform;
                 Vector3 gridScale = transform.localScale;
@@ -406,6 +416,8 @@ public class BottomGridManager : MonoBehaviour
                     totalOuterDepth > 0f ? totalOuterDepth : centerObject.transform.localScale.z
                 );
 
+                // ... everything below this point (the isChild scale conversion, SpriteRenderer /
+                // MeshFilter / fallback scaling branches) stays exactly as it was — unchanged.
                 if (!isChild)
                 {
                     Vector3 parentScale = centerObject.transform.parent != null ? centerObject.transform.parent.lossyScale : Vector3.one;

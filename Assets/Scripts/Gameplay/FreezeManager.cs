@@ -30,13 +30,14 @@ public class FreezeManager : MonoBehaviour
             instance.totalCount--;
             if (instance.totalCount <= 0)
             {
+                var tray = BottomGridManager.Instance.CreateTray(instance.trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, instance.trayCells);
                 if (instance.horizontalLock)
                 {
-                   var tray = BottomGridManager.Instance.CreateTray(instance.trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, instance.trayCells);
+                 
                     tray.tag = "Vertical";
                     Instantiate(arrow, tray.transform);
                 }
-              
+             
                Destroy(instance.gameObject);
 
                 instances.Remove(instance);

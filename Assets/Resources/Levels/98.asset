@@ -14,17 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timer: 1
   LevelNumber: 98
-  rows: 17
+  rows: 3
   columns: 8
   height: 8
   width: 8
   minutes: 1
   seconds: 30
   bottomGridSize: 0.08
-  categoryMaterial: {fileID: 0}
+  categoryMaterial: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
   words: []
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  horizontal: []
   excludedChar: []
   blockedCells: []
   wordCategory: []

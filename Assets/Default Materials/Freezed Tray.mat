@@ -17,6 +17,7 @@ Material:
   - _ENABLE_PROCEDURAL_ON
   - _ENABLE_SHINE_ON
   - _MULTIPLYTEXT_ON
+  - _USETILEUV_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -33,50 +34,123 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BevelCreasePosition: 0.266
+    - _BevelCreaseWidth: 0.01
+    - _BevelGlow: 0.13
+    - _BevelSize: 0.001
+    - _BevelSoftness: 0.1
+    - _BorderDarkness: 0.217
+    - _BorderWidth: 0.01
     - _BottomDarkness: 0.558
     - _ChromaticAberration: 0.015
-    - _CrackCutoff: 0.371
+    - _Contrast: 0.7
+    - _CornerRadius: 0.18
+    - _CrackCutoff: 0.485
     - _CrackDepth: 0.0023
     - _CrackGlow: 1.65
     - _CrackIntensity: 1.7
-    - _CrackParallax: 0.1
-    - _CrackScale: 27.74
-    - _CrackThickness: 0.268
+    - _CrackParallax: 0.027
+    - _CrackScale: 1.05
+    - _CrackThickness: 0.027
+    - _CreaseStrength: 0.962
+    - _CrystalScale: 2.01
     - _Cull: 2
+    - _DepthOffset: 0.027
+    - _DepthParallax: 0
     - _DstBlend: 10
+    - _EdgeFrostBoost: 0.8
+    - _EdgeGlow: 0.52
+    - _EdgeHighlight: 0.203
+    - _EdgeSharpness: 0.093
     - _Enable_Highlights: 1
     - _Enable_Procedural: 1
     - _Enable_Shine: 1
+    - _FacetStrength: 0.036
     - _FresnelPower: 9.17
+    - _FrostAmount: 0.297
     - _FrostBumpScale: 0.256
-    - _FrostIntensity: 0.501
-    - _FrostScale: 420.2
+    - _FrostIntensity: 0.276
+    - _FrostNormalDistort: 0.4
+    - _FrostScale: 2.7
+    - _FrostSharpness: 7.69
+    - _FrostSmoothness: 0.35
+    - _GlossBrightness: 1.2
+    - _GlossIntensity: 0.59
+    - _GlossPower: 24
+    - _GlossThreshold: 0.444
+    - _HighlightThickness: 0.001
     - _IceGlossiness: 1
-    - _LightFeather: 0.5
+    - _LightFeather: 0.001
     - _LightStep: -1
+    - _MeshHeight: 5.5
+    - _Metallic: 0.1
     - _MultiplyText: 1
+    - _NoiseAmount: 1
+    - _NoiseContrast: 2.13
+    - _NoiseScale: -1.54
+    - _NoiseSharpness: 1.07
     - _ProceduralScale: 1
-    - _RefractionStrength: 0.1
-    - _RimPower: 2.97
+    - _RefractionStrength: 0.0539
+    - _RimIntensity: 0.544
+    - _RimPower: 1.4
+    - _Scale: 0.61
     - _ScatterPower: 3.68
+    - _ShatterStrength: 0.1
     - _ShineAngle: 128
+    - _ShineIntensity: 0.86
+    - _ShinePower: 15
     - _ShineSize: 0.298
     - _ShineSoftness: 0.124
     - _Smoothness: 0.95
-    - _SpecularFeather: 0.0458
-    - _SpecularSize: 0.795
+    - _SparkleAmount: 0.398
+    - _SparkleIntensity: 4.06
+    - _SparkleScale: 44.19
+    - _SparkleThreshold: 0.882
+    - _SpecularFeather: 0.001
+    - _SpecularSize: 0.705
     - _SrcBlend: 5
     - _TextOpacity: 1
+    - _TileGrid: 0
+    - _UseTileUV: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.19433957, g: 0.8736219, b: 1, a: 0.92156863}
+    - _BaseColor: {r: 0, g: 0.8098326, b: 1, a: 1}
+    - _BevelColor: {r: 0.049999982, g: 0.17999998, b: 0.47999996, a: 1}
+    - _BottomColor: {r: 0.079999976, g: 0.31999996, b: 0.72, a: 1}
     - _Color: {r: 0.035848916, g: 0.74353373, b: 1, a: 1}
+    - _ColorDeep: {r: 0.3150943, g: 0.64993715, b: 1, a: 1}
+    - _ColorEdge: {r: 0, g: 0.6153846, b: 1, a: 1}
+    - _ColorIridescence: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorMid: {r: 0.6245283, g: 0.89868224, b: 1, a: 1}
     - _CoreColor: {r: 0.29999998, g: 0.6, b: 0.9, a: 0.95}
     - _CrackColor: {r: 0, g: 0.6796117, b: 1, a: 1}
+    - _CrackDeepColor: {r: 0.29999998, g: 0.7, b: 1, a: 0.6}
+    - _CrackSurfaceColor: {r: 1, g: 1, b: 1, a: 0.9}
+    - _CreaseColor: {r: 0.03, g: 0.27999997, b: 0.58, a: 1}
+    - _DeepColor: {r: 0, g: 0.760709, b: 0.9622642, a: 1}
+    - _EdgeGlowColor: {r: 0.9, g: 0.97999996, b: 1, a: 1}
+    - _EdgeShadowColor: {r: 0.04, g: 0.31999996, b: 0.62, a: 1}
+    - _FakeLightDir: {r: -5.83, g: 1, b: 0.02, a: 0}
     - _FrostColor: {r: 0.8, g: 0.95, b: 1, a: 1}
+    - _FrostPatternColor: {r: 0.31999996, g: 0.82, b: 0.97999996, a: 1}
+    - _GridTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
+    - _IceBodyColor: {r: 0.19999996, g: 0.72, b: 1, a: 1}
+    - _IceShadowColor: {r: 0.06999998, g: 0.25999996, b: 0.71, a: 1}
+    - _IceTopColor: {r: 0.63, g: 0.94, b: 1, a: 1}
+    - _LightDir: {r: 0.4, g: 0.8, b: -0.4, a: 0}
+    - _MainColor: {r: 0.21999997, g: 0.72, b: 0.96, a: 1}
     - _RimColor: {r: 0.8, g: 0.95, b: 1, a: 1}
+    - _RimHighlightColor: {r: 1, g: 1, b: 1, a: 1}
     - _ScatterColor: {r: 0.6, g: 0.88, b: 1, a: 1}
-    - _ShadowColor: {r: 0, g: 0.3642857, b: 1, a: 0.7}
+    - _ShadowColor: {r: 0, g: 0.36470604, b: 1, a: 0.9843137}
     - _ShineColor: {r: 1, g: 1, b: 1, a: 0.6}
+    - _SideColor: {r: 0.049999982, g: 0.19999996, b: 0.5, a: 1}
+    - _SideWallColor: {r: 0.049999982, g: 0.21999997, b: 0.54999995, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _TopColor: {r: 0.75, g: 0.95, b: 1, a: 1}
+    - _TopHighlight: {r: 1, g: 1, b: 1, a: 1}
+    - _TopHighlightColor: {r: 0.65, g: 0.92, b: 1, a: 1}
+    - _WallColor: {r: 0.079999976, g: 0.47999996, b: 0.82, a: 1}
   m_BuildTextureStacks: []
