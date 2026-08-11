@@ -36,12 +36,20 @@ Material:
     - _BevelSoftness: 0.047
     - _BevelWidth: 0.458
     - _BorderDetail: 4.18
-    - _BorderIrregularity: 0.712
+    - _BorderIrregularity: 0.813
     - _BorderSoftness: 0.0711
     - _BorderThickness: 0.328
     - _BottomDarkness: 0.5
     - _BumpRadius: 0.123
     - _BumpStrength: 0.71
+    - _CrackBevelWidth: 0.001
+    - _CrackDepthStrength: 4.27
+    - _CrackDepthWidth: 0.1058
+    - _CrackDistortion: 0.348
+    - _CrackOpacity: 0.215
+    - _CrackScale: 0.89
+    - _CrackShine: 0
+    - _CrackWidth: 0.0141
     - _Cull: 2
     - _DstBlend: 0
     - _EdgeStrength: 0
@@ -53,7 +61,10 @@ Material:
     - _FrostContrast: 3
     - _FrostIntensity: 0.3
     - _FrostScale: 5
+    - _GlowPower: 0.5
+    - _GlowStrength: 0
     - _GridCellSize: 7.57
+    - _IceBumpStrength: 0.46
     - _IceGrowthWidth: 0.4
     - _IceJaggedness: 0
     - _IceNoiseScale: 8
@@ -62,36 +73,49 @@ Material:
     - _ProceduralScale: 15
     - _RimHighlight: 0.833
     - _ShadowStrength: 1
+    - _ShardBevelSize: 0.12
+    - _ShardHighlightDirectionality: 0.5
+    - _ShardHighlightSoftness: 0.01
+    - _ShardHighlightWidth: 0.02
+    - _ShardShine: 2
     - _ShineAngle: 210
-    - _ShineSize: 0.1
-    - _ShineSoftness: 0.05
-    - _SideDarkness: 0.805
+    - _ShineBreakup: 0
+    - _ShineSize: 0.676
+    - _ShineSoftness: 0.0359
+    - _ShineSpread: 0.069
+    - _SideDarkness: 1.076
     - _SrcBlend: 1
     - _SurfaceMicroBump: 0
     - _TextOpacity: 1
     - _TileHalfSize: 2.96
     - _ToonStepSize: 0.194
-    - _ToonSteps: 1.6
-    - _TopAreaSpread: 0.63
+    - _ToonSteps: 1
+    - _TopAreaSpread: 0.6
     - _TopBright: 1.416
-    - _TopBrightness: 1.286
+    - _TopBrightness: 1.344
     - _TopCapInset: -0.201
     - _TopEdgeSoftness: 0.02
-    - _TopFaceNormalThreshold: 0.993
+    - _TopFaceNormalThreshold: 0.649
     - _TopHeightCutoff: 0.654
     - _TopInset: -0.154
-    - _TopVariation: 0.732
+    - _TopVariation: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BevelColor: {r: 0.4660377, g: 0.79022914, b: 1, a: 1}
+    - _BevelColor: {r: 0.35283017, g: 0.7519183, b: 1, a: 1}
     - _Color: {r: 0.34999996, g: 0.75, b: 1, a: 1}
     - _CoreColor: {r: 0.09999997, g: 0.45, b: 0.8, a: 1}
+    - _CrackColor: {r: 0.98490566, g: 0.98490566, b: 0.98490566, a: 1}
+    - _CrackDepthColor: {r: 0.14999998, g: 0.45, b: 0.75, a: 1}
+    - _CrackInnerColor: {r: 1, g: 0, b: 0, a: 1}
     - _FrostColor: {r: 0, g: 0.7454543, b: 1, a: 1}
+    - _GlowColor: {r: 0.85, g: 0.96999997, b: 1, a: 1}
     - _IceColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShineColor: {r: 1, g: 1, b: 1, a: 0.8}
-    - _SideColor: {r: 0, g: 0.6380367, b: 1, a: 1}
+    - _ShardHighlightColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShardShadowColor: {r: 0.14999998, g: 0.45, b: 0.75, a: 1}
+    - _ShineColor: {r: 0.073584795, g: 0.70124084, b: 1, a: 0.8}
+    - _SideColor: {r: 0.4509434, g: 0.8024736, b: 1, a: 1}
     - _TileHalfExtents: {r: 0.5, g: 0.5, b: 0, a: 0}
-    - _TopColor: {r: 0.2471698, g: 0.8332726, b: 1, a: 1}
+    - _TopColor: {r: 0.5113207, g: 0.8674328, b: 1, a: 1}
   m_BuildTextureStacks: []
