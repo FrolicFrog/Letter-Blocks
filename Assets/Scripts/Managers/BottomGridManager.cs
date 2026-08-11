@@ -477,8 +477,27 @@ public class BottomGridManager : MonoBehaviour
         }
         return ray.GetPoint(mainCamera.farClipPlane);
     }
-
     #region Procedural Tray Generation
+
+    private struct CrossSection
+    {
+        public Vector2 Outer, Inner;
+        public CrossSection(Vector2 outer, Vector2 inner) { Outer = outer; Inner = inner; }
+    }
+
+    private float GetDistanceToBoundary(Vector2 point, List<(Vector2, Vector2)> boundaries)
+    {
+        float minDist = float.MaxValue;
+        foreach (var seg in boundaries)
+        {
+            Vector2 pa = point - seg.Item1;
+            Vector2 ba = seg.Item2 - seg.Item1;
+            float h = Mathf.Clamp01(Vector2.Dot(pa, ba) / Vector2.Dot(ba, ba));
+            float dist = (pa - ba * h).magnitude;
+            if (dist < minDist) minDist = dist;
+        }
+        return minDist;
+    }
 
     public GameObject CreateTray(List<Vector2Int> gridPos, float wallHeight, Material trayMaterial, Vector3 scale, bool openTray = true, Dictionary<Vector2Int, string> charcter = null)
     {
@@ -542,6 +561,23 @@ public class BottomGridManager : MonoBehaviour
         Vector3 CellLocalPos(int col, int row) =>
             grid.CellToLocal(new Vector3Int(col, row, 0)) + totalAlignmentOffset - shapeCenter;
 
+        // --- Outer Perimeter Line Segments for Distance Calculation ---
+        List<(Vector2, Vector2)> boundarySegments = new List<(Vector2, Vector2)>();
+        Vector3 cell00 = grid.CellToLocal(Vector3Int.zero) + totalAlignmentOffset - shapeCenter;
+        Vector2 basePos = new Vector2(cell00.x - cellWidth / 2f, cell00.z - cellDepth / 2f);
+
+        foreach (Vector2Int p in shape)
+        {
+            if (!shape.Contains(p + Vector2Int.up))
+                boundarySegments.Add((basePos + new Vector2(p.x * cellWidth, (p.y + 1) * cellDepth), basePos + new Vector2((p.x + 1) * cellWidth, (p.y + 1) * cellDepth)));
+            if (!shape.Contains(p + Vector2Int.right))
+                boundarySegments.Add((basePos + new Vector2((p.x + 1) * cellWidth, (p.y + 1) * cellDepth), basePos + new Vector2((p.x + 1) * cellWidth, p.y * cellDepth)));
+            if (!shape.Contains(p + Vector2Int.down))
+                boundarySegments.Add((basePos + new Vector2((p.x + 1) * cellWidth, p.y * cellDepth), basePos + new Vector2(p.x * cellWidth, p.y * cellDepth)));
+            if (!shape.Contains(p + Vector2Int.left))
+                boundarySegments.Add((basePos + new Vector2(p.x * cellWidth, p.y * cellDepth), basePos + new Vector2(p.x * cellWidth, (p.y + 1) * cellDepth)));
+        }
+
         // --- 1. Base Floor Generation ---
         float floorCornerCut = safeCornerRadius;
 
@@ -559,7 +595,7 @@ public class BottomGridManager : MonoBehaviour
                 cellWidth / 2f, cellDepth / 2f, floorThickness,
                 cutTL ? floorCornerCut : 0f, cutTR ? floorCornerCut : 0f,
                 cutBR ? floorCornerCut : 0f, cutBL ? floorCornerCut : 0f,
-                vertices, triangles, uvs
+                vertices, triangles, uvs, boundarySegments
             );
         }
 
@@ -598,7 +634,7 @@ public class BottomGridManager : MonoBehaviour
                     convexTR, concaveTR,
                     convexBR, concaveBR,
                     convexBL, concaveBL,
-                    vertices, triangles, uvs
+                    vertices, triangles, uvs, boundarySegments
                 );
             }
         }
@@ -619,6 +655,31 @@ public class BottomGridManager : MonoBehaviour
         else if (cell1 != null && cell1.GetComponentInChildren<MeshRenderer>() != null) mr.sharedMaterial = cell1.GetComponentInChildren<MeshRenderer>().sharedMaterial;
         else mr.sharedMaterial = new Material(Shader.Find("Standard"));
 
+        // ==========================================
+        // NEW MATERIAL PROPERTY BLOCK LOGIC
+        // ==========================================
+        MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+        mr.GetPropertyBlock(mpb);
+
+        Vector4[] boundaryArray = new Vector4[64];
+        int boundCount = Mathf.Min(boundarySegments.Count, 64);
+
+        for (int i = 0; i < boundCount; i++)
+        {
+            // Pack Start (x,y) and End (z,w) of the segment into a Vector4
+            boundaryArray[i] = new Vector4(
+                boundarySegments[i].Item1.x,
+                boundarySegments[i].Item1.y,
+                boundarySegments[i].Item2.x,
+                boundarySegments[i].Item2.y
+            );
+        }
+
+        mpb.SetFloat("_BoundaryCount", boundCount);
+        mpb.SetVectorArray("_Boundaries", boundaryArray);
+        mr.SetPropertyBlock(mpb);
+        // ==========================================
+
         MeshCollider mc = trayObj.AddComponent<MeshCollider>();
         mc.sharedMesh = proceduralMesh;
 
@@ -628,27 +689,19 @@ public class BottomGridManager : MonoBehaviour
         // --- 5. Spawn Letters Based on Dictionary ---
         if (charcter != null && letter != null)
         {
-            // Loop ONLY through the grid positions that belong to this specific tray
             foreach (Vector2Int pos in gridPos)
             {
-                // Check if our dictionary has a character assigned to this specific position
                 if (charcter.TryGetValue(pos, out string textValue))
                 {
-                    // Map logical grid pos to physical mapping exactly like the 'shape' HashSet above
                     int gridX = pos.y;
                     int gridY = (startCorner == StartCorner.TopLeft) ? (height - 1 - pos.x) : pos.x;
 
-                    // Get local position relative to the newly created trayObj center
                     Vector3 letterLocalPos = CellLocalPos(gridX, gridY);
-
-                    // Add an offset so it sits properly on top of the procedural floor
                     letterLocalPos.y += floorThickness;
 
-                    // Instantiate letter and set it as a child of the Tray
                     GameObject instantiatedLetter = Instantiate(letter, trayObj.transform);
                     instantiatedLetter.transform.localPosition = letterLocalPos;
 
-                    // Find the TMP_Text component in the prefab's children
                     TMP_Text textMesh = instantiatedLetter.GetComponentInChildren<TMP_Text>();
                     if (textMesh != null)
                     {
@@ -662,13 +715,7 @@ public class BottomGridManager : MonoBehaviour
             }
         }
 
-        // Return the created tray object
         return trayObj;
-    }
-    private struct CrossSection
-    {
-        public Vector2 Outer, Inner;
-        public CrossSection(Vector2 outer, Vector2 inner) { Outer = outer; Inner = inner; }
     }
 
     private void GenerateContinuousWalls(HashSet<Vector2Int> shape, float cellW, float cellD, float wallThickness, float height, float bevel, int wallSmoothness, float cornerRadius, int cornerSmoothness, Vector3 offset, Vector3 center, List<Vector3> verts, List<int> tris, List<Vector2> uvs, bool openTray)
@@ -771,7 +818,7 @@ public class BottomGridManager : MonoBehaviour
                 Vector2 startIn = startOut + normIn * wallThickness;
                 Vector2 endIn = endOut + normOut * wallThickness;
 
-                if (cross < -0.01f) // Convex Corners
+                if (cross < -0.01f)
                 {
                     Vector2 pivot = startOut + normIn * cornerRadius;
                     float rOut = cornerRadius;
@@ -790,7 +837,7 @@ public class BottomGridManager : MonoBehaviour
                         sections.Add(new CrossSection(O, I));
                     }
                 }
-                else // Concave Corners & Straights
+                else
                 {
                     Vector2 miter = GetIntersection(startIn, dirIn, endIn, dirOut);
                     sections.Add(new CrossSection(v1, miter));
@@ -810,7 +857,10 @@ public class BottomGridManager : MonoBehaviour
                     Vector2 pt2D = sec.Outer + sectionNorm * mappedX;
 
                     verts.Add(new Vector3(pt2D.x, profile[p].y, pt2D.y));
-                    uvs.Add(new Vector2(mappedX, profile[p].y));
+
+                    float distFromTopEdge = Mathf.Max(0f, profile[p].x);
+                    float isTopFace = (profile[p].y >= (height - bevel - 0.01f)) ? 1.0f : 0.0f;
+                    uvs.Add(new Vector2(distFromTopEdge, isTopFace));
                 }
 
                 int next_i = (i + 1) % sections.Count;
@@ -829,10 +879,10 @@ public class BottomGridManager : MonoBehaviour
     }
 
     private void AddFlatTopMesh(Vector3 cellCenter, float exX, float exZ, float inset, float cornerRadius, int cornerSteps,
-      bool outT, bool outR, bool outB, bool outL,
-      bool convexTL, bool concaveTL, bool convexTR, bool concaveTR,
-      bool convexBR, bool concaveBR, bool convexBL, bool concaveBL,
-      List<Vector3> verts, List<int> tris, List<Vector2> uvs)
+        bool outT, bool outR, bool outB, bool outL,
+        bool convexTL, bool concaveTL, bool convexTR, bool concaveTR,
+        bool convexBR, bool concaveBR, bool convexBL, bool concaveBL,
+        List<Vector3> verts, List<int> tris, List<Vector2> uvs, List<(Vector2, Vector2)> boundarySegments)
     {
         float top = exZ - (outT ? inset : 0);
         float bot = -exZ + (outB ? inset : 0);
@@ -934,10 +984,12 @@ public class BottomGridManager : MonoBehaviour
         for (int k = 0; k < n; k++)
         {
             verts.Add(cellCenter + new Vector3(pts[k].x, 0, pts[k].y));
-            uvs.Add(new Vector2(pts[k].x, pts[k].y));
+
+            Vector2 globalPt = new Vector2(cellCenter.x + pts[k].x, cellCenter.z + pts[k].y);
+            float distInward = GetDistanceToBoundary(globalPt, boundarySegments);
+            uvs.Add(new Vector2(distInward, 1.0f));
         }
 
-        // Proper Upward Winding Order
         for (int k = 1; k < n - 1; k++)
         {
             tris.Add(start);
@@ -946,20 +998,19 @@ public class BottomGridManager : MonoBehaviour
         }
     }
 
-
-    private void AddFloorTileMesh(Vector3 cellCenter, float exX, float exZ, float thickness, float cutTL, float cutTR, float cutBR, float cutBL, List<Vector3> verts, List<int> tris, List<Vector2> uvs)
+    private void AddFloorTileMesh(Vector3 cellCenter, float exX, float exZ, float thickness, float cutTL, float cutTR, float cutBR, float cutBL, List<Vector3> verts, List<int> tris, List<Vector2> uvs, List<(Vector2, Vector2)> boundarySegments)
     {
         List<Vector2> pts = new List<Vector2>
-    {
-        new Vector2(-exX + cutTL, exZ),
-        new Vector2( exX - cutTR, exZ),
-        new Vector2( exX,  exZ - cutTR),
-        new Vector2( exX, -exZ + cutBR),
-        new Vector2( exX - cutBR, -exZ),
-        new Vector2(-exX + cutBL, -exZ),
-        new Vector2(-exX, -exZ + cutBL),
-        new Vector2(-exX,  exZ - cutTL)
-    };
+        {
+            new Vector2(-exX + cutTL, exZ),
+            new Vector2( exX - cutTR, exZ),
+            new Vector2( exX,  exZ - cutTR),
+            new Vector2( exX, -exZ + cutBR),
+            new Vector2( exX - cutBR, -exZ),
+            new Vector2(-exX + cutBL, -exZ),
+            new Vector2(-exX, -exZ + cutBL),
+            new Vector2(-exX,  exZ - cutTL)
+        };
 
         float topY = thickness / 2f;
         float botY = -thickness / 2f;
@@ -968,19 +1019,30 @@ public class BottomGridManager : MonoBehaviour
         {
             int i = verts.Count;
             verts.AddRange(new[] { bl, tl, tr, br });
-            uvs.AddRange(new[] { new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0) });
+            uvs.AddRange(new[] { new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f) });
             tris.AddRange(new[] { i, i + 2, i + 1, i, i + 3, i + 2 });
         }
 
-        void AddNGon(List<Vector2> p, float y, bool reversed)
+        void AddNGon(List<Vector2> p, float y, bool isTop)
         {
             int start = verts.Count;
             int n = p.Count;
             for (int k = 0; k < n; k++)
             {
-                int idx = reversed ? (n - 1 - k) : k;
-                verts.Add(cellCenter + new Vector3(p[idx].x, y, p[idx].y));
-                uvs.Add(new Vector2((float)k / (n - 1), 0f));
+                int idx = isTop ? (n - 1 - k) : k;
+                Vector2 pt = p[idx];
+                verts.Add(cellCenter + new Vector3(pt.x, y, pt.y));
+
+                if (isTop)
+                {
+                    Vector2 globalPt = new Vector2(cellCenter.x + pt.x, cellCenter.z + pt.y);
+                    float distInward = GetDistanceToBoundary(globalPt, boundarySegments);
+                    uvs.Add(new Vector2(distInward, 1.0f));
+                }
+                else
+                {
+                    uvs.Add(new Vector2(0f, 0f));
+                }
             }
             for (int k = 1; k < n - 1; k++)
             {
@@ -1001,6 +1063,5 @@ public class BottomGridManager : MonoBehaviour
         AddNGon(pts, topY, true);
         AddNGon(pts, botY, false);
     }
-
-    #endregion
 }
+    #endregion
