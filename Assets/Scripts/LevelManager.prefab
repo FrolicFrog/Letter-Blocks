@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6117443613079057202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 441881479772441483}
+  - component: {fileID: 2486057075971202684}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &441881479772441483
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6117443613079057202}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2486057075971202684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6117443613079057202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac0f72f0cab169843a4811806b020398, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OriginalLvls:
+    _min: 1
+    _max: 100
+  FakeLvls:
+    _min: 1
+    _max: 100
+  gridManager: {fileID: 0}
+  letterGridManager: {fileID: 0}
+  resultManager: {fileID: 0}
+  categoryHeading: {fileID: 5452144091389951654, guid: 1fe16f4275ecced4ab258d0bc794677a,
+    type: 3}
+  arrow: {fileID: 7323173979894468606, guid: 5983e532c36df1349808ef8f31db95ea, type: 3}
+  freezeCount: {fileID: 6370668080385544879, guid: cac797342e0d1a6498c6049a1b1f8faf,
+    type: 3}
+  categoryHeadingParent: {fileID: 0}
+  trayList: {fileID: 0}
+  levelText: {fileID: 0}
+  borderMaterial: {fileID: 2100000, guid: 0281333be7b0a9349babf1c3f80a07a4, type: 2}
+  trayMaterial: {fileID: 2100000, guid: d18d9efa4d68cc94382408f4900c9d75, type: 2}
+  boxMaterial: {fileID: 2100000, guid: cd1310db1c5b9c14aa82b65e44c4d216, type: 2}
+  trayOutlineMat: {fileID: 2100000, guid: dfb0e59f768f18540a92e3b5ee5394c3, type: 2}
+  freezeTray: {fileID: 2100000, guid: aa560014296c3b4418ffe99851997581, type: 2}
+  freezeBox: {fileID: 2100000, guid: f39dcc99623d06f4f862ddd0b168b685, type: 2}
+  colorSprite:
+  - Key: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
+    Value: {fileID: 21300000, guid: cc126640703e18e4d8d898bdd337ed7f, type: 3}
+  - Key: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
+    Value: {fileID: 21300000, guid: c062463ece95827418dad5a43aa3b3f3, type: 3}
+  - Key: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+    Value: {fileID: 21300000, guid: de6774076d78d064894545da514667dd, type: 3}
+  - Key: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
+    Value: {fileID: 21300000, guid: 182835963a4904247ac626b9942b13d1, type: 3}
+  - Key: {fileID: 2100000, guid: f3c280131a8cfd248be5604224053358, type: 2}
+    Value: {fileID: 21300000, guid: 6545d2fde8d1ebf4e9b9cc8114623d96, type: 3}
+  - Key: {fileID: 2100000, guid: ca799e8bd8421c3489f37623cd01a3e0, type: 2}
+    Value: {fileID: 21300000, guid: c7511c1c98b953846be3eb0da0b4d5ef, type: 3}
+  - Key: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
+    Value: {fileID: 21300000, guid: d3acc447d2e01614da5efaaa45fad5bd, type: 3}
+  - Key: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
+    Value: {fileID: 21300000, guid: d44df94aee1e64e49a9f54cff0b932d0, type: 3}
+  - Key: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+    Value: {fileID: 21300000, guid: 4b8df6785f251ad4ca18cd05cd92505d, type: 3}
+  - Key: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
+    Value: {fileID: 21300000, guid: 40a3b1edccc25fe4b97ecdf64cc36770, type: 3}
+  - Key: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
+    Value: {fileID: 21300000, guid: 57315f292a6e87d4cbac1a20a0ecd5ae, type: 3}
+  - Key: {fileID: 2100000, guid: 74a701c54a3fc14469104bed730e8899, type: 2}
+    Value: {fileID: 21300000, guid: 483c4030e88a6584385ab6e1b8a66881, type: 3}
+  - Key: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}
+    Value: {fileID: 21300000, guid: 232326bc713b650439e9f3336199ddda, type: 3}
+  - Key: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
+    Value: {fileID: 21300000, guid: 95162cf693b20a440ab9c5248adccaf7, type: 3}
+  - Key: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
+    Value: {fileID: 21300000, guid: ddf4c8a1263b12e429c13c51cf37ddb3, type: 3}
+  TestLevelToLoad: 99
+  ticks:
+  - {fileID: 0}
+  - {fileID: 0}
+  hearts: 0

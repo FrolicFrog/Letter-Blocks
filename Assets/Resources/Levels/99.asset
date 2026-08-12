@@ -20,7 +20,7 @@ MonoBehaviour:
   width: 6
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.08
+  bottomGridSize: 0.121
   categoryMaterial: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
   words:
   - SODIUM

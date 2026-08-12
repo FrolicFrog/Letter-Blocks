@@ -655,9 +655,6 @@ public class BottomGridManager : MonoBehaviour
         else if (cell1 != null && cell1.GetComponentInChildren<MeshRenderer>() != null) mr.sharedMaterial = cell1.GetComponentInChildren<MeshRenderer>().sharedMaterial;
         else mr.sharedMaterial = new Material(Shader.Find("Standard"));
 
-        // ==========================================
-        // NEW MATERIAL PROPERTY BLOCK LOGIC
-        // ==========================================
         MaterialPropertyBlock mpb = new MaterialPropertyBlock();
         mr.GetPropertyBlock(mpb);
 
@@ -678,43 +675,89 @@ public class BottomGridManager : MonoBehaviour
         mpb.SetFloat("_BoundaryCount", boundCount);
         mpb.SetVectorArray("_Boundaries", boundaryArray);
         mr.SetPropertyBlock(mpb);
-        // ==========================================
 
         MeshCollider mc = trayObj.AddComponent<MeshCollider>();
         mc.sharedMesh = proceduralMesh;
 
         // Reset tray to perfectly match the cell size boundaries on the floor
         trayObj.transform.localScale = scale;
-
-        // --- 5. Spawn Letters Based on Dictionary ---
+        // --- 5. Spawn Letters Based on Dictionary (Final Uniform Container Fix) ---
+        // --- 5. Spawn Letters Based on Dictionary (Contiguous Neighbor Scaling) ---
         if (charcter != null && letter != null)
         {
+            GameObject lettersContainer = new GameObject("Letters_Container");
+            lettersContainer.transform.SetParent(trayObj.transform);
+
+            // Lift the container up so letters sit on the tray floor
+            lettersContainer.transform.localPosition = new Vector3(0, floorThickness, 0);
+
+            // Keep the container at a 1:1 scale
+            lettersContainer.transform.localScale = Vector3.one;
+
+            // Safe buffer to prevent z-fighting with the wall
+            float buffer = wallThickness * 1.025f;
+
             foreach (Vector2Int pos in gridPos)
             {
                 if (charcter.TryGetValue(pos, out string textValue))
                 {
                     int gridX = pos.y;
                     int gridY = (startCorner == StartCorner.TopLeft) ? (height - 1 - pos.x) : pos.x;
+                    Vector2Int physicalPos = new Vector2Int(gridX, gridY);
 
-                    Vector3 letterLocalPos = CellLocalPos(gridX, gridY);
-                    letterLocalPos.y += floorThickness;
+                    // 1. Check neighbors using the physical grid shape
+                    bool hasTop = shape.Contains(physicalPos + Vector2Int.up);
+                    bool hasBottom = shape.Contains(physicalPos + Vector2Int.down);
+                    bool hasRight = shape.Contains(physicalPos + Vector2Int.right);
+                    bool hasLeft = shape.Contains(physicalPos + Vector2Int.left);
 
-                    GameObject instantiatedLetter = Instantiate(letter, trayObj.transform);
-                    instantiatedLetter.transform.localPosition = letterLocalPos;
+                    // 2. Base cell position
+                    Vector3 rawCenter = CellLocalPos(gridX, gridY);
+
+                    // 3. Calculate internal bounds for this specific block
+                    float halfW = cellWidth / 2f;
+                    float halfD = cellDepth / 2f;
+
+                    // If a neighbor exists, extend all the way to the edge (0 offset). 
+                    // Otherwise, pull back by the wall buffer.
+                    float minX = -halfW + (hasLeft ? 0f : buffer);
+                    float maxX = halfW - (hasRight ? 0f : buffer);
+
+                    float minZ = -halfD + (hasBottom ? 0f : buffer);
+                    float maxZ = halfD - (hasTop ? 0f : buffer);
+
+                    // 4. Determine the new center offset & scale factor
+                    float offsetX = (minX + maxX) / 2f;
+                    float offsetZ = (minZ + maxZ) / 2f;
+
+                    float scaleX = (maxX - minX) / cellWidth;
+                    float scaleZ = (maxZ - minZ) / cellDepth;
+
+                    // 5. Final positioning
+                    Vector3 finalLocalPos = new Vector3(rawCenter.x + offsetX, 0, rawCenter.z + offsetZ);
+
+                    GameObject instantiatedLetter = Instantiate(letter, lettersContainer.transform);
+                    instantiatedLetter.transform.localPosition = finalLocalPos;
+
+                    // Apply the non-uniform scale so it stretches to touch neighbors but shrinks from walls
+                    instantiatedLetter.transform.localScale = new Vector3(scaleX, 2.5f, scaleZ);
 
                     TMP_Text textMesh = instantiatedLetter.GetComponentInChildren<TMP_Text>();
                     if (textMesh != null)
                     {
                         textMesh.text = textValue;
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"No TextMeshPro component found in the children of the 'letter' prefab at grid position {pos}.");
+
+                        // Optional: Counter-scale the text so it doesn't look stretched when the block becomes rectangular
+                        Vector3 baseTextScale = textMesh.transform.localScale;
+                        textMesh.transform.localScale = new Vector3(
+                            baseTextScale.x / scaleX,
+                            baseTextScale.y,
+                            baseTextScale.z / scaleZ
+                        );
                     }
                 }
             }
         }
-
         return trayObj;
     }
 
@@ -818,7 +861,7 @@ public class BottomGridManager : MonoBehaviour
                 Vector2 startIn = startOut + normIn * wallThickness;
                 Vector2 endIn = endOut + normOut * wallThickness;
 
-                if (cross < -0.01f)
+                if (cross < -0.01f) // Convex Corners
                 {
                     Vector2 pivot = startOut + normIn * cornerRadius;
                     float rOut = cornerRadius;
@@ -837,7 +880,7 @@ public class BottomGridManager : MonoBehaviour
                         sections.Add(new CrossSection(O, I));
                     }
                 }
-                else
+                else // Concave Corners & Straights
                 {
                     Vector2 miter = GetIntersection(startIn, dirIn, endIn, dirOut);
                     sections.Add(new CrossSection(v1, miter));
@@ -857,10 +900,7 @@ public class BottomGridManager : MonoBehaviour
                     Vector2 pt2D = sec.Outer + sectionNorm * mappedX;
 
                     verts.Add(new Vector3(pt2D.x, profile[p].y, pt2D.y));
-
-                    float distFromTopEdge = Mathf.Max(0f, profile[p].x);
-                    float isTopFace = (profile[p].y >= (height - bevel - 0.01f)) ? 1.0f : 0.0f;
-                    uvs.Add(new Vector2(distFromTopEdge, isTopFace));
+                    uvs.Add(new Vector2(mappedX, profile[p].y));
                 }
 
                 int next_i = (i + 1) % sections.Count;
@@ -877,7 +917,6 @@ public class BottomGridManager : MonoBehaviour
             }
         }
     }
-
     private void AddFlatTopMesh(Vector3 cellCenter, float exX, float exZ, float inset, float cornerRadius, int cornerSteps,
         bool outT, bool outR, bool outB, bool outL,
         bool convexTL, bool concaveTL, bool convexTR, bool concaveTR,
