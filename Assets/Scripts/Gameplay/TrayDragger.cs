@@ -902,6 +902,8 @@ public class GlobalTrayDragger : MonoBehaviour
 
     #region Release & Snapback
 
+    #region Release & Snapback
+
     private void ReleaseAndSnapBack()
     {
         if (currentlyDraggedParent == null) return;
@@ -915,8 +917,7 @@ public class GlobalTrayDragger : MonoBehaviour
             Vector3 targetSnapPos = trayToJump.position;
             targetSnapPos.x = perfectX;
 
-            // FIX: Bring the tray back down to ground level (original y or z)
-            // so perspective camera parallax doesn't make it look misaligned
+            // Bring the tray back down to ground level (original y or z)
             if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
             {
                 targetSnapPos.y = originalPosition.y;
@@ -944,25 +945,11 @@ public class GlobalTrayDragger : MonoBehaviour
 
         Vector3 finalTargetPos = originalPosition;
 
-        if (BottomGridManager.Instance != null && currentlyDraggedParent.childCount > 0)
+        // Use the mathematically pure pieceColliders to find the snap center, NOT the shifted letters
+        if (BottomGridManager.Instance != null && pieceColliders.Count > 0)
         {
             currentlyDraggedParent.localScale = originalScale;
-            Transform anchorChunk = null;
-
-            foreach (Transform child in currentlyDraggedParent)
-            {
-                if (child.name.Contains("Tile letter"))
-                {
-                    anchorChunk = child;
-                    break;
-                }
-            }
-
-            if (anchorChunk != null)
-            {
-                finalTargetPos = GetForgivingSnapPosition(anchorChunk);
-            }
-
+            finalTargetPos = GetForgivingSnapPosition();
             currentlyDraggedParent.localScale = new Vector3(originalScale.x, originalScale.y * dragScaleMultiplier, originalScale.z);
         }
 
@@ -978,32 +965,14 @@ public class GlobalTrayDragger : MonoBehaviour
 
     private float GetNearestGridColumnX(float currentX)
     {
-        if (BottomGridManager.Instance == null || currentlyDraggedParent == null || currentlyDraggedParent.childCount == 0)
+        if (BottomGridManager.Instance == null || currentlyDraggedParent == null || pieceColliders.Count == 0)
             return currentX;
 
         Transform gridParent = BottomGridManager.Instance.transform;
         if (gridParent.childCount == 0) return currentX;
 
-        Transform anchorChunk = null;
-        foreach (Transform child in currentlyDraggedParent)
-        {
-            if (child.name.Contains("Tile letter"))
-            {
-                anchorChunk = child;
-                break;
-            }
-        }
-
-        if (anchorChunk == null) return currentX;
-
-        // FIX: Temporarily revert to original scale to get the true unscaled physical offset.
-        // This ensures dragging scales don't inflate the offsets and cause visual snapping bugs.
-        Vector3 tempScale = currentlyDraggedParent.localScale;
-        currentlyDraggedParent.localScale = originalScale;
-
-        float anchorOffsetX = anchorChunk.position.x - currentlyDraggedParent.position.x;
-
-        currentlyDraggedParent.localScale = tempScale;
+        // FIX: Use the true mathematical center from our physics scan instead of visually shifted letter child.
+        float anchorOffsetX = pieceColliders[0].unscaledLocalOffset.x;
 
         float nearestX = currentX;
         float minDiff = float.MaxValue;
@@ -1029,33 +998,16 @@ public class GlobalTrayDragger : MonoBehaviour
 
     private float GetNearestGridRowAxis(float currentAxis)
     {
-        if (BottomGridManager.Instance == null || currentlyDraggedParent == null || currentlyDraggedParent.childCount == 0)
+        if (BottomGridManager.Instance == null || currentlyDraggedParent == null || pieceColliders.Count == 0)
             return currentAxis;
 
         Transform gridParent = BottomGridManager.Instance.transform;
         if (gridParent.childCount == 0) return currentAxis;
 
-        Transform anchorChunk = null;
-        foreach (Transform child in currentlyDraggedParent)
-        {
-            if (child.name.Contains("Tile letter"))
-            {
-                anchorChunk = child;
-                break;
-            }
-        }
-
-        if (anchorChunk == null) return currentAxis;
-
-        // Temporarily revert to original scale to get the true unscaled physical offset
-        Vector3 tempScale = currentlyDraggedParent.localScale;
-        currentlyDraggedParent.localScale = originalScale;
-
+        // FIX: Use the true mathematical center from our physics scan instead of visually shifted letter child.
         float anchorOffsetAxis = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
-            ? anchorChunk.position.z - currentlyDraggedParent.position.z
-            : anchorChunk.position.y - currentlyDraggedParent.position.y;
-
-        currentlyDraggedParent.localScale = tempScale;
+            ? pieceColliders[0].unscaledLocalOffset.z
+            : pieceColliders[0].unscaledLocalOffset.y;
 
         float nearestAxis = currentAxis;
         float minDiff = float.MaxValue;
@@ -1082,12 +1034,14 @@ public class GlobalTrayDragger : MonoBehaviour
         return nearestAxis;
     }
 
-    private Vector3 GetForgivingSnapPosition(Transform anchorChunk)
+    private Vector3 GetForgivingSnapPosition()
     {
         Transform gridParent = BottomGridManager.Instance.transform;
 
-        Vector3 anchorPos = anchorChunk.position;
-        Vector3 pivotToAnchorOffset = anchorPos - currentlyDraggedParent.position;
+        // FIX: Replaced the visual anchor with the exact mathematical offset calculated in CalculateDynamicBoundaries
+        Vector3 anchorLocalOffset = pieceColliders[0].unscaledLocalOffset;
+        Vector3 anchorWorldPos = currentlyDraggedParent.position + anchorLocalOffset;
+
         List<Transform> validSlots = new List<Transform>();
 
         int totalTrueSlots = BottomGridManager.Instance.width * BottomGridManager.Instance.height;
@@ -1098,8 +1052,8 @@ public class GlobalTrayDragger : MonoBehaviour
 
         validSlots.Sort((a, b) =>
         {
-            float distA = GetDistanceToSlot(anchorPos, a.position);
-            float distB = GetDistanceToSlot(anchorPos, b.position);
+            float distA = GetDistanceToSlot(anchorWorldPos, a.position);
+            float distB = GetDistanceToSlot(anchorWorldPos, b.position);
             return distA.CompareTo(distB);
         });
 
@@ -1108,7 +1062,7 @@ public class GlobalTrayDragger : MonoBehaviour
         for (int i = 0; i < maxSlotsToTest; i++)
         {
             Transform slot = validSlots[i];
-            Vector3 testSnapPos = slot.position - pivotToAnchorOffset;
+            Vector3 testSnapPos = slot.position - anchorLocalOffset;
 
             if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) testSnapPos.y = currentlyDraggedParent.position.y;
             else testSnapPos.z = currentlyDraggedParent.position.z;
@@ -1135,48 +1089,5 @@ public class GlobalTrayDragger : MonoBehaviour
     }
 
     #endregion
-
-    #region Debug & Gizmos
-
-    private void OnDrawGizmos()
-    {
-        if (!showPhysicsGizmos || !Application.isPlaying || currentlyDraggedParent == null || pieceColliders == null) return;
-
-        Vector3 currentPos = currentlyDraggedParent.position;
-
-        Gizmos.color = Color.red;
-        foreach (var block in pieceColliders)
-        {
-            Vector3 checkCenter = currentPos + block.unscaledLocalOffset;
-            Vector3 checkExtents = block.unscaledExtents * 0.82f;
-
-            if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
-            {
-                checkCenter.y -= dragOffset;
-                checkExtents.y += 2f;
-            }
-            else
-            {
-                checkCenter.z -= dragOffset;
-                checkExtents.z += 2f;
-            }
-
-            Gizmos.matrix = Matrix4x4.TRS(checkCenter, block.rotation, Vector3.one);
-            Gizmos.DrawWireCube(Vector3.zero, checkExtents * 2f);
-            Gizmos.matrix = Matrix4x4.identity;
-        }
-
-        Gizmos.color = Color.green;
-        foreach (var block in pieceColliders)
-        {
-            Vector3 checkCenter = currentPos + block.unscaledLocalOffset;
-            Vector3 checkExtents = block.unscaledExtents * 0.8f;
-
-            Gizmos.matrix = Matrix4x4.TRS(checkCenter, block.rotation, Vector3.one);
-            Gizmos.DrawWireCube(Vector3.zero, checkExtents * 2f);
-            Gizmos.matrix = Matrix4x4.identity;
-        }
-    }
-
     #endregion
 }
