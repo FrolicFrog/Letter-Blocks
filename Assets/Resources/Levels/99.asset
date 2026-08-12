@@ -21,9 +21,10 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.085
-  categoryMaterial: {fileID: 0}
+  categoryMaterial: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
   words:
   - JFG
+  - PIZZA
   - KIWI
   - BREAD
   - BANANA
@@ -48,11 +49,16 @@ MonoBehaviour:
   - {x: 9, y: 2}
   - {x: 6, y: 2}
   - {x: 8, y: 6}
+  - {x: 4, y: 0}
+  - {x: 4, y: 1}
   blockedCells: []
   wordCategory:
   - Key: Family
     Value:
     - JFG
+  - Key: Dog Breeds
+    Value:
+    - PIZZA
   - Key: Food
     Value:
     - KIWI
@@ -123,6 +129,16 @@ MonoBehaviour:
     Value: Family
   - Key: {x: 3, y: 4}
     Value: Family
+  - Key: {x: 4, y: 1}
+    Value: Dog Breeds
+  - Key: {x: 4, y: 2}
+    Value: Dog Breeds
+  - Key: {x: 4, y: 3}
+    Value: Dog Breeds
+  - Key: {x: 4, y: 4}
+    Value: Dog Breeds
+  - Key: {x: 4, y: 5}
+    Value: Dog Breeds
   cellTexts:
   - Key: {x: 9, y: 0}
     Value: A
@@ -184,21 +200,31 @@ MonoBehaviour:
     Value: F
   - Key: {x: 3, y: 4}
     Value: G
-  trayCells:
-  - Key: {x: 1, y: 2}
-    Value: L
-  - Key: {x: 3, y: 0}
+  - Key: {x: 4, y: 1}
     Value: P
-  - Key: {x: 2, y: 1}
-    Value: P
-  - Key: {x: 2, y: 2}
-    Value: K
-  - Key: {x: 2, y: 3}
+  - Key: {x: 4, y: 2}
+    Value: I
+  - Key: {x: 4, y: 3}
+    Value: Z
+  - Key: {x: 4, y: 4}
+    Value: Z
+  - Key: {x: 4, y: 5}
     Value: A
-  - Key: {x: 3, y: 3}
+  trayCells:
+  - Key: {x: 2, y: 3}
     Value: E
+  - Key: {x: 3, y: 0}
+    Value: J
+  - Key: {x: 2, y: 1}
+    Value: L
+  - Key: {x: 1, y: 3}
+    Value: A
+  - Key: {x: 1, y: 2}
+    Value: K
+  - Key: {x: 0, y: 2}
+    Value: L
   - Key: {x: 2, y: 0}
-    Value: P
+    Value: U
   - Key: {x: 1, y: 1}
     Value: P
   - Key: {x: 5, y: 5}
@@ -226,17 +252,17 @@ MonoBehaviour:
   - Key: {x: 1, y: 5}
     Value: P
   trayName:
-  - Key: {x: 1, y: 2}
+  - Key: {x: 2, y: 3}
     Value: Tray 2
   - Key: {x: 3, y: 0}
     Value: Tray 1
   - Key: {x: 2, y: 1}
     Value: Tray 1
-  - Key: {x: 2, y: 2}
+  - Key: {x: 1, y: 3}
     Value: Tray 2
-  - Key: {x: 2, y: 3}
+  - Key: {x: 1, y: 2}
     Value: Tray 2
-  - Key: {x: 3, y: 3}
+  - Key: {x: 0, y: 2}
     Value: Tray 2
   - Key: {x: 2, y: 0}
     Value: Tray 1
@@ -275,6 +301,8 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}
   - Key: Family
     Value: {fileID: 2100000, guid: f3c280131a8cfd248be5604224053358, type: 2}
+  - Key: Dog Breeds
+    Value: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
   trayColors: []
   wordPositions:
   - Key: JFG
@@ -282,6 +310,13 @@ MonoBehaviour:
     - {x: 3, y: 2}
     - {x: 3, y: 3}
     - {x: 3, y: 4}
+  - Key: PIZZA
+    Value:
+    - {x: 4, y: 1}
+    - {x: 4, y: 2}
+    - {x: 4, y: 3}
+    - {x: 4, y: 4}
+    - {x: 4, y: 5}
   - Key: KIWI
     Value:
     - {x: 5, y: 3}

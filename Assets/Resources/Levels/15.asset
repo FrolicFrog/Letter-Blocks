@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.1
-  categoryMaterial: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - HORSE
   - SPATULA
@@ -67,6 +67,7 @@ MonoBehaviour:
   - Tray 14
   - Tray 15
   - Tray 16
+  horizontal: []
   excludedChar:
   - {x: 24, y: 4}
   - {x: 23, y: 2}
@@ -1114,12 +1115,4 @@ MonoBehaviour:
     - {x: 24, y: 5}
     - {x: 24, y: 6}
     - {x: 24, y: 7}
-  freezedTray:
-  - Key: Tray 1
-    Value: 5
-  - Key: Tray 2
-    Value: 7
-  - Key: Tray 3
-    Value: 8
-  - Key: Tray 4
-    Value: 9
+  freezedTray: []
