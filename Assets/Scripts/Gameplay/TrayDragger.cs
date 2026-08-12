@@ -771,7 +771,16 @@ public class GlobalTrayDragger : MonoBehaviour
             if (bestTileToJump != null && bestSlotTransform != null)
             {
                 bestTileToJump.name = "JumpingTile";
+
+                // --- CAPTURE STATE BEFORE REPARENTING ---
+                Vector3 jumpedLocalPos = bestTileToJump.localPosition;
+                Vector3 jumpedLocalScale = bestTileToJump.localScale;
+
                 WordChecker.instance.AnimateTrayBlockToGrid(bestTileToJump, bestSlotTransform, bestMatchedKey);
+
+                // --- TRIGGER SHIFT UP ANIMATION ---
+                ShiftTilesUp(activeTray, jumpedLocalPos, jumpedLocalScale);
+
                 jumpedAny = true;
             }
 
@@ -787,6 +796,47 @@ public class GlobalTrayDragger : MonoBehaviour
             else
             {
                 yield return null;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Scans the tray for remaining tiles in the same column as the jumping tile and pushes them forward/up.
+    /// </summary>
+    private void ShiftTilesUp(Transform tray, Vector3 jumpedTileLocalPos, Vector3 targetScale)
+    {
+        float tolerance = 0.1f;
+        // Keep the shift animation slightly faster than the staggeredJumpDelay to avoid conflicts
+        float shiftDuration = Mathf.Max(0.05f, staggeredJumpDelay - 0.02f);
+
+        foreach (Transform child in tray)
+        {
+            if (!child.name.Contains("Tile letter")) continue;
+
+            Vector3 currentLocalPos = child.localPosition;
+
+            // Ensure they are in the exact same column 
+            if (Mathf.Abs(currentLocalPos.x - jumpedTileLocalPos.x) < tolerance)
+            {
+                // Check if the tile is physically "below" the empty space left by the jumping tile
+                bool isBelow = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+                    ? (currentLocalPos.z < jumpedTileLocalPos.z - tolerance)
+                    : (currentLocalPos.y < jumpedTileLocalPos.y - tolerance);
+
+                if (isBelow)
+                {
+                    // Calculate exactly 1 grid cell up
+                    Vector3 targetLocalPos = currentLocalPos;
+                    if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
+                        targetLocalPos.z += gridCellSize;
+                    else
+                        targetLocalPos.y += gridCellSize;
+
+                    // Stop current local tweens if jumping rapidly, then slide it up and match the target scale
+                    child.DOKill();
+                    child.DOLocalMove(targetLocalPos, shiftDuration).SetEase(Ease.OutQuad);
+                    child.DOScale(targetScale, shiftDuration).SetEase(Ease.OutQuad);
+                }
             }
         }
     }

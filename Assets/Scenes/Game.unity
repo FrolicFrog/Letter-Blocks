@@ -1099,7 +1099,7 @@ MonoBehaviour:
     Value: {fileID: 21300000, guid: 95162cf693b20a440ab9c5248adccaf7, type: 3}
   - Key: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
     Value: {fileID: 21300000, guid: ddf4c8a1263b12e429c13c51cf37ddb3, type: 3}
-  TestLevelToLoad: 15
+  TestLevelToLoad: 99
   ticks: []
   hearts: 0
 --- !u!1 &630893620
@@ -1237,6 +1237,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 630893620}
   m_CullTransparentMesh: 1
+--- !u!1 &725744538
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 725744539}
+  m_Layer: 1
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &725744539
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725744538}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.31, z: 4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1730100927}
+  m_Father: {fileID: 408457077}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &795219532
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1893,7 +1925,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 787e07b466441364190ad484913a3bea,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1730100927}
+      addedObject: {fileID: 725744539}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 787e07b466441364190ad484913a3bea,
         type: 3}
@@ -2446,16 +2478,15 @@ MonoBehaviour:
     m_Bits: 256
   snapLayer:
     serializedVersion: 2
-    m_Bits: 0
-  snapOffset: 0.4
+    m_Bits: 1024
+  snapOffset: 0.9
   planeMode: 0
   snapToGridWhileDragging: 0
   gridCellSize: 1
   slideSpeed: 60
   topWallTriggerOffset: 0.2
   staggeredJumpDelay: 0.4
-  shiftDuration: 0.3
-  boundaryPadding: 0.7
+  boundaryPadding: 0
   dragOffset: 0
   dragScaleMultiplier: 1.1
   scaleUpDuration: 0.15
@@ -2489,12 +2520,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730100926}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0784, y: 1.3517, z: 4.4312}
-  m_LocalScale: {x: 10.460708, y: 2.9285946, z: 1.7554832}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0339, y: 0, z: 0}
+  m_LocalScale: {x: 9.953259, y: 2.9285946, z: 1.7554832}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 408457077}
+  m_Father: {fileID: 725744539}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1730100928
 BoxCollider:
