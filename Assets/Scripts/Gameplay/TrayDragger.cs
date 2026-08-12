@@ -803,11 +803,16 @@ public class GlobalTrayDragger : MonoBehaviour
     /// <summary>
     /// Scans the tray for remaining tiles in the same column as the jumping tile and pushes them forward/up.
     /// </summary>
+    /// <summary>
+    /// Scans the tray for remaining tiles in the same column as the jumping tile and pushes them forward/up
+    /// into the exact local position and scale of the tile that sat before them.
+    /// </summary>
     private void ShiftTilesUp(Transform tray, Vector3 jumpedTileLocalPos, Vector3 targetScale)
     {
         float tolerance = 0.1f;
-        // Keep the shift animation slightly faster than the staggeredJumpDelay to avoid conflicts
         float shiftDuration = Mathf.Max(0.05f, staggeredJumpDelay - 0.02f);
+
+        List<Transform> tilesToShift = new List<Transform>();
 
         foreach (Transform child in tray)
         {
@@ -815,29 +820,47 @@ public class GlobalTrayDragger : MonoBehaviour
 
             Vector3 currentLocalPos = child.localPosition;
 
-            // Ensure they are in the exact same column 
+            // Ensure they are in the exact same column
             if (Mathf.Abs(currentLocalPos.x - jumpedTileLocalPos.x) < tolerance)
             {
-                // Check if the tile is physically "below" the empty space left by the jumping tile
                 bool isBelow = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
                     ? (currentLocalPos.z < jumpedTileLocalPos.z - tolerance)
                     : (currentLocalPos.y < jumpedTileLocalPos.y - tolerance);
 
                 if (isBelow)
                 {
-                    // Calculate exactly 1 grid cell up
-                    Vector3 targetLocalPos = currentLocalPos;
-                    if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
-                        targetLocalPos.z += gridCellSize;
-                    else
-                        targetLocalPos.y += gridCellSize;
-
-                    // Stop current local tweens if jumping rapidly, then slide it up and match the target scale
-                    child.DOKill();
-                    child.DOLocalMove(targetLocalPos, shiftDuration).SetEase(Ease.OutQuad);
-                    child.DOScale(targetScale, shiftDuration).SetEase(Ease.OutQuad);
+                    tilesToShift.Add(child);
                 }
             }
+        }
+
+        // Sort tiles from top (closest to the jumped tile) to bottom
+        tilesToShift.Sort((a, b) =>
+        {
+            float posA = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? a.localPosition.z : a.localPosition.y;
+            float posB = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? b.localPosition.z : b.localPosition.y;
+            return posB.CompareTo(posA);
+        });
+
+        Vector3 nextTargetPos = jumpedTileLocalPos;
+        Vector3 nextTargetScale = targetScale;
+
+        foreach (Transform child in tilesToShift)
+        {
+            Vector3 previousChildPos = child.localPosition;
+            Vector3 previousChildScale = child.localScale;
+
+            child.DOKill();
+
+            // Instantly match scale to avoid DOTween scaling distortion during movement
+            child.localScale = nextTargetScale;
+
+            // Slide smoothly to the exact local position of the tile that sat before it
+            child.DOLocalMove(nextTargetPos, shiftDuration).SetEase(Ease.OutQuad);
+
+            // Cascade target position and scale for subsequent tiles in the same column
+            nextTargetPos = previousChildPos;
+            nextTargetScale = previousChildScale;
         }
     }
 

@@ -37,6 +37,7 @@ MonoBehaviour:
   - Tray 1
   - Tray 2
   - Tray 3
+  - Tray 4
   horizontal: []
   excludedChar:
   - {x: 0, y: 2}
@@ -295,18 +296,18 @@ MonoBehaviour:
     Value: P
   - Key: {x: 4, y: 1}
     Value: M
-  - Key: {x: 4, y: 2}
-    Value: U
   - Key: {x: 4, y: 3}
     Value: O
-  - Key: {x: 5, y: 3}
+  - Key: {x: 4, y: 4}
     Value: M
-  - Key: {x: 5, y: 2}
+  - Key: {x: 3, y: 4}
+    Value: O
+  - Key: {x: 5, y: 4}
     Value: R
   - Key: {x: 5, y: 1}
     Value: T
-  - Key: {x: 5, y: 5}
-    Value: O
+  - Key: {x: 2, y: 4}
+    Value: U
   trayName:
   - Key: {x: 1, y: 1}
     Value: Tray 1
@@ -318,17 +319,17 @@ MonoBehaviour:
     Value: Tray 1
   - Key: {x: 4, y: 1}
     Value: Tray 2
-  - Key: {x: 4, y: 2}
-    Value: Tray 2
   - Key: {x: 4, y: 3}
-    Value: Tray 2
-  - Key: {x: 5, y: 3}
-    Value: Tray 2
-  - Key: {x: 5, y: 2}
-    Value: Tray 2
+    Value: Tray 4
+  - Key: {x: 4, y: 4}
+    Value: Tray 3
+  - Key: {x: 3, y: 4}
+    Value: Tray 3
+  - Key: {x: 5, y: 4}
+    Value: Tray 3
   - Key: {x: 5, y: 1}
     Value: Tray 2
-  - Key: {x: 5, y: 5}
+  - Key: {x: 2, y: 4}
     Value: Tray 3
   categoryColors:
   - Key: Space
