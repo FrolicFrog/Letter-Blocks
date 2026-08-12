@@ -20,7 +20,7 @@ MonoBehaviour:
   width: 4
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.13
+  bottomGridSize: 0.135
   categoryMaterial: {fileID: 0}
   words:
   - RHINO
@@ -38,6 +38,7 @@ MonoBehaviour:
   - Tray 3
   - Tray 4
   - Tray 5
+  horizontal: []
   excludedChar:
   - {x: 9, y: 2}
   - {x: 7, y: 1}

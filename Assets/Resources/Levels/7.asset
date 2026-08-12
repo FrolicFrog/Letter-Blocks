@@ -20,8 +20,8 @@ MonoBehaviour:
   width: 5
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
+  bottomGridSize: 0.13
+  categoryMaterial: {fileID: 0}
   words:
   - HENRY
   - ISABELLA
@@ -49,6 +49,7 @@ MonoBehaviour:
   - Tray 8
   - Tray 9
   - Tray 10
+  horizontal: []
   excludedChar:
   - {x: 9, y: 5}
   - {x: 7, y: 0}

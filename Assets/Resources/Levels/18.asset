@@ -20,7 +20,7 @@ MonoBehaviour:
   width: 5
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.1
+  bottomGridSize: 0.105
   categoryMaterial: {fileID: 0}
   words:
   - CLASS

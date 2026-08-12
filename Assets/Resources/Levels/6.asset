@@ -20,8 +20,8 @@ MonoBehaviour:
   width: 4
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.1
-  categoryMaterial: {fileID: 2100000, guid: f3c280131a8cfd248be5604224053358, type: 2}
+  bottomGridSize: 0.105
+  categoryMaterial: {fileID: 0}
   words:
   - RABBIT
   - SODA
@@ -52,6 +52,7 @@ MonoBehaviour:
   - Tray 9
   - Tray 10
   - Tray 11
+  horizontal: []
   excludedChar:
   - {x: 8, y: 2}
   - {x: 9, y: 7}

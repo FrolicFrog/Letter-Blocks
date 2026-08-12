@@ -20,7 +20,7 @@ MonoBehaviour:
   width: 6
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.1
+  bottomGridSize: 0.095
   categoryMaterial: {fileID: 0}
   words:
   - HORSE
@@ -781,10 +781,6 @@ MonoBehaviour:
     Value: A
   - Key: {x: 1, y: 5}
     Value: E
-  - Key: {x: 2, y: 3}
-    Value: I
-  - Key: {x: 3, y: 3}
-    Value: S
   - Key: {x: 2, y: 5}
     Value: O
   - Key: {x: 3, y: 5}
@@ -821,6 +817,10 @@ MonoBehaviour:
     Value: P
   - Key: {x: 7, y: 3}
     Value: E
+  - Key: {x: 2, y: 3}
+    Value: S
+  - Key: {x: 3, y: 3}
+    Value: I
   trayName:
   - Key: {x: 0, y: 0}
     Value: Tray 1
@@ -862,10 +862,6 @@ MonoBehaviour:
     Value: Tray 6
   - Key: {x: 1, y: 5}
     Value: Tray 6
-  - Key: {x: 2, y: 3}
-    Value: Tray 7
-  - Key: {x: 3, y: 3}
-    Value: Tray 7
   - Key: {x: 2, y: 5}
     Value: Tray 8
   - Key: {x: 3, y: 5}
@@ -902,6 +898,10 @@ MonoBehaviour:
     Value: Tray 16
   - Key: {x: 7, y: 3}
     Value: Tray 16
+  - Key: {x: 2, y: 3}
+    Value: Tray 7
+  - Key: {x: 3, y: 3}
+    Value: Tray 7
   categoryColors:
   - Key: Jewels
     Value: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}

@@ -20,8 +20,8 @@ MonoBehaviour:
   width: 5
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
+  bottomGridSize: 0.13
+  categoryMaterial: {fileID: 0}
   words:
   - BLUSH
   - ROMANTIC
@@ -44,6 +44,7 @@ MonoBehaviour:
   - Tray 5
   - Tray 6
   - Tray 7
+  horizontal: []
   excludedChar:
   - {x: 10, y: 3}
   - {x: 8, y: 5}
@@ -567,3 +568,4 @@ MonoBehaviour:
     - {x: 12, y: 3}
     - {x: 12, y: 4}
     - {x: 12, y: 5}
+  freezedTray: []

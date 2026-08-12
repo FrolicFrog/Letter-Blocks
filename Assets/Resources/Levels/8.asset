@@ -20,7 +20,7 @@ MonoBehaviour:
   width: 5
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.12
+  bottomGridSize: 0.13
   categoryMaterial: {fileID: 0}
   words:
   - DOCTOR
@@ -42,6 +42,7 @@ MonoBehaviour:
   - Tray 6
   - Tray 7
   - Tray 8
+  horizontal: []
   excludedChar:
   - {x: 7, y: 5}
   - {x: 5, y: 3}
