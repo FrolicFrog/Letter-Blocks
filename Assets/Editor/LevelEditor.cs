@@ -1,4 +1,3 @@
-using Codice.Client.BaseCommands;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +10,7 @@ public class LevelEditor : EditorWindow
     private int columns = 8;
     private int height = 8; // Bottom Grid Rows
     private int width = 8;  // Bottom Grid Columns
-   
+
     private int minutes = 1, seconds = 30;
     private int freezeCount;
     private bool timer = true;
@@ -49,8 +48,8 @@ public class LevelEditor : EditorWindow
     private Dictionary<string, List<string>> wordCategory = new();
 
     private HashSet<string> horizontalTrays = new();
-    private string buttonText = "Freeze Tray",horizontalButton = "Lock Horizontal";
-    private Color buttonColor = Color.green,horizontalColor = Color.green;
+    private string buttonText = "Freeze Tray", horizontalButton = "Lock Horizontal";
+    private Color buttonColor = Color.green, horizontalColor = Color.green;
 
     SerializedObject window;
     SerializedProperty categoryList, trayList;
@@ -310,7 +309,7 @@ public class LevelEditor : EditorWindow
 
         currentData.trayName = trayName.Select(kvp => new KeyValueGroup<Vector2Int, string>(kvp.Key, kvp.Value)).ToList();
         currentData.trayCells = trayCells.Select(kvp => new KeyValueGroup<Vector2Int, string>(kvp.Key, kvp.Value)).ToList();
-        currentData.freezedTray = freezedTray.Select(kvg=>new KeyValueGroup<string, int>(kvg.Key, kvg.Value)).ToList();
+        currentData.freezedTray = freezedTray.Select(kvg => new KeyValueGroup<string, int>(kvg.Key, kvg.Value)).ToList();
         var list = new List<KeyValueGroup<string, List<Vector2Int>>>();
         foreach (var kvp in wordPositions)
         {
@@ -353,7 +352,7 @@ public class LevelEditor : EditorWindow
         cellCategory = CurLvlData.cellCategory.ToDictionary(item => item.Key, item => item.Value);
         cellTexts = CurLvlData.cellTexts.ToDictionary(item => item.Key, item => item.Value);
         categoryColors = CurLvlData.categoryColors.ToDictionary(item => item.Key, item => item.Value);
-        freezedTray = CurLvlData.freezedTray.ToDictionary(item=>item.Key, item => item.Value);
+        freezedTray = CurLvlData.freezedTray.ToDictionary(item => item.Key, item => item.Value);
         wordPositions.Clear();
 
         foreach (var item in CurLvlData.wordPositions)
@@ -423,7 +422,7 @@ public class LevelEditor : EditorWindow
         GUILayout.Space(30);
 
         // --- Bottom Grid Controls & Display ---
-        
+
         height = EditorGUILayout.IntSlider("Bottom Grid Rows", height, 1, 20);
         width = EditorGUILayout.IntSlider("Bottom Grid Columns", width, 1, 20);
         screenPadding = EditorGUILayout.Slider("Screen Padding", screenPadding, 0, 0.5f);
@@ -434,9 +433,9 @@ public class LevelEditor : EditorWindow
         EditorGUILayout.PropertyField(trayList);
         if (EditorGUI.EndChangeCheck())
         {
-        
+
             window.ApplyModifiedProperties();
-           
+
         }
         else
         {
@@ -465,11 +464,11 @@ public class LevelEditor : EditorWindow
             freezeCount = EditorGUILayout.IntField("Freeze Count:", freezeCount);
             if (EditorGUI.EndChangeCheck())
             {
-               
+
                 freezedTray[trayDropdown] = freezeCount;
 
             }
-           freezeCount= freezedTray[trayDropdown];
+            freezeCount = freezedTray[trayDropdown];
             buttonColor = Color.yellow;
             buttonText = "Unfreeze Tray";
         }
@@ -487,7 +486,7 @@ public class LevelEditor : EditorWindow
         else
         {
             horizontalButton = "Lock Horizontal";
-            horizontalColor= Color.green;
+            horizontalColor = Color.green;
         }
 
         Color oldColor = GUI.backgroundColor;
@@ -496,7 +495,7 @@ public class LevelEditor : EditorWindow
         {
             if (freezedTray.ContainsKey(trayDropdown))
             {
-              
+
                 freezedTray.Remove(trayDropdown);
             }
             else
@@ -508,13 +507,13 @@ public class LevelEditor : EditorWindow
             }
         }
         GUI.backgroundColor = oldColor;
-        
+
 
         GUILayout.EndHorizontal();
         GUI.backgroundColor = horizontalColor;
         if (GUILayout.Button(horizontalButton))
         {
-            if(horizontalTrays.Contains(trayDropdown))
+            if (horizontalTrays.Contains(trayDropdown))
             {
                 horizontalTrays.Remove(trayDropdown);
             }
@@ -525,8 +524,8 @@ public class LevelEditor : EditorWindow
 
         }
         GUI.backgroundColor = oldColor;
-            GUILayout.BeginHorizontal();
-        
+        GUILayout.BeginHorizontal();
+
 
 
         GUILayout.EndHorizontal();
@@ -681,7 +680,7 @@ public class LevelEditor : EditorWindow
                         cellText = trayCells[gridPos];
                         activeStyle = boldLabelStyle;
                     }
-                  
+
                 }
                 else if (!isPrimary && blockedCells.Contains(gridPos))
                 {
@@ -689,7 +688,7 @@ public class LevelEditor : EditorWindow
                     activeStyle = new GUIStyle(boldLabelStyle) { fontSize = 11 };
                 }
 
-               
+
 
                 Color previousContentColor = GUI.contentColor;
                 GUI.contentColor = cellHasText ? GetContrastColor(cellBgColor) : Color.white;
@@ -880,8 +879,16 @@ public class LevelEditor : EditorWindow
                     {
                         if (trayCells.ContainsKey(gridPos))
                         {
-                            trayCells.Remove(gridPos);
-                            trayName.Remove(gridPos);
+                            // If there are multiple characters, remove just the last one
+                            if (trayCells[gridPos].Length > 1)
+                            {
+                                trayCells[gridPos] = trayCells[gridPos].Substring(0, trayCells[gridPos].Length - 1);
+                            }
+                            else // Otherwise remove the whole cell data
+                            {
+                                trayCells.Remove(gridPos);
+                                trayName.Remove(gridPos);
+                            }
                             e.Use();
                             Repaint();
                         }
@@ -901,7 +908,18 @@ public class LevelEditor : EditorWindow
                     {
                         if (!blockedCells.Contains(gridPos))
                         {
-                            trayCells[gridPos] = e.character.ToString().ToUpper();
+                            string newChar = e.character.ToString().ToUpper();
+
+                            // If cell already has a character and length is less than 2, append it. Otherwise replace.
+                            if (trayCells.ContainsKey(gridPos) && trayCells[gridPos].Length < 2)
+                            {
+                                trayCells[gridPos] += newChar;
+                            }
+                            else
+                            {
+                                trayCells[gridPos] = newChar;
+                            }
+
                             if (!string.IsNullOrEmpty(trayDropdown))
                             {
                                 trayName[gridPos] = trayDropdown;
@@ -1109,12 +1127,12 @@ public class LevelEditor : EditorWindow
             .Select(pos => cellTexts[pos])
             .ToList();
 
-        // 2. Collect characters typed in the bottom grid
+        // 2. Collect characters typed in the bottom grid, splitting 2-character strings into individuals
         List<string> bottomChars = trayCells
             .Where(kvp => !string.IsNullOrEmpty(kvp.Value))
             .OrderBy(kvp => kvp.Key.x)
             .ThenBy(kvp => kvp.Key.y)
-            .Select(kvp => kvp.Value)
+            .SelectMany(kvp => kvp.Value.Select(c => c.ToString()))
             .ToList();
 
         List<string> extraCharsList = new List<string>();

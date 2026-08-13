@@ -1,8 +1,9 @@
-using UnityEngine;
-using TMPro;
 using DG.Tweening;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class GlobalTrayDragger : MonoBehaviour
 {
@@ -134,7 +135,7 @@ public class GlobalTrayDragger : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, trayLayer))
         {
-            if (hit.transform.parent != null && hit.transform.name.Contains("Tile letter"))
+            if (hit.transform.parent != null && (hit.transform.name.Contains("Tile letter") || hit.transform.name.Contains("Double Letter")))
             {
                 currentlyDraggedParent = hit.transform.parent;
             }
@@ -716,9 +717,14 @@ public class GlobalTrayDragger : MonoBehaviour
             bool jumpedAny = false;
             List<Transform> availableTiles = new List<Transform>();
 
+            // Robust check: Collect any valid piece blocks (ignoring arrows, borders, etc.)
             foreach (Transform child in activeTray)
             {
-                if (child.name.Contains("Tile letter")) availableTiles.Add(child);
+                if (child.name == "JumpingTile") continue;
+                if (child.GetComponentInChildren<TextMeshPro>(true) != null)
+                {
+                    availableTiles.Add(child);
+                }
             }
 
             Transform bestTileToJump = null;
@@ -742,13 +748,50 @@ public class GlobalTrayDragger : MonoBehaviour
                         if (lvlManager.excludedChar.Contains(key))
                         {
                             string neededLetter = lvlManager.cellTexts[key];
+                            bool foundMatch = false;
 
                             foreach (Transform tile in availableTiles)
                             {
-                                var textMesh = tile.GetComponentInChildren<TextMeshPro>();
-                                if (textMesh != null && textMesh.text == neededLetter)
+                                Transform nestedTile = tile.Find("Tile letter");
+                                Transform text0 = tile.Find("Text 0");
+
+                                // Check if it's the Double Letter block (by structural hierarchy)
+                                if (nestedTile != null || text0 != null)
                                 {
-                                    bestTileToJump = tile;
+                                    if (nestedTile != null && nestedTile.parent == tile)
+                                    {
+                                        // Top layer is still attached
+                                        var tm1 = nestedTile.GetComponentInChildren<TextMeshPro>(true);
+                                        if (tm1 != null && tm1.text == neededLetter)
+                                        {
+                                            bestTileToJump = nestedTile; // Jump the inner tile layer
+                                            if (text0 != null) text0.gameObject.SetActive(true); // Enable bottom text
+                                            foundMatch = true;
+                                        }
+                                    }
+                                    else if (text0 != null && text0.gameObject.activeSelf)
+                                    {
+                                        // Inner tile is gone, check the base block
+                                        var tm0 = text0.GetComponent<TextMeshPro>();
+                                        if (tm0 != null && tm0.text == neededLetter)
+                                        {
+                                            bestTileToJump = tile; // Jump the remaining double letter base block
+                                            foundMatch = true;
+                                        }
+                                    }
+                                }
+                                else // Standard Tile letter behavior
+                                {
+                                    var textMesh = tile.GetComponentInChildren<TextMeshPro>(true);
+                                    if (textMesh != null && textMesh.text == neededLetter)
+                                    {
+                                        bestTileToJump = tile;
+                                        foundMatch = true;
+                                    }
+                                }
+
+                                if (foundMatch)
+                                {
                                     int index = key.x * cols + key.y;
                                     Transform cellContainer = grid.transform.GetChild(index);
 
@@ -772,14 +815,19 @@ public class GlobalTrayDragger : MonoBehaviour
             {
                 bestTileToJump.name = "JumpingTile";
 
-                // --- CAPTURE STATE BEFORE REPARENTING ---
-                Vector3 jumpedLocalPos = bestTileToJump.localPosition;
-                Vector3 jumpedLocalScale = bestTileToJump.localScale;
+                // Check if we are jumping a full tray base block or just extracting a nested top letter
+                bool isTrayLevelChild = bestTileToJump.parent == activeTray;
+
+                Vector3 jumpedLocalPos = isTrayLevelChild ? bestTileToJump.localPosition : bestTileToJump.parent.localPosition;
+                Vector3 jumpedLocalScale = isTrayLevelChild ? bestTileToJump.localScale : bestTileToJump.parent.localScale;
 
                 WordChecker.instance.AnimateTrayBlockToGrid(bestTileToJump, bestSlotTransform, bestMatchedKey);
 
-                // --- TRIGGER SHIFT UP ANIMATION ---
-                ShiftTilesUp(activeTray, jumpedLocalPos, jumpedLocalScale);
+                // Only cascade and shift blocks if a root-level base block left the tray completely
+                if (isTrayLevelChild)
+                {
+                    ShiftTilesUp(activeTray, jumpedLocalPos, jumpedLocalScale);
+                }
 
                 jumpedAny = true;
             }
@@ -801,31 +849,32 @@ public class GlobalTrayDragger : MonoBehaviour
     }
 
     /// <summary>
-    /// Scans the tray for remaining tiles in the same column as the jumping tile and pushes them forward/up.
-    /// </summary>
-    /// <summary>
     /// Scans the tray for remaining tiles in the same column as the jumping tile and pushes them forward/up
     /// into the exact local position and scale of the tile that sat before them.
     /// </summary>
-    private void ShiftTilesUp(Transform tray, Vector3 jumpedTileLocalPos, Vector3 targetScale)
+    private void ShiftTilesUp(Transform tray, Vector3 jumpedTileLocalPos, Vector3 jumpedTileLocalScale)
     {
-        float tolerance = 0.1f;
+        float colTolerance = gridCellSize * 0.4f; // More forgiving tolerance for columns offsets
+        float rowTolerance = 0.05f; // Strict tolerance for row height
         float shiftDuration = Mathf.Max(0.05f, staggeredJumpDelay - 0.02f);
 
         List<Transform> tilesToShift = new List<Transform>();
 
         foreach (Transform child in tray)
         {
-            if (!child.name.Contains("Tile letter")) continue;
+            if (child.name == "JumpingTile") continue;
+
+            // Only push blocks that actually have Text (ignores tray walls/arrows)
+            if (child.GetComponentInChildren<TextMeshPro>(true) == null) continue;
 
             Vector3 currentLocalPos = child.localPosition;
 
-            // Ensure they are in the exact same column
-            if (Mathf.Abs(currentLocalPos.x - jumpedTileLocalPos.x) < tolerance)
+            // Ensure they are strictly in the same column
+            if (Mathf.Abs(currentLocalPos.x - jumpedTileLocalPos.x) < colTolerance)
             {
                 bool isBelow = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
-                    ? (currentLocalPos.z < jumpedTileLocalPos.z - tolerance)
-                    : (currentLocalPos.y < jumpedTileLocalPos.y - tolerance);
+                    ? (currentLocalPos.z < jumpedTileLocalPos.z - rowTolerance)
+                    : (currentLocalPos.y < jumpedTileLocalPos.y - rowTolerance);
 
                 if (isBelow)
                 {
@@ -843,7 +892,7 @@ public class GlobalTrayDragger : MonoBehaviour
         });
 
         Vector3 nextTargetPos = jumpedTileLocalPos;
-        Vector3 nextTargetScale = targetScale;
+        Vector3 nextTargetScale = jumpedTileLocalScale;
 
         foreach (Transform child in tilesToShift)
         {
@@ -852,11 +901,9 @@ public class GlobalTrayDragger : MonoBehaviour
 
             child.DOKill();
 
-            // Instantly match scale to avoid DOTween scaling distortion during movement
-            child.localScale = nextTargetScale;
-
-            // Slide smoothly to the exact local position of the tile that sat before it
+            // Slide smoothly to the exact local position and scale of the tile that sat before it
             child.DOLocalMove(nextTargetPos, shiftDuration).SetEase(Ease.OutQuad);
+            child.DOScale(nextTargetScale, shiftDuration).SetEase(Ease.OutQuad);
 
             // Cascade target position and scale for subsequent tiles in the same column
             nextTargetPos = previousChildPos;
@@ -871,7 +918,9 @@ public class GlobalTrayDragger : MonoBehaviour
         int totalRemaining = 0;
         foreach (Transform child in tray)
         {
-            if (child.name.Contains("Tile letter"))
+            if (child.name == "JumpingTile") continue;
+
+            if (child.GetComponentInChildren<TextMeshPro>(true) != null)
             {
                 totalRemaining++;
             }
@@ -899,8 +948,6 @@ public class GlobalTrayDragger : MonoBehaviour
     }
 
     #endregion
-
-    #region Release & Snapback
 
     #region Release & Snapback
 
@@ -1088,6 +1135,5 @@ public class GlobalTrayDragger : MonoBehaviour
         parent.gameObject.layer = targetLayer;
     }
 
-    #endregion
     #endregion
 }

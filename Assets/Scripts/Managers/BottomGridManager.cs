@@ -22,7 +22,7 @@ public class BottomGridManager : MonoBehaviour
 
     [Header("Slot & Tray References")]
     public GameObject emptySlot;
-    public GameObject cell1, cell2, outline, letter, blockWall;
+    public GameObject cell1, cell2, outline, letter, blockWall, doubleLetter;
     public List<WallDirectionPair> wallsDirection;
 
     [Header("Center Border Settings")]
@@ -677,7 +677,7 @@ public class BottomGridManager : MonoBehaviour
         trayObj.transform.localScale = scale;
 
         // --- 5. Spawn Letters Based on Dictionary ---
-        if (charcter != null && letter != null)
+        if (charcter != null && (letter != null || doubleLetter != null))
         {
             foreach (Vector2Int pos in gridPos)
             {
@@ -707,25 +707,55 @@ public class BottomGridManager : MonoBehaviour
                     letterLocalPos.x += offsetX;
                     letterLocalPos.z += offsetZ;
 
-                    GameObject instantiatedLetter = Instantiate(letter, trayObj.transform);
+                    // Choose prefab based on string length
+                    GameObject prefabToInstantiate = (textValue.Length == 2 && doubleLetter != null) ? doubleLetter : letter;
+                    if (prefabToInstantiate == null) continue;
+
+                    GameObject instantiatedLetter = Instantiate(prefabToInstantiate, trayObj.transform);
                     instantiatedLetter.transform.localPosition = letterLocalPos;
 
                     // 4. Scale the letter block proportionally so it dynamically fits without overlapping
-                    Vector3 baseScale = letter.transform.localScale;
+                    Vector3 baseScale = prefabToInstantiate.transform.localScale;
                     instantiatedLetter.transform.localScale = new Vector3(
                         baseScale.x * (availWidth / cellWidth),
                         baseScale.y, // Preserve original Y height to keep blocks flat
                         baseScale.z * (availDepth / cellDepth)
                     );
 
-                    TMP_Text textMesh = instantiatedLetter.GetComponentInChildren<TMP_Text>();
-                    if (textMesh != null)
+                    // Handle text assignment based on prefab selection
+                    if (textValue.Length == 2 && doubleLetter != null)
                     {
-                        textMesh.text = textValue;
+                        // Target "Text 0" based on image_5e6942.png hierarchy
+                        Transform text0Transform = instantiatedLetter.transform.Find("Text 0");
+                        if (text0Transform != null)
+                        {
+                            TMP_Text tmp0 = text0Transform.GetComponent<TMP_Text>();
+                            if (tmp0 != null) tmp0.text = textValue[0].ToString();
+
+                            // Disable the Text 0 GameObject
+                            text0Transform.gameObject.SetActive(false);
+                        }
+
+                        // Target "Text 1" within "Tile letter" based on image_5e6942.png hierarchy
+                        Transform text1Transform = instantiatedLetter.transform.Find("Tile letter/Text 1");
+                        if (text1Transform != null)
+                        {
+                            TMP_Text tmp1 = text1Transform.GetComponent<TMP_Text>();
+                            if (tmp1 != null) tmp1.text = textValue[1].ToString();
+                        }
                     }
                     else
                     {
-                        Debug.LogWarning($"No TextMeshPro component found in the children of the 'letter' prefab at grid position {pos}.");
+                        // Default single letter behavior
+                        TMP_Text textMesh = instantiatedLetter.GetComponentInChildren<TMP_Text>();
+                        if (textMesh != null)
+                        {
+                            textMesh.text = textValue;
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"No TextMeshPro component found in the children of the 'letter' prefab at grid position {pos}.");
+                        }
                     }
                 }
             }
