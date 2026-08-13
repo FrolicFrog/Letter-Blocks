@@ -70,6 +70,11 @@ public class BottomGridManager : MonoBehaviour
     [Tooltip("Thickness of the procedural tray walls.")]
     [Min(0.01f)] public float wallThickness = 0.15f;
 
+    [Header("Arrow Settings")]
+    [Tooltip("Assign the arrow mesh prefab shown in image_bf167b.png here.")]
+    public GameObject arrowPrefab;
+    [Tooltip("Extra offset distance to place the arrow slightly away from the tray wall.")]
+    public float arrowOffset = 0.05f;
 
 
     public static BottomGridManager Instance;
@@ -257,18 +262,12 @@ public class BottomGridManager : MonoBehaviour
         Vector3 safeAreaAnchorOffset = Vector3.zero;
         Vector3 horizontalCenterOffset = Vector3.zero;
 
-        // 1. Determine horizontal center offset
-        // 1. Determine horizontal center offset
-        // Grid.CellToLocal returns a cell's corner, not its center — add half a cell width so
-        // centering is based on the true outer edge of the last column, not its near corner.
-        // 1. Determine horizontal center offset
         if (width > 0)
         {
             Vector3 rightmostCellPos = grid.CellToLocal(new Vector3Int(width - 1, 0, 0));
             horizontalCenterOffset = rightmostCellPos / 2f;
         }
 
-        // 2. Auto-Fit to Width & Calculate Top Anchor
         if (autoFitToScreen)
         {
             if (mainCamera == null) mainCamera = Camera.main;
@@ -339,7 +338,6 @@ public class BottomGridManager : MonoBehaviour
             }
         }
 
-        // 3. Map children Left-to-Right
         int tileIndex = 0;
         int maxTiles = height * width;
 
@@ -372,13 +370,8 @@ public class BottomGridManager : MonoBehaviour
             tileIndex++;
         }
 
-        // 4. Position & Auto-Size Center Border Object
         if (centerObject != null)
         {
-            // Use the SAME corrected reference frame the tiles are placed in (horizontalCenterOffset +
-            // safeAreaAnchorOffset), then pad by half a cell each side. This ties the border directly
-            // to where the tiles actually render, instead of re-deriving corner math independently —
-            // which is what caused the size/position mismatch (and the asymmetric gap) before.
             Vector3 firstTileRef = grid.CellToLocal(new Vector3Int(0, 0, 0)) - horizontalCenterOffset + safeAreaAnchorOffset;
             Vector3 lastTileRef = grid.CellToLocal(new Vector3Int(width - 1, height - 1, 0)) - horizontalCenterOffset + safeAreaAnchorOffset;
 
@@ -399,8 +392,6 @@ public class BottomGridManager : MonoBehaviour
 
             if (autoScaleBorder)
             {
-                // diff already spans the full outer extent (padded by halfCell on both sides above),
-                // so do NOT add cellSize again here like the old formula did.
                 Vector3 diff = tileBoundsMax - tileBoundsMin;
 
                 float totalOuterWidth = Mathf.Abs(diff.x) + borderPadding.x;
@@ -416,8 +407,6 @@ public class BottomGridManager : MonoBehaviour
                     totalOuterDepth > 0f ? totalOuterDepth : centerObject.transform.localScale.z
                 );
 
-                // ... everything below this point (the isChild scale conversion, SpriteRenderer /
-                // MeshFilter / fallback scaling branches) stays exactly as it was — unchanged.
                 if (!isChild)
                 {
                     Vector3 parentScale = centerObject.transform.parent != null ? centerObject.transform.parent.lossyScale : Vector3.one;
@@ -477,6 +466,7 @@ public class BottomGridManager : MonoBehaviour
         }
         return ray.GetPoint(mainCamera.farClipPlane);
     }
+
     #region Procedural Tray Generation
 
     private struct CrossSection
@@ -499,7 +489,7 @@ public class BottomGridManager : MonoBehaviour
         return minDist;
     }
 
-    public GameObject CreateTray(List<Vector2Int> gridPos, float wallHeight, Material trayMaterial, Vector3 scale, bool openTray = true, Dictionary<Vector2Int, string> charcter = null)
+    public GameObject CreateTray(List<Vector2Int> gridPos, float wallHeight, Material trayMaterial, Vector3 scale, bool openTray = true, Dictionary<Vector2Int, string> charcter = null, bool enableArrows = false)
     {
         ArrangeChildren();
 
@@ -739,6 +729,35 @@ public class BottomGridManager : MonoBehaviour
                     }
                 }
             }
+        }
+
+        // --- 6. Spawn Directional Arrows at Extents ---
+        if (enableArrows && arrowPrefab != null)
+        {
+            // Calculate exact 2D bounds of the tray's cell boundaries in local space
+            float minX = float.MaxValue, maxX = float.MinValue;
+            float minZ = float.MaxValue, maxZ = float.MinValue;
+
+            foreach (var seg in boundarySegments)
+            {
+                minX = Mathf.Min(minX, seg.Item1.x, seg.Item2.x);
+                maxX = Mathf.Max(maxX, seg.Item1.x, seg.Item2.x);
+                minZ = Mathf.Min(minZ, seg.Item1.y, seg.Item2.y);
+                maxZ = Mathf.Max(maxZ, seg.Item1.y, seg.Item2.y);
+            }
+
+            float midX = (minX + maxX) / 2f;
+            float arrowY = floorThickness; // Lie flat, just above the floor base
+
+            // Top Arrow
+            GameObject topArrow = Instantiate(arrowPrefab, trayObj.transform);
+            topArrow.transform.localPosition = new Vector3(midX, arrowY, maxZ + wallThickness + arrowOffset);
+            topArrow.transform.localRotation = Quaternion.identity; // Assumes your prefab points naturally forward/up (+Z)
+
+            // Bottom Arrow
+            GameObject bottomArrow = Instantiate(arrowPrefab, trayObj.transform);
+            bottomArrow.transform.localPosition = new Vector3(midX, arrowY, minZ - wallThickness - arrowOffset);
+            bottomArrow.transform.localRotation = Quaternion.Euler(0, 180, 0); // Rotate 180 on Y so it points downward (-Z)
         }
 
         return trayObj;

@@ -300,6 +300,8 @@ MonoBehaviour:
     Value: L
   - Key: {x: 5, y: 10}
     Value: Y
+  - Key: {x: 1, y: 3}
+    Value: P
   trayName:
   - Key: {x: 3, y: 2}
     Value: Tray 1
@@ -413,6 +415,8 @@ MonoBehaviour:
     Value: Tray 12
   - Key: {x: 5, y: 10}
     Value: Tray 12
+  - Key: {x: 1, y: 3}
+    Value: Tray 7
   categoryColors:
   - Key: Food
     Value: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}

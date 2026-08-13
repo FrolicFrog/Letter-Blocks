@@ -251,11 +251,15 @@ public class LevelManager : Manager<LevelManager>
             }
             else
             {
-               var trayMesh= letterGridManager.CreateTray(trayPos[tray], 2.4f, trayMaterial, new Vector3(.995f, .988f, .988f), true, trayCells);
+              
                 if (horizontal.Contains(tray))
                 {
-                    trayMesh.tag = "Vertical";
-                    Instantiate(arrow,trayMesh.transform);
+                    letterGridManager.CreateTray(trayPos[tray], 2.4f, trayMaterial, new Vector3(.995f, .988f, .988f), true, trayCells,true).tag = "Vertical";
+                  //  Instantiate(arrow,trayMesh.transform);
+                }
+                else
+                {
+                    letterGridManager.CreateTray(trayPos[tray], 2.4f, trayMaterial, new Vector3(.995f, .988f, .988f), true, trayCells);
                 }
             }
         }
