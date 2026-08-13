@@ -71,3 +71,12 @@ Factory
 Dog Breeds
 Mexico
 Bank
+Toys
+Horoscopes
+Baby
+Super Mall
+Cooking
+Decoration
+Shapes
+Candy
+Winged

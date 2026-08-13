@@ -1,0 +1,253 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 26
+  m_EditorClassIdentifier: 
+  timer: 1
+  LevelNumber: 26
+  rows: 30
+  columns: 8
+  height: 6
+  width: 6
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.11
+  categoryMaterial: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  words:
+  - BACON
+  - YOGURT
+  - PANCAKES
+  - SAUSAGE
+  - CEREAL
+  - EGGS
+  tray:
+  - Tray 1
+  horizontal: []
+  excludedChar:
+  - {x: 29, y: 4}
+  - {x: 28, y: 2}
+  - {x: 27, y: 5}
+  - {x: 26, y: 2}
+  - {x: 25, y: 5}
+  - {x: 24, y: 2}
+  blockedCells: []
+  wordCategory:
+  - Key: Breakfast
+    Value:
+    - BACON
+    - YOGURT
+    - PANCAKES
+    - SAUSAGE
+    - CEREAL
+    - EGGS
+  cellCategory:
+  - Key: {x: 29, y: 2}
+    Value: Breakfast
+  - Key: {x: 29, y: 3}
+    Value: Breakfast
+  - Key: {x: 29, y: 4}
+    Value: Breakfast
+  - Key: {x: 29, y: 5}
+    Value: Breakfast
+  - Key: {x: 28, y: 0}
+    Value: Breakfast
+  - Key: {x: 28, y: 1}
+    Value: Breakfast
+  - Key: {x: 28, y: 2}
+    Value: Breakfast
+  - Key: {x: 28, y: 3}
+    Value: Breakfast
+  - Key: {x: 28, y: 4}
+    Value: Breakfast
+  - Key: {x: 28, y: 5}
+    Value: Breakfast
+  - Key: {x: 27, y: 1}
+    Value: Breakfast
+  - Key: {x: 27, y: 2}
+    Value: Breakfast
+  - Key: {x: 27, y: 3}
+    Value: Breakfast
+  - Key: {x: 27, y: 4}
+    Value: Breakfast
+  - Key: {x: 27, y: 5}
+    Value: Breakfast
+  - Key: {x: 27, y: 6}
+    Value: Breakfast
+  - Key: {x: 27, y: 7}
+    Value: Breakfast
+  - Key: {x: 26, y: 0}
+    Value: Breakfast
+  - Key: {x: 26, y: 1}
+    Value: Breakfast
+  - Key: {x: 26, y: 2}
+    Value: Breakfast
+  - Key: {x: 26, y: 3}
+    Value: Breakfast
+  - Key: {x: 26, y: 4}
+    Value: Breakfast
+  - Key: {x: 26, y: 5}
+    Value: Breakfast
+  - Key: {x: 26, y: 6}
+    Value: Breakfast
+  - Key: {x: 26, y: 7}
+    Value: Breakfast
+  - Key: {x: 25, y: 3}
+    Value: Breakfast
+  - Key: {x: 25, y: 4}
+    Value: Breakfast
+  - Key: {x: 25, y: 5}
+    Value: Breakfast
+  - Key: {x: 25, y: 2}
+    Value: Breakfast
+  - Key: {x: 25, y: 6}
+    Value: Breakfast
+  - Key: {x: 25, y: 7}
+    Value: Breakfast
+  - Key: {x: 24, y: 0}
+    Value: Breakfast
+  - Key: {x: 24, y: 1}
+    Value: Breakfast
+  - Key: {x: 24, y: 2}
+    Value: Breakfast
+  - Key: {x: 24, y: 3}
+    Value: Breakfast
+  - Key: {x: 24, y: 4}
+    Value: Breakfast
+  cellTexts:
+  - Key: {x: 29, y: 2}
+    Value: E
+  - Key: {x: 29, y: 3}
+    Value: G
+  - Key: {x: 29, y: 4}
+    Value: G
+  - Key: {x: 29, y: 5}
+    Value: S
+  - Key: {x: 28, y: 0}
+    Value: C
+  - Key: {x: 28, y: 1}
+    Value: E
+  - Key: {x: 28, y: 2}
+    Value: R
+  - Key: {x: 28, y: 3}
+    Value: E
+  - Key: {x: 28, y: 4}
+    Value: A
+  - Key: {x: 28, y: 5}
+    Value: L
+  - Key: {x: 27, y: 1}
+    Value: S
+  - Key: {x: 27, y: 2}
+    Value: A
+  - Key: {x: 27, y: 3}
+    Value: U
+  - Key: {x: 27, y: 4}
+    Value: S
+  - Key: {x: 27, y: 5}
+    Value: A
+  - Key: {x: 27, y: 6}
+    Value: G
+  - Key: {x: 27, y: 7}
+    Value: E
+  - Key: {x: 26, y: 0}
+    Value: P
+  - Key: {x: 26, y: 1}
+    Value: A
+  - Key: {x: 26, y: 2}
+    Value: N
+  - Key: {x: 26, y: 3}
+    Value: C
+  - Key: {x: 26, y: 4}
+    Value: A
+  - Key: {x: 26, y: 5}
+    Value: K
+  - Key: {x: 26, y: 6}
+    Value: E
+  - Key: {x: 26, y: 7}
+    Value: S
+  - Key: {x: 25, y: 3}
+    Value: O
+  - Key: {x: 25, y: 4}
+    Value: G
+  - Key: {x: 25, y: 5}
+    Value: U
+  - Key: {x: 25, y: 2}
+    Value: Y
+  - Key: {x: 25, y: 6}
+    Value: R
+  - Key: {x: 25, y: 7}
+    Value: T
+  - Key: {x: 24, y: 0}
+    Value: B
+  - Key: {x: 24, y: 1}
+    Value: A
+  - Key: {x: 24, y: 2}
+    Value: C
+  - Key: {x: 24, y: 3}
+    Value: O
+  - Key: {x: 24, y: 4}
+    Value: N
+  trayCells: []
+  trayName: []
+  categoryColors:
+  - Key: Breakfast
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  trayColors: []
+  wordPositions:
+  - Key: BACON
+    Value:
+    - {x: 24, y: 0}
+    - {x: 24, y: 1}
+    - {x: 24, y: 2}
+    - {x: 24, y: 3}
+    - {x: 24, y: 4}
+  - Key: YOGURT
+    Value:
+    - {x: 25, y: 2}
+    - {x: 25, y: 3}
+    - {x: 25, y: 4}
+    - {x: 25, y: 5}
+    - {x: 25, y: 6}
+    - {x: 25, y: 7}
+  - Key: PANCAKES
+    Value:
+    - {x: 26, y: 0}
+    - {x: 26, y: 1}
+    - {x: 26, y: 2}
+    - {x: 26, y: 3}
+    - {x: 26, y: 4}
+    - {x: 26, y: 5}
+    - {x: 26, y: 6}
+    - {x: 26, y: 7}
+  - Key: SAUSAGE
+    Value:
+    - {x: 27, y: 1}
+    - {x: 27, y: 2}
+    - {x: 27, y: 3}
+    - {x: 27, y: 4}
+    - {x: 27, y: 5}
+    - {x: 27, y: 6}
+    - {x: 27, y: 7}
+  - Key: CEREAL
+    Value:
+    - {x: 28, y: 0}
+    - {x: 28, y: 1}
+    - {x: 28, y: 2}
+    - {x: 28, y: 3}
+    - {x: 28, y: 4}
+    - {x: 28, y: 5}
+  - Key: EGGS
+    Value:
+    - {x: 29, y: 2}
+    - {x: 29, y: 3}
+    - {x: 29, y: 4}
+    - {x: 29, y: 5}
+  freezedTray: []

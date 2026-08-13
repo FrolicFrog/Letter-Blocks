@@ -1,0 +1,910 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 28
+  m_EditorClassIdentifier: 
+  timer: 0
+  LevelNumber: 28
+  rows: 30
+  columns: 8
+  height: 6
+  width: 6
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.11
+  categoryMaterial: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  words:
+  - CRIB
+  - CINEMA
+  - STROLLER
+  - BOUTIQUE
+  - PACIFIER
+  - KIOSK
+  - STOVE
+  - CASHIER
+  - SPOON
+  - CURTAINS
+  - BIB
+  - TOY
+  - MIXER
+  - CANDLE
+  - DIAPER
+  - SALE
+  - OVEN
+  - BLANKET
+  - SHOPPING
+  - SPATULA
+  - MIRROR
+  - CUSTOMER
+  - FRAME
+  - STORE
+  - VASE
+  tray:
+  - Tray 1
+  horizontal: []
+  excludedChar:
+  - {x: 29, y: 5}
+  - {x: 27, y: 5}
+  - {x: 25, y: 3}
+  - {x: 25, y: 6}
+  - {x: 28, y: 4}
+  - {x: 26, y: 1}
+  - {x: 26, y: 4}
+  - {x: 24, y: 3}
+  - {x: 21, y: 7}
+  - {x: 23, y: 5}
+  - {x: 23, y: 1}
+  - {x: 21, y: 1}
+  - {x: 22, y: 3}
+  - {x: 20, y: 4}
+  - {x: 19, y: 1}
+  - {x: 18, y: 4}
+  - {x: 15, y: 2}
+  - {x: 17, y: 1}
+  - {x: 17, y: 6}
+  - {x: 14, y: 3}
+  - {x: 12, y: 5}
+  - {x: 13, y: 2}
+  - {x: 11, y: 1}
+  - {x: 11, y: 6}
+  - {x: 9, y: 2}
+  - {x: 9, y: 6}
+  - {x: 7, y: 4}
+  - {x: 10, y: 5}
+  - {x: 10, y: 7}
+  - {x: 8, y: 3}
+  blockedCells: []
+  wordCategory:
+  - Key: Baby
+    Value:
+    - CRIB
+    - STROLLER
+    - PACIFIER
+    - BIB
+    - TOY
+    - DIAPER
+  - Key: Super Mall
+    Value:
+    - CINEMA
+    - BOUTIQUE
+    - KIOSK
+    - CASHIER
+    - SALE
+    - SHOPPING
+    - CUSTOMER
+    - STORE
+  - Key: Cooking
+    Value:
+    - STOVE
+    - SPOON
+    - MIXER
+    - OVEN
+    - SPATULA
+  - Key: Decoration
+    Value:
+    - CURTAINS
+    - CANDLE
+    - BLANKET
+    - MIRROR
+    - FRAME
+    - VASE
+  cellCategory:
+  - Key: {x: 29, y: 4}
+    Value: Decoration
+  - Key: {x: 29, y: 5}
+    Value: Decoration
+  - Key: {x: 29, y: 6}
+    Value: Decoration
+  - Key: {x: 29, y: 7}
+    Value: Decoration
+  - Key: {x: 27, y: 2}
+    Value: Decoration
+  - Key: {x: 27, y: 3}
+    Value: Decoration
+  - Key: {x: 27, y: 4}
+    Value: Decoration
+  - Key: {x: 27, y: 5}
+    Value: Decoration
+  - Key: {x: 27, y: 6}
+    Value: Decoration
+  - Key: {x: 25, y: 2}
+    Value: Decoration
+  - Key: {x: 25, y: 3}
+    Value: Decoration
+  - Key: {x: 25, y: 4}
+    Value: Decoration
+  - Key: {x: 25, y: 5}
+    Value: Decoration
+  - Key: {x: 25, y: 6}
+    Value: Decoration
+  - Key: {x: 25, y: 7}
+    Value: Decoration
+  - Key: {x: 28, y: 1}
+    Value: Super Mall
+  - Key: {x: 28, y: 2}
+    Value: Super Mall
+  - Key: {x: 28, y: 3}
+    Value: Super Mall
+  - Key: {x: 28, y: 4}
+    Value: Super Mall
+  - Key: {x: 28, y: 5}
+    Value: Super Mall
+  - Key: {x: 26, y: 0}
+    Value: Super Mall
+  - Key: {x: 26, y: 1}
+    Value: Super Mall
+  - Key: {x: 26, y: 3}
+    Value: Super Mall
+  - Key: {x: 26, y: 2}
+    Value: Super Mall
+  - Key: {x: 26, y: 4}
+    Value: Super Mall
+  - Key: {x: 26, y: 5}
+    Value: Super Mall
+  - Key: {x: 26, y: 6}
+    Value: Super Mall
+  - Key: {x: 26, y: 7}
+    Value: Super Mall
+  - Key: {x: 24, y: 0}
+    Value: Cooking
+  - Key: {x: 24, y: 1}
+    Value: Cooking
+  - Key: {x: 24, y: 2}
+    Value: Cooking
+  - Key: {x: 24, y: 3}
+    Value: Cooking
+  - Key: {x: 24, y: 4}
+    Value: Cooking
+  - Key: {x: 24, y: 5}
+    Value: Cooking
+  - Key: {x: 24, y: 6}
+    Value: Cooking
+  - Key: {x: 21, y: 4}
+    Value: Cooking
+  - Key: {x: 21, y: 5}
+    Value: Cooking
+  - Key: {x: 21, y: 6}
+    Value: Cooking
+  - Key: {x: 21, y: 7}
+    Value: Cooking
+  - Key: {x: 23, y: 0}
+    Value: Super Mall
+  - Key: {x: 23, y: 1}
+    Value: Super Mall
+  - Key: {x: 23, y: 2}
+    Value: Super Mall
+  - Key: {x: 23, y: 3}
+    Value: Super Mall
+  - Key: {x: 23, y: 4}
+    Value: Super Mall
+  - Key: {x: 23, y: 5}
+    Value: Super Mall
+  - Key: {x: 23, y: 6}
+    Value: Super Mall
+  - Key: {x: 23, y: 7}
+    Value: Super Mall
+  - Key: {x: 21, y: 0}
+    Value: Super Mall
+  - Key: {x: 21, y: 1}
+    Value: Super Mall
+  - Key: {x: 21, y: 2}
+    Value: Super Mall
+  - Key: {x: 21, y: 3}
+    Value: Super Mall
+  - Key: {x: 22, y: 0}
+    Value: Decoration
+  - Key: {x: 22, y: 1}
+    Value: Decoration
+  - Key: {x: 22, y: 2}
+    Value: Decoration
+  - Key: {x: 22, y: 3}
+    Value: Decoration
+  - Key: {x: 22, y: 4}
+    Value: Decoration
+  - Key: {x: 22, y: 5}
+    Value: Decoration
+  - Key: {x: 22, y: 6}
+    Value: Decoration
+  - Key: {x: 20, y: 1}
+    Value: Baby
+  - Key: {x: 20, y: 2}
+    Value: Baby
+  - Key: {x: 20, y: 3}
+    Value: Baby
+  - Key: {x: 20, y: 4}
+    Value: Baby
+  - Key: {x: 20, y: 5}
+    Value: Baby
+  - Key: {x: 20, y: 6}
+    Value: Baby
+  - Key: {x: 19, y: 0}
+    Value: Decoration
+  - Key: {x: 19, y: 1}
+    Value: Decoration
+  - Key: {x: 19, y: 2}
+    Value: Decoration
+  - Key: {x: 19, y: 3}
+    Value: Decoration
+  - Key: {x: 19, y: 4}
+    Value: Decoration
+  - Key: {x: 19, y: 5}
+    Value: Decoration
+  - Key: {x: 18, y: 2}
+    Value: Cooking
+  - Key: {x: 18, y: 3}
+    Value: Cooking
+  - Key: {x: 18, y: 4}
+    Value: Cooking
+  - Key: {x: 18, y: 5}
+    Value: Cooking
+  - Key: {x: 18, y: 6}
+    Value: Cooking
+  - Key: {x: 15, y: 1}
+    Value: Cooking
+  - Key: {x: 15, y: 2}
+    Value: Cooking
+  - Key: {x: 15, y: 3}
+    Value: Cooking
+  - Key: {x: 15, y: 4}
+    Value: Cooking
+  - Key: {x: 15, y: 5}
+    Value: Cooking
+  - Key: {x: 17, y: 0}
+    Value: Baby
+  - Key: {x: 17, y: 1}
+    Value: Baby
+  - Key: {x: 17, y: 2}
+    Value: Baby
+  - Key: {x: 17, y: 5}
+    Value: Baby
+  - Key: {x: 17, y: 6}
+    Value: Baby
+  - Key: {x: 17, y: 7}
+    Value: Baby
+  - Key: {x: 16, y: 1}
+    Value: Decoration
+  - Key: {x: 16, y: 0}
+    Value: Decoration
+  - Key: {x: 16, y: 2}
+    Value: Decoration
+  - Key: {x: 16, y: 3}
+    Value: Decoration
+  - Key: {x: 16, y: 4}
+    Value: Decoration
+  - Key: {x: 16, y: 5}
+    Value: Decoration
+  - Key: {x: 16, y: 6}
+    Value: Decoration
+  - Key: {x: 16, y: 7}
+    Value: Decoration
+  - Key: {x: 14, y: 1}
+    Value: Super Mall
+  - Key: {x: 14, y: 2}
+    Value: Super Mall
+  - Key: {x: 14, y: 3}
+    Value: Super Mall
+  - Key: {x: 14, y: 4}
+    Value: Super Mall
+  - Key: {x: 14, y: 5}
+    Value: Super Mall
+  - Key: {x: 14, y: 6}
+    Value: Super Mall
+  - Key: {x: 14, y: 7}
+    Value: Super Mall
+  - Key: {x: 12, y: 3}
+    Value: Super Mall
+  - Key: {x: 12, y: 4}
+    Value: Super Mall
+  - Key: {x: 12, y: 5}
+    Value: Super Mall
+  - Key: {x: 12, y: 6}
+    Value: Super Mall
+  - Key: {x: 12, y: 7}
+    Value: Super Mall
+  - Key: {x: 13, y: 0}
+    Value: Cooking
+  - Key: {x: 13, y: 1}
+    Value: Cooking
+  - Key: {x: 13, y: 2}
+    Value: Cooking
+  - Key: {x: 13, y: 3}
+    Value: Cooking
+  - Key: {x: 13, y: 4}
+    Value: Cooking
+  - Key: {x: 11, y: 0}
+    Value: Baby
+  - Key: {x: 11, y: 1}
+    Value: Baby
+  - Key: {x: 11, y: 2}
+    Value: Baby
+  - Key: {x: 11, y: 3}
+    Value: Baby
+  - Key: {x: 11, y: 4}
+    Value: Baby
+  - Key: {x: 11, y: 5}
+    Value: Baby
+  - Key: {x: 11, y: 6}
+    Value: Baby
+  - Key: {x: 11, y: 7}
+    Value: Baby
+  - Key: {x: 9, y: 0}
+    Value: Baby
+  - Key: {x: 9, y: 1}
+    Value: Baby
+  - Key: {x: 9, y: 2}
+    Value: Baby
+  - Key: {x: 9, y: 3}
+    Value: Baby
+  - Key: {x: 9, y: 4}
+    Value: Baby
+  - Key: {x: 9, y: 5}
+    Value: Baby
+  - Key: {x: 9, y: 6}
+    Value: Baby
+  - Key: {x: 9, y: 7}
+    Value: Baby
+  - Key: {x: 7, y: 2}
+    Value: Baby
+  - Key: {x: 7, y: 3}
+    Value: Baby
+  - Key: {x: 7, y: 4}
+    Value: Baby
+  - Key: {x: 7, y: 5}
+    Value: Baby
+  - Key: {x: 10, y: 0}
+    Value: Super Mall
+  - Key: {x: 10, y: 1}
+    Value: Super Mall
+  - Key: {x: 10, y: 2}
+    Value: Super Mall
+  - Key: {x: 10, y: 3}
+    Value: Super Mall
+  - Key: {x: 10, y: 4}
+    Value: Super Mall
+  - Key: {x: 10, y: 5}
+    Value: Super Mall
+  - Key: {x: 10, y: 6}
+    Value: Super Mall
+  - Key: {x: 10, y: 7}
+    Value: Super Mall
+  - Key: {x: 8, y: 1}
+    Value: Super Mall
+  - Key: {x: 8, y: 2}
+    Value: Super Mall
+  - Key: {x: 8, y: 3}
+    Value: Super Mall
+  - Key: {x: 8, y: 4}
+    Value: Super Mall
+  - Key: {x: 8, y: 5}
+    Value: Super Mall
+  - Key: {x: 8, y: 6}
+    Value: Super Mall
+  cellTexts:
+  - Key: {x: 29, y: 4}
+    Value: V
+  - Key: {x: 29, y: 5}
+    Value: A
+  - Key: {x: 29, y: 6}
+    Value: S
+  - Key: {x: 29, y: 7}
+    Value: E
+  - Key: {x: 27, y: 2}
+    Value: F
+  - Key: {x: 27, y: 3}
+    Value: R
+  - Key: {x: 27, y: 4}
+    Value: A
+  - Key: {x: 27, y: 5}
+    Value: M
+  - Key: {x: 27, y: 6}
+    Value: E
+  - Key: {x: 25, y: 2}
+    Value: M
+  - Key: {x: 25, y: 3}
+    Value: I
+  - Key: {x: 25, y: 4}
+    Value: R
+  - Key: {x: 25, y: 5}
+    Value: R
+  - Key: {x: 25, y: 6}
+    Value: O
+  - Key: {x: 25, y: 7}
+    Value: R
+  - Key: {x: 28, y: 1}
+    Value: S
+  - Key: {x: 28, y: 2}
+    Value: T
+  - Key: {x: 28, y: 3}
+    Value: O
+  - Key: {x: 28, y: 4}
+    Value: R
+  - Key: {x: 28, y: 5}
+    Value: E
+  - Key: {x: 26, y: 0}
+    Value: C
+  - Key: {x: 26, y: 1}
+    Value: U
+  - Key: {x: 26, y: 3}
+    Value: T
+  - Key: {x: 26, y: 2}
+    Value: S
+  - Key: {x: 26, y: 4}
+    Value: O
+  - Key: {x: 26, y: 5}
+    Value: M
+  - Key: {x: 26, y: 6}
+    Value: E
+  - Key: {x: 26, y: 7}
+    Value: R
+  - Key: {x: 24, y: 0}
+    Value: S
+  - Key: {x: 24, y: 1}
+    Value: P
+  - Key: {x: 24, y: 2}
+    Value: A
+  - Key: {x: 24, y: 3}
+    Value: T
+  - Key: {x: 24, y: 4}
+    Value: U
+  - Key: {x: 24, y: 5}
+    Value: L
+  - Key: {x: 24, y: 6}
+    Value: A
+  - Key: {x: 21, y: 4}
+    Value: O
+  - Key: {x: 21, y: 5}
+    Value: V
+  - Key: {x: 21, y: 6}
+    Value: E
+  - Key: {x: 21, y: 7}
+    Value: N
+  - Key: {x: 23, y: 0}
+    Value: S
+  - Key: {x: 23, y: 1}
+    Value: H
+  - Key: {x: 23, y: 2}
+    Value: O
+  - Key: {x: 23, y: 3}
+    Value: P
+  - Key: {x: 23, y: 4}
+    Value: P
+  - Key: {x: 23, y: 5}
+    Value: I
+  - Key: {x: 23, y: 6}
+    Value: N
+  - Key: {x: 23, y: 7}
+    Value: G
+  - Key: {x: 21, y: 0}
+    Value: S
+  - Key: {x: 21, y: 1}
+    Value: A
+  - Key: {x: 21, y: 2}
+    Value: L
+  - Key: {x: 21, y: 3}
+    Value: E
+  - Key: {x: 22, y: 0}
+    Value: B
+  - Key: {x: 22, y: 1}
+    Value: L
+  - Key: {x: 22, y: 2}
+    Value: A
+  - Key: {x: 22, y: 3}
+    Value: N
+  - Key: {x: 22, y: 4}
+    Value: K
+  - Key: {x: 22, y: 5}
+    Value: E
+  - Key: {x: 22, y: 6}
+    Value: T
+  - Key: {x: 20, y: 1}
+    Value: D
+  - Key: {x: 20, y: 2}
+    Value: I
+  - Key: {x: 20, y: 3}
+    Value: A
+  - Key: {x: 20, y: 4}
+    Value: P
+  - Key: {x: 20, y: 5}
+    Value: E
+  - Key: {x: 20, y: 6}
+    Value: R
+  - Key: {x: 19, y: 0}
+    Value: C
+  - Key: {x: 19, y: 1}
+    Value: A
+  - Key: {x: 19, y: 2}
+    Value: N
+  - Key: {x: 19, y: 3}
+    Value: D
+  - Key: {x: 19, y: 4}
+    Value: L
+  - Key: {x: 19, y: 5}
+    Value: E
+  - Key: {x: 18, y: 2}
+    Value: M
+  - Key: {x: 18, y: 3}
+    Value: I
+  - Key: {x: 18, y: 4}
+    Value: X
+  - Key: {x: 18, y: 5}
+    Value: E
+  - Key: {x: 18, y: 6}
+    Value: R
+  - Key: {x: 15, y: 1}
+    Value: S
+  - Key: {x: 15, y: 2}
+    Value: P
+  - Key: {x: 15, y: 3}
+    Value: O
+  - Key: {x: 15, y: 4}
+    Value: O
+  - Key: {x: 15, y: 5}
+    Value: N
+  - Key: {x: 17, y: 0}
+    Value: B
+  - Key: {x: 17, y: 1}
+    Value: I
+  - Key: {x: 17, y: 2}
+    Value: B
+  - Key: {x: 17, y: 5}
+    Value: T
+  - Key: {x: 17, y: 6}
+    Value: O
+  - Key: {x: 17, y: 7}
+    Value: Y
+  - Key: {x: 16, y: 1}
+    Value: U
+  - Key: {x: 16, y: 0}
+    Value: C
+  - Key: {x: 16, y: 2}
+    Value: R
+  - Key: {x: 16, y: 3}
+    Value: T
+  - Key: {x: 16, y: 4}
+    Value: A
+  - Key: {x: 16, y: 5}
+    Value: I
+  - Key: {x: 16, y: 6}
+    Value: N
+  - Key: {x: 16, y: 7}
+    Value: S
+  - Key: {x: 14, y: 1}
+    Value: C
+  - Key: {x: 14, y: 2}
+    Value: A
+  - Key: {x: 14, y: 3}
+    Value: S
+  - Key: {x: 14, y: 4}
+    Value: H
+  - Key: {x: 14, y: 5}
+    Value: I
+  - Key: {x: 14, y: 6}
+    Value: E
+  - Key: {x: 14, y: 7}
+    Value: R
+  - Key: {x: 12, y: 3}
+    Value: K
+  - Key: {x: 12, y: 4}
+    Value: I
+  - Key: {x: 12, y: 5}
+    Value: O
+  - Key: {x: 12, y: 6}
+    Value: S
+  - Key: {x: 12, y: 7}
+    Value: K
+  - Key: {x: 13, y: 0}
+    Value: S
+  - Key: {x: 13, y: 1}
+    Value: T
+  - Key: {x: 13, y: 2}
+    Value: O
+  - Key: {x: 13, y: 3}
+    Value: V
+  - Key: {x: 13, y: 4}
+    Value: E
+  - Key: {x: 11, y: 0}
+    Value: P
+  - Key: {x: 11, y: 1}
+    Value: A
+  - Key: {x: 11, y: 2}
+    Value: C
+  - Key: {x: 11, y: 3}
+    Value: I
+  - Key: {x: 11, y: 4}
+    Value: F
+  - Key: {x: 11, y: 5}
+    Value: I
+  - Key: {x: 11, y: 6}
+    Value: E
+  - Key: {x: 11, y: 7}
+    Value: R
+  - Key: {x: 9, y: 0}
+    Value: S
+  - Key: {x: 9, y: 1}
+    Value: T
+  - Key: {x: 9, y: 2}
+    Value: R
+  - Key: {x: 9, y: 3}
+    Value: O
+  - Key: {x: 9, y: 4}
+    Value: L
+  - Key: {x: 9, y: 5}
+    Value: L
+  - Key: {x: 9, y: 6}
+    Value: E
+  - Key: {x: 9, y: 7}
+    Value: R
+  - Key: {x: 7, y: 2}
+    Value: C
+  - Key: {x: 7, y: 3}
+    Value: R
+  - Key: {x: 7, y: 4}
+    Value: I
+  - Key: {x: 7, y: 5}
+    Value: B
+  - Key: {x: 10, y: 0}
+    Value: B
+  - Key: {x: 10, y: 1}
+    Value: O
+  - Key: {x: 10, y: 2}
+    Value: U
+  - Key: {x: 10, y: 3}
+    Value: T
+  - Key: {x: 10, y: 4}
+    Value: I
+  - Key: {x: 10, y: 5}
+    Value: Q
+  - Key: {x: 10, y: 6}
+    Value: U
+  - Key: {x: 10, y: 7}
+    Value: E
+  - Key: {x: 8, y: 1}
+    Value: C
+  - Key: {x: 8, y: 2}
+    Value: I
+  - Key: {x: 8, y: 3}
+    Value: N
+  - Key: {x: 8, y: 4}
+    Value: E
+  - Key: {x: 8, y: 5}
+    Value: M
+  - Key: {x: 8, y: 6}
+    Value: A
+  trayCells: []
+  trayName: []
+  categoryColors:
+  - Key: Baby
+    Value: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
+  - Key: Super Mall
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  - Key: Cooking
+    Value: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  - Key: Decoration
+    Value: {fileID: 2100000, guid: 74a701c54a3fc14469104bed730e8899, type: 2}
+  trayColors: []
+  wordPositions:
+  - Key: CRIB
+    Value:
+    - {x: 7, y: 2}
+    - {x: 7, y: 3}
+    - {x: 7, y: 4}
+    - {x: 7, y: 5}
+  - Key: CINEMA
+    Value:
+    - {x: 8, y: 1}
+    - {x: 8, y: 2}
+    - {x: 8, y: 3}
+    - {x: 8, y: 4}
+    - {x: 8, y: 5}
+    - {x: 8, y: 6}
+  - Key: STROLLER
+    Value:
+    - {x: 9, y: 0}
+    - {x: 9, y: 1}
+    - {x: 9, y: 2}
+    - {x: 9, y: 3}
+    - {x: 9, y: 4}
+    - {x: 9, y: 5}
+    - {x: 9, y: 6}
+    - {x: 9, y: 7}
+  - Key: BOUTIQUE
+    Value:
+    - {x: 10, y: 0}
+    - {x: 10, y: 1}
+    - {x: 10, y: 2}
+    - {x: 10, y: 3}
+    - {x: 10, y: 4}
+    - {x: 10, y: 5}
+    - {x: 10, y: 6}
+    - {x: 10, y: 7}
+  - Key: PACIFIER
+    Value:
+    - {x: 11, y: 0}
+    - {x: 11, y: 1}
+    - {x: 11, y: 2}
+    - {x: 11, y: 3}
+    - {x: 11, y: 4}
+    - {x: 11, y: 5}
+    - {x: 11, y: 6}
+    - {x: 11, y: 7}
+  - Key: KIOSK
+    Value:
+    - {x: 12, y: 3}
+    - {x: 12, y: 4}
+    - {x: 12, y: 5}
+    - {x: 12, y: 6}
+    - {x: 12, y: 7}
+  - Key: STOVE
+    Value:
+    - {x: 13, y: 0}
+    - {x: 13, y: 1}
+    - {x: 13, y: 2}
+    - {x: 13, y: 3}
+    - {x: 13, y: 4}
+  - Key: CASHIER
+    Value:
+    - {x: 14, y: 1}
+    - {x: 14, y: 2}
+    - {x: 14, y: 3}
+    - {x: 14, y: 4}
+    - {x: 14, y: 5}
+    - {x: 14, y: 6}
+    - {x: 14, y: 7}
+  - Key: SPOON
+    Value:
+    - {x: 15, y: 1}
+    - {x: 15, y: 2}
+    - {x: 15, y: 3}
+    - {x: 15, y: 4}
+    - {x: 15, y: 5}
+  - Key: CURTAINS
+    Value:
+    - {x: 16, y: 0}
+    - {x: 16, y: 1}
+    - {x: 16, y: 2}
+    - {x: 16, y: 3}
+    - {x: 16, y: 4}
+    - {x: 16, y: 5}
+    - {x: 16, y: 6}
+    - {x: 16, y: 7}
+  - Key: BIB
+    Value:
+    - {x: 17, y: 0}
+    - {x: 17, y: 1}
+    - {x: 17, y: 2}
+  - Key: TOY
+    Value:
+    - {x: 17, y: 5}
+    - {x: 17, y: 6}
+    - {x: 17, y: 7}
+  - Key: MIXER
+    Value:
+    - {x: 18, y: 2}
+    - {x: 18, y: 3}
+    - {x: 18, y: 4}
+    - {x: 18, y: 5}
+    - {x: 18, y: 6}
+  - Key: CANDLE
+    Value:
+    - {x: 19, y: 0}
+    - {x: 19, y: 1}
+    - {x: 19, y: 2}
+    - {x: 19, y: 3}
+    - {x: 19, y: 4}
+    - {x: 19, y: 5}
+  - Key: DIAPER
+    Value:
+    - {x: 20, y: 1}
+    - {x: 20, y: 2}
+    - {x: 20, y: 3}
+    - {x: 20, y: 4}
+    - {x: 20, y: 5}
+    - {x: 20, y: 6}
+  - Key: SALE
+    Value:
+    - {x: 21, y: 0}
+    - {x: 21, y: 1}
+    - {x: 21, y: 2}
+    - {x: 21, y: 3}
+  - Key: OVEN
+    Value:
+    - {x: 21, y: 4}
+    - {x: 21, y: 5}
+    - {x: 21, y: 6}
+    - {x: 21, y: 7}
+  - Key: BLANKET
+    Value:
+    - {x: 22, y: 0}
+    - {x: 22, y: 1}
+    - {x: 22, y: 2}
+    - {x: 22, y: 3}
+    - {x: 22, y: 4}
+    - {x: 22, y: 5}
+    - {x: 22, y: 6}
+  - Key: SHOPPING
+    Value:
+    - {x: 23, y: 0}
+    - {x: 23, y: 1}
+    - {x: 23, y: 2}
+    - {x: 23, y: 3}
+    - {x: 23, y: 4}
+    - {x: 23, y: 5}
+    - {x: 23, y: 6}
+    - {x: 23, y: 7}
+  - Key: SPATULA
+    Value:
+    - {x: 24, y: 0}
+    - {x: 24, y: 1}
+    - {x: 24, y: 2}
+    - {x: 24, y: 3}
+    - {x: 24, y: 4}
+    - {x: 24, y: 5}
+    - {x: 24, y: 6}
+  - Key: MIRROR
+    Value:
+    - {x: 25, y: 2}
+    - {x: 25, y: 3}
+    - {x: 25, y: 4}
+    - {x: 25, y: 5}
+    - {x: 25, y: 6}
+    - {x: 25, y: 7}
+  - Key: CUSTOMER
+    Value:
+    - {x: 26, y: 0}
+    - {x: 26, y: 1}
+    - {x: 26, y: 2}
+    - {x: 26, y: 3}
+    - {x: 26, y: 4}
+    - {x: 26, y: 5}
+    - {x: 26, y: 6}
+    - {x: 26, y: 7}
+  - Key: FRAME
+    Value:
+    - {x: 27, y: 2}
+    - {x: 27, y: 3}
+    - {x: 27, y: 4}
+    - {x: 27, y: 5}
+    - {x: 27, y: 6}
+  - Key: STORE
+    Value:
+    - {x: 28, y: 1}
+    - {x: 28, y: 2}
+    - {x: 28, y: 3}
+    - {x: 28, y: 4}
+    - {x: 28, y: 5}
+  - Key: VASE
+    Value:
+    - {x: 29, y: 4}
+    - {x: 29, y: 5}
+    - {x: 29, y: 6}
+    - {x: 29, y: 7}
+  freezedTray: []
