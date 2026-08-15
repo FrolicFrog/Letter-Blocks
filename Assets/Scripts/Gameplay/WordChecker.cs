@@ -106,6 +106,7 @@ public class WordChecker : MonoBehaviour
             SeparateDictionaryWords();
             dictionarySeparated = true;
         }
+        UpdateLastThreeRowsColliders();
     }
 
     public void Check(int columns)
@@ -114,6 +115,44 @@ public class WordChecker : MonoBehaviour
         if (!isProcessing)
         {
             StartCoroutine(ProcessDestructionAndGravity(columns));
+        }
+    }
+
+    /// <summary>
+    /// Enables BoxColliders for cubes in the bottom-most 3 rows and disables them for higher rows.
+    /// </summary>
+    public void UpdateLastThreeRowsColliders()
+    {
+        var grid = TopGridManager.instance;
+        if (grid == null && !cachedColumns.HasValue) return;
+
+        int columns = grid != null ? grid.columns : cachedColumns.Value;
+        if (columns <= 0 || transform.childCount == 0) return;
+
+        int totalRows = transform.childCount / columns;
+        int startRow = Mathf.Max(0, totalRows - 3);
+
+        for (int r = 0; r < totalRows; r++)
+        {
+            bool inLastThreeRows = (r >= startRow);
+            for (int c = 0; c < columns; c++)
+            {
+                int linearIndex = r * columns + c;
+                if (linearIndex >= transform.childCount) continue;
+
+                Transform slot = transform.GetChild(linearIndex);
+                for (int i = 1; i < slot.childCount; i++)
+                {
+                    Transform block = slot.GetChild(i);
+                    BoxCollider col = block.GetComponent<BoxCollider>();
+                    if (col == null) col = block.GetComponentInChildren<BoxCollider>();
+
+                    if (col != null)
+                    {
+                        col.enabled = inLastThreeRows;
+                    }
+                }
+            }
         }
     }
 
@@ -203,7 +242,6 @@ public class WordChecker : MonoBehaviour
             blockRenderer.material.SetFloat("_ShineSize", slotRenderer.material.GetFloat("_ShineSize"));
             blockRenderer.material.SetFloat("_ShineSoftness", slotRenderer.material.GetFloat("_ShineSoftness"));
             blockRenderer.material.SetFloat("_ShineAngle", slotRenderer.material.GetFloat("_ShineAngle"));
-            Debug.Log(slotRenderer.material.GetColor("_RimColor"));
             if (slotRenderer.materials.Length > 1)
             {
                 slotRenderer.materials[1].DOColor(Color.green, trayJumpDuration / 2f).SetEase(Ease.InOutBack);
@@ -245,6 +283,39 @@ public class WordChecker : MonoBehaviour
             block.gameObject.layer = LayerMask.NameToLayer("Word");
             FreezeManager.DecreaseFreezeCount();
             reservedGridSlots.Remove(matchedKey);
+
+            // --- Register block into HintManager under the landed word ---
+            var lvlManager = LevelManager.Instance;
+            if (lvlManager != null && lvlManager.wordPositions != null)
+            {
+                string targetWord = null;
+                foreach (var kvp in lvlManager.wordPositions)
+                {
+                    if (kvp.Value.Contains(matchedKey))
+                    {
+                        targetWord = kvp.Key;
+                        // Strip unique ID suffixes (e.g. "COMEDY_0" -> "COMEDY")
+                        if (targetWord.Contains("_")) targetWord = targetWord.Substring(0, targetWord.IndexOf('_'));
+                        if (targetWord.Contains("#")) targetWord = targetWord.Substring(0, targetWord.IndexOf('#'));
+                        break;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(targetWord) && HintManager.instance != null)
+                {
+                    if (!HintManager.instance.wordChain.ContainsKey(targetWord))
+                    {
+                        HintManager.instance.wordChain[targetWord] = new ();
+                    }
+
+                    if (!HintManager.instance.wordChain[targetWord].Key.Contains(block.gameObject))
+                    {
+                        HintManager.instance.wordChain[targetWord].Key.Add(block.gameObject);
+                    }
+                }
+            }
+
+            UpdateLastThreeRowsColliders();
 
             if (TopGridManager.instance != null)
             {
@@ -358,7 +429,6 @@ public class WordChecker : MonoBehaviour
             {
                 if (gravityNeeded)
                 {
-                    // NEW FIX: Tell the Tray Dragger that we are literally shifting blocks now!
                     isShifting = true;
 
                     yield return StartCoroutine(WaitForGridStability());
@@ -368,13 +438,14 @@ public class WordChecker : MonoBehaviour
                         yield return gravitySeq.WaitForCompletion();
                     }
 
-                    // NEW FIX: Tell the Tray Dragger that gravity is finished.
-                    isShifting = false;
+                    UpdateLastThreeRowsColliders();
 
+                    isShifting = false;
                     gravityNeeded = false;
                 }
                 else
                 {
+                    UpdateLastThreeRowsColliders();
                     break;
                 }
             }
@@ -383,7 +454,7 @@ public class WordChecker : MonoBehaviour
         }
 
         isProcessing = false;
-        isShifting = false; // Failsafe
+        isShifting = false;
     }
 
     private bool HasFlyingBlocks()
@@ -869,6 +940,7 @@ public class WordChecker : MonoBehaviour
                     }
                 }
                 Destroy(pivotGo);
+                UpdateLastThreeRowsColliders();
             });
 
             masterGravitySeq.Insert(0, wordSeq);

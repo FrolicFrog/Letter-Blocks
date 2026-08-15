@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 
+
 [RequireComponent(typeof(TextMeshProUGUI))]
 [RequireComponent(typeof(RectTransform))]
 public class AutoAdjustTMP : MonoBehaviour
@@ -12,9 +13,37 @@ public class AutoAdjustTMP : MonoBehaviour
     [Header("Padding (Inside Parent)")]
     public float margin = 5f;
 
+    private TextMeshProUGUI tmpText;
+    private RectTransform rectTransform;
+
     private void Awake()
     {
+        CacheComponents();
         SetupTextToFit();
+    }
+
+    private void OnEnable()
+    {
+        CacheComponents();
+        SetupTextToFit();
+    }
+
+    private void OnValidate()
+    {
+        CacheComponents();
+        SetupTextToFit();
+    }
+
+    private void OnRectTransformDimensionsChange()
+    {
+        CacheComponents();
+        SetupTextToFit();
+    }
+
+    private void CacheComponents()
+    {
+        if (tmpText == null) tmpText = GetComponent<TextMeshProUGUI>();
+        if (rectTransform == null) rectTransform = GetComponent<RectTransform>();
     }
 
     /// <summary>
@@ -23,8 +52,7 @@ public class AutoAdjustTMP : MonoBehaviour
     /// </summary>
     public void SetupTextToFit()
     {
-        TextMeshProUGUI tmpText = GetComponent<TextMeshProUGUI>();
-        RectTransform rectTransform = GetComponent<RectTransform>();
+        if (tmpText == null || rectTransform == null) return;
 
         // 1. Stretch RectTransform to fill the parent Image
         rectTransform.anchorMin = Vector2.zero; // Bottom-Left
@@ -41,7 +69,7 @@ public class AutoAdjustTMP : MonoBehaviour
         tmpText.fontSizeMin = minFontSize;
         tmpText.fontSizeMax = maxFontSize;
 
-        // 4. Center the text (like in image_66765e.png)
+        // 4. Center the text
         tmpText.alignment = TextAlignmentOptions.Center;
 
         // 5. Apply margins so text doesn't touch the very edge of the image

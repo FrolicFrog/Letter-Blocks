@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+[RequireComponent(typeof(HintManager))]
 public class LevelManager : Manager<LevelManager>
 {
     [Header("LEVELS")]
@@ -26,7 +28,6 @@ public class LevelManager : Manager<LevelManager>
 
     private Dictionary<Material, Sprite> _colorSprite = new(); //Do not clear
     private Dictionary<Direction, GameObject> wallsDirectionDict = new();
-    private Dictionary<string, List<GameObject>> trayChunks = new();
     private Dictionary<string, int> freezedTray = new();
 
     private LevelData _LevelData;
@@ -42,7 +43,9 @@ public class LevelManager : Manager<LevelManager>
     public HashSet<string> horizontal = new();
 
     [HideInInspector] public int hearts;
-   
+
+    private HintManager hintManager;
+
     private int _CurrentLevelNumber;
     public int CurLevelNumber => _CurrentLevelNumber;
     public LevelData CurLvlData => _LevelData;
@@ -59,6 +62,7 @@ public class LevelManager : Manager<LevelManager>
             _LevelData = Resources.Load<LevelData>($"Levels/{LevelNumber}");
         }
         levelText.text = "Level: "+_LevelData.LevelNumber;
+        hintManager = GetComponent<HintManager>();
         DataSetup();
         LoadInScene();
         base.Initialize();
@@ -141,20 +145,22 @@ public class LevelManager : Manager<LevelManager>
     }
     void ManageWords()
     {
-        for (int row = 0; row < gridManager.rows; row++)
+        foreach (var word in wordPositions.Keys)
         {
-            for (int col = 0; col < gridManager.columns; col++)
+            hintManager.wordChain[word] = new();
+            hintManager.wordChain[word] = new(new(),new());
+
+            foreach (var key in wordPositions[word])
             {
-                Vector2Int key = new Vector2Int(row, col);
                 int linearIndex = key.x * gridManager.columns + key.y;
                 var gridChild = gridManager.transform.GetChild(linearIndex);
 
-           
+               
                 if (cellTexts.ContainsKey(key))
                 {
                     var letterbox = Instantiate(gridManager.squareSlot, gridChild);
                     letterbox.GetComponent<MeshRenderer>().material = categoryColors[cellCategory[key]];
-                   
+
 
                     if (!excludedChar.Contains(key))
                     {
@@ -168,7 +174,7 @@ public class LevelManager : Manager<LevelManager>
                         mats[0] = categoryColors[cellCategory[key]];
                         mats[1] = borderMaterial;
                         letterbox.GetComponent<MeshRenderer>().materials = mats;
-                        if (row > gridManager.rows-4)
+                        if (key.x > gridManager.rows - 4)
                         {
                             letterbox.GetComponent<MeshRenderer>().materials[1].color = Color.white;
                         }
@@ -177,11 +183,16 @@ public class LevelManager : Manager<LevelManager>
                             letterbox.GetComponent<MeshRenderer>().materials[1].color = mats[0].color;
                         }
 
+                        int i = word.IndexOf(cellTexts[key]);
+
+                        hintManager.wordChain[word].Value.Add(i);
+                        if(word == "MONEY")
+                        Debug.Log(key.y);
                     }
                     letterbox.transform.localPosition = Vector3.zero;
-                  
+                    hintManager.wordChain[word].Key.Add(letterbox);
+                 
                 }
-
             }
         }
 
@@ -330,7 +341,7 @@ public class LevelManager : Manager<LevelManager>
         trayColors.Clear();// = _LevelData.trayColors.ToDictionary(item => item.Key, item => item.Value);
         wordPositions.Clear();
         wordsCategory.Clear();
-        trayChunks.Clear();
+        hintManager.wordChain.Clear();
         freezedTray.Clear();
         trayPos.Clear();
         horizontal.Clear();

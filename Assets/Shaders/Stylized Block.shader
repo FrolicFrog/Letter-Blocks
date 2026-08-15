@@ -131,7 +131,6 @@ Shader "Custom/StylizedBlockOptimized"
                 float3 appliedRim = rimColor.rgb * fresnel * enableHL;
                 
                 finalColor.rgb += appliedRim;
-
                 return finalColor;
             }
             ENDCG
