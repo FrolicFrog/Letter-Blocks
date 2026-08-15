@@ -80,3 +80,35 @@ Decoration
 Shapes
 Candy
 Winged
+Venomous
+Sewing
+College
+Tennis
+Art
+Dental Care
+Shoes
+Months
+Green
+Yellow
+Face
+Mammals
+Swimming
+Hair Salon
+Barbecue
+Cleaning
+Stationery
+Elements
+Carpenter
+Containers
+Emergency
+Red
+Phone
+Party
+Forest
+Woolly Animals
+Bee
+Sauce
+Polar
+Christmas
+Halloween
+Airport
