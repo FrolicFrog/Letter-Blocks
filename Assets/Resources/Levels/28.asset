@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - CRIB
   - CINEMA
@@ -50,6 +50,20 @@ MonoBehaviour:
   - VASE
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
+  - Tray 11
+  - Tray 12
+  - Tray 13
+  - Tray 14
+  - Tray 15
   horizontal: []
   excludedChar:
   - {x: 29, y: 5}
@@ -82,6 +96,7 @@ MonoBehaviour:
   - {x: 10, y: 5}
   - {x: 10, y: 7}
   - {x: 8, y: 3}
+  - {x: 16, y: 3}
   blockedCells: []
   wordCategory:
   - Key: Baby
@@ -699,8 +714,116 @@ MonoBehaviour:
     Value: M
   - Key: {x: 8, y: 6}
     Value: A
-  trayCells: []
-  trayName: []
+  trayCells:
+  - Key: {x: 5, y: 1}
+    Value: A
+  - Key: {x: 5, y: 2}
+    Value: M
+  - Key: {x: 5, y: 4}
+    Value: U
+  - Key: {x: 5, y: 5}
+    Value: O
+  - Key: {x: 5, y: 0}
+    Value: T
+  - Key: {x: 4, y: 0}
+    Value: NO
+  - Key: {x: 4, y: 1}
+    Value: P
+  - Key: {x: 4, y: 3}
+    Value: H
+  - Key: {x: 3, y: 3}
+    Value: AX
+  - Key: {x: 3, y: 4}
+    Value: I
+  - Key: {x: 3, y: 1}
+    Value: I
+  - Key: {x: 3, y: 2}
+    Value: OE
+  - Key: {x: 4, y: 2}
+    Value: Q
+  - Key: {x: 4, y: 5}
+    Value: O
+  - Key: {x: 3, y: 5}
+    Value: O
+  - Key: {x: 3, y: 0}
+    Value: A
+  - Key: {x: 2, y: 0}
+    Value: R
+  - Key: {x: 2, y: 1}
+    Value: A
+  - Key: {x: 2, y: 2}
+    Value: N
+  - Key: {x: 2, y: 3}
+    Value: I
+  - Key: {x: 2, y: 4}
+    Value: S
+  - Key: {x: 1, y: 4}
+    Value: E
+  - Key: {x: 1, y: 5}
+    Value: I
+  - Key: {x: 1, y: 0}
+    Value: P
+  - Key: {x: 1, y: 1}
+    Value: EN
+  - Key: {x: 1, y: 3}
+    Value: R
+  - Key: {x: 1, y: 2}
+    Value: T
+  trayName:
+  - Key: {x: 5, y: 1}
+    Value: Tray 1
+  - Key: {x: 5, y: 2}
+    Value: Tray 1
+  - Key: {x: 5, y: 4}
+    Value: Tray 2
+  - Key: {x: 5, y: 5}
+    Value: Tray 2
+  - Key: {x: 5, y: 0}
+    Value: Tray 3
+  - Key: {x: 4, y: 0}
+    Value: Tray 3
+  - Key: {x: 4, y: 1}
+    Value: Tray 3
+  - Key: {x: 4, y: 3}
+    Value: Tray 4
+  - Key: {x: 3, y: 3}
+    Value: Tray 4
+  - Key: {x: 3, y: 4}
+    Value: Tray 4
+  - Key: {x: 3, y: 1}
+    Value: Tray 5
+  - Key: {x: 3, y: 2}
+    Value: Tray 5
+  - Key: {x: 4, y: 2}
+    Value: Tray 5
+  - Key: {x: 4, y: 5}
+    Value: Tray 6
+  - Key: {x: 3, y: 5}
+    Value: Tray 6
+  - Key: {x: 3, y: 0}
+    Value: Tray 7
+  - Key: {x: 2, y: 0}
+    Value: Tray 7
+  - Key: {x: 2, y: 1}
+    Value: Tray 8
+  - Key: {x: 2, y: 2}
+    Value: Tray 8
+  - Key: {x: 2, y: 3}
+    Value: Tray 8
+  - Key: {x: 2, y: 4}
+    Value: Tray 9
+  - Key: {x: 1, y: 4}
+    Value: Tray 9
+  - Key: {x: 1, y: 5}
+    Value: Tray 9
+  - Key: {x: 1, y: 0}
+    Value: Tray 10
+  - Key: {x: 1, y: 1}
+    Value: Tray 10
+  - Key: {x: 1, y: 3}
+    Value: Tray 11
+  - Key: {x: 1, y: 2}
+    Value: Tray 12
   categoryColors:
   - Key: Baby
     Value: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}

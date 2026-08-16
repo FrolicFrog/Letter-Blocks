@@ -12,40 +12,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 26
   m_EditorClassIdentifier: 
-  timer: 1
+  timer: 0
   LevelNumber: 26
   rows: 30
   columns: 8
-  height: 6
-  width: 6
+  height: 5
+  width: 5
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  bottomGridSize: 0.13
+  categoryMaterial: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
   words:
-  - BACON
-  - YOGURT
-  - PANCAKES
+  - GERMANY
+  - ITALY
+  - JAPAN
   - SAUSAGE
   - CEREAL
   - EGGS
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
   horizontal: []
   excludedChar:
   - {x: 29, y: 4}
   - {x: 28, y: 2}
   - {x: 27, y: 5}
-  - {x: 26, y: 2}
-  - {x: 25, y: 5}
+  - {x: 26, y: 3}
   - {x: 24, y: 2}
+  - {x: 25, y: 4}
   blockedCells: []
   wordCategory:
+  - Key: Country
+    Value:
+    - GERMANY
+    - ITALY
+    - JAPAN
   - Key: Breakfast
     Value:
-    - BACON
-    - YOGURT
-    - PANCAKES
     - SAUSAGE
     - CEREAL
     - EGGS
@@ -84,44 +91,40 @@ MonoBehaviour:
     Value: Breakfast
   - Key: {x: 27, y: 7}
     Value: Breakfast
-  - Key: {x: 26, y: 0}
-    Value: Breakfast
-  - Key: {x: 26, y: 1}
-    Value: Breakfast
-  - Key: {x: 26, y: 2}
-    Value: Breakfast
   - Key: {x: 26, y: 3}
-    Value: Breakfast
+    Value: Country
   - Key: {x: 26, y: 4}
-    Value: Breakfast
+    Value: Country
   - Key: {x: 26, y: 5}
-    Value: Breakfast
-  - Key: {x: 26, y: 6}
-    Value: Breakfast
-  - Key: {x: 26, y: 7}
-    Value: Breakfast
-  - Key: {x: 25, y: 3}
-    Value: Breakfast
-  - Key: {x: 25, y: 4}
-    Value: Breakfast
-  - Key: {x: 25, y: 5}
-    Value: Breakfast
-  - Key: {x: 25, y: 2}
-    Value: Breakfast
-  - Key: {x: 25, y: 6}
-    Value: Breakfast
-  - Key: {x: 25, y: 7}
-    Value: Breakfast
-  - Key: {x: 24, y: 0}
-    Value: Breakfast
+    Value: Country
   - Key: {x: 24, y: 1}
-    Value: Breakfast
+    Value: Country
   - Key: {x: 24, y: 2}
-    Value: Breakfast
+    Value: Country
+  - Key: {x: 24, y: 5}
+    Value: Country
+  - Key: {x: 24, y: 6}
+    Value: Country
+  - Key: {x: 25, y: 4}
+    Value: Country
   - Key: {x: 24, y: 3}
-    Value: Breakfast
+    Value: Country
   - Key: {x: 24, y: 4}
-    Value: Breakfast
+    Value: Country
+  - Key: {x: 25, y: 0}
+    Value: Country
+  - Key: {x: 24, y: 7}
+    Value: Country
+  - Key: {x: 26, y: 2}
+    Value: Country
+  - Key: {x: 26, y: 1}
+    Value: Country
+  - Key: {x: 25, y: 1}
+    Value: Country
+  - Key: {x: 25, y: 3}
+    Value: Country
+  - Key: {x: 25, y: 2}
+    Value: Country
   cellTexts:
   - Key: {x: 29, y: 2}
     Value: E
@@ -157,76 +160,84 @@ MonoBehaviour:
     Value: G
   - Key: {x: 27, y: 7}
     Value: E
-  - Key: {x: 26, y: 0}
-    Value: P
-  - Key: {x: 26, y: 1}
-    Value: A
-  - Key: {x: 26, y: 2}
-    Value: N
   - Key: {x: 26, y: 3}
-    Value: C
+    Value: P
   - Key: {x: 26, y: 4}
     Value: A
   - Key: {x: 26, y: 5}
-    Value: K
-  - Key: {x: 26, y: 6}
-    Value: E
-  - Key: {x: 26, y: 7}
-    Value: S
-  - Key: {x: 25, y: 3}
-    Value: O
-  - Key: {x: 25, y: 4}
-    Value: G
-  - Key: {x: 25, y: 5}
-    Value: U
-  - Key: {x: 25, y: 2}
-    Value: Y
-  - Key: {x: 25, y: 6}
-    Value: R
-  - Key: {x: 25, y: 7}
-    Value: T
-  - Key: {x: 24, y: 0}
-    Value: B
-  - Key: {x: 24, y: 1}
-    Value: A
-  - Key: {x: 24, y: 2}
-    Value: C
-  - Key: {x: 24, y: 3}
-    Value: O
-  - Key: {x: 24, y: 4}
     Value: N
-  trayCells: []
-  trayName: []
+  - Key: {x: 24, y: 1}
+    Value: G
+  - Key: {x: 24, y: 2}
+    Value: E
+  - Key: {x: 24, y: 5}
+    Value: A
+  - Key: {x: 24, y: 6}
+    Value: N
+  - Key: {x: 25, y: 4}
+    Value: Y
+  - Key: {x: 24, y: 3}
+    Value: R
+  - Key: {x: 24, y: 4}
+    Value: M
+  - Key: {x: 25, y: 0}
+    Value: I
+  - Key: {x: 24, y: 7}
+    Value: Y
+  - Key: {x: 26, y: 2}
+    Value: A
+  - Key: {x: 26, y: 1}
+    Value: J
+  - Key: {x: 25, y: 1}
+    Value: T
+  - Key: {x: 25, y: 3}
+    Value: L
+  - Key: {x: 25, y: 2}
+    Value: A
+  trayCells:
+  - Key: {x: 4, y: 2}
+    Value: YR
+  - Key: {x: 4, y: 0}
+    Value: PG
+  - Key: {x: 4, y: 4}
+    Value: EA
+  trayName:
+  - Key: {x: 4, y: 2}
+    Value: Tray 2
+  - Key: {x: 4, y: 0}
+    Value: Tray 1
+  - Key: {x: 4, y: 4}
+    Value: Tray 3
   categoryColors:
   - Key: Breakfast
     Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  - Key: Country
+    Value: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
   trayColors: []
   wordPositions:
-  - Key: BACON
+  - Key: GERMANY
     Value:
-    - {x: 24, y: 0}
     - {x: 24, y: 1}
     - {x: 24, y: 2}
     - {x: 24, y: 3}
     - {x: 24, y: 4}
-  - Key: YOGURT
+    - {x: 24, y: 5}
+    - {x: 24, y: 6}
+    - {x: 24, y: 7}
+  - Key: ITALY
     Value:
+    - {x: 25, y: 0}
+    - {x: 25, y: 1}
     - {x: 25, y: 2}
     - {x: 25, y: 3}
     - {x: 25, y: 4}
-    - {x: 25, y: 5}
-    - {x: 25, y: 6}
-    - {x: 25, y: 7}
-  - Key: PANCAKES
+  - Key: JAPAN
     Value:
-    - {x: 26, y: 0}
     - {x: 26, y: 1}
     - {x: 26, y: 2}
     - {x: 26, y: 3}
     - {x: 26, y: 4}
     - {x: 26, y: 5}
-    - {x: 26, y: 6}
-    - {x: 26, y: 7}
   - Key: SAUSAGE
     Value:
     - {x: 27, y: 1}

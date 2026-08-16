@@ -16,12 +16,12 @@ MonoBehaviour:
   LevelNumber: 27
   rows: 30
   columns: 8
-  height: 6
-  width: 6
+  height: 5
+  width: 5
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}
+  bottomGridSize: 0.13
+  categoryMaterial: {fileID: 0}
   words:
   - LIBRA
   - MARBLES
@@ -34,6 +34,13 @@ MonoBehaviour:
   - GEMINI
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
   horizontal: []
   excludedChar:
   - {x: 29, y: 2}
@@ -273,8 +280,44 @@ MonoBehaviour:
     Value: R
   - Key: {x: 21, y: 6}
     Value: A
-  trayCells: []
-  trayName: []
+  trayCells:
+  - Key: {x: 4, y: 3}
+    Value: EO
+  - Key: {x: 4, y: 1}
+    Value: AA
+  - Key: {x: 2, y: 3}
+    Value: A
+  - Key: {x: 2, y: 4}
+    Value: O
+  - Key: {x: 2, y: 0}
+    Value: D
+  - Key: {x: 2, y: 1}
+    Value: E
+  - Key: {x: 2, y: 2}
+    Value: U
+  - Key: {x: 3, y: 2}
+    Value: IA
+  - Key: {x: 1, y: 2}
+    Value: E
+  trayName:
+  - Key: {x: 4, y: 3}
+    Value: Tray 1
+  - Key: {x: 4, y: 1}
+    Value: Tray 2
+  - Key: {x: 2, y: 3}
+    Value: Tray 3
+  - Key: {x: 2, y: 4}
+    Value: Tray 3
+  - Key: {x: 2, y: 0}
+    Value: Tray 4
+  - Key: {x: 2, y: 1}
+    Value: Tray 4
+  - Key: {x: 2, y: 2}
+    Value: Tray 4
+  - Key: {x: 3, y: 2}
+    Value: Tray 5
+  - Key: {x: 1, y: 2}
+    Value: Tray 6
   categoryColors:
   - Key: Toys
     Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
