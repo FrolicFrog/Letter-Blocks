@@ -16,12 +16,12 @@ MonoBehaviour:
   LevelNumber: 29
   rows: 30
   columns: 8
-  height: 6
+  height: 10
   width: 6
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  bottomGridSize: 0.08
+  categoryMaterial: {fileID: 0}
   words:
   - DESK
   - BAT
@@ -49,6 +49,21 @@ MonoBehaviour:
   - CIRCLE
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
+  - Tray 11
+  - Tray 12
+  - Tray 13
+  - Tray 14
+  - Tray 15
+  - Tray 16
   horizontal: []
   excludedChar:
   - {x: 29, y: 5}
@@ -82,7 +97,13 @@ MonoBehaviour:
   - {x: 9, y: 4}
   - {x: 11, y: 3}
   - {x: 8, y: 3}
-  blockedCells: []
+  blockedCells:
+  - {x: 9, y: 3}
+  - {x: 8, y: 3}
+  - {x: 7, y: 3}
+  - {x: 2, y: 2}
+  - {x: 3, y: 2}
+  - {x: 4, y: 2}
   wordCategory:
   - Key: Furniture
     Value:
@@ -642,8 +663,132 @@ MonoBehaviour:
     Value: S
   - Key: {x: 8, y: 4}
     Value: K
-  trayCells: []
-  trayName: []
+  trayCells:
+  - Key: {x: 9, y: 0}
+    Value: G
+  - Key: {x: 9, y: 1}
+    Value: A
+  - Key: {x: 9, y: 2}
+    Value: I
+  - Key: {x: 8, y: 1}
+    Value: E
+  - Key: {x: 8, y: 0}
+    Value: E
+  - Key: {x: 7, y: 0}
+    Value: E
+  - Key: {x: 6, y: 0}
+    Value: O
+  - Key: {x: 5, y: 0}
+    Value: A
+  - Key: {x: 4, y: 0}
+    Value: O
+  - Key: {x: 3, y: 0}
+    Value: X
+  - Key: {x: 6, y: 1}
+    Value: I
+  - Key: {x: 6, y: 2}
+    Value: H
+  - Key: {x: 6, y: 3}
+    Value: C
+  - Key: {x: 5, y: 2}
+    Value: U
+  - Key: {x: 5, y: 1}
+    Value: O
+  - Key: {x: 7, y: 2}
+    Value: O
+  - Key: {x: 9, y: 4}
+    Value: A
+  - Key: {x: 8, y: 4}
+    Value: E
+  - Key: {x: 7, y: 4}
+    Value: H
+  - Key: {x: 7, y: 5}
+    Value: O
+  - Key: {x: 6, y: 5}
+    Value: Y
+  - Key: {x: 5, y: 5}
+    Value: T
+  - Key: {x: 4, y: 5}
+    Value: F
+  - Key: {x: 4, y: 4}
+    Value: U
+  - Key: {x: 4, y: 3}
+    Value: A
+  - Key: {x: 2, y: 4}
+    Value: G
+  - Key: {x: 3, y: 4}
+    Value: S
+  - Key: {x: 4, y: 1}
+    Value: B
+  - Key: {x: 3, y: 3}
+    Value: C
+  - Key: {x: 2, y: 0}
+    Value: L
+  - Key: {x: 2, y: 5}
+    Value: A
+  trayName:
+  - Key: {x: 9, y: 0}
+    Value: Tray 1
+  - Key: {x: 9, y: 1}
+    Value: Tray 1
+  - Key: {x: 9, y: 2}
+    Value: Tray 1
+  - Key: {x: 8, y: 1}
+    Value: Tray 1
+  - Key: {x: 8, y: 0}
+    Value: Tray 2
+  - Key: {x: 7, y: 0}
+    Value: Tray 2
+  - Key: {x: 6, y: 0}
+    Value: Tray 3
+  - Key: {x: 5, y: 0}
+    Value: Tray 3
+  - Key: {x: 4, y: 0}
+    Value: Tray 4
+  - Key: {x: 3, y: 0}
+    Value: Tray 4
+  - Key: {x: 6, y: 1}
+    Value: Tray 5
+  - Key: {x: 6, y: 2}
+    Value: Tray 5
+  - Key: {x: 6, y: 3}
+    Value: Tray 5
+  - Key: {x: 5, y: 2}
+    Value: Tray 6
+  - Key: {x: 5, y: 1}
+    Value: Tray 7
+  - Key: {x: 7, y: 2}
+    Value: Tray 8
+  - Key: {x: 9, y: 4}
+    Value: Tray 9
+  - Key: {x: 8, y: 4}
+    Value: Tray 9
+  - Key: {x: 7, y: 4}
+    Value: Tray 9
+  - Key: {x: 7, y: 5}
+    Value: Tray 10
+  - Key: {x: 6, y: 5}
+    Value: Tray 10
+  - Key: {x: 5, y: 5}
+    Value: Tray 10
+  - Key: {x: 4, y: 5}
+    Value: Tray 11
+  - Key: {x: 4, y: 4}
+    Value: Tray 11
+  - Key: {x: 4, y: 3}
+    Value: Tray 11
+  - Key: {x: 2, y: 4}
+    Value: Tray 12
+  - Key: {x: 3, y: 4}
+    Value: Tray 12
+  - Key: {x: 4, y: 1}
+    Value: Tray 13
+  - Key: {x: 3, y: 3}
+    Value: Tray 14
+  - Key: {x: 2, y: 0}
+    Value: Tray 15
+  - Key: {x: 2, y: 5}
+    Value: Tray 16
   categoryColors:
   - Key: Furniture
     Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
@@ -834,4 +979,14 @@ MonoBehaviour:
     - {x: 29, y: 5}
     - {x: 29, y: 6}
     - {x: 29, y: 7}
-  freezedTray: []
+  freezedTray:
+  - Key: Tray 5
+    Value: 5
+  - Key: Tray 9
+    Value: 5
+  - Key: Tray 10
+    Value: 5
+  - Key: Tray 11
+    Value: 5
+  - Key: Tray 12
+    Value: 5

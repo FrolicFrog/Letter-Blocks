@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - BRUSH
   - NEEDLE
@@ -55,6 +55,25 @@ MonoBehaviour:
   - CAMPUS
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
+  - Tray 11
+  - Tray 12
+  - Tray 13
+  - Tray 14
+  - Tray 15
+  - Tray 16
+  - Tray 17
+  - Tray 18
+  - Tray 19
+  - Tray 20
   horizontal: []
   excludedChar:
   - {x: 28, y: 2}
@@ -92,6 +111,7 @@ MonoBehaviour:
   - {x: 5, y: 6}
   - {x: 4, y: 1}
   - {x: 6, y: 3}
+  - {x: 17, y: 4}
   blockedCells: []
   wordCategory:
   - Key: Art
@@ -808,8 +828,128 @@ MonoBehaviour:
     Value: L
   - Key: {x: 6, y: 6}
     Value: E
-  trayCells: []
-  trayName: []
+  trayCells:
+  - Key: {x: 5, y: 0}
+    Value: Y
+  - Key: {x: 5, y: 5}
+    Value: I
+  - Key: {x: 5, y: 2}
+    Value: A
+  - Key: {x: 5, y: 1}
+    Value: N
+  - Key: {x: 5, y: 3}
+    Value: A
+  - Key: {x: 5, y: 4}
+    Value: H
+  - Key: {x: 4, y: 5}
+    Value: M
+  - Key: {x: 4, y: 4}
+    Value: A
+  - Key: {x: 4, y: 0}
+    Value: O
+  - Key: {x: 4, y: 1}
+    Value: I
+  - Key: {x: 4, y: 2}
+    Value: OI
+  - Key: {x: 4, y: 3}
+    Value: TI
+  - Key: {x: 3, y: 0}
+    Value: R
+  - Key: {x: 3, y: 1}
+    Value: A
+  - Key: {x: 3, y: 2}
+    Value: V
+  - Key: {x: 3, y: 3}
+    Value: T
+  - Key: {x: 3, y: 4}
+    Value: C
+  - Key: {x: 2, y: 4}
+    Value: KS
+  - Key: {x: 1, y: 4}
+    Value: C
+  - Key: {x: 2, y: 3}
+    Value: M
+  - Key: {x: 2, y: 5}
+    Value: D
+  - Key: {x: 3, y: 5}
+    Value: TE
+  - Key: {x: 2, y: 0}
+    Value: A
+  - Key: {x: 2, y: 1}
+    Value: S
+  - Key: {x: 2, y: 2}
+    Value: O
+  - Key: {x: 1, y: 5}
+    Value: M
+  - Key: {x: 1, y: 0}
+    Value: XC
+  - Key: {x: 1, y: 1}
+    Value: P
+  - Key: {x: 1, y: 2}
+    Value: I
+  - Key: {x: 1, y: 3}
+    Value: SL
+  trayName:
+  - Key: {x: 5, y: 0}
+    Value: Tray 1
+  - Key: {x: 5, y: 5}
+    Value: Tray 2
+  - Key: {x: 5, y: 2}
+    Value: Tray 3
+  - Key: {x: 5, y: 1}
+    Value: Tray 3
+  - Key: {x: 5, y: 3}
+    Value: Tray 4
+  - Key: {x: 5, y: 4}
+    Value: Tray 4
+  - Key: {x: 4, y: 5}
+    Value: Tray 5
+  - Key: {x: 4, y: 4}
+    Value: Tray 5
+  - Key: {x: 4, y: 0}
+    Value: Tray 6
+  - Key: {x: 4, y: 1}
+    Value: Tray 6
+  - Key: {x: 4, y: 2}
+    Value: Tray 7
+  - Key: {x: 4, y: 3}
+    Value: Tray 8
+  - Key: {x: 3, y: 0}
+    Value: Tray 9
+  - Key: {x: 3, y: 1}
+    Value: Tray 9
+  - Key: {x: 3, y: 2}
+    Value: Tray 10
+  - Key: {x: 3, y: 3}
+    Value: Tray 10
+  - Key: {x: 3, y: 4}
+    Value: Tray 11
+  - Key: {x: 2, y: 4}
+    Value: Tray 11
+  - Key: {x: 1, y: 4}
+    Value: Tray 11
+  - Key: {x: 2, y: 3}
+    Value: Tray 11
+  - Key: {x: 2, y: 5}
+    Value: Tray 11
+  - Key: {x: 3, y: 5}
+    Value: Tray 12
+  - Key: {x: 2, y: 0}
+    Value: Tray 13
+  - Key: {x: 2, y: 1}
+    Value: Tray 13
+  - Key: {x: 2, y: 2}
+    Value: Tray 14
+  - Key: {x: 1, y: 5}
+    Value: Tray 15
+  - Key: {x: 1, y: 0}
+    Value: Tray 16
+  - Key: {x: 1, y: 1}
+    Value: Tray 17
+  - Key: {x: 1, y: 2}
+    Value: Tray 18
+  - Key: {x: 1, y: 3}
+    Value: Tray 19
   categoryColors:
   - Key: Venomous
     Value: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
@@ -1051,4 +1191,12 @@ MonoBehaviour:
     - {x: 29, y: 5}
     - {x: 29, y: 6}
     - {x: 29, y: 7}
-  freezedTray: []
+  freezedTray:
+  - Key: Tray 4
+    Value: 8
+  - Key: Tray 3
+    Value: 8
+  - Key: Tray 2
+    Value: 6
+  - Key: Tray 1
+    Value: 6
