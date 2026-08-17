@@ -71,7 +71,7 @@ public class GlobalTrayDragger : MonoBehaviour
 
     [Tooltip("Easing function for the return animation.")]
     public Ease snapBackEase = Ease.OutBack;
-
+    public GameObject Panel,Hand;
     [Header("Debug")]
     [Tooltip("Draw wireframes of the physics overlap checks in the Scene view while dragging.")]
     public bool showPhysicsGizmos = true;
@@ -203,6 +203,11 @@ public class GlobalTrayDragger : MonoBehaviour
 
         if (dragPlane.Raycast(ray, out float enter))
         {
+            if (Panel.activeSelf)
+            {
+                Panel.SetActive(false);
+                Hand.SetActive(false);
+            }
             Vector3 currentMouseWorldPoint = ray.GetPoint(enter);
             Vector3 targetPosition = currentMouseWorldPoint + clickOffset;
 

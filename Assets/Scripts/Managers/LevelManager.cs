@@ -22,10 +22,13 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial,trayOutlineMat,freezeTray,freezeBox;
     [SerializeField] private List<KeyValueGroup<Material, Sprite>> colorSprite;
-  
+    [SerializeField] private FocusCutOut panel;
+    [SerializeField] private Renderer halfArea;
+    [SerializeField] private GameObject hand;
+
     [HideInInspector] public int TestLevelToLoad = 1;
     [HideInInspector] public List<GameObject> ticks = new();
-
+    
     private Dictionary<Material, Sprite> _colorSprite = new(); //Do not clear
     private Dictionary<Direction, GameObject> wallsDirectionDict = new();
     private Dictionary<string, int> freezedTray = new();
@@ -146,6 +149,7 @@ public class LevelManager : Manager<LevelManager>
     void ManageWords()
     {
         var firstCharPos = CurLvlData.firstCharPos.ToDictionary(item => item.Key, item => item.Value);
+        
         foreach (var word in wordPositions.Keys)
         {
             hintManager.wordChain[word] = new();
@@ -193,14 +197,26 @@ public class LevelManager : Manager<LevelManager>
                     hintManager.wordChain[word].Key.Add(letterbox);
                  
                 }
+               
+
             }
         }
-
+      if (_CurrentLevelNumber == 1)
+        {
+            var group = new FocusCutOut.CutoutGroup();
+            group.renderers = hintManager.wordChain["BANANA"].Key.Select(x => x.GetComponent<Renderer>()).ToList();
+            panel.cutoutGroups.Add(group);
+            group = new FocusCutOut.CutoutGroup();
+            group.renderers.Add(halfArea);
+            panel.cutoutGroups.Add(group);
+            halfArea.gameObject.SetActive(true);
+            panel.gameObject.SetActive(true);
+        }
     }
     void ManageAlphabets()
     {
-       
-      
+
+    
         for (int height = 0; height < letterGridManager.height; height++)
         {
             for (int width = 0; width < letterGridManager.width; width++)
@@ -258,6 +274,7 @@ public class LevelManager : Manager<LevelManager>
                     FM.horizontalLock=true;
                 }
 
+               
             }
             else
             {
@@ -269,9 +286,21 @@ public class LevelManager : Manager<LevelManager>
                 }
                 else
                 {
-                    letterGridManager.CreateTray(trayPos[tray], 2.4f, trayMaterial, new Vector3(.995f, .988f, .988f), true, trayCells);
+                   var let = letterGridManager.CreateTray(trayPos[tray], 2.4f, trayMaterial, new Vector3(.995f, .988f, .988f), true, trayCells);
+                    if (_CurrentLevelNumber == 1)
+                    {
+                        if (trayCells[trayPos[tray][0]] == "N")
+                        {
+                            hand.gameObject.SetActive(true);
+                            let.AddComponent<MoveBack>().objectToMove = hand.transform;
+                        }
+                    }
+                  
                 }
             }
+
+          
+
         }
 
        
