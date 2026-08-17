@@ -35,5 +35,5 @@ Material:
     m_Colors:
     - _Center: {r: 0.48820555, g: 0.7020494, b: 0, a: 0}
     - _HalfSize: {r: 0.44723684, g: 0.064511344, b: 0, a: 0}
-    - _OverlayColor: {r: 0, g: 0, b: 0, a: 0.9019608}
+    - _OverlayColor: {r: 0, g: 0, b: 0, a: 0.9411765}
   m_BuildTextureStacks: []

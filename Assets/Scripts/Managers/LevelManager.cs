@@ -186,8 +186,7 @@ public class LevelManager : Manager<LevelManager>
                         int i = word.IndexOf(cellTexts[key]);
 
                         hintManager.wordChain[word].Value.Add(i);
-                        if(word == "MONEY")
-                        Debug.Log(key.y);
+                  
                     }
                     letterbox.transform.localPosition = Vector3.zero;
                     hintManager.wordChain[word].Key.Add(letterbox);
