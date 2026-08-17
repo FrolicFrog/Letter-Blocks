@@ -1,9 +1,10 @@
-Shader "Custom/StylizedBlockOptimized"
+Shader "Custom/StylizedBlockOptimizedTransparent"
 {
     Properties
     {
         [Header(Main Block Settings)]
         _Color ("Main Color (Top)", Color) = (1.0, 0.7, 0.1, 1.0)
+        _Transparency ("Transparency (Opacity)", Range(0.0, 1.0)) = 0.8
         _SideDarkness ("Side Darkness Multiplier", Range(0.0, 1.0)) = 0.75
         _BottomDarkness ("Bottom Darkness Multiplier", Range(0.0, 1.0)) = 0.5
 
@@ -21,34 +22,44 @@ Shader "Custom/StylizedBlockOptimized"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" "Queue"="Geometry" }
+        Tags 
+        { 
+            "Queue"="Transparent" 
+            "RenderType"="Transparent" 
+            "IgnoreProjector"="True" 
+        }
         LOD 100
 
         Pass
         {
+            Blend SrcAlpha OneMinusSrcAlpha
+            ZWrite On
+            Cull Back
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile_instancing 
+            #pragma multi_compile_instancing
             #include "UnityCG.cginc"
 
             struct appdata
             {
                 float4 vertex : POSITION;
-                float3 normal : NORMAL; // Upgraded to float3 for better vertex precision
+                float3 normal : NORMAL;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
             struct v2f
             {
                 float4 pos : SV_POSITION;
-                float3 worldNormal : TEXCOORD0; // Upgraded to float3 to prevent truncation artifacts
-                float3 viewDir : TEXCOORD1;     // Upgraded to float3 to prevent truncation artifacts
+                float3 worldNormal : TEXCOORD0;
+                float3 worldPos : TEXCOORD1;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
             UNITY_INSTANCING_BUFFER_START(Props)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
+                UNITY_DEFINE_INSTANCED_PROP(float, _Transparency)
                 UNITY_DEFINE_INSTANCED_PROP(float, _SideDarkness)
                 UNITY_DEFINE_INSTANCED_PROP(float, _BottomDarkness)
                 
@@ -71,9 +82,7 @@ Shader "Custom/StylizedBlockOptimized"
 
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.worldNormal = UnityObjectToWorldNormal(v.normal);
-                
-                // Parallel view rays for orthographic consistency
-                o.viewDir = -float3(unity_CameraToWorld._m02, unity_CameraToWorld._m12, unity_CameraToWorld._m22);
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
                 
                 return o;
             }
@@ -82,15 +91,19 @@ Shader "Custom/StylizedBlockOptimized"
             {
                 UNITY_SETUP_INSTANCE_ID(i);
 
-                // Use float3 for all directional math to eliminate highlight mismatch
                 float3 normal = normalize(i.worldNormal);
-                float3 viewDir = normalize(i.viewDir);
+                
+                // Adaptive view direction for both Perspective and Orthographic cameras
+                float3 viewDir = (unity_OrthoParams.w == 1.0) 
+                    ? -float3(unity_CameraToWorld._m02, unity_CameraToWorld._m12, unity_CameraToWorld._m22)
+                    : normalize(_WorldSpaceCameraPos.xyz - i.worldPos);
 
                 float topMask = saturate(normal.y);
                 float bottomMask = saturate(-normal.y);
 
-                // Access Instanced Properties
+                // Instanced Properties
                 float4 mainColor = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
+                float transparency = UNITY_ACCESS_INSTANCED_PROP(Props, _Transparency);
                 float sideDark = UNITY_ACCESS_INSTANCED_PROP(Props, _SideDarkness);
                 float bottomDark = UNITY_ACCESS_INSTANCED_PROP(Props, _BottomDarkness);
                 
@@ -104,34 +117,33 @@ Shader "Custom/StylizedBlockOptimized"
                 float4 rimColor = UNITY_ACCESS_INSTANCED_PROP(Props, _RimColor);
                 float fresnelPower = UNITY_ACCESS_INSTANCED_PROP(Props, _FresnelPower);
 
+                float baseAlpha = mainColor.a * transparency;
+
                 // --- 1. Base Shading ---
-                float4 sideColor = float4(mainColor.rgb * sideDark, mainColor.a);
-                float4 bottomColor = float4(mainColor.rgb * bottomDark, mainColor.a);
+                float3 baseRgb = mainColor.rgb * sideDark;
+                baseRgb = lerp(baseRgb, mainColor.rgb * bottomDark, bottomMask);
+                baseRgb = lerp(baseRgb, mainColor.rgb, topMask);
 
-                float4 finalColor = sideColor;
-                finalColor = lerp(finalColor, bottomColor, bottomMask);
-                finalColor = lerp(finalColor, mainColor, topMask);
-
-                // --- 2. Fake Shine (Glossy Specular) ---
+                // --- 2. Fake Shine ---
                 float rad = shineAngle * 0.0174533f;
-                
                 float3 fakeLightDir = normalize(float3(sin(rad), 1.0f, cos(rad)));
-                
                 float3 halfVector = normalize(fakeLightDir + viewDir);
                 float nDotH = saturate(dot(normal, halfVector));
                 
                 float shineThreshold = 1.0f - shineSize;
                 float shineIntensity = smoothstep(shineThreshold, shineThreshold + shineSoftness, nDotH);
-                
-                finalColor.rgb += shineColor.rgb * shineIntensity * shineColor.a * enableShine;
+                float3 shineContribution = shineColor.rgb * (shineIntensity * shineColor.a * enableShine);
 
-                // --- 3. Proper Fresnel Rim Light ---
+                // --- 3. Fresnel Rim Light ---
                 float nDotV = saturate(dot(normal, viewDir));
                 float fresnel = pow(1.0f - nDotV, fresnelPower); 
-                float3 appliedRim = rimColor.rgb * fresnel * enableHL;
-                
-                finalColor.rgb += appliedRim;
-                return finalColor;
+                float3 rimContribution = rimColor.rgb * (fresnel * rimColor.a * enableHL);
+
+                // Combine RGB & Alpha cleanly
+                float3 finalRgb = baseRgb + shineContribution + rimContribution;
+                float finalAlpha = saturate(baseAlpha + (fresnel * rimColor.a * enableHL * 0.5));
+
+                return float4(finalRgb, finalAlpha);
             }
             ENDCG
         }
