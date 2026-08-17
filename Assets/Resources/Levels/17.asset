@@ -778,3 +778,42 @@ MonoBehaviour:
     - {x: 24, y: 5}
     - {x: 24, y: 6}
   freezedTray: []
+  firstCharPos:
+  - Key: INDIGO
+    Value: 0
+  - Key: MUSTARD
+    Value: 1
+  - Key: TWENTY
+    Value: 0
+  - Key: SEVEN
+    Value: 2
+  - Key: CHERRY
+    Value: 0
+  - Key: TWELVE
+    Value: 1
+  - Key: INDIGO#2
+    Value: 2
+  - Key: BURGUNDY
+    Value: 0
+  - Key: ELEVEN
+    Value: 0
+  - Key: LAVENDER
+    Value: 0
+  - Key: ZERO
+    Value: 3
+  - Key: BEIGE
+    Value: 2
+  - Key: FIVE
+    Value: 0
+  - Key: PURPLE
+    Value: 2
+  - Key: FOUR
+    Value: 1
+  - Key: BLUE
+    Value: 3
+  - Key: THREE
+    Value: 1
+  - Key: TWO
+    Value: 2
+  - Key: ONE
+    Value: 4

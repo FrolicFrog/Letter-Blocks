@@ -1088,3 +1088,56 @@ MonoBehaviour:
     - {x: 26, y: 5}
     - {x: 26, y: 6}
   freezedTray: []
+  firstCharPos:
+  - Key: ANIME
+    Value: 2
+  - Key: NATIONAL
+    Value: 0
+  - Key: RAMEN
+    Value: 2
+  - Key: TOMB
+    Value: 0
+  - Key: KIMONO
+    Value: 1
+  - Key: BRUSH
+    Value: 2
+  - Key: WASABI
+    Value: 1
+  - Key: ANCIENT
+    Value: 0
+  - Key: GLIDER
+    Value: 2
+  - Key: MUSEUM
+    Value: 0
+  - Key: SKULL
+    Value: 3
+  - Key: SUMO
+    Value: 2
+  - Key: PYRAMID
+    Value: 1
+  - Key: WATER
+    Value: 0
+  - Key: AIRPLANE
+    Value: 0
+  - Key: SAMURAI
+    Value: 0
+  - Key: SUSHI
+    Value: 2
+  - Key: WILDLIFE
+    Value: 0
+  - Key: JET
+    Value: 3
+  - Key: SAFARI
+    Value: 2
+  - Key: FOSSIL
+    Value: 1
+  - Key: TREX
+    Value: 0
+  - Key: BONE
+    Value: 4
+  - Key: DRONE
+    Value: 2
+  - Key: JURASSIC
+    Value: 0
+  - Key: RAPTOR
+    Value: 1

@@ -364,3 +364,22 @@ MonoBehaviour:
     - {x: 9, y: 6}
     - {x: 9, y: 7}
   freezedTray: []
+  firstCharPos:
+  - Key: RHINO
+    Value: 1
+  - Key: BACON
+    Value: 1
+  - Key: AIRPLANE
+    Value: 0
+  - Key: BEAR
+    Value: 0
+  - Key: TRUCK
+    Value: 1
+  - Key: BURGER
+    Value: 0
+  - Key: SCOOTER
+    Value: 1
+  - Key: EGG
+    Value: 0
+  - Key: FOX
+    Value: 5

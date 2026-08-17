@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - SURF
   - LADDER
@@ -52,6 +52,7 @@ MonoBehaviour:
   - Tray 9
   - Tray 10
   - Tray 11
+  horizontal: []
   excludedChar:
   - {x: 16, y: 7}
   - {x: 15, y: 3}
@@ -734,4 +735,39 @@ MonoBehaviour:
   - Key: Tray 5
     Value: 3
   - Key: Tray 9
+    Value: 2
+  firstCharPos:
+  - Key: SURF
+    Value: 0
+  - Key: LADDER
+    Value: 2
+  - Key: WINTER
+    Value: 0
+  - Key: CARROT
+    Value: 1
+  - Key: POOL
+    Value: 2
+  - Key: HAMMER
+    Value: 1
+  - Key: VACATION
+    Value: 0
+  - Key: SUMMER
+    Value: 2
+  - Key: AVOCADO
+    Value: 0
+  - Key: SCREW
+    Value: 3
+  - Key: FALL
+    Value: 1
+  - Key: DRILL
+    Value: 3
+  - Key: WRENCH
+    Value: 1
+  - Key: CUCUMBER
+    Value: 0
+  - Key: BEACH
+    Value: 2
+  - Key: SPRING
+    Value: 0
+  - Key: TOMATO
     Value: 2

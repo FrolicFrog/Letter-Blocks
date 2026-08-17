@@ -1200,3 +1200,64 @@ MonoBehaviour:
     Value: 6
   - Key: Tray 1
     Value: 6
+  firstCharPos:
+  - Key: BRUSH
+    Value: 2
+  - Key: NEEDLE
+    Value: 1
+  - Key: EXHIBIT
+    Value: 0
+  - Key: MATCH
+    Value: 3
+  - Key: THIMBLE
+    Value: 0
+  - Key: ABSTRACT
+    Value: 0
+  - Key: SEAM
+    Value: 1
+  - Key: RACKET
+    Value: 2
+  - Key: BUTTON
+    Value: 0
+  - Key: LECTURE
+    Value: 1
+  - Key: SERVE
+    Value: 3
+  - Key: SPIDER
+    Value: 0
+  - Key: PALETTE
+    Value: 1
+  - Key: VIPER
+    Value: 2
+  - Key: BOBPIN
+    Value: 0
+  - Key: SEMESTER
+    Value: 0
+  - Key: EXAM
+    Value: 0
+  - Key: PIN
+    Value: 5
+  - Key: COURT
+    Value: 2
+  - Key: MAMBA
+    Value: 0
+  - Key: THREAD
+    Value: 1
+  - Key: NET
+    Value: 0
+  - Key: BALL
+    Value: 4
+  - Key: LIBRARY
+    Value: 1
+  - Key: SNAKE
+    Value: 0
+  - Key: CANVAS
+    Value: 2
+  - Key: FABRIC
+    Value: 1
+  - Key: STUDY
+    Value: 3
+  - Key: COBRA
+    Value: 1
+  - Key: CAMPUS
+    Value: 2

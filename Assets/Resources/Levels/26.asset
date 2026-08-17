@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.13
-  categoryMaterial: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - GERMANY
   - ITALY
@@ -262,3 +262,16 @@ MonoBehaviour:
     - {x: 29, y: 4}
     - {x: 29, y: 5}
   freezedTray: []
+  firstCharPos:
+  - Key: GERMANY
+    Value: 1
+  - Key: ITALY
+    Value: 0
+  - Key: JAPAN
+    Value: 1
+  - Key: SAUSAGE
+    Value: 1
+  - Key: CEREAL
+    Value: 0
+  - Key: EGGS
+    Value: 2

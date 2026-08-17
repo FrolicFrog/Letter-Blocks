@@ -38,7 +38,7 @@ public class LevelEditor : EditorWindow
     private Dictionary<Vector2Int, string> cellCategory = new(), trayName = new();
     private Dictionary<Vector2Int, string> cellTexts = new(), trayCells = new();
     private Dictionary<string, Material> categoryColors = new();
-    private Dictionary<string, int> freezedTray = new();
+    private Dictionary<string, int> freezedTray = new(),firstCharPos = new();
 
 
     // Auto-generated colors for the trays
@@ -216,6 +216,7 @@ public class LevelEditor : EditorWindow
                 freezedTray.Clear();
                 horizontalTrays.Clear();
                 CachedLvlData = null;
+                firstCharPos.Clear();
             }
             GUILayout.BeginHorizontal();
 
@@ -323,7 +324,10 @@ public class LevelEditor : EditorWindow
             list3.Add(new KeyValueGroup<string, List<string>>(kvg.Key, new List<string>(kvg.Value)));
         }
         currentData.wordCategory = list3;
-
+        // Add alongside the other KeyValueGroup serializations:
+        currentData.firstCharPos = firstCharPos
+            .Select(kvp => new KeyValueGroup<string, int>(kvp.Key, kvp.Value))
+            .ToList();
         EditorUtility.SetDirty(currentData);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -346,7 +350,10 @@ public class LevelEditor : EditorWindow
         horizontalTrays = CurLvlData.horizontal.ToHashSet();
         // Load blocked cells data
         blockedCells = CurLvlData.blockedCells != null ? CurLvlData.blockedCells.ToHashSet() : new HashSet<Vector2Int>();
-
+        if (CurLvlData.firstCharPos != null)
+            firstCharPos = CurLvlData.firstCharPos.ToDictionary(item => item.Key, item => item.Value);
+        else
+            firstCharPos.Clear();
         tray = new List<string>(CurLvlData.tray);
         categoryMaterial = CurLvlData.categoryMaterial;
         cellCategory = CurLvlData.cellCategory.ToDictionary(item => item.Key, item => item.Value);
@@ -938,6 +945,7 @@ public class LevelEditor : EditorWindow
         words.Clear();
         wordPositions.Clear();
         wordCategory.Clear();
+        firstCharPos.Clear(); // Clear before re-evaluating grid
 
         for (int row = 0; row < rows; row++)
         {
@@ -982,7 +990,7 @@ public class LevelEditor : EditorWindow
 
     private void SaveWordData(string word, List<Vector2Int> coords, string category)
     {
-        if (word.Length > 1)
+        if (word.Length > 1 && coords.Count > 0)
         {
             words.Add(word);
             string uniqueKey = word;
@@ -994,6 +1002,9 @@ public class LevelEditor : EditorWindow
             }
 
             wordPositions[uniqueKey] = new List<Vector2Int>(coords);
+
+            // coords[0].y holds the column position of the first character
+            firstCharPos[uniqueKey] = coords[0].y;
 
             if (!string.IsNullOrEmpty(category))
             {

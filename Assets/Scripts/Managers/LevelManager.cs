@@ -145,6 +145,7 @@ public class LevelManager : Manager<LevelManager>
     }
     void ManageWords()
     {
+        var firstCharPos = CurLvlData.firstCharPos.ToDictionary(item => item.Key, item => item.Value);
         foreach (var word in wordPositions.Keys)
         {
             hintManager.wordChain[word] = new();
@@ -183,7 +184,7 @@ public class LevelManager : Manager<LevelManager>
                             letterbox.GetComponent<MeshRenderer>().materials[1].color = mats[0].color;
                         }
 
-                        int i = word.IndexOf(cellTexts[key]);
+                        int i = key.y - firstCharPos[word];
 
                         hintManager.wordChain[word].Value.Add(i);
                   

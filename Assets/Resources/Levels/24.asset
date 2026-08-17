@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.1
-  categoryMaterial: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - MONITOR
   - TACOS
@@ -1171,3 +1171,58 @@ MonoBehaviour:
     - {x: 29, y: 6}
     - {x: 29, y: 7}
   freezedTray: []
+  firstCharPos:
+  - Key: MONITOR
+    Value: 0
+  - Key: TACOS
+    Value: 3
+  - Key: POODLE
+    Value: 0
+  - Key: MARIACHI
+    Value: 0
+  - Key: BEAGLE
+    Value: 0
+  - Key: PRODUCT
+    Value: 1
+  - Key: AZTEC
+    Value: 3
+  - Key: TERRIER
+    Value: 1
+  - Key: FIESTA
+    Value: 0
+  - Key: BOXER
+    Value: 0
+  - Key: WORKER
+    Value: 1
+  - Key: MOUSE
+    Value: 0
+  - Key: PITBULL
+    Value: 1
+  - Key: MATERIAL
+    Value: 0
+  - Key: TEQUILA
+    Value: 1
+  - Key: SOFTWARE
+    Value: 0
+  - Key: LANE
+    Value: 0
+  - Key: BURRITO
+    Value: 1
+  - Key: SHIFT
+    Value: 0
+  - Key: PUG
+    Value: 5
+  - Key: NETWORK
+    Value: 0
+  - Key: HUSKY
+    Value: 1
+  - Key: RAM
+    Value: 0
+  - Key: ROBOT
+    Value: 3
+  - Key: CONVEYOR
+    Value: 0
+  - Key: BULLDOG
+    Value: 1
+  - Key: KEYBOARD
+    Value: 0

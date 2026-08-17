@@ -990,3 +990,52 @@ MonoBehaviour:
     Value: 5
   - Key: Tray 12
     Value: 5
+  firstCharPos:
+  - Key: DESK
+    Value: 1
+  - Key: BAT
+    Value: 3
+  - Key: STOOL
+    Value: 1
+  - Key: STAR
+    Value: 1
+  - Key: SUGAR
+    Value: 2
+  - Key: SHELF
+    Value: 0
+  - Key: FAIRY
+    Value: 0
+  - Key: BED
+    Value: 5
+  - Key: CARAMEL
+    Value: 1
+  - Key: CABINET
+    Value: 0
+  - Key: PIGEON
+    Value: 2
+  - Key: HEXAGON
+    Value: 0
+  - Key: TOFFEE
+    Value: 2
+  - Key: FALCON
+    Value: 0
+  - Key: DIAMOND
+    Value: 0
+  - Key: DRESSER
+    Value: 1
+  - Key: SQUARE
+    Value: 0
+  - Key: LOLLIPOP
+    Value: 0
+  - Key: BENCH
+    Value: 1
+  - Key: GUM
+    Value: 0
+  - Key: HAWK
+    Value: 4
+  - Key: SPIRAL
+    Value: 1
+  - Key: BONBON
+    Value: 0
+  - Key: CIRCLE
+    Value: 2

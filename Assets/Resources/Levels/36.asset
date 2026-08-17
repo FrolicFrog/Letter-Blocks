@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - FLIGHT
   - STAR
@@ -1204,3 +1204,70 @@ MonoBehaviour:
     - {x: 29, y: 6}
     - {x: 29, y: 7}
   freezedTray: []
+  firstCharPos:
+  - Key: FLIGHT
+    Value: 2
+  - Key: STAR
+    Value: 0
+  - Key: GLACIER
+    Value: 2
+  - Key: RUNWAY
+    Value: 1
+  - Key: PESTO
+    Value: 4
+  - Key: LUGGAGE
+    Value: 1
+  - Key: ORNAMENT
+    Value: 0
+  - Key: ZOMBIE
+    Value: 0
+  - Key: TERMINAL
+    Value: 1
+  - Key: MUSTARD
+    Value: 1
+  - Key: GHOST
+    Value: 2
+  - Key: PASSPORT
+    Value: 0
+  - Key: WITCH
+    Value: 4
+  - Key: VINEGAR
+    Value: 2
+  - Key: ICE
+    Value: 0
+  - Key: GIFT
+    Value: 5
+  - Key: TUNDRA
+    Value: 1
+  - Key: BELL
+    Value: 2
+  - Key: GATE
+    Value: 0
+  - Key: TREE
+    Value: 5
+  - Key: ARCTIC
+    Value: 2
+  - Key: SANTA
+    Value: 1
+  - Key: PENGUIN
+    Value: 0
+  - Key: CHILI
+    Value: 4
+  - Key: CANDLE
+    Value: 1
+  - Key: COSTUME
+    Value: 2
+  - Key: AIRPLANE
+    Value: 0
+  - Key: SOY
+    Value: 0
+  - Key: IGLOO
+    Value: 4
+  - Key: SKELETON
+    Value: 0
+  - Key: BARBECUE
+    Value: 0
+  - Key: CANDY
+    Value: 2
+  - Key: KETCHUP
+    Value: 1

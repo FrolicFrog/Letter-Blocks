@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - PATIENT
   - TOMATO
@@ -744,3 +744,48 @@ MonoBehaviour:
     - {x: 29, y: 4}
     - {x: 29, y: 5}
   freezedTray: []
+  firstCharPos:
+  - Key: PATIENT
+    Value: 0
+  - Key: TOMATO
+    Value: 1
+  - Key: DOCTOR
+    Value: 0
+  - Key: LOBSTER
+    Value: 0
+  - Key: SCREW
+    Value: 2
+  - Key: ROSE
+    Value: 0
+  - Key: CAN
+    Value: 5
+  - Key: RESCUE
+    Value: 2
+  - Key: CLAMP
+    Value: 1
+  - Key: LADYBUG
+    Value: 0
+  - Key: VESSEL
+    Value: 0
+  - Key: NAIL
+    Value: 1
+  - Key: BOTTLE
+    Value: 2
+  - Key: CHERRY
+    Value: 1
+  - Key: SIREN
+    Value: 2
+  - Key: JAR
+    Value: 0
+  - Key: JIGSAW
+    Value: 0
+  - Key: APPLE
+    Value: 1
+  - Key: BARREL
+    Value: 1
+  - Key: BOX
+    Value: 0
+  - Key: DRILL
+    Value: 3
+  - Key: WOOD
+    Value: 2

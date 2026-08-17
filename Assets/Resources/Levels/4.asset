@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - JEANS
   - SAPPHIRE
@@ -42,6 +42,7 @@ MonoBehaviour:
   - Tray 3
   - Tray 4
   - Tray 5
+  horizontal: []
   excludedChar:
   - {x: 4, y: 3}
   - {x: 5, y: 3}
@@ -520,3 +521,30 @@ MonoBehaviour:
     - {x: 12, y: 3}
     - {x: 12, y: 4}
   freezedTray: []
+  firstCharPos:
+  - Key: JEANS
+    Value: 3
+  - Key: SAPPHIRE
+    Value: 0
+  - Key: GOWN
+    Value: 2
+  - Key: GREY
+    Value: 4
+  - Key: MAGENTA
+    Value: 0
+  - Key: SHIRT
+    Value: 1
+  - Key: BROWN
+    Value: 2
+  - Key: JACKET
+    Value: 1
+  - Key: BLACK
+    Value: 0
+  - Key: HOODIE
+    Value: 2
+  - Key: PANTS
+    Value: 0
+  - Key: YELLOW
+    Value: 2
+  - Key: DRESS
+    Value: 0

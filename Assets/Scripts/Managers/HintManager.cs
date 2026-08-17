@@ -89,7 +89,7 @@ public class HintManager : MonoBehaviour
             uiCamera,
             out Vector2 localPoint))
         {
-            localPoint.y += 60;
+            localPoint.y += 90;
             panel.textBox.anchoredPosition = localPoint;
         }
 

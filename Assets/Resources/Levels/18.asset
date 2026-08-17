@@ -806,3 +806,44 @@ MonoBehaviour:
     Value: 6
   - Key: Tray 3
     Value: 6
+  firstCharPos:
+  - Key: CLASS
+    Value: 3
+  - Key: ORCHID
+    Value: 1
+  - Key: SITCOM
+    Value: 2
+  - Key: TULIP
+    Value: 0
+  - Key: MARINA
+    Value: 2
+  - Key: ROMANCE
+    Value: 1
+  - Key: WIND
+    Value: 0
+  - Key: EXAM
+    Value: 4
+  - Key: LILY
+    Value: 2
+  - Key: EPISODES
+    Value: 0
+  - Key: SAILOR
+    Value: 2
+  - Key: DAISY
+    Value: 3
+  - Key: TEACHER
+    Value: 0
+  - Key: ROSE
+    Value: 1
+  - Key: CRIME
+    Value: 3
+  - Key: CAPTAIN
+    Value: 0
+  - Key: VAMPIRE
+    Value: 1
+  - Key: BOAT
+    Value: 3
+  - Key: STUDENT
+    Value: 1
+  - Key: BOOK
+    Value: 3

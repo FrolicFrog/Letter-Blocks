@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - SODIUM
   - RULER
@@ -992,3 +992,60 @@ MonoBehaviour:
     - {x: 29, y: 5}
     - {x: 29, y: 6}
   freezedTray: []
+  firstCharPos:
+  - Key: SODIUM
+    Value: 1
+  - Key: RULER
+    Value: 0
+  - Key: SULFUR
+    Value: 2
+  - Key: ERASER
+    Value: 1
+  - Key: CALCIUM
+    Value: 0
+  - Key: SAUCE
+    Value: 1
+  - Key: PAPER
+    Value: 3
+  - Key: ZINC
+    Value: 0
+  - Key: SCISSOR
+    Value: 1
+  - Key: BUCKET
+    Value: 1
+  - Key: ALUMINUM
+    Value: 0
+  - Key: VACUUM
+    Value: 1
+  - Key: GLUE
+    Value: 0
+  - Key: PORK
+    Value: 4
+  - Key: CARBON
+    Value: 2
+  - Key: SMOKER
+    Value: 1
+  - Key: POLISH
+    Value: 0
+  - Key: NITROGEN
+    Value: 0
+  - Key: SAUSAGE
+    Value: 1
+  - Key: SOAP
+    Value: 0
+  - Key: TAPE
+    Value: 4
+  - Key: SPONGE
+    Value: 0
+  - Key: CHARCOAL
+    Value: 0
+  - Key: PENCIL
+    Value: 2
+  - Key: BEEF
+    Value: 0
+  - Key: MOP
+    Value: 5
+  - Key: GLOVES
+    Value: 1
+  - Key: GRILL
+    Value: 2

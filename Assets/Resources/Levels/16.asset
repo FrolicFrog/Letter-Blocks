@@ -280,3 +280,18 @@ MonoBehaviour:
     - {x: 24, y: 5}
     - {x: 24, y: 6}
   freezedTray: []
+  firstCharPos:
+  - Key: MOON
+    Value: 4
+  - Key: PLANET
+    Value: 0
+  - Key: EARTH
+    Value: 1
+  - Key: SATURN
+    Value: 2
+  - Key: SUN
+    Value: 0
+  - Key: MARS
+    Value: 2
+  - Key: SPACE
+    Value: 2

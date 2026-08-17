@@ -28,6 +28,7 @@ MonoBehaviour:
   tray:
   - Tray 1
   - Tray 2
+  horizontal: []
   excludedChar:
   - {x: 9, y: 6}
   - {x: 8, y: 4}
@@ -113,3 +114,9 @@ MonoBehaviour:
     - {x: 9, y: 5}
     - {x: 9, y: 6}
     - {x: 9, y: 7}
+  freezedTray: []
+  firstCharPos:
+  - Key: APPLE
+    Value: 1
+  - Key: BANANA
+    Value: 2

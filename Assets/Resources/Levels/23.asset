@@ -983,3 +983,52 @@ MonoBehaviour:
     Value: 6
   - Key: Tray 7
     Value: 6
+  firstCharPos:
+  - Key: FLOAT
+    Value: 3
+  - Key: CLINIC
+    Value: 0
+  - Key: SHORE
+    Value: 1
+  - Key: MEDICINE
+    Value: 0
+  - Key: CATCH
+    Value: 0
+  - Key: PRINCE
+    Value: 2
+  - Key: CARAMEL
+    Value: 1
+  - Key: TACKLE
+    Value: 2
+  - Key: MONARCH
+    Value: 0
+  - Key: SURGERY
+    Value: 1
+  - Key: QUEEN
+    Value: 3
+  - Key: PATIENT
+    Value: 0
+  - Key: SYRUP
+    Value: 2
+  - Key: CROWN
+    Value: 3
+  - Key: NURSE
+    Value: 0
+  - Key: HOOK
+    Value: 0
+  - Key: XRAY
+    Value: 4
+  - Key: DOCTOR
+    Value: 2
+  - Key: BOAT
+    Value: 4
+  - Key: THRONE
+    Value: 0
+  - Key: GLUE
+    Value: 3
+  - Key: KING
+    Value: 4
+  - Key: HONEY
+    Value: 2
+  - Key: PRINCESS
+    Value: 0

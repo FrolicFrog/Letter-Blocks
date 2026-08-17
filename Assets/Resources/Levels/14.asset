@@ -1059,3 +1059,54 @@ MonoBehaviour:
     Value: 8
   - Key: Tray 20
     Value: 10
+  firstCharPos:
+  - Key: SHOOTING
+    Value: 0
+  - Key: BREAK
+    Value: 2
+  - Key: FLOWERS
+    Value: 0
+  - Key: WIN
+    Value: 2
+  - Key: CARAVAN
+    Value: 1
+  - Key: LEVEL
+    Value: 3
+  - Key: BONFIRE
+    Value: 0
+  - Key: SALSA
+    Value: 3
+  - Key: BOUQUET
+    Value: 0
+  - Key: ARCADE
+    Value: 1
+  - Key: GROOM
+    Value: 1
+  - Key: TENT
+    Value: 2
+  - Key: MOONWALK
+    Value: 0
+  - Key: FOREST
+    Value: 2
+  - Key: BALLET
+    Value: 1
+  - Key: RING
+    Value: 3
+  - Key: GAMER
+    Value: 0
+  - Key: OUTDOOR
+    Value: 1
+  - Key: CEREMONY
+    Value: 0
+  - Key: SWING
+    Value: 3
+  - Key: AXE
+    Value: 2
+  - Key: RACING
+    Value: 2
+  - Key: BRIDE
+    Value: 0
+  - Key: HIPHOP
+    Value: 2
+  - Key: JOYSTICK
+    Value: 0

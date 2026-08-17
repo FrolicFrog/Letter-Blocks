@@ -412,3 +412,24 @@ MonoBehaviour:
     Value: 4
   - Key: Tray 5
     Value: 2
+  firstCharPos:
+  - Key: DOCTOR
+    Value: 1
+  - Key: TENNIS
+    Value: 1
+  - Key: CHEF
+    Value: 2
+  - Key: GOLF
+    Value: 1
+  - Key: CUBA
+    Value: 3
+  - Key: MEXICO
+    Value: 2
+  - Key: SOLDIER
+    Value: 1
+  - Key: USA
+    Value: 4
+  - Key: SOCCER
+    Value: 2
+  - Key: POLICE
+    Value: 0

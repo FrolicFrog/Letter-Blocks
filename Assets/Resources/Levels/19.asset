@@ -861,3 +861,46 @@ MonoBehaviour:
     - {x: 24, y: 6}
     - {x: 24, y: 7}
   freezedTray: []
+  firstCharPos:
+  - Key: SCORE
+    Value: 3
+  - Key: STARDUST
+    Value: 0
+  - Key: PASS
+    Value: 1
+  - Key: TERMITE
+    Value: 0
+  - Key: HOOP
+    Value: 4
+  - Key: METEOR
+    Value: 2
+  - Key: BEETLE
+    Value: 1
+  - Key: SPADE
+    Value: 2
+  - Key: REBOUND
+    Value: 1
+  - Key: ASTEROID
+    Value: 0
+  - Key: SPIDER
+    Value: 2
+  - Key: GARDENER
+    Value: 0
+  - Key: DUNK
+    Value: 2
+  - Key: NBA
+    Value: 0
+  - Key: TREE
+    Value: 4
+  - Key: STAR
+    Value: 3
+  - Key: HORNET
+    Value: 2
+  - Key: GRASS
+    Value: 0
+  - Key: GALAXY
+    Value: 2
+  - Key: WASP
+    Value: 4
+  - Key: FLOWER
+    Value: 2

@@ -836,3 +836,42 @@ MonoBehaviour:
     - {x: 29, y: 5}
     - {x: 29, y: 6}
   freezedTray: []
+  firstCharPos:
+  - Key: CURRENT
+    Value: 1
+  - Key: SAVINGS
+    Value: 0
+  - Key: CHECK
+    Value: 3
+  - Key: REPORATE
+    Value: 0
+  - Key: TRANSFER
+    Value: 0
+  - Key: PIN
+    Value: 0
+  - Key: PASSBOOK
+    Value: 0
+  - Key: LEND
+    Value: 0
+  - Key: DEBIT
+    Value: 3
+  - Key: ACCOUNT
+    Value: 0
+  - Key: BALANCE
+    Value: 1
+  - Key: ATM
+    Value: 5
+  - Key: INTEREST
+    Value: 0
+  - Key: DEPOSIT
+    Value: 0
+  - Key: LOAN
+    Value: 0
+  - Key: CREDIT
+    Value: 2
+  - Key: PAYMENT
+    Value: 0
+  - Key: TAX
+    Value: 1
+  - Key: MONEY
+    Value: 2

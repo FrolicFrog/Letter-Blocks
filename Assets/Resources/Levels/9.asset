@@ -569,3 +569,30 @@ MonoBehaviour:
     - {x: 12, y: 4}
     - {x: 12, y: 5}
   freezedTray: []
+  firstCharPos:
+  - Key: BLUSH
+    Value: 2
+  - Key: ROMANTIC
+    Value: 0
+  - Key: BURGER
+    Value: 1
+  - Key: LIPSTICK
+    Value: 0
+  - Key: DRAMA
+    Value: 2
+  - Key: STEAK
+    Value: 3
+  - Key: ACTION
+    Value: 0
+  - Key: NUGGETS
+    Value: 1
+  - Key: SANDWICH
+    Value: 0
+  - Key: HORROR
+    Value: 1
+  - Key: PIE
+    Value: 2
+  - Key: CREAM
+    Value: 3
+  - Key: COMEDY
+    Value: 0

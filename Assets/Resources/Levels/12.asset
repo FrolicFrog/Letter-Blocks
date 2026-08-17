@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.09
-  categoryMaterial: {fileID: 2100000, guid: 74a701c54a3fc14469104bed730e8899, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - TOKYO
   - CHICAGO
@@ -59,6 +59,7 @@ MonoBehaviour:
   - Tray 11
   - Tray 12
   - Tray 13
+  horizontal: []
   excludedChar:
   - {x: 19, y: 2}
   - {x: 19, y: 5}
@@ -884,3 +885,48 @@ MonoBehaviour:
     - {x: 19, y: 6}
     - {x: 19, y: 7}
   freezedTray: []
+  firstCharPos:
+  - Key: TOKYO
+    Value: 3
+  - Key: CHICAGO
+    Value: 1
+  - Key: SHOWER
+    Value: 0
+  - Key: LONDON
+    Value: 2
+  - Key: FREEZE
+    Value: 1
+  - Key: TOWEL
+    Value: 2
+  - Key: BARISTA
+    Value: 0
+  - Key: SOAP
+    Value: 0
+  - Key: COAT
+    Value: 4
+  - Key: BREW
+    Value: 3
+  - Key: DALLAS
+    Value: 2
+  - Key: SNOWBALL
+    Value: 0
+  - Key: CUP
+    Value: 0
+  - Key: RUGS
+    Value: 4
+  - Key: BOOTS
+    Value: 3
+  - Key: SHAMPOO
+    Value: 1
+  - Key: ICE
+    Value: 2
+  - Key: BLEND
+    Value: 3
+  - Key: FROST
+    Value: 2
+  - Key: MIAMI
+    Value: 0
+  - Key: ESPRESSO
+    Value: 0
+  - Key: NEWYORK
+    Value: 1

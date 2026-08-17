@@ -58,6 +58,7 @@ MonoBehaviour:
   - Tray 15
   - Tray 16
   - Tray 17
+  horizontal: []
   excludedChar:
   - {x: 14, y: 3}
   - {x: 13, y: 4}
@@ -701,3 +702,38 @@ MonoBehaviour:
     Value: 8
   - Key: Tray 17
     Value: 15
+  firstCharPos:
+  - Key: DOLPHIN
+    Value: 0
+  - Key: SONG
+    Value: 2
+  - Key: AUNT
+    Value: 4
+  - Key: STEEL
+    Value: 0
+  - Key: PIANO
+    Value: 3
+  - Key: SEAHORSE
+    Value: 0
+  - Key: JAZZ
+    Value: 0
+  - Key: COUSIN
+    Value: 1
+  - Key: TITANIUM
+    Value: 0
+  - Key: FATHER
+    Value: 2
+  - Key: OCTOPUS
+    Value: 0
+  - Key: GOLD
+    Value: 1
+  - Key: MOTHER
+    Value: 2
+  - Key: RAP
+    Value: 3
+  - Key: SILVER
+    Value: 2
+  - Key: IRON
+    Value: 0
+  - Key: GRANDMA
+    Value: 1

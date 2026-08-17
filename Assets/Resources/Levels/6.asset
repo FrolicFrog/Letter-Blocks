@@ -677,3 +677,38 @@ MonoBehaviour:
     - {x: 16, y: 6}
     - {x: 16, y: 7}
   freezedTray: []
+  firstCharPos:
+  - Key: RABBIT
+    Value: 1
+  - Key: SODA
+    Value: 4
+  - Key: WARDROBE
+    Value: 0
+  - Key: TURTLE
+    Value: 1
+  - Key: JUICE
+    Value: 1
+  - Key: CHAIR
+    Value: 3
+  - Key: HAMSTER
+    Value: 0
+  - Key: COFFEE
+    Value: 2
+  - Key: TEA
+    Value: 0
+  - Key: PARROT
+    Value: 2
+  - Key: TABLE
+    Value: 1
+  - Key: LEMONADE
+    Value: 0
+  - Key: DESK
+    Value: 4
+  - Key: FISH
+    Value: 1
+  - Key: COUCH
+    Value: 3
+  - Key: WATER
+    Value: 1
+  - Key: CAT
+    Value: 5

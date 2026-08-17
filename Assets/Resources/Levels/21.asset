@@ -970,3 +970,52 @@ MonoBehaviour:
     Value: 4
   - Key: Tray 9
     Value: 1
+  firstCharPos:
+  - Key: SALTY
+    Value: 2
+  - Key: SPOON
+    Value: 1
+  - Key: UMAMI
+    Value: 2
+  - Key: JASMINE
+    Value: 1
+  - Key: BITTER
+    Value: 0
+  - Key: HAIRPIN
+    Value: 1
+  - Key: LAVENDER
+    Value: 0
+  - Key: WAITER
+    Value: 1
+  - Key: SWEET
+    Value: 2
+  - Key: MEAL
+    Value: 0
+  - Key: TIP
+    Value: 5
+  - Key: BONNET
+    Value: 0
+  - Key: TABLE
+    Value: 3
+  - Key: FRUITY
+    Value: 2
+  - Key: MENU
+    Value: 0
+  - Key: SPICY
+    Value: 1
+  - Key: TULIP
+    Value: 2
+  - Key: HEADBAND
+    Value: 0
+  - Key: DESSERT
+    Value: 0
+  - Key: ORCHID
+    Value: 1
+  - Key: ROSE
+    Value: 0
+  - Key: COMB
+    Value: 4
+  - Key: SPRAY
+    Value: 0
+  - Key: DAISY
+    Value: 3

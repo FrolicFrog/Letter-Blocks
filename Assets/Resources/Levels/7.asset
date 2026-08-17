@@ -494,3 +494,34 @@ MonoBehaviour:
     - {x: 9, y: 6}
     - {x: 9, y: 7}
   freezedTray: []
+  firstCharPos:
+  - Key: HENRY
+    Value: 2
+  - Key: ISABELLA
+    Value: 0
+  - Key: MIA
+    Value: 1
+  - Key: LIAM
+    Value: 4
+  - Key: EMMA
+    Value: 0
+  - Key: ELI
+    Value: 5
+  - Key: AVA
+    Value: 0
+  - Key: JOHN
+    Value: 4
+  - Key: LILY
+    Value: 2
+  - Key: LEO
+    Value: 0
+  - Key: JACK
+    Value: 4
+  - Key: EMILY
+    Value: 0
+  - Key: ADAM
+    Value: 2
+  - Key: KAI
+    Value: 0
+  - Key: MARY
+    Value: 4

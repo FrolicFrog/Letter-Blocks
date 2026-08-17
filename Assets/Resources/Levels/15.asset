@@ -1116,3 +1116,58 @@ MonoBehaviour:
     - {x: 24, y: 6}
     - {x: 24, y: 7}
   freezedTray: []
+  firstCharPos:
+  - Key: HORSE
+    Value: 2
+  - Key: SPATULA
+    Value: 0
+  - Key: GOLD
+    Value: 1
+  - Key: SPOONS
+    Value: 2
+  - Key: TURKEY
+    Value: 0
+  - Key: GOBLIN
+    Value: 2
+  - Key: DISH
+    Value: 1
+  - Key: ROOSTER
+    Value: 0
+  - Key: FRIDGE
+    Value: 2
+  - Key: GOAT
+    Value: 2
+  - Key: NECKLACE
+    Value: 0
+  - Key: COW
+    Value: 5
+  - Key: PEGASUS
+    Value: 0
+  - Key: CHARM
+    Value: 3
+  - Key: TOASTER
+    Value: 0
+  - Key: DRAGON
+    Value: 2
+  - Key: POT
+    Value: 0
+  - Key: PEARL
+    Value: 3
+  - Key: CHICKEN
+    Value: 0
+  - Key: PIG
+    Value: 2
+  - Key: ELF
+    Value: 0
+  - Key: FORK
+    Value: 4
+  - Key: EARRINGS
+    Value: 0
+  - Key: TROLL
+    Value: 2
+  - Key: KNIFE
+    Value: 3
+  - Key: UNICORN
+    Value: 0
+  - Key: DIAMOND
+    Value: 1

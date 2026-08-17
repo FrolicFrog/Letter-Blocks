@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - FLOSS
   - JULY
@@ -932,3 +932,56 @@ MonoBehaviour:
     - {x: 29, y: 5}
     - {x: 29, y: 6}
   freezedTray: []
+  firstCharPos:
+  - Key: FLOSS
+    Value: 3
+  - Key: JULY
+    Value: 0
+  - Key: LETTUCE
+    Value: 0
+  - Key: MARCH
+    Value: 3
+  - Key: LOAFER
+    Value: 1
+  - Key: JANUARY
+    Value: 0
+  - Key: GRASS
+    Value: 2
+  - Key: DECEMBER
+    Value: 0
+  - Key: PEAR
+    Value: 0
+  - Key: JUNE
+    Value: 4
+  - Key: FLOATS
+    Value: 1
+  - Key: CAVITY
+    Value: 2
+  - Key: AVACADO
+    Value: 0
+  - Key: MAY
+    Value: 2
+  - Key: SPINACH
+    Value: 0
+  - Key: BRACES
+    Value: 1
+  - Key: PLATFORM
+    Value: 0
+  - Key: BROCCOLI
+    Value: 0
+  - Key: OCTOBER
+    Value: 0
+  - Key: PASTE
+    Value: 2
+  - Key: APRIL
+    Value: 1
+  - Key: LIME
+    Value: 3
+  - Key: BOOT
+    Value: 2
+  - Key: BRUSH
+    Value: 2
+  - Key: HEELS
+    Value: 3
+  - Key: DENTIST
+    Value: 0

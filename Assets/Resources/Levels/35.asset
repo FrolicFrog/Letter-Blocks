@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - LARVA
   - BISON
@@ -1010,3 +1010,66 @@ MonoBehaviour:
     - {x: 29, y: 6}
     - {x: 29, y: 7}
   freezedTray: []
+  firstCharPos:
+  - Key: LARVA
+    Value: 0
+  - Key: BISON
+    Value: 2
+  - Key: COLONY
+    Value: 1
+  - Key: CHEERS
+    Value: 2
+  - Key: SHEEP
+    Value: 0
+  - Key: POLLEN
+    Value: 1
+  - Key: ALPACA
+    Value: 1
+  - Key: APPS
+    Value: 4
+  - Key: QUEEN
+    Value: 2
+  - Key: PINE
+    Value: 0
+  - Key: GOAT
+    Value: 4
+  - Key: NECTOR
+    Value: 1
+  - Key: OAK
+    Value: 0
+  - Key: DJ
+    Value: 3
+  - Key: WAX
+    Value: 5
+  - Key: LLAMA
+    Value: 0
+  - Key: CHARGER
+    Value: 1
+  - Key: WALNUT
+    Value: 0
+  - Key: STING
+    Value: 1
+  - Key: SNACK
+    Value: 0
+  - Key: CAMERA
+    Value: 1
+  - Key: OLIVE
+    Value: 2
+  - Key: CONFETTI
+    Value: 0
+  - Key: CAMEL
+    Value: 0
+  - Key: SCREEN
+    Value: 2
+  - Key: MUSIC
+    Value: 3
+  - Key: FUNGI
+    Value: 0
+  - Key: BATTERY
+    Value: 1
+  - Key: DANCE
+    Value: 2
+  - Key: CALL
+    Value: 0
+  - Key: LEAF
+    Value: 4

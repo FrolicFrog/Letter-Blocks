@@ -396,3 +396,22 @@ MonoBehaviour:
     - {x: 29, y: 5}
     - {x: 29, y: 6}
   freezedTray: []
+  firstCharPos:
+  - Key: LIBRA
+    Value: 2
+  - Key: MARBLES
+    Value: 0
+  - Key: TEDDY
+    Value: 1
+  - Key: TAURUS
+    Value: 2
+  - Key: YOYO
+    Value: 3
+  - Key: SCORPIO
+    Value: 0
+  - Key: CANCER
+    Value: 1
+  - Key: PUPPET
+    Value: 0
+  - Key: GEMINI
+    Value: 1

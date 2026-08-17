@@ -1137,3 +1137,60 @@ MonoBehaviour:
     Value: 7
   - Key: Tray 2
     Value: 8
+  firstCharPos:
+  - Key: BLIZZARD
+    Value: 0
+  - Key: SALOON
+    Value: 2
+  - Key: SNOWY
+    Value: 1
+  - Key: PAJAMAS
+    Value: 0
+  - Key: THUNDER
+    Value: 1
+  - Key: SQUAD
+    Value: 2
+  - Key: DRY
+    Value: 0
+  - Key: QUEEN
+    Value: 1
+  - Key: CLOUDY
+    Value: 2
+  - Key: DREAM
+    Value: 0
+  - Key: PUB
+    Value: 5
+  - Key: PATROL
+    Value: 0
+  - Key: REVOLVER
+    Value: 0
+  - Key: BLANKET
+    Value: 1
+  - Key: COWBOY
+    Value: 0
+  - Key: ARREST
+    Value: 1
+  - Key: COLD
+    Value: 0
+  - Key: HOT
+    Value: 5
+  - Key: THAMES
+    Value: 1
+  - Key: SHERIFF
+    Value: 0
+  - Key: PILLOW
+    Value: 2
+  - Key: SUNNY
+    Value: 1
+  - Key: UNIFORM
+    Value: 0
+  - Key: OXFORD
+    Value: 2
+  - Key: BADGE
+    Value: 0
+  - Key: TEA
+    Value: 3
+  - Key: OFFICER
+    Value: 1
+  - Key: LONDON
+    Value: 0

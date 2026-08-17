@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - TRIM
   - EARPLUG
@@ -1001,3 +1001,66 @@ MonoBehaviour:
     - {x: 29, y: 5}
     - {x: 29, y: 6}
   freezedTray: []
+  firstCharPos:
+  - Key: TRIM
+    Value: 1
+  - Key: EARPLUG
+    Value: 0
+  - Key: RAZOR
+    Value: 3
+  - Key: TOWEL
+    Value: 2
+  - Key: BLEACH
+    Value: 0
+  - Key: SNORKEL
+    Value: 0
+  - Key: KOALA
+    Value: 0
+  - Key: DYE
+    Value: 5
+  - Key: GOGGLES
+    Value: 0
+  - Key: EYELID
+    Value: 2
+  - Key: WHALE
+    Value: 1
+  - Key: CURL
+    Value: 0
+  - Key: CORN
+    Value: 4
+  - Key: GORILLA
+    Value: 0
+  - Key: BARBER
+    Value: 1
+  - Key: BROW
+    Value: 0
+  - Key: FLIPPER
+    Value: 1
+  - Key: CHEESE
+    Value: 1
+  - Key: EYE
+    Value: 0
+  - Key: PANDA
+    Value: 3
+  - Key: SWIMSUIT
+    Value: 0
+  - Key: LIP
+    Value: 0
+  - Key: WOLF
+    Value: 4
+  - Key: MONKEY
+    Value: 1
+  - Key: GOLD
+    Value: 3
+  - Key: SUN
+    Value: 0
+  - Key: CHIN
+    Value: 4
+  - Key: CHEEK
+    Value: 1
+  - Key: HONEY
+    Value: 0
+  - Key: NOSE
+    Value: 4
+  - Key: LEMON
+    Value: 2

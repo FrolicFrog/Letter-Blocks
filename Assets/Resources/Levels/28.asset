@@ -1031,3 +1031,54 @@ MonoBehaviour:
     - {x: 29, y: 6}
     - {x: 29, y: 7}
   freezedTray: []
+  firstCharPos:
+  - Key: CRIB
+    Value: 2
+  - Key: CINEMA
+    Value: 1
+  - Key: STROLLER
+    Value: 0
+  - Key: BOUTIQUE
+    Value: 0
+  - Key: PACIFIER
+    Value: 0
+  - Key: KIOSK
+    Value: 3
+  - Key: STOVE
+    Value: 0
+  - Key: CASHIER
+    Value: 1
+  - Key: SPOON
+    Value: 1
+  - Key: CURTAINS
+    Value: 0
+  - Key: BIB
+    Value: 0
+  - Key: TOY
+    Value: 5
+  - Key: MIXER
+    Value: 2
+  - Key: CANDLE
+    Value: 0
+  - Key: DIAPER
+    Value: 1
+  - Key: SALE
+    Value: 0
+  - Key: OVEN
+    Value: 4
+  - Key: BLANKET
+    Value: 0
+  - Key: SHOPPING
+    Value: 0
+  - Key: SPATULA
+    Value: 0
+  - Key: MIRROR
+    Value: 2
+  - Key: CUSTOMER
+    Value: 0
+  - Key: FRAME
+    Value: 2
+  - Key: STORE
+    Value: 1
+  - Key: VASE
+    Value: 4

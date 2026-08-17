@@ -61,6 +61,7 @@ MonoBehaviour:
   - Tray 14
   - Tray 15
   - Tray 16
+  horizontal: []
   excludedChar:
   - {x: 24, y: 3}
   - {x: 23, y: 3}
@@ -856,3 +857,46 @@ MonoBehaviour:
     - {x: 24, y: 5}
     - {x: 24, y: 6}
   freezedTray: []
+  firstCharPos:
+  - Key: CALENDAR
+    Value: 0
+  - Key: ZEBRA
+    Value: 0
+  - Key: MARKER
+    Value: 2
+  - Key: WOLF
+    Value: 2
+  - Key: SAND
+    Value: 4
+  - Key: FLOUR
+    Value: 0
+  - Key: SCORPION
+    Value: 0
+  - Key: DECK
+    Value: 2
+  - Key: LEOPARD
+    Value: 0
+  - Key: CACTUS
+    Value: 2
+  - Key: PEN
+    Value: 0
+  - Key: CEREAL
+    Value: 2
+  - Key: BUTTER
+    Value: 1
+  - Key: FOLDER
+    Value: 2
+  - Key: TIGER
+    Value: 3
+  - Key: VALLEY
+    Value: 0
+  - Key: EMAIL
+    Value: 2
+  - Key: MILK
+    Value: 0
+  - Key: ROCK
+    Value: 4
+  - Key: ELEPHANT
+    Value: 0
+  - Key: HONEY
+    Value: 2

@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.12
-  categoryMaterial: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - WOLF
   - CYAN
@@ -38,6 +38,7 @@ MonoBehaviour:
   - Tray 3
   - Tray 4
   - Tray 5
+  horizontal: []
   excludedChar:
   - {x: 8, y: 6}
   - {x: 6, y: 4}
@@ -329,3 +330,22 @@ MonoBehaviour:
     - {x: 9, y: 2}
     - {x: 9, y: 3}
   freezedTray: []
+  firstCharPos:
+  - Key: WOLF
+    Value: 4
+  - Key: CYAN
+    Value: 2
+  - Key: EAGLE
+    Value: 0
+  - Key: YELLOW
+    Value: 1
+  - Key: LION
+    Value: 2
+  - Key: PINK
+    Value: 3
+  - Key: SHARK
+    Value: 0
+  - Key: WHITE
+    Value: 2
+  - Key: DOG
+    Value: 1
