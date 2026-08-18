@@ -21,21 +21,37 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.08
-  categoryMaterial: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
+  categoryMaterial: {fileID: 0}
   words: []
   tray:
   - Tray 1
   - Tray 2
   - Tray 3
-  horizontal: []
+  horizontal:
+  - Tray 2
   excludedChar: []
   blockedCells: []
   wordCategory: []
   cellCategory: []
   cellTexts: []
-  trayCells: []
-  trayName: []
+  trayCells:
+  - Key: {x: 1, y: 1}
+    Value: AB
+  - Key: {x: 4, y: 4}
+    Value: A
+  - Key: {x: 7, y: 1}
+    Value: A
+  trayName:
+  - Key: {x: 1, y: 1}
+    Value: Tray 1
+  - Key: {x: 4, y: 4}
+    Value: Tray 2
+  - Key: {x: 7, y: 1}
+    Value: Tray 3
   categoryColors: []
   trayColors: []
   wordPositions: []
-  freezedTray: []
+  freezedTray:
+  - Key: Tray 3
+    Value: 1
+  firstCharPos: []
