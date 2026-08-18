@@ -16,13 +16,16 @@ MonoBehaviour:
   LevelNumber: 31
   rows: 30
   columns: 8
-  height: 6
+  height: 8
   width: 6
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.11
-  categoryMaterial: {fileID: 0}
+  bottomGridSize: 0.095
+  categoryMaterial: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
   words:
+  - NOVEMBER
+  - EMERALD
+  - FEBRUARY
   - FLOSS
   - JULY
   - LETTUCE
@@ -51,6 +54,26 @@ MonoBehaviour:
   - DENTIST
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
+  - Tray 11
+  - Tray 12
+  - Tray 13
+  - Tray 14
+  - Tray 15
+  - Tray 16
+  - Tray 17
+  - Tray 18
+  - Tray 19
+  - Tray 20
+  - Tray 21
   horizontal: []
   excludedChar:
   - {x: 29, y: 1}
@@ -88,18 +111,17 @@ MonoBehaviour:
   - {x: 7, y: 4}
   - {x: 6, y: 2}
   - {x: 5, y: 5}
+  - {x: 4, y: 4}
+  - {x: 4, y: 1}
+  - {x: 2, y: 1}
+  - {x: 2, y: 5}
+  - {x: 3, y: 3}
   blockedCells: []
   wordCategory:
-  - Key: Dental Care
-    Value:
-    - FLOSS
-    - CAVITY
-    - BRACES
-    - PASTE
-    - BRUSH
-    - DENTIST
   - Key: Months
     Value:
+    - NOVEMBER
+    - FEBRUARY
     - JULY
     - MARCH
     - JANUARY
@@ -110,6 +132,7 @@ MonoBehaviour:
     - APRIL
   - Key: Green
     Value:
+    - EMERALD
     - LETTUCE
     - GRASS
     - PEAR
@@ -117,6 +140,14 @@ MonoBehaviour:
     - SPINACH
     - BROCCOLI
     - LIME
+  - Key: Dental Care
+    Value:
+    - FLOSS
+    - CAVITY
+    - BRACES
+    - PASTE
+    - BRUSH
+    - DENTIST
   - Key: Shoes
     Value:
     - LOAFER
@@ -421,6 +452,52 @@ MonoBehaviour:
     Value: Dental Care
   - Key: {x: 5, y: 7}
     Value: Dental Care
+  - Key: {x: 4, y: 0}
+    Value: Months
+  - Key: {x: 4, y: 1}
+    Value: Months
+  - Key: {x: 4, y: 2}
+    Value: Months
+  - Key: {x: 4, y: 3}
+    Value: Months
+  - Key: {x: 4, y: 4}
+    Value: Months
+  - Key: {x: 4, y: 5}
+    Value: Months
+  - Key: {x: 4, y: 6}
+    Value: Months
+  - Key: {x: 4, y: 7}
+    Value: Months
+  - Key: {x: 2, y: 0}
+    Value: Months
+  - Key: {x: 2, y: 1}
+    Value: Months
+  - Key: {x: 2, y: 2}
+    Value: Months
+  - Key: {x: 2, y: 3}
+    Value: Months
+  - Key: {x: 2, y: 4}
+    Value: Months
+  - Key: {x: 2, y: 5}
+    Value: Months
+  - Key: {x: 2, y: 6}
+    Value: Months
+  - Key: {x: 2, y: 7}
+    Value: Months
+  - Key: {x: 3, y: 0}
+    Value: Green
+  - Key: {x: 3, y: 1}
+    Value: Green
+  - Key: {x: 3, y: 2}
+    Value: Green
+  - Key: {x: 3, y: 3}
+    Value: Green
+  - Key: {x: 3, y: 4}
+    Value: Green
+  - Key: {x: 3, y: 5}
+    Value: Green
+  - Key: {x: 3, y: 6}
+    Value: Green
   cellTexts:
   - Key: {x: 29, y: 0}
     Value: D
@@ -718,8 +795,214 @@ MonoBehaviour:
     Value: S
   - Key: {x: 5, y: 7}
     Value: S
-  trayCells: []
-  trayName: []
+  - Key: {x: 4, y: 0}
+    Value: F
+  - Key: {x: 4, y: 1}
+    Value: E
+  - Key: {x: 4, y: 2}
+    Value: B
+  - Key: {x: 4, y: 3}
+    Value: R
+  - Key: {x: 4, y: 4}
+    Value: U
+  - Key: {x: 4, y: 5}
+    Value: A
+  - Key: {x: 4, y: 6}
+    Value: R
+  - Key: {x: 4, y: 7}
+    Value: Y
+  - Key: {x: 2, y: 0}
+    Value: N
+  - Key: {x: 2, y: 1}
+    Value: O
+  - Key: {x: 2, y: 2}
+    Value: V
+  - Key: {x: 2, y: 3}
+    Value: E
+  - Key: {x: 2, y: 4}
+    Value: M
+  - Key: {x: 2, y: 5}
+    Value: B
+  - Key: {x: 2, y: 6}
+    Value: E
+  - Key: {x: 2, y: 7}
+    Value: R
+  - Key: {x: 3, y: 0}
+    Value: E
+  - Key: {x: 3, y: 1}
+    Value: M
+  - Key: {x: 3, y: 2}
+    Value: E
+  - Key: {x: 3, y: 3}
+    Value: R
+  - Key: {x: 3, y: 4}
+    Value: A
+  - Key: {x: 3, y: 5}
+    Value: L
+  - Key: {x: 3, y: 6}
+    Value: D
+  trayCells:
+  - Key: {x: 7, y: 4}
+    Value: O
+  - Key: {x: 7, y: 5}
+    Value: O
+  - Key: {x: 6, y: 4}
+    Value: C
+  - Key: {x: 6, y: 5}
+    Value: O
+  - Key: {x: 5, y: 4}
+    Value: A
+  - Key: {x: 5, y: 5}
+    Value: A
+  - Key: {x: 4, y: 5}
+    Value: A
+  - Key: {x: 4, y: 4}
+    Value: A
+  - Key: {x: 3, y: 4}
+    Value: B
+  - Key: {x: 3, y: 5}
+    Value: J
+  - Key: {x: 2, y: 5}
+    Value: C
+  - Key: {x: 2, y: 4}
+    Value: E
+  - Key: {x: 7, y: 2}
+    Value: S
+  - Key: {x: 6, y: 3}
+    Value: I
+  - Key: {x: 6, y: 0}
+    Value: E
+  - Key: {x: 7, y: 0}
+    Value: L
+  - Key: {x: 7, y: 1}
+    Value: O
+  - Key: {x: 6, y: 1}
+    Value: C
+  - Key: {x: 5, y: 1}
+    Value: U
+  - Key: {x: 5, y: 0}
+    Value: O
+  - Key: {x: 4, y: 1}
+    Value: A
+  - Key: {x: 3, y: 1}
+    Value: U
+  - Key: {x: 3, y: 0}
+    Value: L
+  - Key: {x: 4, y: 0}
+    Value: O
+  - Key: {x: 2, y: 0}
+    Value: U
+  - Key: {x: 2, y: 1}
+    Value: L
+  - Key: {x: 7, y: 3}
+    Value: I
+  - Key: {x: 6, y: 2}
+    Value: E
+  - Key: {x: 5, y: 2}
+    Value: E
+  - Key: {x: 5, y: 3}
+    Value: A
+  - Key: {x: 4, y: 2}
+    Value: R
+  - Key: {x: 4, y: 3}
+    Value: E
+  - Key: {x: 3, y: 3}
+    Value: P
+  - Key: {x: 3, y: 2}
+    Value: T
+  - Key: {x: 2, y: 2}
+    Value: P
+  - Key: {x: 2, y: 3}
+    Value: E
+  - Key: {x: 1, y: 1}
+    Value: U
+  - Key: {x: 1, y: 2}
+    Value: O
+  - Key: {x: 1, y: 4}
+    Value: R
+  - Key: {x: 1, y: 5}
+    Value: B
+  trayName:
+  - Key: {x: 7, y: 4}
+    Value: Tray 1
+  - Key: {x: 7, y: 5}
+    Value: Tray 1
+  - Key: {x: 6, y: 4}
+    Value: Tray 2
+  - Key: {x: 6, y: 5}
+    Value: Tray 2
+  - Key: {x: 5, y: 4}
+    Value: Tray 3
+  - Key: {x: 5, y: 5}
+    Value: Tray 3
+  - Key: {x: 4, y: 5}
+    Value: Tray 3
+  - Key: {x: 4, y: 4}
+    Value: Tray 3
+  - Key: {x: 3, y: 4}
+    Value: Tray 4
+  - Key: {x: 3, y: 5}
+    Value: Tray 4
+  - Key: {x: 2, y: 5}
+    Value: Tray 4
+  - Key: {x: 2, y: 4}
+    Value: Tray 4
+  - Key: {x: 7, y: 2}
+    Value: Tray 10
+  - Key: {x: 6, y: 3}
+    Value: Tray 11
+  - Key: {x: 6, y: 0}
+    Value: Tray 6
+  - Key: {x: 7, y: 0}
+    Value: Tray 6
+  - Key: {x: 7, y: 1}
+    Value: Tray 6
+  - Key: {x: 6, y: 1}
+    Value: Tray 7
+  - Key: {x: 5, y: 1}
+    Value: Tray 7
+  - Key: {x: 5, y: 0}
+    Value: Tray 7
+  - Key: {x: 4, y: 1}
+    Value: Tray 8
+  - Key: {x: 3, y: 1}
+    Value: Tray 8
+  - Key: {x: 3, y: 0}
+    Value: Tray 8
+  - Key: {x: 4, y: 0}
+    Value: Tray 8
+  - Key: {x: 2, y: 0}
+    Value: Tray 9
+  - Key: {x: 2, y: 1}
+    Value: Tray 9
+  - Key: {x: 7, y: 3}
+    Value: Tray 12
+  - Key: {x: 6, y: 2}
+    Value: Tray 13
+  - Key: {x: 5, y: 2}
+    Value: Tray 13
+  - Key: {x: 5, y: 3}
+    Value: Tray 13
+  - Key: {x: 4, y: 2}
+    Value: Tray 14
+  - Key: {x: 4, y: 3}
+    Value: Tray 14
+  - Key: {x: 3, y: 3}
+    Value: Tray 15
+  - Key: {x: 3, y: 2}
+    Value: Tray 16
+  - Key: {x: 2, y: 2}
+    Value: Tray 16
+  - Key: {x: 2, y: 3}
+    Value: Tray 17
+  - Key: {x: 1, y: 1}
+    Value: Tray 18
+  - Key: {x: 1, y: 2}
+    Value: Tray 18
+  - Key: {x: 1, y: 4}
+    Value: Tray 19
+  - Key: {x: 1, y: 5}
+    Value: Tray 19
   categoryColors:
   - Key: Dental Care
     Value: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
@@ -731,6 +1014,35 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
   trayColors: []
   wordPositions:
+  - Key: NOVEMBER
+    Value:
+    - {x: 2, y: 0}
+    - {x: 2, y: 1}
+    - {x: 2, y: 2}
+    - {x: 2, y: 3}
+    - {x: 2, y: 4}
+    - {x: 2, y: 5}
+    - {x: 2, y: 6}
+    - {x: 2, y: 7}
+  - Key: EMERALD
+    Value:
+    - {x: 3, y: 0}
+    - {x: 3, y: 1}
+    - {x: 3, y: 2}
+    - {x: 3, y: 3}
+    - {x: 3, y: 4}
+    - {x: 3, y: 5}
+    - {x: 3, y: 6}
+  - Key: FEBRUARY
+    Value:
+    - {x: 4, y: 0}
+    - {x: 4, y: 1}
+    - {x: 4, y: 2}
+    - {x: 4, y: 3}
+    - {x: 4, y: 4}
+    - {x: 4, y: 5}
+    - {x: 4, y: 6}
+    - {x: 4, y: 7}
   - Key: FLOSS
     Value:
     - {x: 5, y: 3}
@@ -931,8 +1243,32 @@ MonoBehaviour:
     - {x: 29, y: 4}
     - {x: 29, y: 5}
     - {x: 29, y: 6}
-  freezedTray: []
+  freezedTray:
+  - Key: Tray 4
+    Value: 3
+  - Key: Tray 3
+    Value: 3
+  - Key: Tray 2
+    Value: 3
+  - Key: Tray 1
+    Value: 3
+  - Key: Tray 5
+    Value: 3
+  - Key: Tray 9
+    Value: 6
+  - Key: Tray 8
+    Value: 6
+  - Key: Tray 7
+    Value: 6
+  - Key: Tray 6
+    Value: 6
   firstCharPos:
+  - Key: NOVEMBER
+    Value: 0
+  - Key: EMERALD
+    Value: 0
+  - Key: FEBRUARY
+    Value: 0
   - Key: FLOSS
     Value: 3
   - Key: JULY

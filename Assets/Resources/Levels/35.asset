@@ -16,7 +16,7 @@ MonoBehaviour:
   LevelNumber: 35
   rows: 30
   columns: 8
-  height: 6
+  height: 7
   width: 6
   minutes: 1
   seconds: 30
@@ -56,7 +56,26 @@ MonoBehaviour:
   - LEAF
   tray:
   - Tray 1
-  horizontal: []
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
+  - Tray 11
+  - Tray 12
+  - Tray 13
+  - Tray 14
+  - Tray 15
+  - Tray 16
+  - Tray 17
+  - Tray 18
+  - Tray 19
+  horizontal:
+  - Tray 2
   excludedChar:
   - {x: 29, y: 1}
   - {x: 27, y: 6}
@@ -95,6 +114,9 @@ MonoBehaviour:
   - {x: 5, y: 2}
   - {x: 5, y: 4}
   - {x: 3, y: 2}
+  - {x: 14, y: 3}
+  - {x: 14, y: 6}
+  - {x: 4, y: 4}
   blockedCells: []
   wordCategory:
   - Key: Bee
@@ -772,8 +794,156 @@ MonoBehaviour:
     Value: V
   - Key: {x: 3, y: 4}
     Value: A
-  trayCells: []
-  trayName: []
+  trayCells:
+  - Key: {x: 6, y: 3}
+    Value: A
+  - Key: {x: 6, y: 4}
+    Value: N
+  - Key: {x: 5, y: 4}
+    Value: E
+  - Key: {x: 3, y: 3}
+    Value: E
+  - Key: {x: 4, y: 3}
+    Value: N
+  - Key: {x: 5, y: 3}
+    Value: N
+  - Key: {x: 1, y: 3}
+    Value: I
+  - Key: {x: 2, y: 3}
+    Value: I
+  - Key: {x: 3, y: 4}
+    Value: O
+  - Key: {x: 3, y: 5}
+    Value: OO
+  - Key: {x: 4, y: 5}
+    Value: U
+  - Key: {x: 5, y: 5}
+    Value: E
+  - Key: {x: 1, y: 4}
+    Value: I
+  - Key: {x: 1, y: 5}
+    Value: CC
+  - Key: {x: 2, y: 5}
+    Value: P
+  - Key: {x: 0, y: 3}
+    Value: L
+  - Key: {x: 0, y: 4}
+    Value: H
+  - Key: {x: 6, y: 0}
+    Value: A
+  - Key: {x: 5, y: 0}
+    Value: E
+  - Key: {x: 5, y: 1}
+    Value: A
+  - Key: {x: 4, y: 0}
+    Value: U
+  - Key: {x: 4, y: 1}
+    Value: AA
+  - Key: {x: 4, y: 2}
+    Value: U
+  - Key: {x: 3, y: 0}
+    Value: R
+  - Key: {x: 2, y: 0}
+    Value: C
+  - Key: {x: 1, y: 0}
+    Value: O
+  - Key: {x: 0, y: 0}
+    Value: O
+  - Key: {x: 3, y: 1}
+    Value: A
+  - Key: {x: 2, y: 1}
+    Value: E
+  - Key: {x: 1, y: 1}
+    Value: F
+  - Key: {x: 6, y: 2}
+    Value: A
+  - Key: {x: 3, y: 2}
+    Value: H
+  - Key: {x: 2, y: 2}
+    Value: E
+  - Key: {x: 1, y: 2}
+    Value: R
+  - Key: {x: 0, y: 5}
+    Value: E
+  - Key: {x: 6, y: 5}
+    Value: D
+  - Key: {x: 6, y: 1}
+    Value: S
+  trayName:
+  - Key: {x: 6, y: 3}
+    Value: Tray 1
+  - Key: {x: 6, y: 4}
+    Value: Tray 1
+  - Key: {x: 5, y: 4}
+    Value: Tray 1
+  - Key: {x: 3, y: 3}
+    Value: Tray 2
+  - Key: {x: 4, y: 3}
+    Value: Tray 2
+  - Key: {x: 5, y: 3}
+    Value: Tray 2
+  - Key: {x: 1, y: 3}
+    Value: Tray 3
+  - Key: {x: 2, y: 3}
+    Value: Tray 3
+  - Key: {x: 3, y: 4}
+    Value: Tray 4
+  - Key: {x: 3, y: 5}
+    Value: Tray 4
+  - Key: {x: 4, y: 5}
+    Value: Tray 4
+  - Key: {x: 5, y: 5}
+    Value: Tray 4
+  - Key: {x: 1, y: 4}
+    Value: Tray 5
+  - Key: {x: 1, y: 5}
+    Value: Tray 5
+  - Key: {x: 2, y: 5}
+    Value: Tray 5
+  - Key: {x: 0, y: 3}
+    Value: Tray 6
+  - Key: {x: 0, y: 4}
+    Value: Tray 6
+  - Key: {x: 6, y: 0}
+    Value: Tray 7
+  - Key: {x: 5, y: 0}
+    Value: Tray 7
+  - Key: {x: 5, y: 1}
+    Value: Tray 7
+  - Key: {x: 4, y: 0}
+    Value: Tray 8
+  - Key: {x: 4, y: 1}
+    Value: Tray 8
+  - Key: {x: 4, y: 2}
+    Value: Tray 8
+  - Key: {x: 3, y: 0}
+    Value: Tray 9
+  - Key: {x: 2, y: 0}
+    Value: Tray 9
+  - Key: {x: 1, y: 0}
+    Value: Tray 10
+  - Key: {x: 0, y: 0}
+    Value: Tray 10
+  - Key: {x: 3, y: 1}
+    Value: Tray 11
+  - Key: {x: 2, y: 1}
+    Value: Tray 11
+  - Key: {x: 1, y: 1}
+    Value: Tray 12
+  - Key: {x: 6, y: 2}
+    Value: Tray 13
+  - Key: {x: 3, y: 2}
+    Value: Tray 14
+  - Key: {x: 2, y: 2}
+    Value: Tray 15
+  - Key: {x: 1, y: 2}
+    Value: Tray 16
+  - Key: {x: 0, y: 5}
+    Value: Tray 17
+  - Key: {x: 6, y: 5}
+    Value: Tray 18
+  - Key: {x: 6, y: 1}
+    Value: Tray 19
   categoryColors:
   - Key: Phone
     Value: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}

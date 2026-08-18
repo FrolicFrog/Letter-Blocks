@@ -34,6 +34,7 @@ Material:
     - _ShineSize: 0.01
     - _ShineSoftness: 0.227
     - _SideDarkness: 0.483
+    - _Transparency: 1
     m_Colors:
     - _Color: {r: 0.40988785, g: 0.47296742, b: 0.5754717, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 0.5}
