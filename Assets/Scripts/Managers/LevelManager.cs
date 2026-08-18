@@ -212,6 +212,10 @@ public class LevelManager : Manager<LevelManager>
             halfArea.gameObject.SetActive(true);
             panel.gameObject.SetActive(true);
         }
+      else
+        {
+            halfArea.gameObject.SetActive (false);
+        }
     }
     void ManageAlphabets()
     {
