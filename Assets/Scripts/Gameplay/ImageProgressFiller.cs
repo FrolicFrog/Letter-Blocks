@@ -8,6 +8,9 @@ public class ImageProgressFiller : MonoBehaviour
     [Tooltip("Drag the UI Image you want to fill here.")]
     public Image fillImage;
     public TextMeshProUGUI tmp;
+
+    [TextArea]
+    public string unlockMessage;
     [Header("Settings")]
     [Range(0f, 100f)]
     public float currentPercentage = 20f; // Set this in the Inspector or via other scripts

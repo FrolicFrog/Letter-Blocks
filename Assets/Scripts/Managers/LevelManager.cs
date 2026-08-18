@@ -25,6 +25,7 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private FocusCutOut panel;
     [SerializeField] private Renderer halfArea;
     [SerializeField] private GameObject hand;
+    [SerializeField] private TutorialPopup tutorialPopup;
 
     [HideInInspector] public int TestLevelToLoad = 1;
     [HideInInspector] public List<GameObject> ticks = new();
@@ -124,7 +125,7 @@ public class LevelManager : Manager<LevelManager>
         SetUIElements();
         ManageWords();
         ManageAlphabets();
-       
+        tutorialPopup.ShowTutorial();
     }
 
     void SetUIElements()
