@@ -125,6 +125,7 @@ public class LevelManager : Manager<LevelManager>
         SetUIElements();
         ManageWords();
         ManageAlphabets();
+        tutorialPopup.Setup();
         tutorialPopup.ShowTutorial();
     }
 

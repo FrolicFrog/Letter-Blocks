@@ -11,14 +11,16 @@ public class TutorialPopup : MonoBehaviour
     public static TutorialPopup instance;
     private Vector3 originalScale;
 
-    private void Awake()
+    public void Setup()
     {
-        originalScale = transform.localScale;
-        instance = this;
-        foreach (var g in group)
-        {
-            levelTutorial[g.Key] = g.Value;
-        }
+       levelTutorial.Clear();
+            originalScale = transform.localScale;
+            instance = this;
+            foreach (var g in group)
+            {
+                levelTutorial[g.Key] = g.Value;
+            }
+        
     }
 
 

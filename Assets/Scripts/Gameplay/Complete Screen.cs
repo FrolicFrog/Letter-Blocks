@@ -38,7 +38,7 @@ public class CompleteScreen : MonoBehaviour
         transform.DOScale(originalScale, scaleDuration).SetEase(Ease.OutBack);
         // ---------------------------------
 
-        tmp.text = "Level " + LevelManager.Instance.CurLevelNumber + " Completed";
+        tmp.text = "Level " + LevelManager.Instance.CurLevelNumber ;
 
         if (progress.Count == 0)
         {
