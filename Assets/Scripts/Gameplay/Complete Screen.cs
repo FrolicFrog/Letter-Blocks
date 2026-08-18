@@ -91,7 +91,7 @@ public class CompleteScreen : MonoBehaviour
                 // Clear the unlock message while counting up
                 if (tmpMessage != null)
                 {
-                    tmpMessage.text = "";
+                    tmpMessage.text = "Feature Unlocked!";
                 }
 
                 DOTween.Kill(key);
