@@ -1,0 +1,465 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 37
+  m_EditorClassIdentifier: 
+  timer: 0
+  LevelNumber: 37
+  rows: 30
+  columns: 9
+  height: 6
+  width: 6
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.11
+  categoryMaterial: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
+  words:
+  - CHECKERS
+  - SEAGULL
+  - PUZZLE
+  - RAVEN
+  - SCRIBBLE
+  - CROW
+  - PELICAN
+  - CARD
+  - CANARY
+  - MONOPOLY
+  - DICE
+  tray:
+  - Tray 1
+  horizontal: []
+  excludedChar:
+  - {x: 29, y: 3}
+  - {x: 26, y: 2}
+  - {x: 24, y: 7}
+  - {x: 27, y: 2}
+  - {x: 27, y: 4}
+  - {x: 28, y: 1}
+  - {x: 28, y: 5}
+  - {x: 25, y: 4}
+  - {x: 23, y: 3}
+  - {x: 23, y: 6}
+  - {x: 21, y: 4}
+  - {x: 21, y: 6}
+  - {x: 19, y: 2}
+  - {x: 19, y: 5}
+  - {x: 22, y: 4}
+  - {x: 20, y: 4}
+  blockedCells: []
+  wordCategory:
+  - Key: Board Games
+    Value:
+    - CHECKERS
+    - PUZZLE
+    - SCRIBBLE
+    - CARD
+    - MONOPOLY
+    - DICE
+  - Key: Birds
+    Value:
+    - SEAGULL
+    - RAVEN
+    - CROW
+    - PELICAN
+    - CANARY
+  cellCategory:
+  - Key: {x: 29, y: 2}
+    Value: Board Games
+  - Key: {x: 29, y: 3}
+    Value: Board Games
+  - Key: {x: 29, y: 4}
+    Value: Board Games
+  - Key: {x: 29, y: 5}
+    Value: Board Games
+  - Key: {x: 28, y: 0}
+    Value: Board Games
+  - Key: {x: 28, y: 1}
+    Value: Board Games
+  - Key: {x: 28, y: 2}
+    Value: Board Games
+  - Key: {x: 28, y: 3}
+    Value: Board Games
+  - Key: {x: 28, y: 4}
+    Value: Board Games
+  - Key: {x: 28, y: 5}
+    Value: Board Games
+  - Key: {x: 28, y: 6}
+    Value: Board Games
+  - Key: {x: 28, y: 7}
+    Value: Board Games
+  - Key: {x: 26, y: 0}
+    Value: Board Games
+  - Key: {x: 26, y: 1}
+    Value: Board Games
+  - Key: {x: 26, y: 2}
+    Value: Board Games
+  - Key: {x: 26, y: 3}
+    Value: Board Games
+  - Key: {x: 27, y: 1}
+    Value: Birds
+  - Key: {x: 27, y: 2}
+    Value: Birds
+  - Key: {x: 27, y: 3}
+    Value: Birds
+  - Key: {x: 27, y: 4}
+    Value: Birds
+  - Key: {x: 27, y: 5}
+    Value: Birds
+  - Key: {x: 27, y: 6}
+    Value: Birds
+  - Key: {x: 24, y: 5}
+    Value: Birds
+  - Key: {x: 24, y: 6}
+    Value: Birds
+  - Key: {x: 24, y: 7}
+    Value: Birds
+  - Key: {x: 24, y: 8}
+    Value: Birds
+  - Key: {x: 25, y: 1}
+    Value: Birds
+  - Key: {x: 25, y: 2}
+    Value: Birds
+  - Key: {x: 25, y: 3}
+    Value: Birds
+  - Key: {x: 25, y: 4}
+    Value: Birds
+  - Key: {x: 25, y: 5}
+    Value: Birds
+  - Key: {x: 25, y: 6}
+    Value: Birds
+  - Key: {x: 25, y: 7}
+    Value: Birds
+  - Key: {x: 23, y: 0}
+    Value: Board Games
+  - Key: {x: 23, y: 1}
+    Value: Board Games
+  - Key: {x: 23, y: 2}
+    Value: Board Games
+  - Key: {x: 23, y: 3}
+    Value: Board Games
+  - Key: {x: 23, y: 4}
+    Value: Board Games
+  - Key: {x: 23, y: 5}
+    Value: Board Games
+  - Key: {x: 23, y: 6}
+    Value: Board Games
+  - Key: {x: 23, y: 7}
+    Value: Board Games
+  - Key: {x: 21, y: 3}
+    Value: Board Games
+  - Key: {x: 21, y: 4}
+    Value: Board Games
+  - Key: {x: 21, y: 5}
+    Value: Board Games
+  - Key: {x: 21, y: 6}
+    Value: Board Games
+  - Key: {x: 21, y: 7}
+    Value: Board Games
+  - Key: {x: 21, y: 8}
+    Value: Board Games
+  - Key: {x: 19, y: 0}
+    Value: Board Games
+  - Key: {x: 19, y: 1}
+    Value: Board Games
+  - Key: {x: 19, y: 2}
+    Value: Board Games
+  - Key: {x: 19, y: 3}
+    Value: Board Games
+  - Key: {x: 19, y: 4}
+    Value: Board Games
+  - Key: {x: 19, y: 5}
+    Value: Board Games
+  - Key: {x: 19, y: 6}
+    Value: Board Games
+  - Key: {x: 19, y: 7}
+    Value: Board Games
+  - Key: {x: 22, y: 2}
+    Value: Birds
+  - Key: {x: 22, y: 3}
+    Value: Birds
+  - Key: {x: 22, y: 4}
+    Value: Birds
+  - Key: {x: 22, y: 5}
+    Value: Birds
+  - Key: {x: 22, y: 6}
+    Value: Birds
+  - Key: {x: 20, y: 1}
+    Value: Birds
+  - Key: {x: 20, y: 2}
+    Value: Birds
+  - Key: {x: 20, y: 3}
+    Value: Birds
+  - Key: {x: 20, y: 4}
+    Value: Birds
+  - Key: {x: 20, y: 5}
+    Value: Birds
+  - Key: {x: 20, y: 6}
+    Value: Birds
+  - Key: {x: 20, y: 7}
+    Value: Birds
+  cellTexts:
+  - Key: {x: 29, y: 2}
+    Value: D
+  - Key: {x: 29, y: 3}
+    Value: I
+  - Key: {x: 29, y: 4}
+    Value: C
+  - Key: {x: 29, y: 5}
+    Value: E
+  - Key: {x: 28, y: 0}
+    Value: M
+  - Key: {x: 28, y: 1}
+    Value: O
+  - Key: {x: 28, y: 2}
+    Value: N
+  - Key: {x: 28, y: 3}
+    Value: O
+  - Key: {x: 28, y: 4}
+    Value: P
+  - Key: {x: 28, y: 5}
+    Value: O
+  - Key: {x: 28, y: 6}
+    Value: L
+  - Key: {x: 28, y: 7}
+    Value: Y
+  - Key: {x: 26, y: 0}
+    Value: C
+  - Key: {x: 26, y: 1}
+    Value: A
+  - Key: {x: 26, y: 2}
+    Value: R
+  - Key: {x: 26, y: 3}
+    Value: D
+  - Key: {x: 27, y: 1}
+    Value: C
+  - Key: {x: 27, y: 2}
+    Value: A
+  - Key: {x: 27, y: 3}
+    Value: N
+  - Key: {x: 27, y: 4}
+    Value: A
+  - Key: {x: 27, y: 5}
+    Value: R
+  - Key: {x: 27, y: 6}
+    Value: Y
+  - Key: {x: 24, y: 5}
+    Value: C
+  - Key: {x: 24, y: 6}
+    Value: R
+  - Key: {x: 24, y: 7}
+    Value: O
+  - Key: {x: 24, y: 8}
+    Value: W
+  - Key: {x: 25, y: 1}
+    Value: P
+  - Key: {x: 25, y: 2}
+    Value: E
+  - Key: {x: 25, y: 3}
+    Value: L
+  - Key: {x: 25, y: 4}
+    Value: I
+  - Key: {x: 25, y: 5}
+    Value: C
+  - Key: {x: 25, y: 6}
+    Value: A
+  - Key: {x: 25, y: 7}
+    Value: N
+  - Key: {x: 23, y: 0}
+    Value: S
+  - Key: {x: 23, y: 1}
+    Value: C
+  - Key: {x: 23, y: 2}
+    Value: R
+  - Key: {x: 23, y: 3}
+    Value: I
+  - Key: {x: 23, y: 4}
+    Value: B
+  - Key: {x: 23, y: 5}
+    Value: B
+  - Key: {x: 23, y: 6}
+    Value: L
+  - Key: {x: 23, y: 7}
+    Value: E
+  - Key: {x: 21, y: 3}
+    Value: P
+  - Key: {x: 21, y: 4}
+    Value: U
+  - Key: {x: 21, y: 5}
+    Value: Z
+  - Key: {x: 21, y: 6}
+    Value: Z
+  - Key: {x: 21, y: 7}
+    Value: L
+  - Key: {x: 21, y: 8}
+    Value: E
+  - Key: {x: 19, y: 0}
+    Value: C
+  - Key: {x: 19, y: 1}
+    Value: H
+  - Key: {x: 19, y: 2}
+    Value: E
+  - Key: {x: 19, y: 3}
+    Value: C
+  - Key: {x: 19, y: 4}
+    Value: K
+  - Key: {x: 19, y: 5}
+    Value: E
+  - Key: {x: 19, y: 6}
+    Value: R
+  - Key: {x: 19, y: 7}
+    Value: S
+  - Key: {x: 22, y: 2}
+    Value: R
+  - Key: {x: 22, y: 3}
+    Value: A
+  - Key: {x: 22, y: 4}
+    Value: V
+  - Key: {x: 22, y: 5}
+    Value: E
+  - Key: {x: 22, y: 6}
+    Value: N
+  - Key: {x: 20, y: 1}
+    Value: S
+  - Key: {x: 20, y: 2}
+    Value: E
+  - Key: {x: 20, y: 3}
+    Value: A
+  - Key: {x: 20, y: 4}
+    Value: G
+  - Key: {x: 20, y: 5}
+    Value: U
+  - Key: {x: 20, y: 6}
+    Value: L
+  - Key: {x: 20, y: 7}
+    Value: L
+  trayCells: []
+  trayName: []
+  categoryColors:
+  - Key: Board Games
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  - Key: Birds
+    Value: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
+  trayColors: []
+  wordPositions:
+  - Key: CHECKERS
+    Value:
+    - {x: 19, y: 0}
+    - {x: 19, y: 1}
+    - {x: 19, y: 2}
+    - {x: 19, y: 3}
+    - {x: 19, y: 4}
+    - {x: 19, y: 5}
+    - {x: 19, y: 6}
+    - {x: 19, y: 7}
+  - Key: SEAGULL
+    Value:
+    - {x: 20, y: 1}
+    - {x: 20, y: 2}
+    - {x: 20, y: 3}
+    - {x: 20, y: 4}
+    - {x: 20, y: 5}
+    - {x: 20, y: 6}
+    - {x: 20, y: 7}
+  - Key: PUZZLE
+    Value:
+    - {x: 21, y: 3}
+    - {x: 21, y: 4}
+    - {x: 21, y: 5}
+    - {x: 21, y: 6}
+    - {x: 21, y: 7}
+    - {x: 21, y: 8}
+  - Key: RAVEN
+    Value:
+    - {x: 22, y: 2}
+    - {x: 22, y: 3}
+    - {x: 22, y: 4}
+    - {x: 22, y: 5}
+    - {x: 22, y: 6}
+  - Key: SCRIBBLE
+    Value:
+    - {x: 23, y: 0}
+    - {x: 23, y: 1}
+    - {x: 23, y: 2}
+    - {x: 23, y: 3}
+    - {x: 23, y: 4}
+    - {x: 23, y: 5}
+    - {x: 23, y: 6}
+    - {x: 23, y: 7}
+  - Key: CROW
+    Value:
+    - {x: 24, y: 5}
+    - {x: 24, y: 6}
+    - {x: 24, y: 7}
+    - {x: 24, y: 8}
+  - Key: PELICAN
+    Value:
+    - {x: 25, y: 1}
+    - {x: 25, y: 2}
+    - {x: 25, y: 3}
+    - {x: 25, y: 4}
+    - {x: 25, y: 5}
+    - {x: 25, y: 6}
+    - {x: 25, y: 7}
+  - Key: CARD
+    Value:
+    - {x: 26, y: 0}
+    - {x: 26, y: 1}
+    - {x: 26, y: 2}
+    - {x: 26, y: 3}
+  - Key: CANARY
+    Value:
+    - {x: 27, y: 1}
+    - {x: 27, y: 2}
+    - {x: 27, y: 3}
+    - {x: 27, y: 4}
+    - {x: 27, y: 5}
+    - {x: 27, y: 6}
+  - Key: MONOPOLY
+    Value:
+    - {x: 28, y: 0}
+    - {x: 28, y: 1}
+    - {x: 28, y: 2}
+    - {x: 28, y: 3}
+    - {x: 28, y: 4}
+    - {x: 28, y: 5}
+    - {x: 28, y: 6}
+    - {x: 28, y: 7}
+  - Key: DICE
+    Value:
+    - {x: 29, y: 2}
+    - {x: 29, y: 3}
+    - {x: 29, y: 4}
+    - {x: 29, y: 5}
+  freezedTray: []
+  firstCharPos:
+  - Key: CHECKERS
+    Value: 0
+  - Key: SEAGULL
+    Value: 1
+  - Key: PUZZLE
+    Value: 3
+  - Key: RAVEN
+    Value: 2
+  - Key: SCRIBBLE
+    Value: 0
+  - Key: CROW
+    Value: 5
+  - Key: PELICAN
+    Value: 1
+  - Key: CARD
+    Value: 0
+  - Key: CANARY
+    Value: 1
+  - Key: MONOPOLY
+    Value: 0
+  - Key: DICE
+    Value: 2
