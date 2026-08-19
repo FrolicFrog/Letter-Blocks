@@ -86,7 +86,7 @@ public class ResultManager : MonoBehaviour
 
     IEnumerator ShowScreen(GameObject obj)
     {
-        yield return new WaitForSeconds(.75f);
+        yield return new WaitForSeconds(1.3f);
         completeMenu.SetActive(true);
     }
 }

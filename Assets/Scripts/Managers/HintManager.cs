@@ -40,7 +40,7 @@ public class HintManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, wordLayer))
             {
-                if(LevelManager.Instance.CurLevelNumber ==2 && tutorialPanel.activeSelf)
+               if(LevelManager.Instance.CurLevelNumber ==2 && tutorialPanel.activeSelf)
                 {
                     tutorialPanel.SetActive(false);
                     Hand.SetActive(false);

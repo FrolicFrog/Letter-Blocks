@@ -195,6 +195,10 @@ public class LevelManager : Manager<LevelManager>
                         hintManager.wordChain[word].Value.Add(i);
 
                     }
+                    if (key.x > gridManager.rows - 4)
+                    {
+                        letterbox.GetComponent<BoxCollider>().enabled = true;
+                    }
                     letterbox.transform.localPosition = Vector3.zero;
                     hintManager.wordChain[word].Key.Add(letterbox);
 
@@ -218,7 +222,7 @@ public class LevelManager : Manager<LevelManager>
         else if(_CurrentLevelNumber ==2)
         {
             panel.cutoutGroups.Clear();
-
+            halfArea.gameObject.SetActive(false);
             var group = new FocusCutOut.CutoutGroup();
             group.renderers = hintManager.wordChain["PUMPKIN"].Key.Select(x => x.GetComponent<Renderer>()).ToList();
             panel.cutoutGroups.Add(group);
