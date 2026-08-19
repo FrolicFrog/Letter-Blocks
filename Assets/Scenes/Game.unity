@@ -758,7 +758,7 @@ RectTransform:
   m_GameObject: {fileID: 147137996}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.000031454427}
-  m_LocalScale: {x: 1.8, y: 1.8, z: 1.8}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 230105759}
@@ -2883,7 +2883,7 @@ MonoBehaviour:
   halfArea: {fileID: 824681186}
   hand: {fileID: 537397412}
   tutorialPopup: {fileID: 1100140744}
-  TestLevelToLoad: 1
+  TestLevelToLoad: 8
   ticks: []
   hearts: 0
 --- !u!114 &558711660
@@ -7350,7 +7350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e1e030db6db2e4c8501bbf659c2a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnvironmentMode: 1
+  EnvironmentMode: 0
 --- !u!114 &1887342594
 MonoBehaviour:
   m_ObjectHideFlags: 0
