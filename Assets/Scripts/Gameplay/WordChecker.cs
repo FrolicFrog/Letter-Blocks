@@ -67,6 +67,7 @@ public class WordChecker : MonoBehaviour
     public Vector3 spinAngle = new Vector3(360, 0, 0);
     public Ease spinEase = Ease.OutBack;
 
+    public ParticleSystem effect;
     private int? cachedColumns = null;
 
     private struct GravityMoveInfo
@@ -548,6 +549,19 @@ public class WordChecker : MonoBehaviour
             Vector3 centerPos = Vector3.zero;
             foreach (var b in blocksInWord) centerPos += b.originalWorldPos;
             centerPos /= blocksInWord.Count;
+
+            if (effect != null)
+            {
+                // Shift the spawn position up to match where the word is arcing
+                Vector3 effectPos = centerPos + new Vector3(0f, arcHeightOffset, -1.4f);
+
+                ParticleSystem spawnedEffect = Instantiate(effect, effectPos, Quaternion.identity);
+                spawnedEffect.Play();
+
+                // Destroys the particle system object after it finishes playing to free up memory
+                Destroy(spawnedEffect.gameObject, spawnedEffect.main.duration + spawnedEffect.main.startLifetime.constantMax);
+            }
+ 
 
             int blockCount = blocksInWord.Count;
             float centerIndex = (blockCount - 1) / 2f;

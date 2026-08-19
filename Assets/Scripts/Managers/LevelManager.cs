@@ -27,6 +27,8 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private GameObject hand;
     [SerializeField] private TutorialPopup tutorialPopup;
     [SerializeField] private GameObject modePanel;
+    [SerializeField] private ParticleSystem effect;
+
     [HideInInspector] public int TestLevelToLoad = 1;
     [HideInInspector] public List<GameObject> ticks = new();
     
@@ -111,6 +113,7 @@ public class LevelManager : Manager<LevelManager>
 
         FreezeManager.trayMat = trayMaterial;
         FreezeManager.arrow = arrow;
+        FreezeManager.effect = effect;
     }
     void LoadInScene()
     {

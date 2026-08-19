@@ -75,6 +75,7 @@ public class GlobalTrayDragger : MonoBehaviour
     [Header("Debug")]
     [Tooltip("Draw wireframes of the physics overlap checks in the Scene view while dragging.")]
     public bool showPhysicsGizmos = true;
+    public ParticleSystem effect;
     #endregion
 
     #region Private State Variables
@@ -940,10 +941,39 @@ public class GlobalTrayDragger : MonoBehaviour
                 activeJumpRoutines.Remove(tray);
             }
 
+            // Immediately disable the collider so the user can't grab it while it's waiting to collapse
+            Collider col = tray.GetComponent<Collider>();
+            if (col != null) col.enabled = false;
+
             tray.DOKill();
-            tray.DOScale(Vector3.zero, snapBackDuration).SetEase(Ease.InBack).OnComplete(() =>
+
+            // Fetch the jump duration from WordChecker to perfectly time the delay
+            float waitToCollapseTime = 0f;
+            if (WordChecker.instance != null)
             {
-                if (tray != null) Destroy(tray.gameObject);
+                waitToCollapseTime = WordChecker.instance.trayJumpDuration;
+            }
+
+            // Add SetDelay() so the tray waits for the final cube to land before vanishing
+            tray.DOScale(Vector3.zero, snapBackDuration).SetDelay(waitToCollapseTime).SetEase(Ease.InBack).OnComplete(() =>
+            {
+                if (tray != null)
+                {
+                    // ==========================================
+                    // Instantiate effect at the center
+                    // ==========================================
+                    if (effect != null)
+                    {
+                        ParticleSystem spawnedEffect = Instantiate(effect, tray.position, Quaternion.identity);
+                        spawnedEffect.Play();
+
+                        // Destroy the particle system after it finishes playing
+                        Destroy(spawnedEffect.gameObject, spawnedEffect.main.duration + spawnedEffect.main.startLifetime.constantMax);
+                    }
+                    // ==========================================
+
+                    Destroy(tray.gameObject);
+                }
             });
 
             return true;
@@ -951,7 +981,6 @@ public class GlobalTrayDragger : MonoBehaviour
 
         return false;
     }
-
     #endregion
 
     #region Release & Snapback

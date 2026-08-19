@@ -2961,7 +2961,8 @@ MonoBehaviour:
   hand: {fileID: 537397412}
   tutorialPopup: {fileID: 1100140744}
   modePanel: {fileID: 406231857}
-  TestLevelToLoad: 3
+  effect: {fileID: 8170460312813454221, guid: 69e6c3150a29b6746814e6db01eead6e, type: 3}
+  TestLevelToLoad: 9
   ticks: []
   hearts: 0
 --- !u!114 &558711660
@@ -5225,6 +5226,7 @@ MonoBehaviour:
   spinDuration: 0.5
   spinAngle: {x: 1080, y: 0, z: 0}
   spinEase: 27
+  effect: {fileID: 19864782, guid: 27bec7bc47f580b41b60cd2d2cac5908, type: 3}
 --- !u!114 &1371688891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6679,6 +6681,7 @@ MonoBehaviour:
   Panel: {fileID: 327762497}
   Hand: {fileID: 537397412}
   showPhysicsGizmos: 1
+  effect: {fileID: 19855088, guid: cc4edba986607ba48b17927b27d25e4e, type: 3}
 --- !u!1 &1683409304
 GameObject:
   m_ObjectHideFlags: 0
