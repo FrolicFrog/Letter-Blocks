@@ -26,12 +26,12 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private Renderer halfArea;
     [SerializeField] private GameObject hand;
     [SerializeField] private TutorialPopup tutorialPopup;
-
+    [SerializeField] private GameObject modePanel;
     [HideInInspector] public int TestLevelToLoad = 1;
     [HideInInspector] public List<GameObject> ticks = new();
     
     private Dictionary<Material, Sprite> _colorSprite = new(); //Do not clear
-    private Dictionary<Direction, GameObject> wallsDirectionDict = new();
+
     private Dictionary<string, int> freezedTray = new();
 
     private LevelData _LevelData;
@@ -109,10 +109,6 @@ public class LevelManager : Manager<LevelManager>
         }
 
 
-        foreach (var wallDirection in letterGridManager.wallsDirection)
-        {
-            wallsDirectionDict[wallDirection.facing] = wallDirection.mesh;
-        }
         FreezeManager.trayMat = trayMaterial;
         FreezeManager.arrow = arrow;
     }
@@ -146,7 +142,16 @@ public class LevelManager : Manager<LevelManager>
             }
 
         }
-
+        if (_LevelData.levelMode == Mode.Hard)
+        {
+            modePanel.SetActive(true);
+            modePanel.transform.GetChild(0).gameObject.SetActive(true);
+        }
+        else if(_LevelData.levelMode == Mode.SuperHard)
+        {
+            modePanel.SetActive(true);
+            modePanel.transform.GetChild(1).gameObject.SetActive(true);
+        }
     }
     void ManageWords()
     {

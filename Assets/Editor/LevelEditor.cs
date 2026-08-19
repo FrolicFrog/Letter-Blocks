@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class LevelEditor : EditorWindow
 {
+  
+
     private int rows = 5;
     private int columns = 8;
     private int height = 8; // Bottom Grid Rows
@@ -25,7 +27,7 @@ public class LevelEditor : EditorWindow
     public string trayDropdown;
 
     private string inputCategory, extraChar;
-
+    private Mode levelMode;
     private Color gridCellColor;
     private Color unassignedCellColor; // Color for cells with letters but no category/tray assigned
     private Color blockedCellColor;    // Color for blocked cells in the bottom grid
@@ -40,6 +42,7 @@ public class LevelEditor : EditorWindow
     private Dictionary<string, Material> categoryColors = new();
     private Dictionary<string, int> freezedTray = new(),firstCharPos = new();
 
+    
 
     // Auto-generated colors for the trays
     private Dictionary<string, Color> trayDisplayColors = new();
@@ -217,7 +220,9 @@ public class LevelEditor : EditorWindow
                 horizontalTrays.Clear();
                 CachedLvlData = null;
                 firstCharPos.Clear();
+                levelMode = Mode.Normal;
             }
+            levelMode = (Mode)EditorGUILayout.EnumPopup("Level Mode:", levelMode);
             GUILayout.BeginHorizontal();
 
             // Use ExpandWidth(false) so the toggle only takes up the space it needs
@@ -240,6 +245,7 @@ public class LevelEditor : EditorWindow
             }
 
             GUILayout.EndHorizontal();
+          
             GUILayout.EndVertical();
             Actions();
             GridSystem();
@@ -300,7 +306,7 @@ public class LevelEditor : EditorWindow
         currentData.horizontal = horizontalTrays.ToList();
         // Save blocked cells data
         currentData.blockedCells = blockedCells.ToList();
-
+        currentData.levelMode = levelMode;
         currentData.tray = new List<string>(tray);
         currentData.categoryMaterial = categoryMaterial;
 
@@ -361,7 +367,7 @@ public class LevelEditor : EditorWindow
         categoryColors = CurLvlData.categoryColors.ToDictionary(item => item.Key, item => item.Value);
         freezedTray = CurLvlData.freezedTray.ToDictionary(item => item.Key, item => item.Value);
         wordPositions.Clear();
-
+        levelMode = CurLvlData.levelMode;
         foreach (var item in CurLvlData.wordPositions)
         {
             wordPositions[item.Key] = new List<Vector2Int>(item.Value);

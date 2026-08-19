@@ -23,7 +23,7 @@ public class BottomGridManager : MonoBehaviour
     [Header("Slot & Tray References")]
     public GameObject emptySlot;
     public GameObject cell1, cell2, outline, letter, blockWall, doubleLetter;
-    public List<WallDirectionPair> wallsDirection;
+ 
 
     [Header("Center Border Settings")]
     [Tooltip("Assign a GameObject here to automatically place and scale it around the grid.")]
