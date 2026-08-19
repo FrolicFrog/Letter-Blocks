@@ -38,7 +38,7 @@ public class CompleteScreen : MonoBehaviour
         transform.DOScale(originalScale, scaleDuration).SetEase(Ease.OutBack);
         // ---------------------------------
 
-        tmp.text = "Level " + LevelManager.Instance.CurLevelNumber ;
+        tmp.text = "Level " + LevelManager.Instance.CurLevelNumber;
 
         if (progress.Count == 0)
         {
@@ -67,41 +67,65 @@ public class CompleteScreen : MonoBehaviour
                 float curLevel = (float)LevelManager.Instance.CurLevelNumber;
                 float minLevel = (float)progress[key].Min;
                 float maxLevel = (float)progress[key].Max;
-
-                float targetPercent = 0f;
                 float range = maxLevel - minLevel;
+
+                float startPercent = 0f;
+                float targetPercent = 0f;
 
                 if (range > 0f)
                 {
-                    targetPercent = ((curLevel - minLevel) / range) * 100f;
+                    // If this is the absolute minimum level, start from 0 and go to 10
+                    if (curLevel == minLevel)
+                    {
+                        startPercent = 0f;
+                        targetPercent = 10f;
+                    }
+                    else
+                    {
+                        // Calculate target percent for current level
+                        targetPercent = ((curLevel - minLevel) / range) * 100f;
+
+                        // Calculate start percent based on the previous level
+                        float prevLevel = curLevel - 1f;
+
+                        // If the previous level was the minLevel, we forced it to 10%
+                        if (prevLevel == minLevel)
+                        {
+                            startPercent = 10f;
+                        }
+                        else
+                        {
+                            startPercent = ((prevLevel - minLevel) / range) * 100f;
+                        }
+                    }
                 }
 
-                if (curLevel == minLevel)
-                {
-                    targetPercent = 10f;
-                }
+                // Clamp values just to be safe from going over 100
+                startPercent = Mathf.Clamp(startPercent, 0f, 100f);
+                targetPercent = Mathf.Clamp(targetPercent, 0f, 100f);
 
                 // Turn on the UI object IMMEDIATELY so it scales up with the panel
                 key.gameObject.SetActive(true);
 
-                // Reset visual state instantly before the animation starts
-                key.tmp.text = "0%";
-                key.currentPercentage = 100;
+                // Initialize visual state to the START percent instantly before animation
+                int initialDisplayPercent = Mathf.RoundToInt(startPercent);
+                key.tmp.text = initialDisplayPercent + "%";
+                key.currentPercentage = 100 - initialDisplayPercent;
 
-                // Clear the unlock message while counting up
+                // Clear the unlock message while counting up so it only shows at 100%
                 if (tmpMessage != null)
                 {
-                    tmpMessage.text = "Feature Unlocked!";
+                    tmpMessage.text = "";
                 }
 
                 DOTween.Kill(key);
 
                 // --- DOTween Lerp Animation ---
-                DOVirtual.Float(0f, targetPercent, 1.5f, (currentValue) =>
+                // Now uses startPercent instead of 0f
+                DOVirtual.Float(startPercent, targetPercent, 1.5f, (currentValue) =>
                 {
                     int displayPercent = Mathf.RoundToInt(currentValue);
 
-                    // --- NEW CODE ---
                     // Check if the percentage reached 100
                     if (displayPercent >= 100)
                     {
@@ -109,7 +133,6 @@ public class CompleteScreen : MonoBehaviour
 
                         if (tmpMessage != null)
                         {
-                            // Note: Using 'unlockMessgae' exactly as written in your prompt
                             tmpMessage.text = key.unlockMessage;
                         }
 
@@ -120,10 +143,9 @@ public class CompleteScreen : MonoBehaviour
                         key.tmp.text = displayPercent + "%";
                         key.currentPercentage = 100 - displayPercent;
                     }
-                    // ----------------
 
                 })
-                .SetDelay(scaleDuration) // <-- WAITS FOR THE SCALE ANIMATION TO FINISH
+                .SetDelay(scaleDuration) // WAITS FOR THE SCALE ANIMATION TO FINISH
                 .SetEase(Ease.OutCubic)
                 .SetId(key);
                 // ------------------------------
