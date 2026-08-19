@@ -19,7 +19,7 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private ResultManager resultManager;
     [SerializeField] private GameObject categoryHeading,arrow,freezeCount;
     [SerializeField] private Transform categoryHeadingParent,trayList;
-    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private TextMeshProUGUI levelText,tutorialMsg;
     [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial,trayOutlineMat,freezeTray,freezeBox;
     [SerializeField] private List<KeyValueGroup<Material, Sprite>> colorSprite;
     [SerializeField] private FocusCutOut panel;
@@ -151,18 +151,18 @@ public class LevelManager : Manager<LevelManager>
     void ManageWords()
     {
         var firstCharPos = CurLvlData.firstCharPos.ToDictionary(item => item.Key, item => item.Value);
-        
+
         foreach (var word in wordPositions.Keys)
         {
             hintManager.wordChain[word] = new();
-            hintManager.wordChain[word] = new(new(),new());
+            hintManager.wordChain[word] = new(new(), new());
 
             foreach (var key in wordPositions[word])
             {
                 int linearIndex = key.x * gridManager.columns + key.y;
                 var gridChild = gridManager.transform.GetChild(linearIndex);
 
-               
+
                 if (cellTexts.ContainsKey(key))
                 {
                     var letterbox = Instantiate(gridManager.squareSlot, gridChild);
@@ -193,17 +193,17 @@ public class LevelManager : Manager<LevelManager>
                         int i = key.y - firstCharPos[word];
 
                         hintManager.wordChain[word].Value.Add(i);
-                  
+
                     }
                     letterbox.transform.localPosition = Vector3.zero;
                     hintManager.wordChain[word].Key.Add(letterbox);
-                 
+
                 }
-               
+
 
             }
         }
-      if (_CurrentLevelNumber == 1)
+        if (_CurrentLevelNumber == 1)
         {
             var group = new FocusCutOut.CutoutGroup();
             group.renderers = hintManager.wordChain["BANANA"].Key.Select(x => x.GetComponent<Renderer>()).ToList();
@@ -213,10 +213,24 @@ public class LevelManager : Manager<LevelManager>
             panel.cutoutGroups.Add(group);
             halfArea.gameObject.SetActive(true);
             panel.gameObject.SetActive(true);
+          
         }
-      else
+        else if(_CurrentLevelNumber ==2)
         {
-            halfArea.gameObject.SetActive (false);
+            panel.cutoutGroups.Clear();
+
+            var group = new FocusCutOut.CutoutGroup();
+            group.renderers = hintManager.wordChain["PUMPKIN"].Key.Select(x => x.GetComponent<Renderer>()).ToList();
+            panel.cutoutGroups.Add(group);
+            panel.gameObject.SetActive(true);
+            tutorialMsg.text = "Tap and hold letter to reveal the word!";
+            hand.SetActive(true);
+            hand.transform.position = new Vector3(4, 12.8f, 13);
+            hand.GetComponent<ScaleCycleDOTween>().StartScalingCycle();
+        }
+        else
+        {
+            halfArea.gameObject.SetActive(false);
         }
     }
     void ManageAlphabets()

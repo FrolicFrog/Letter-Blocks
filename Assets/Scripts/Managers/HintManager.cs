@@ -12,6 +12,8 @@ public class HintManager : MonoBehaviour
     [SerializeField] private LayerMask wordLayer;
     [SerializeField] private float holdThreshold = 0.2f;
     [SerializeField] private FocusCutOut panel;
+    [SerializeField] private GameObject tutorialPanel, Hand;
+
     private float holdTimer = 0f;
     private bool isTracking = false;
     private bool isHoldingTriggered = false;
@@ -38,6 +40,11 @@ public class HintManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, wordLayer))
             {
+                if(LevelManager.Instance.CurLevelNumber ==2 && tutorialPanel.activeSelf)
+                {
+                    tutorialPanel.SetActive(false);
+                    Hand.SetActive(false);
+                }
                 isTracking = true;
                 currentWordObject = hit.collider.gameObject;
                 holdTimer = 0f;
