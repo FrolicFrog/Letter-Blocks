@@ -1,0 +1,800 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 41
+  m_EditorClassIdentifier: 
+  timer: 0
+  LevelNumber: 41
+  rows: 30
+  columns: 9
+  height: 6
+  width: 6
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.11
+  categoryMaterial: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  words:
+  - HIPPO
+  - LANCE
+  - HYENA
+  - HELMET
+  - GIRAFFE
+  - RAILROAD
+  - GAZELLE
+  - ANTELOPE
+  - SUITCASE
+  - JACKAL
+  - PLATFORM
+  - CHEETAH
+  - SWORD
+  - LION
+  - CONDUCTOR
+  - BATTLE
+  - ZEBRA
+  - SHIELD
+  - TICKET
+  tray:
+  - Tray 1
+  horizontal: []
+  excludedChar:
+  - {x: 27, y: 6}
+  - {x: 29, y: 6}
+  - {x: 28, y: 3}
+  - {x: 26, y: 2}
+  - {x: 25, y: 4}
+  - {x: 25, y: 7}
+  - {x: 21, y: 3}
+  - {x: 21, y: 6}
+  - {x: 24, y: 2}
+  - {x: 22, y: 3}
+  - {x: 22, y: 5}
+  - {x: 23, y: 5}
+  - {x: 19, y: 5}
+  - {x: 19, y: 7}
+  - {x: 20, y: 2}
+  - {x: 20, y: 5}
+  - {x: 18, y: 6}
+  - {x: 18, y: 2}
+  - {x: 17, y: 2}
+  - {x: 15, y: 4}
+  - {x: 15, y: 5}
+  - {x: 16, y: 3}
+  - {x: 16, y: 5}
+  - {x: 14, y: 2}
+  - {x: 14, y: 5}
+  - {x: 13, y: 3}
+  - {x: 11, y: 6}
+  - {x: 12, y: 5}
+  blockedCells: []
+  wordCategory:
+  - Key: Savanna Animals
+    Value:
+    - HIPPO
+    - HYENA
+    - GIRAFFE
+    - GAZELLE
+    - ANTELOPE
+    - JACKAL
+    - CHEETAH
+    - LION
+    - ZEBRA
+  - Key: Knight
+    Value:
+    - LANCE
+    - HELMET
+    - SWORD
+    - BATTLE
+    - SHIELD
+  - Key: Train Station
+    Value:
+    - RAILROAD
+    - SUITCASE
+    - PLATFORM
+    - CONDUCTOR
+    - TICKET
+  cellCategory:
+  - Key: {x: 27, y: 4}
+    Value: Savanna Animals
+  - Key: {x: 27, y: 5}
+    Value: Savanna Animals
+  - Key: {x: 27, y: 6}
+    Value: Savanna Animals
+  - Key: {x: 27, y: 7}
+    Value: Savanna Animals
+  - Key: {x: 27, y: 8}
+    Value: Savanna Animals
+  - Key: {x: 29, y: 2}
+    Value: Train Station
+  - Key: {x: 29, y: 3}
+    Value: Train Station
+  - Key: {x: 29, y: 4}
+    Value: Train Station
+  - Key: {x: 29, y: 5}
+    Value: Train Station
+  - Key: {x: 29, y: 6}
+    Value: Train Station
+  - Key: {x: 29, y: 7}
+    Value: Train Station
+  - Key: {x: 28, y: 1}
+    Value: Knight
+  - Key: {x: 28, y: 2}
+    Value: Knight
+  - Key: {x: 28, y: 3}
+    Value: Knight
+  - Key: {x: 28, y: 4}
+    Value: Knight
+  - Key: {x: 28, y: 5}
+    Value: Knight
+  - Key: {x: 28, y: 6}
+    Value: Knight
+  - Key: {x: 26, y: 2}
+    Value: Knight
+  - Key: {x: 26, y: 3}
+    Value: Knight
+  - Key: {x: 26, y: 4}
+    Value: Knight
+  - Key: {x: 26, y: 5}
+    Value: Knight
+  - Key: {x: 26, y: 6}
+    Value: Knight
+  - Key: {x: 26, y: 7}
+    Value: Knight
+  - Key: {x: 25, y: 0}
+    Value: Train Station
+  - Key: {x: 25, y: 1}
+    Value: Train Station
+  - Key: {x: 25, y: 2}
+    Value: Train Station
+  - Key: {x: 25, y: 3}
+    Value: Train Station
+  - Key: {x: 25, y: 4}
+    Value: Train Station
+  - Key: {x: 25, y: 5}
+    Value: Train Station
+  - Key: {x: 25, y: 6}
+    Value: Train Station
+  - Key: {x: 25, y: 7}
+    Value: Train Station
+  - Key: {x: 25, y: 8}
+    Value: Train Station
+  - Key: {x: 21, y: 2}
+    Value: Train Station
+  - Key: {x: 21, y: 3}
+    Value: Train Station
+  - Key: {x: 21, y: 4}
+    Value: Train Station
+  - Key: {x: 21, y: 1}
+    Value: Train Station
+  - Key: {x: 21, y: 5}
+    Value: Train Station
+  - Key: {x: 21, y: 6}
+    Value: Train Station
+  - Key: {x: 21, y: 7}
+    Value: Train Station
+  - Key: {x: 21, y: 8}
+    Value: Train Station
+  - Key: {x: 24, y: 2}
+    Value: Savanna Animals
+  - Key: {x: 24, y: 3}
+    Value: Savanna Animals
+  - Key: {x: 24, y: 4}
+    Value: Savanna Animals
+  - Key: {x: 24, y: 5}
+    Value: Savanna Animals
+  - Key: {x: 22, y: 0}
+    Value: Savanna Animals
+  - Key: {x: 22, y: 2}
+    Value: Savanna Animals
+  - Key: {x: 22, y: 1}
+    Value: Savanna Animals
+  - Key: {x: 22, y: 3}
+    Value: Savanna Animals
+  - Key: {x: 22, y: 4}
+    Value: Savanna Animals
+  - Key: {x: 22, y: 5}
+    Value: Savanna Animals
+  - Key: {x: 22, y: 6}
+    Value: Savanna Animals
+  - Key: {x: 23, y: 4}
+    Value: Knight
+  - Key: {x: 23, y: 5}
+    Value: Knight
+  - Key: {x: 23, y: 6}
+    Value: Knight
+  - Key: {x: 23, y: 7}
+    Value: Knight
+  - Key: {x: 23, y: 8}
+    Value: Knight
+  - Key: {x: 19, y: 0}
+    Value: Train Station
+  - Key: {x: 19, y: 1}
+    Value: Train Station
+  - Key: {x: 19, y: 2}
+    Value: Train Station
+  - Key: {x: 19, y: 3}
+    Value: Train Station
+  - Key: {x: 19, y: 4}
+    Value: Train Station
+  - Key: {x: 19, y: 5}
+    Value: Train Station
+  - Key: {x: 19, y: 6}
+    Value: Train Station
+  - Key: {x: 19, y: 7}
+    Value: Train Station
+  - Key: {x: 20, y: 2}
+    Value: Savanna Animals
+  - Key: {x: 20, y: 3}
+    Value: Savanna Animals
+  - Key: {x: 20, y: 4}
+    Value: Savanna Animals
+  - Key: {x: 20, y: 5}
+    Value: Savanna Animals
+  - Key: {x: 20, y: 6}
+    Value: Savanna Animals
+  - Key: {x: 20, y: 7}
+    Value: Savanna Animals
+  - Key: {x: 18, y: 1}
+    Value: Savanna Animals
+  - Key: {x: 18, y: 2}
+    Value: Savanna Animals
+  - Key: {x: 18, y: 3}
+    Value: Savanna Animals
+  - Key: {x: 18, y: 4}
+    Value: Savanna Animals
+  - Key: {x: 18, y: 5}
+    Value: Savanna Animals
+  - Key: {x: 18, y: 6}
+    Value: Savanna Animals
+  - Key: {x: 18, y: 7}
+    Value: Savanna Animals
+  - Key: {x: 18, y: 8}
+    Value: Savanna Animals
+  - Key: {x: 17, y: 0}
+    Value: Savanna Animals
+  - Key: {x: 17, y: 1}
+    Value: Savanna Animals
+  - Key: {x: 17, y: 2}
+    Value: Savanna Animals
+  - Key: {x: 17, y: 3}
+    Value: Savanna Animals
+  - Key: {x: 17, y: 4}
+    Value: Savanna Animals
+  - Key: {x: 17, y: 5}
+    Value: Savanna Animals
+  - Key: {x: 17, y: 6}
+    Value: Savanna Animals
+  - Key: {x: 15, y: 1}
+    Value: Savanna Animals
+  - Key: {x: 15, y: 2}
+    Value: Savanna Animals
+  - Key: {x: 15, y: 3}
+    Value: Savanna Animals
+  - Key: {x: 15, y: 4}
+    Value: Savanna Animals
+  - Key: {x: 15, y: 5}
+    Value: Savanna Animals
+  - Key: {x: 15, y: 6}
+    Value: Savanna Animals
+  - Key: {x: 15, y: 7}
+    Value: Savanna Animals
+  - Key: {x: 16, y: 0}
+    Value: Train Station
+  - Key: {x: 16, y: 1}
+    Value: Train Station
+  - Key: {x: 16, y: 2}
+    Value: Train Station
+  - Key: {x: 16, y: 3}
+    Value: Train Station
+  - Key: {x: 16, y: 4}
+    Value: Train Station
+  - Key: {x: 16, y: 5}
+    Value: Train Station
+  - Key: {x: 16, y: 6}
+    Value: Train Station
+  - Key: {x: 16, y: 7}
+    Value: Train Station
+  - Key: {x: 14, y: 0}
+    Value: Knight
+  - Key: {x: 14, y: 1}
+    Value: Knight
+  - Key: {x: 14, y: 2}
+    Value: Knight
+  - Key: {x: 14, y: 3}
+    Value: Knight
+  - Key: {x: 14, y: 4}
+    Value: Knight
+  - Key: {x: 14, y: 5}
+    Value: Knight
+  - Key: {x: 13, y: 1}
+    Value: Savanna Animals
+  - Key: {x: 13, y: 2}
+    Value: Savanna Animals
+  - Key: {x: 13, y: 3}
+    Value: Savanna Animals
+  - Key: {x: 13, y: 4}
+    Value: Savanna Animals
+  - Key: {x: 13, y: 5}
+    Value: Savanna Animals
+  - Key: {x: 11, y: 3}
+    Value: Savanna Animals
+  - Key: {x: 11, y: 4}
+    Value: Savanna Animals
+  - Key: {x: 11, y: 5}
+    Value: Savanna Animals
+  - Key: {x: 11, y: 6}
+    Value: Savanna Animals
+  - Key: {x: 11, y: 7}
+    Value: Savanna Animals
+  - Key: {x: 12, y: 2}
+    Value: Knight
+  - Key: {x: 12, y: 3}
+    Value: Knight
+  - Key: {x: 12, y: 4}
+    Value: Knight
+  - Key: {x: 12, y: 5}
+    Value: Knight
+  - Key: {x: 12, y: 6}
+    Value: Knight
+  cellTexts:
+  - Key: {x: 27, y: 4}
+    Value: Z
+  - Key: {x: 27, y: 5}
+    Value: E
+  - Key: {x: 27, y: 6}
+    Value: B
+  - Key: {x: 27, y: 7}
+    Value: R
+  - Key: {x: 27, y: 8}
+    Value: A
+  - Key: {x: 29, y: 2}
+    Value: T
+  - Key: {x: 29, y: 3}
+    Value: I
+  - Key: {x: 29, y: 4}
+    Value: C
+  - Key: {x: 29, y: 5}
+    Value: K
+  - Key: {x: 29, y: 6}
+    Value: E
+  - Key: {x: 29, y: 7}
+    Value: T
+  - Key: {x: 28, y: 1}
+    Value: S
+  - Key: {x: 28, y: 2}
+    Value: H
+  - Key: {x: 28, y: 3}
+    Value: I
+  - Key: {x: 28, y: 4}
+    Value: E
+  - Key: {x: 28, y: 5}
+    Value: L
+  - Key: {x: 28, y: 6}
+    Value: D
+  - Key: {x: 26, y: 2}
+    Value: B
+  - Key: {x: 26, y: 3}
+    Value: A
+  - Key: {x: 26, y: 4}
+    Value: T
+  - Key: {x: 26, y: 5}
+    Value: T
+  - Key: {x: 26, y: 6}
+    Value: L
+  - Key: {x: 26, y: 7}
+    Value: E
+  - Key: {x: 25, y: 0}
+    Value: C
+  - Key: {x: 25, y: 1}
+    Value: O
+  - Key: {x: 25, y: 2}
+    Value: N
+  - Key: {x: 25, y: 3}
+    Value: D
+  - Key: {x: 25, y: 4}
+    Value: U
+  - Key: {x: 25, y: 5}
+    Value: C
+  - Key: {x: 25, y: 6}
+    Value: T
+  - Key: {x: 25, y: 7}
+    Value: O
+  - Key: {x: 25, y: 8}
+    Value: R
+  - Key: {x: 21, y: 2}
+    Value: L
+  - Key: {x: 21, y: 3}
+    Value: A
+  - Key: {x: 21, y: 4}
+    Value: T
+  - Key: {x: 21, y: 1}
+    Value: P
+  - Key: {x: 21, y: 5}
+    Value: F
+  - Key: {x: 21, y: 6}
+    Value: O
+  - Key: {x: 21, y: 7}
+    Value: R
+  - Key: {x: 21, y: 8}
+    Value: M
+  - Key: {x: 24, y: 2}
+    Value: L
+  - Key: {x: 24, y: 3}
+    Value: I
+  - Key: {x: 24, y: 4}
+    Value: O
+  - Key: {x: 24, y: 5}
+    Value: N
+  - Key: {x: 22, y: 0}
+    Value: C
+  - Key: {x: 22, y: 2}
+    Value: E
+  - Key: {x: 22, y: 1}
+    Value: H
+  - Key: {x: 22, y: 3}
+    Value: E
+  - Key: {x: 22, y: 4}
+    Value: T
+  - Key: {x: 22, y: 5}
+    Value: A
+  - Key: {x: 22, y: 6}
+    Value: H
+  - Key: {x: 23, y: 4}
+    Value: S
+  - Key: {x: 23, y: 5}
+    Value: W
+  - Key: {x: 23, y: 6}
+    Value: O
+  - Key: {x: 23, y: 7}
+    Value: R
+  - Key: {x: 23, y: 8}
+    Value: D
+  - Key: {x: 19, y: 0}
+    Value: S
+  - Key: {x: 19, y: 1}
+    Value: U
+  - Key: {x: 19, y: 2}
+    Value: I
+  - Key: {x: 19, y: 3}
+    Value: T
+  - Key: {x: 19, y: 4}
+    Value: C
+  - Key: {x: 19, y: 5}
+    Value: A
+  - Key: {x: 19, y: 6}
+    Value: S
+  - Key: {x: 19, y: 7}
+    Value: E
+  - Key: {x: 20, y: 2}
+    Value: J
+  - Key: {x: 20, y: 3}
+    Value: A
+  - Key: {x: 20, y: 4}
+    Value: C
+  - Key: {x: 20, y: 5}
+    Value: K
+  - Key: {x: 20, y: 6}
+    Value: A
+  - Key: {x: 20, y: 7}
+    Value: L
+  - Key: {x: 18, y: 1}
+    Value: A
+  - Key: {x: 18, y: 2}
+    Value: N
+  - Key: {x: 18, y: 3}
+    Value: T
+  - Key: {x: 18, y: 4}
+    Value: E
+  - Key: {x: 18, y: 5}
+    Value: L
+  - Key: {x: 18, y: 6}
+    Value: O
+  - Key: {x: 18, y: 7}
+    Value: P
+  - Key: {x: 18, y: 8}
+    Value: E
+  - Key: {x: 17, y: 0}
+    Value: G
+  - Key: {x: 17, y: 1}
+    Value: A
+  - Key: {x: 17, y: 2}
+    Value: Z
+  - Key: {x: 17, y: 3}
+    Value: E
+  - Key: {x: 17, y: 4}
+    Value: L
+  - Key: {x: 17, y: 5}
+    Value: L
+  - Key: {x: 17, y: 6}
+    Value: E
+  - Key: {x: 15, y: 1}
+    Value: G
+  - Key: {x: 15, y: 2}
+    Value: I
+  - Key: {x: 15, y: 3}
+    Value: R
+  - Key: {x: 15, y: 4}
+    Value: A
+  - Key: {x: 15, y: 5}
+    Value: F
+  - Key: {x: 15, y: 6}
+    Value: F
+  - Key: {x: 15, y: 7}
+    Value: E
+  - Key: {x: 16, y: 0}
+    Value: R
+  - Key: {x: 16, y: 1}
+    Value: A
+  - Key: {x: 16, y: 2}
+    Value: I
+  - Key: {x: 16, y: 3}
+    Value: L
+  - Key: {x: 16, y: 4}
+    Value: R
+  - Key: {x: 16, y: 5}
+    Value: O
+  - Key: {x: 16, y: 6}
+    Value: A
+  - Key: {x: 16, y: 7}
+    Value: D
+  - Key: {x: 14, y: 0}
+    Value: H
+  - Key: {x: 14, y: 1}
+    Value: E
+  - Key: {x: 14, y: 2}
+    Value: L
+  - Key: {x: 14, y: 3}
+    Value: M
+  - Key: {x: 14, y: 4}
+    Value: E
+  - Key: {x: 14, y: 5}
+    Value: T
+  - Key: {x: 13, y: 1}
+    Value: H
+  - Key: {x: 13, y: 2}
+    Value: Y
+  - Key: {x: 13, y: 3}
+    Value: E
+  - Key: {x: 13, y: 4}
+    Value: N
+  - Key: {x: 13, y: 5}
+    Value: A
+  - Key: {x: 11, y: 3}
+    Value: H
+  - Key: {x: 11, y: 4}
+    Value: I
+  - Key: {x: 11, y: 5}
+    Value: P
+  - Key: {x: 11, y: 6}
+    Value: P
+  - Key: {x: 11, y: 7}
+    Value: O
+  - Key: {x: 12, y: 2}
+    Value: L
+  - Key: {x: 12, y: 3}
+    Value: A
+  - Key: {x: 12, y: 4}
+    Value: N
+  - Key: {x: 12, y: 5}
+    Value: C
+  - Key: {x: 12, y: 6}
+    Value: E
+  trayCells: []
+  trayName: []
+  categoryColors:
+  - Key: Knight
+    Value: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  - Key: Train Station
+    Value: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
+  - Key: Savanna Animals
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  trayColors: []
+  wordPositions:
+  - Key: HIPPO
+    Value:
+    - {x: 11, y: 3}
+    - {x: 11, y: 4}
+    - {x: 11, y: 5}
+    - {x: 11, y: 6}
+    - {x: 11, y: 7}
+  - Key: LANCE
+    Value:
+    - {x: 12, y: 2}
+    - {x: 12, y: 3}
+    - {x: 12, y: 4}
+    - {x: 12, y: 5}
+    - {x: 12, y: 6}
+  - Key: HYENA
+    Value:
+    - {x: 13, y: 1}
+    - {x: 13, y: 2}
+    - {x: 13, y: 3}
+    - {x: 13, y: 4}
+    - {x: 13, y: 5}
+  - Key: HELMET
+    Value:
+    - {x: 14, y: 0}
+    - {x: 14, y: 1}
+    - {x: 14, y: 2}
+    - {x: 14, y: 3}
+    - {x: 14, y: 4}
+    - {x: 14, y: 5}
+  - Key: GIRAFFE
+    Value:
+    - {x: 15, y: 1}
+    - {x: 15, y: 2}
+    - {x: 15, y: 3}
+    - {x: 15, y: 4}
+    - {x: 15, y: 5}
+    - {x: 15, y: 6}
+    - {x: 15, y: 7}
+  - Key: RAILROAD
+    Value:
+    - {x: 16, y: 0}
+    - {x: 16, y: 1}
+    - {x: 16, y: 2}
+    - {x: 16, y: 3}
+    - {x: 16, y: 4}
+    - {x: 16, y: 5}
+    - {x: 16, y: 6}
+    - {x: 16, y: 7}
+  - Key: GAZELLE
+    Value:
+    - {x: 17, y: 0}
+    - {x: 17, y: 1}
+    - {x: 17, y: 2}
+    - {x: 17, y: 3}
+    - {x: 17, y: 4}
+    - {x: 17, y: 5}
+    - {x: 17, y: 6}
+  - Key: ANTELOPE
+    Value:
+    - {x: 18, y: 1}
+    - {x: 18, y: 2}
+    - {x: 18, y: 3}
+    - {x: 18, y: 4}
+    - {x: 18, y: 5}
+    - {x: 18, y: 6}
+    - {x: 18, y: 7}
+    - {x: 18, y: 8}
+  - Key: SUITCASE
+    Value:
+    - {x: 19, y: 0}
+    - {x: 19, y: 1}
+    - {x: 19, y: 2}
+    - {x: 19, y: 3}
+    - {x: 19, y: 4}
+    - {x: 19, y: 5}
+    - {x: 19, y: 6}
+    - {x: 19, y: 7}
+  - Key: JACKAL
+    Value:
+    - {x: 20, y: 2}
+    - {x: 20, y: 3}
+    - {x: 20, y: 4}
+    - {x: 20, y: 5}
+    - {x: 20, y: 6}
+    - {x: 20, y: 7}
+  - Key: PLATFORM
+    Value:
+    - {x: 21, y: 1}
+    - {x: 21, y: 2}
+    - {x: 21, y: 3}
+    - {x: 21, y: 4}
+    - {x: 21, y: 5}
+    - {x: 21, y: 6}
+    - {x: 21, y: 7}
+    - {x: 21, y: 8}
+  - Key: CHEETAH
+    Value:
+    - {x: 22, y: 0}
+    - {x: 22, y: 1}
+    - {x: 22, y: 2}
+    - {x: 22, y: 3}
+    - {x: 22, y: 4}
+    - {x: 22, y: 5}
+    - {x: 22, y: 6}
+  - Key: SWORD
+    Value:
+    - {x: 23, y: 4}
+    - {x: 23, y: 5}
+    - {x: 23, y: 6}
+    - {x: 23, y: 7}
+    - {x: 23, y: 8}
+  - Key: LION
+    Value:
+    - {x: 24, y: 2}
+    - {x: 24, y: 3}
+    - {x: 24, y: 4}
+    - {x: 24, y: 5}
+  - Key: CONDUCTOR
+    Value:
+    - {x: 25, y: 0}
+    - {x: 25, y: 1}
+    - {x: 25, y: 2}
+    - {x: 25, y: 3}
+    - {x: 25, y: 4}
+    - {x: 25, y: 5}
+    - {x: 25, y: 6}
+    - {x: 25, y: 7}
+    - {x: 25, y: 8}
+  - Key: BATTLE
+    Value:
+    - {x: 26, y: 2}
+    - {x: 26, y: 3}
+    - {x: 26, y: 4}
+    - {x: 26, y: 5}
+    - {x: 26, y: 6}
+    - {x: 26, y: 7}
+  - Key: ZEBRA
+    Value:
+    - {x: 27, y: 4}
+    - {x: 27, y: 5}
+    - {x: 27, y: 6}
+    - {x: 27, y: 7}
+    - {x: 27, y: 8}
+  - Key: SHIELD
+    Value:
+    - {x: 28, y: 1}
+    - {x: 28, y: 2}
+    - {x: 28, y: 3}
+    - {x: 28, y: 4}
+    - {x: 28, y: 5}
+    - {x: 28, y: 6}
+  - Key: TICKET
+    Value:
+    - {x: 29, y: 2}
+    - {x: 29, y: 3}
+    - {x: 29, y: 4}
+    - {x: 29, y: 5}
+    - {x: 29, y: 6}
+    - {x: 29, y: 7}
+  freezedTray: []
+  firstCharPos:
+  - Key: HIPPO
+    Value: 3
+  - Key: LANCE
+    Value: 2
+  - Key: HYENA
+    Value: 1
+  - Key: HELMET
+    Value: 0
+  - Key: GIRAFFE
+    Value: 1
+  - Key: RAILROAD
+    Value: 0
+  - Key: GAZELLE
+    Value: 0
+  - Key: ANTELOPE
+    Value: 1
+  - Key: SUITCASE
+    Value: 0
+  - Key: JACKAL
+    Value: 2
+  - Key: PLATFORM
+    Value: 1
+  - Key: CHEETAH
+    Value: 0
+  - Key: SWORD
+    Value: 4
+  - Key: LION
+    Value: 2
+  - Key: CONDUCTOR
+    Value: 0
+  - Key: BATTLE
+    Value: 2
+  - Key: ZEBRA
+    Value: 4
+  - Key: SHIELD
+    Value: 1
+  - Key: TICKET
+    Value: 2
+  levelMode: 0

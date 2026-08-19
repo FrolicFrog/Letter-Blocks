@@ -1,0 +1,1021 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 39
+  m_EditorClassIdentifier: 
+  timer: 0
+  LevelNumber: 39
+  rows: 30
+  columns: 9
+  height: 6
+  width: 6
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.11
+  categoryMaterial: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
+  words:
+  - DRAMA
+  - TANKER
+  - MAKEUP
+  - RDINE
+  - CRUISER
+  - SCRIPT
+  - FLOWERS
+  - ACTOR
+  - SALMON
+  - TICKET
+  - COSTUME
+  - SAILBOAT
+  - PROP
+  - CARP
+  - CRAYON
+  - YACHT
+  - FIREWORKS
+  - CATFISH
+  - SUBMARINE
+  - CONFETTI
+  - CURTAIN
+  - STAGE
+  - RAINBOW
+  - CANOE
+  - TUNA
+  tray:
+  - Tray 1
+  horizontal: []
+  excludedChar:
+  - {x: 29, y: 5}
+  - {x: 28, y: 5}
+  - {x: 27, y: 3}
+  - {x: 25, y: 4}
+  - {x: 25, y: 7}
+  - {x: 26, y: 6}
+  - {x: 24, y: 4}
+  - {x: 24, y: 7}
+  - {x: 23, y: 2}
+  - {x: 23, y: 5}
+  - {x: 20, y: 3}
+  - {x: 21, y: 1}
+  - {x: 21, y: 5}
+  - {x: 17, y: 3}
+  - {x: 17, y: 6}
+  - {x: 19, y: 4}
+  - {x: 22, y: 3}
+  - {x: 22, y: 6}
+  - {x: 18, y: 2}
+  - {x: 18, y: 6}
+  - {x: 15, y: 2}
+  - {x: 15, y: 6}
+  - {x: 16, y: 5}
+  - {x: 16, y: 8}
+  - {x: 11, y: 1}
+  - {x: 11, y: 3}
+  - {x: 13, y: 6}
+  - {x: 12, y: 5}
+  - {x: 14, y: 4}
+  - {x: 9, y: 3}
+  - {x: 9, y: 6}
+  - {x: 10, y: 5}
+  - {x: 10, y: 6}
+  - {x: 7, y: 5}
+  - {x: 6, y: 5}
+  - {x: 8, y: 2}
+  - {x: 8, y: 5}
+  blockedCells: []
+  wordCategory:
+  - Key: Theatre
+    Value:
+    - DRAMA
+    - MAKEUP
+    - SCRIPT
+    - ACTOR
+    - TICKET
+    - COSTUME
+    - PROP
+    - CURTAIN
+    - STAGE
+  - Key: Ship
+    Value:
+    - TANKER
+    - CRUISER
+    - SAILBOAT
+    - YACHT
+    - SUBMARINE
+    - CANOE
+  - Key: Fish
+    Value:
+    - RDINE
+    - SALMON
+    - CARP
+    - CATFISH
+    - TUNA
+  - Key: Colorful Things
+    Value:
+    - FLOWERS
+    - CRAYON
+    - FIREWORKS
+    - CONFETTI
+    - RAINBOW
+  cellCategory:
+  - Key: {x: 29, y: 3}
+    Value: Fish
+  - Key: {x: 29, y: 4}
+    Value: Fish
+  - Key: {x: 29, y: 5}
+    Value: Fish
+  - Key: {x: 29, y: 6}
+    Value: Fish
+  - Key: {x: 28, y: 2}
+    Value: Ship
+  - Key: {x: 28, y: 3}
+    Value: Ship
+  - Key: {x: 28, y: 4}
+    Value: Ship
+  - Key: {x: 28, y: 6}
+    Value: Ship
+  - Key: {x: 28, y: 5}
+    Value: Ship
+  - Key: {x: 27, y: 0}
+    Value: Colorful Things
+  - Key: {x: 27, y: 1}
+    Value: Colorful Things
+  - Key: {x: 27, y: 2}
+    Value: Colorful Things
+  - Key: {x: 27, y: 3}
+    Value: Colorful Things
+  - Key: {x: 27, y: 4}
+    Value: Colorful Things
+  - Key: {x: 27, y: 5}
+    Value: Colorful Things
+  - Key: {x: 27, y: 6}
+    Value: Colorful Things
+  - Key: {x: 26, y: 3}
+    Value: Theatre
+  - Key: {x: 26, y: 4}
+    Value: Theatre
+  - Key: {x: 26, y: 5}
+    Value: Theatre
+  - Key: {x: 26, y: 6}
+    Value: Theatre
+  - Key: {x: 26, y: 7}
+    Value: Theatre
+  - Key: {x: 25, y: 2}
+    Value: Theatre
+  - Key: {x: 25, y: 3}
+    Value: Theatre
+  - Key: {x: 25, y: 4}
+    Value: Theatre
+  - Key: {x: 25, y: 5}
+    Value: Theatre
+  - Key: {x: 25, y: 6}
+    Value: Theatre
+  - Key: {x: 25, y: 7}
+    Value: Theatre
+  - Key: {x: 25, y: 8}
+    Value: Theatre
+  - Key: {x: 24, y: 0}
+    Value: Colorful Things
+  - Key: {x: 24, y: 1}
+    Value: Colorful Things
+  - Key: {x: 24, y: 2}
+    Value: Colorful Things
+  - Key: {x: 24, y: 3}
+    Value: Colorful Things
+  - Key: {x: 24, y: 4}
+    Value: Colorful Things
+  - Key: {x: 24, y: 5}
+    Value: Colorful Things
+  - Key: {x: 24, y: 6}
+    Value: Colorful Things
+  - Key: {x: 24, y: 7}
+    Value: Colorful Things
+  - Key: {x: 21, y: 0}
+    Value: Colorful Things
+  - Key: {x: 21, y: 1}
+    Value: Colorful Things
+  - Key: {x: 21, y: 2}
+    Value: Colorful Things
+  - Key: {x: 21, y: 3}
+    Value: Colorful Things
+  - Key: {x: 21, y: 4}
+    Value: Colorful Things
+  - Key: {x: 21, y: 5}
+    Value: Colorful Things
+  - Key: {x: 21, y: 6}
+    Value: Colorful Things
+  - Key: {x: 21, y: 7}
+    Value: Colorful Things
+  - Key: {x: 21, y: 8}
+    Value: Colorful Things
+  - Key: {x: 23, y: 0}
+    Value: Ship
+  - Key: {x: 23, y: 1}
+    Value: Ship
+  - Key: {x: 23, y: 2}
+    Value: Ship
+  - Key: {x: 23, y: 3}
+    Value: Ship
+  - Key: {x: 23, y: 5}
+    Value: Ship
+  - Key: {x: 23, y: 4}
+    Value: Ship
+  - Key: {x: 23, y: 6}
+    Value: Ship
+  - Key: {x: 23, y: 7}
+    Value: Ship
+  - Key: {x: 23, y: 8}
+    Value: Ship
+  - Key: {x: 20, y: 0}
+    Value: Ship
+  - Key: {x: 20, y: 1}
+    Value: Ship
+  - Key: {x: 20, y: 2}
+    Value: Ship
+  - Key: {x: 20, y: 3}
+    Value: Ship
+  - Key: {x: 20, y: 4}
+    Value: Ship
+  - Key: {x: 17, y: 1}
+    Value: Ship
+  - Key: {x: 17, y: 2}
+    Value: Ship
+  - Key: {x: 17, y: 3}
+    Value: Ship
+  - Key: {x: 17, y: 4}
+    Value: Ship
+  - Key: {x: 17, y: 5}
+    Value: Ship
+  - Key: {x: 17, y: 6}
+    Value: Ship
+  - Key: {x: 17, y: 7}
+    Value: Ship
+  - Key: {x: 17, y: 8}
+    Value: Ship
+  - Key: {x: 19, y: 2}
+    Value: Colorful Things
+  - Key: {x: 19, y: 3}
+    Value: Colorful Things
+  - Key: {x: 19, y: 4}
+    Value: Colorful Things
+  - Key: {x: 19, y: 5}
+    Value: Colorful Things
+  - Key: {x: 19, y: 6}
+    Value: Colorful Things
+  - Key: {x: 19, y: 7}
+    Value: Colorful Things
+  - Key: {x: 22, y: 2}
+    Value: Fish
+  - Key: {x: 22, y: 3}
+    Value: Fish
+  - Key: {x: 22, y: 4}
+    Value: Fish
+  - Key: {x: 22, y: 5}
+    Value: Fish
+  - Key: {x: 22, y: 6}
+    Value: Fish
+  - Key: {x: 22, y: 7}
+    Value: Fish
+  - Key: {x: 22, y: 8}
+    Value: Fish
+  - Key: {x: 18, y: 0}
+    Value: Theatre
+  - Key: {x: 18, y: 1}
+    Value: Theatre
+  - Key: {x: 18, y: 2}
+    Value: Theatre
+  - Key: {x: 18, y: 3}
+    Value: Theatre
+  - Key: {x: 18, y: 5}
+    Value: Fish
+  - Key: {x: 18, y: 6}
+    Value: Fish
+  - Key: {x: 18, y: 7}
+    Value: Fish
+  - Key: {x: 18, y: 8}
+    Value: Fish
+  - Key: {x: 15, y: 1}
+    Value: Theatre
+  - Key: {x: 15, y: 2}
+    Value: Theatre
+  - Key: {x: 15, y: 3}
+    Value: Theatre
+  - Key: {x: 15, y: 4}
+    Value: Theatre
+  - Key: {x: 15, y: 5}
+    Value: Theatre
+  - Key: {x: 15, y: 6}
+    Value: Theatre
+  - Key: {x: 13, y: 4}
+    Value: Theatre
+  - Key: {x: 13, y: 5}
+    Value: Theatre
+  - Key: {x: 13, y: 6}
+    Value: Theatre
+  - Key: {x: 13, y: 7}
+    Value: Theatre
+  - Key: {x: 13, y: 8}
+    Value: Theatre
+  - Key: {x: 16, y: 3}
+    Value: Theatre
+  - Key: {x: 16, y: 4}
+    Value: Theatre
+  - Key: {x: 16, y: 2}
+    Value: Theatre
+  - Key: {x: 16, y: 5}
+    Value: Theatre
+  - Key: {x: 16, y: 6}
+    Value: Theatre
+  - Key: {x: 16, y: 7}
+    Value: Theatre
+  - Key: {x: 16, y: 8}
+    Value: Theatre
+  - Key: {x: 11, y: 0}
+    Value: Theatre
+  - Key: {x: 11, y: 1}
+    Value: Theatre
+  - Key: {x: 11, y: 3}
+    Value: Theatre
+  - Key: {x: 11, y: 2}
+    Value: Theatre
+  - Key: {x: 11, y: 4}
+    Value: Theatre
+  - Key: {x: 11, y: 5}
+    Value: Theatre
+  - Key: {x: 12, y: 1}
+    Value: Colorful Things
+  - Key: {x: 12, y: 2}
+    Value: Colorful Things
+  - Key: {x: 12, y: 3}
+    Value: Colorful Things
+  - Key: {x: 12, y: 4}
+    Value: Colorful Things
+  - Key: {x: 12, y: 5}
+    Value: Colorful Things
+  - Key: {x: 12, y: 6}
+    Value: Colorful Things
+  - Key: {x: 12, y: 7}
+    Value: Colorful Things
+  - Key: {x: 14, y: 2}
+    Value: Fish
+  - Key: {x: 14, y: 3}
+    Value: Fish
+  - Key: {x: 14, y: 4}
+    Value: Fish
+  - Key: {x: 14, y: 5}
+    Value: Fish
+  - Key: {x: 14, y: 6}
+    Value: Fish
+  - Key: {x: 14, y: 7}
+    Value: Fish
+  - Key: {x: 9, y: 2}
+    Value: Fish
+  - Key: {x: 9, y: 3}
+    Value: Theatre
+  - Key: {x: 9, y: 4}
+    Value: Fish
+  - Key: {x: 9, y: 5}
+    Value: Fish
+  - Key: {x: 9, y: 6}
+    Value: Fish
+  - Key: {x: 9, y: 7}
+    Value: Fish
+  - Key: {x: 9, y: 8}
+    Value: Fish
+  - Key: {x: 10, y: 1}
+    Value: Ship
+  - Key: {x: 10, y: 2}
+    Value: Ship
+  - Key: {x: 10, y: 3}
+    Value: Ship
+  - Key: {x: 10, y: 4}
+    Value: Ship
+  - Key: {x: 10, y: 5}
+    Value: Ship
+  - Key: {x: 10, y: 6}
+    Value: Ship
+  - Key: {x: 10, y: 7}
+    Value: Ship
+  - Key: {x: 7, y: 3}
+    Value: Ship
+  - Key: {x: 7, y: 4}
+    Value: Ship
+  - Key: {x: 7, y: 5}
+    Value: Ship
+  - Key: {x: 7, y: 6}
+    Value: Ship
+  - Key: {x: 7, y: 7}
+    Value: Ship
+  - Key: {x: 7, y: 8}
+    Value: Ship
+  - Key: {x: 6, y: 2}
+    Value: Theatre
+  - Key: {x: 6, y: 3}
+    Value: Theatre
+  - Key: {x: 6, y: 4}
+    Value: Theatre
+  - Key: {x: 6, y: 5}
+    Value: Theatre
+  - Key: {x: 6, y: 6}
+    Value: Theatre
+  - Key: {x: 8, y: 1}
+    Value: Theatre
+  - Key: {x: 8, y: 2}
+    Value: Theatre
+  - Key: {x: 8, y: 3}
+    Value: Theatre
+  - Key: {x: 8, y: 4}
+    Value: Theatre
+  - Key: {x: 8, y: 5}
+    Value: Theatre
+  - Key: {x: 8, y: 6}
+    Value: Theatre
+  cellTexts:
+  - Key: {x: 29, y: 3}
+    Value: T
+  - Key: {x: 29, y: 4}
+    Value: U
+  - Key: {x: 29, y: 5}
+    Value: N
+  - Key: {x: 29, y: 6}
+    Value: A
+  - Key: {x: 28, y: 2}
+    Value: C
+  - Key: {x: 28, y: 3}
+    Value: A
+  - Key: {x: 28, y: 4}
+    Value: N
+  - Key: {x: 28, y: 6}
+    Value: E
+  - Key: {x: 28, y: 5}
+    Value: O
+  - Key: {x: 27, y: 0}
+    Value: R
+  - Key: {x: 27, y: 1}
+    Value: A
+  - Key: {x: 27, y: 2}
+    Value: I
+  - Key: {x: 27, y: 3}
+    Value: N
+  - Key: {x: 27, y: 4}
+    Value: B
+  - Key: {x: 27, y: 5}
+    Value: O
+  - Key: {x: 27, y: 6}
+    Value: W
+  - Key: {x: 26, y: 3}
+    Value: S
+  - Key: {x: 26, y: 4}
+    Value: T
+  - Key: {x: 26, y: 5}
+    Value: A
+  - Key: {x: 26, y: 6}
+    Value: G
+  - Key: {x: 26, y: 7}
+    Value: E
+  - Key: {x: 25, y: 2}
+    Value: C
+  - Key: {x: 25, y: 3}
+    Value: U
+  - Key: {x: 25, y: 4}
+    Value: R
+  - Key: {x: 25, y: 5}
+    Value: T
+  - Key: {x: 25, y: 6}
+    Value: A
+  - Key: {x: 25, y: 7}
+    Value: I
+  - Key: {x: 25, y: 8}
+    Value: N
+  - Key: {x: 24, y: 0}
+    Value: C
+  - Key: {x: 24, y: 1}
+    Value: O
+  - Key: {x: 24, y: 2}
+    Value: N
+  - Key: {x: 24, y: 3}
+    Value: F
+  - Key: {x: 24, y: 4}
+    Value: E
+  - Key: {x: 24, y: 5}
+    Value: T
+  - Key: {x: 24, y: 6}
+    Value: T
+  - Key: {x: 24, y: 7}
+    Value: I
+  - Key: {x: 21, y: 0}
+    Value: F
+  - Key: {x: 21, y: 1}
+    Value: I
+  - Key: {x: 21, y: 2}
+    Value: R
+  - Key: {x: 21, y: 3}
+    Value: E
+  - Key: {x: 21, y: 4}
+    Value: W
+  - Key: {x: 21, y: 5}
+    Value: O
+  - Key: {x: 21, y: 6}
+    Value: R
+  - Key: {x: 21, y: 7}
+    Value: K
+  - Key: {x: 21, y: 8}
+    Value: S
+  - Key: {x: 23, y: 0}
+    Value: S
+  - Key: {x: 23, y: 1}
+    Value: U
+  - Key: {x: 23, y: 2}
+    Value: B
+  - Key: {x: 23, y: 3}
+    Value: M
+  - Key: {x: 23, y: 5}
+    Value: R
+  - Key: {x: 23, y: 4}
+    Value: A
+  - Key: {x: 23, y: 6}
+    Value: I
+  - Key: {x: 23, y: 7}
+    Value: N
+  - Key: {x: 23, y: 8}
+    Value: E
+  - Key: {x: 20, y: 0}
+    Value: Y
+  - Key: {x: 20, y: 1}
+    Value: A
+  - Key: {x: 20, y: 2}
+    Value: C
+  - Key: {x: 20, y: 3}
+    Value: H
+  - Key: {x: 20, y: 4}
+    Value: T
+  - Key: {x: 17, y: 1}
+    Value: S
+  - Key: {x: 17, y: 2}
+    Value: A
+  - Key: {x: 17, y: 3}
+    Value: I
+  - Key: {x: 17, y: 4}
+    Value: L
+  - Key: {x: 17, y: 5}
+    Value: B
+  - Key: {x: 17, y: 6}
+    Value: O
+  - Key: {x: 17, y: 7}
+    Value: A
+  - Key: {x: 17, y: 8}
+    Value: T
+  - Key: {x: 19, y: 2}
+    Value: C
+  - Key: {x: 19, y: 3}
+    Value: R
+  - Key: {x: 19, y: 4}
+    Value: A
+  - Key: {x: 19, y: 5}
+    Value: Y
+  - Key: {x: 19, y: 6}
+    Value: O
+  - Key: {x: 19, y: 7}
+    Value: N
+  - Key: {x: 22, y: 2}
+    Value: C
+  - Key: {x: 22, y: 3}
+    Value: A
+  - Key: {x: 22, y: 4}
+    Value: T
+  - Key: {x: 22, y: 5}
+    Value: F
+  - Key: {x: 22, y: 6}
+    Value: I
+  - Key: {x: 22, y: 7}
+    Value: S
+  - Key: {x: 22, y: 8}
+    Value: H
+  - Key: {x: 18, y: 0}
+    Value: P
+  - Key: {x: 18, y: 1}
+    Value: R
+  - Key: {x: 18, y: 2}
+    Value: O
+  - Key: {x: 18, y: 3}
+    Value: P
+  - Key: {x: 18, y: 5}
+    Value: C
+  - Key: {x: 18, y: 6}
+    Value: A
+  - Key: {x: 18, y: 7}
+    Value: R
+  - Key: {x: 18, y: 8}
+    Value: P
+  - Key: {x: 15, y: 1}
+    Value: T
+  - Key: {x: 15, y: 2}
+    Value: I
+  - Key: {x: 15, y: 3}
+    Value: C
+  - Key: {x: 15, y: 4}
+    Value: K
+  - Key: {x: 15, y: 5}
+    Value: E
+  - Key: {x: 15, y: 6}
+    Value: T
+  - Key: {x: 13, y: 4}
+    Value: A
+  - Key: {x: 13, y: 5}
+    Value: C
+  - Key: {x: 13, y: 6}
+    Value: T
+  - Key: {x: 13, y: 7}
+    Value: O
+  - Key: {x: 13, y: 8}
+    Value: R
+  - Key: {x: 16, y: 3}
+    Value: O
+  - Key: {x: 16, y: 4}
+    Value: S
+  - Key: {x: 16, y: 2}
+    Value: C
+  - Key: {x: 16, y: 5}
+    Value: T
+  - Key: {x: 16, y: 6}
+    Value: U
+  - Key: {x: 16, y: 7}
+    Value: M
+  - Key: {x: 16, y: 8}
+    Value: E
+  - Key: {x: 11, y: 0}
+    Value: S
+  - Key: {x: 11, y: 1}
+    Value: C
+  - Key: {x: 11, y: 3}
+    Value: I
+  - Key: {x: 11, y: 2}
+    Value: R
+  - Key: {x: 11, y: 4}
+    Value: P
+  - Key: {x: 11, y: 5}
+    Value: T
+  - Key: {x: 12, y: 1}
+    Value: F
+  - Key: {x: 12, y: 2}
+    Value: L
+  - Key: {x: 12, y: 3}
+    Value: O
+  - Key: {x: 12, y: 4}
+    Value: W
+  - Key: {x: 12, y: 5}
+    Value: E
+  - Key: {x: 12, y: 6}
+    Value: R
+  - Key: {x: 12, y: 7}
+    Value: S
+  - Key: {x: 14, y: 2}
+    Value: S
+  - Key: {x: 14, y: 3}
+    Value: A
+  - Key: {x: 14, y: 4}
+    Value: L
+  - Key: {x: 14, y: 5}
+    Value: M
+  - Key: {x: 14, y: 6}
+    Value: O
+  - Key: {x: 14, y: 7}
+    Value: N
+  - Key: {x: 9, y: 2}
+    Value: S
+  - Key: {x: 9, y: 3}
+    Value: A
+  - Key: {x: 9, y: 4}
+    Value: R
+  - Key: {x: 9, y: 5}
+    Value: D
+  - Key: {x: 9, y: 6}
+    Value: I
+  - Key: {x: 9, y: 7}
+    Value: N
+  - Key: {x: 9, y: 8}
+    Value: E
+  - Key: {x: 10, y: 1}
+    Value: C
+  - Key: {x: 10, y: 2}
+    Value: R
+  - Key: {x: 10, y: 3}
+    Value: U
+  - Key: {x: 10, y: 4}
+    Value: I
+  - Key: {x: 10, y: 5}
+    Value: S
+  - Key: {x: 10, y: 6}
+    Value: E
+  - Key: {x: 10, y: 7}
+    Value: R
+  - Key: {x: 7, y: 3}
+    Value: T
+  - Key: {x: 7, y: 4}
+    Value: A
+  - Key: {x: 7, y: 5}
+    Value: N
+  - Key: {x: 7, y: 6}
+    Value: K
+  - Key: {x: 7, y: 7}
+    Value: E
+  - Key: {x: 7, y: 8}
+    Value: R
+  - Key: {x: 6, y: 2}
+    Value: D
+  - Key: {x: 6, y: 3}
+    Value: R
+  - Key: {x: 6, y: 4}
+    Value: A
+  - Key: {x: 6, y: 5}
+    Value: M
+  - Key: {x: 6, y: 6}
+    Value: A
+  - Key: {x: 8, y: 1}
+    Value: M
+  - Key: {x: 8, y: 2}
+    Value: A
+  - Key: {x: 8, y: 3}
+    Value: K
+  - Key: {x: 8, y: 4}
+    Value: E
+  - Key: {x: 8, y: 5}
+    Value: U
+  - Key: {x: 8, y: 6}
+    Value: P
+  trayCells: []
+  trayName: []
+  categoryColors:
+  - Key: Colorful Things
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  - Key: Ship
+    Value: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}
+  - Key: Theatre
+    Value: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
+  - Key: Fish
+    Value: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
+  trayColors: []
+  wordPositions:
+  - Key: DRAMA
+    Value:
+    - {x: 6, y: 2}
+    - {x: 6, y: 3}
+    - {x: 6, y: 4}
+    - {x: 6, y: 5}
+    - {x: 6, y: 6}
+  - Key: TANKER
+    Value:
+    - {x: 7, y: 3}
+    - {x: 7, y: 4}
+    - {x: 7, y: 5}
+    - {x: 7, y: 6}
+    - {x: 7, y: 7}
+    - {x: 7, y: 8}
+  - Key: MAKEUP
+    Value:
+    - {x: 8, y: 1}
+    - {x: 8, y: 2}
+    - {x: 8, y: 3}
+    - {x: 8, y: 4}
+    - {x: 8, y: 5}
+    - {x: 8, y: 6}
+  - Key: RDINE
+    Value:
+    - {x: 9, y: 4}
+    - {x: 9, y: 5}
+    - {x: 9, y: 6}
+    - {x: 9, y: 7}
+    - {x: 9, y: 8}
+  - Key: CRUISER
+    Value:
+    - {x: 10, y: 1}
+    - {x: 10, y: 2}
+    - {x: 10, y: 3}
+    - {x: 10, y: 4}
+    - {x: 10, y: 5}
+    - {x: 10, y: 6}
+    - {x: 10, y: 7}
+  - Key: SCRIPT
+    Value:
+    - {x: 11, y: 0}
+    - {x: 11, y: 1}
+    - {x: 11, y: 2}
+    - {x: 11, y: 3}
+    - {x: 11, y: 4}
+    - {x: 11, y: 5}
+  - Key: FLOWERS
+    Value:
+    - {x: 12, y: 1}
+    - {x: 12, y: 2}
+    - {x: 12, y: 3}
+    - {x: 12, y: 4}
+    - {x: 12, y: 5}
+    - {x: 12, y: 6}
+    - {x: 12, y: 7}
+  - Key: ACTOR
+    Value:
+    - {x: 13, y: 4}
+    - {x: 13, y: 5}
+    - {x: 13, y: 6}
+    - {x: 13, y: 7}
+    - {x: 13, y: 8}
+  - Key: SALMON
+    Value:
+    - {x: 14, y: 2}
+    - {x: 14, y: 3}
+    - {x: 14, y: 4}
+    - {x: 14, y: 5}
+    - {x: 14, y: 6}
+    - {x: 14, y: 7}
+  - Key: TICKET
+    Value:
+    - {x: 15, y: 1}
+    - {x: 15, y: 2}
+    - {x: 15, y: 3}
+    - {x: 15, y: 4}
+    - {x: 15, y: 5}
+    - {x: 15, y: 6}
+  - Key: COSTUME
+    Value:
+    - {x: 16, y: 2}
+    - {x: 16, y: 3}
+    - {x: 16, y: 4}
+    - {x: 16, y: 5}
+    - {x: 16, y: 6}
+    - {x: 16, y: 7}
+    - {x: 16, y: 8}
+  - Key: SAILBOAT
+    Value:
+    - {x: 17, y: 1}
+    - {x: 17, y: 2}
+    - {x: 17, y: 3}
+    - {x: 17, y: 4}
+    - {x: 17, y: 5}
+    - {x: 17, y: 6}
+    - {x: 17, y: 7}
+    - {x: 17, y: 8}
+  - Key: PROP
+    Value:
+    - {x: 18, y: 0}
+    - {x: 18, y: 1}
+    - {x: 18, y: 2}
+    - {x: 18, y: 3}
+  - Key: CARP
+    Value:
+    - {x: 18, y: 5}
+    - {x: 18, y: 6}
+    - {x: 18, y: 7}
+    - {x: 18, y: 8}
+  - Key: CRAYON
+    Value:
+    - {x: 19, y: 2}
+    - {x: 19, y: 3}
+    - {x: 19, y: 4}
+    - {x: 19, y: 5}
+    - {x: 19, y: 6}
+    - {x: 19, y: 7}
+  - Key: YACHT
+    Value:
+    - {x: 20, y: 0}
+    - {x: 20, y: 1}
+    - {x: 20, y: 2}
+    - {x: 20, y: 3}
+    - {x: 20, y: 4}
+  - Key: FIREWORKS
+    Value:
+    - {x: 21, y: 0}
+    - {x: 21, y: 1}
+    - {x: 21, y: 2}
+    - {x: 21, y: 3}
+    - {x: 21, y: 4}
+    - {x: 21, y: 5}
+    - {x: 21, y: 6}
+    - {x: 21, y: 7}
+    - {x: 21, y: 8}
+  - Key: CATFISH
+    Value:
+    - {x: 22, y: 2}
+    - {x: 22, y: 3}
+    - {x: 22, y: 4}
+    - {x: 22, y: 5}
+    - {x: 22, y: 6}
+    - {x: 22, y: 7}
+    - {x: 22, y: 8}
+  - Key: SUBMARINE
+    Value:
+    - {x: 23, y: 0}
+    - {x: 23, y: 1}
+    - {x: 23, y: 2}
+    - {x: 23, y: 3}
+    - {x: 23, y: 4}
+    - {x: 23, y: 5}
+    - {x: 23, y: 6}
+    - {x: 23, y: 7}
+    - {x: 23, y: 8}
+  - Key: CONFETTI
+    Value:
+    - {x: 24, y: 0}
+    - {x: 24, y: 1}
+    - {x: 24, y: 2}
+    - {x: 24, y: 3}
+    - {x: 24, y: 4}
+    - {x: 24, y: 5}
+    - {x: 24, y: 6}
+    - {x: 24, y: 7}
+  - Key: CURTAIN
+    Value:
+    - {x: 25, y: 2}
+    - {x: 25, y: 3}
+    - {x: 25, y: 4}
+    - {x: 25, y: 5}
+    - {x: 25, y: 6}
+    - {x: 25, y: 7}
+    - {x: 25, y: 8}
+  - Key: STAGE
+    Value:
+    - {x: 26, y: 3}
+    - {x: 26, y: 4}
+    - {x: 26, y: 5}
+    - {x: 26, y: 6}
+    - {x: 26, y: 7}
+  - Key: RAINBOW
+    Value:
+    - {x: 27, y: 0}
+    - {x: 27, y: 1}
+    - {x: 27, y: 2}
+    - {x: 27, y: 3}
+    - {x: 27, y: 4}
+    - {x: 27, y: 5}
+    - {x: 27, y: 6}
+  - Key: CANOE
+    Value:
+    - {x: 28, y: 2}
+    - {x: 28, y: 3}
+    - {x: 28, y: 4}
+    - {x: 28, y: 5}
+    - {x: 28, y: 6}
+  - Key: TUNA
+    Value:
+    - {x: 29, y: 3}
+    - {x: 29, y: 4}
+    - {x: 29, y: 5}
+    - {x: 29, y: 6}
+  freezedTray: []
+  firstCharPos:
+  - Key: DRAMA
+    Value: 2
+  - Key: TANKER
+    Value: 3
+  - Key: MAKEUP
+    Value: 1
+  - Key: RDINE
+    Value: 4
+  - Key: CRUISER
+    Value: 1
+  - Key: SCRIPT
+    Value: 0
+  - Key: FLOWERS
+    Value: 1
+  - Key: ACTOR
+    Value: 4
+  - Key: SALMON
+    Value: 2
+  - Key: TICKET
+    Value: 1
+  - Key: COSTUME
+    Value: 2
+  - Key: SAILBOAT
+    Value: 1
+  - Key: PROP
+    Value: 0
+  - Key: CARP
+    Value: 5
+  - Key: CRAYON
+    Value: 2
+  - Key: YACHT
+    Value: 0
+  - Key: FIREWORKS
+    Value: 0
+  - Key: CATFISH
+    Value: 2
+  - Key: SUBMARINE
+    Value: 0
+  - Key: CONFETTI
+    Value: 0
+  - Key: CURTAIN
+    Value: 2
+  - Key: STAGE
+    Value: 3
+  - Key: RAINBOW
+    Value: 0
+  - Key: CANOE
+    Value: 2
+  - Key: TUNA
+    Value: 3
