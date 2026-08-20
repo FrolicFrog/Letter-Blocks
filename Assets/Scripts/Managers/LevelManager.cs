@@ -26,7 +26,7 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private Renderer halfArea;
     [SerializeField] private GameObject hand;
     [SerializeField] private TutorialPopup tutorialPopup;
-    [SerializeField] private GameObject modePanel;
+    [SerializeField] private GameObject hardPanel,superHardPanel;
     [SerializeField] private ParticleSystem effect;
 
     [HideInInspector] public int TestLevelToLoad = 1;
@@ -147,13 +147,13 @@ public class LevelManager : Manager<LevelManager>
         }
         if (_LevelData.levelMode == Mode.Hard)
         {
-            modePanel.SetActive(true);
-            modePanel.transform.GetChild(0).gameObject.SetActive(true);
+            hardPanel.SetActive(true);
+        
         }
         else if(_LevelData.levelMode == Mode.SuperHard)
         {
-            modePanel.SetActive(true);
-            modePanel.transform.GetChild(1).gameObject.SetActive(true);
+           superHardPanel.SetActive(true);
+        
         }
     }
     void ManageWords()

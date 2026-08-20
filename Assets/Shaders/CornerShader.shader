@@ -1,21 +1,25 @@
-Shader "CustomUI/SpriteEdgeTracer"
+Shader "UI/Custom/RedEdgeVignetteRounded"
 {
     Properties
     {
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
-        _BorderColor ("Border Color", Color) = (0.45, 0.35, 0.8, 1) // Purple
-        _CenterColor ("Center Color", Color) = (0, 0, 0, 1)         // Black
-        _BorderThickness ("Border Thickness", Range(0.0, 50.0)) = 5.0
-        _Softness ("Edge Softness", Range(0.01, 1.0)) = 0.1
+        _CenterColor ("Center Color", Color) = (0,0,0,1)
+        _EdgeColor ("Edge Color", Color) = (0.5, 0, 0, 1)
+        
+        _Radius ("Vignette Spread", Range(0.0, 1.5)) = 0.8
+        _Smoothness ("Vignette Smoothness", Range(0.0, 1.0)) = 0.5
+        
+        // NEW: Roundness slider
+        _Roundness ("Corner Roundness", Range(0.0, 0.5)) = 0.1
+        [Toggle] _TransparentCorners ("Transparent Corners?", Float) = 1
 
-        // Hidden Stencil/Mask properties so Unity UI can manage them automatically
-        [HideInInspector] _StencilComp ("Stencil Comparison", Float) = 8
-        [HideInInspector] _Stencil ("Stencil ID", Float) = 0
-        [HideInInspector] _StencilOp ("Stencil Operation", Float) = 0
-        [HideInInspector] _StencilWriteMask ("Stencil Write Mask", Float) = 255
-        [HideInInspector] _StencilReadMask ("Stencil Read Mask", Float) = 255
-        [HideInInspector] _ColorMask ("Color Mask", Float) = 15
-        [HideInInspector] _ClipRect ("Clip Rect", Vector) = (-32767, -32767, 32767, 32767)
+        // Required UI properties
+        _StencilComp ("Stencil Comparison", Float) = 8
+        _Stencil ("Stencil ID", Float) = 0
+        _StencilOp ("Stencil Operation", Float) = 0
+        _StencilWriteMask ("Stencil Write Mask", Float) = 255
+        _StencilReadMask ("Stencil Read Mask", Float) = 255
+        _ColorMask ("Color Mask", Float) = 15
         [Toggle(UNITY_UI_ALPHACLIP)] _UseUIAlphaClip ("Use Alpha Clip", Float) = 0
     }
 
@@ -48,7 +52,6 @@ Shader "CustomUI/SpriteEdgeTracer"
 
         Pass
         {
-            Name "Default"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -56,6 +59,9 @@ Shader "CustomUI/SpriteEdgeTracer"
 
             #include "UnityCG.cginc"
             #include "UnityUI.cginc"
+
+            #pragma multi_compile_local _ UNITY_UI_CLIP_RECT
+            #pragma multi_compile_local _ UNITY_UI_ALPHACLIP
 
             struct appdata_t
             {
@@ -75,12 +81,16 @@ Shader "CustomUI/SpriteEdgeTracer"
             };
 
             sampler2D _MainTex;
-            float4 _MainTex_TexelSize; // To get accurate pixel offsets
-            fixed4 _BorderColor;
-            fixed4 _CenterColor;
-            float _BorderThickness;
-            float _Softness;
+            fixed4 _TextureSampleAdd;
             float4 _ClipRect;
+            float4 _MainTex_ST;
+
+            fixed4 _CenterColor;
+            fixed4 _EdgeColor;
+            float _Radius;
+            float _Smoothness;
+            float _Roundness;
+            float _TransparentCorners;
 
             v2f vert(appdata_t v)
             {
@@ -89,47 +99,58 @@ Shader "CustomUI/SpriteEdgeTracer"
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
                 OUT.worldPosition = v.vertex;
                 OUT.vertex = UnityObjectToClipPos(OUT.worldPosition);
-                OUT.texcoord = v.texcoord;
+                OUT.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
                 OUT.color = v.color;
                 return OUT;
             }
 
+            // Standard SDF function for a rounded box
+            float sdRoundRect(float2 p, float2 b, float r)
+            {
+                float2 q = abs(p) - b + r;
+                return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r;
+            }
+
             fixed4 frag(v2f IN) : SV_Target
             {
-                // Sample original sprite
-                fixed4 baseColor = tex2D(_MainTex, IN.texcoord);
-                float alpha = baseColor.a;
+                half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
 
-                // If pixel is fully transparent, skip calculations
-                if (alpha < 0.01) return fixed4(0,0,0,0);
-
-                // Multi-tap surrounding pixels based on exact Texel Size
-                float2 offset = _MainTex_TexelSize.xy * _BorderThickness;
+                // 1. Shift UVs to center (-0.5 to 0.5)
+                float2 uv = IN.texcoord - 0.5;
                 
-                float a1 = tex2D(_MainTex, IN.texcoord + float2(offset.x, 0)).a;
-                float a2 = tex2D(_MainTex, IN.texcoord + float2(-offset.x, 0)).a;
-                float a3 = tex2D(_MainTex, IN.texcoord + float2(0, offset.y)).a;
-                float a4 = tex2D(_MainTex, IN.texcoord + float2(0, -offset.y)).a;
-
-                // If any neighboring pixel is transparent, we are near the edge
-                float minAlpha = min(min(a1, a2), min(a3, a4));
+                // 2. Define the size of our UI box (0.5 extents covers the 0-1 UV range)
+                float2 boxSize = float2(0.5, 0.5);
                 
-                // Determine if we are on the border (0) or in the center (1)
-                float isCenter = smoothstep(0.5 - _Softness, 0.5 + _Softness, minAlpha);
-
-                // Blend the Border Color and Center Color based on position
-                fixed4 finalColor = lerp(_BorderColor, _CenterColor, isCenter);
+                // 3. Get the distance to the edge of the rounded box 
+                // (Returns negative values inside the box, 0 at the edge, positive outside)
+                float dist = sdRoundRect(uv, boxSize, _Roundness);
                 
-                // Preserve the original sprite's transparency shape
-                finalColor.a = alpha;
-                finalColor *= IN.color; // Support CanvasGroup Alpha
+                // 4. Calculate Vignette (Map center (-0.5) to edge (0.0))
+                float vignetteDist = (dist + 0.5) * 2.0; 
+                float vignette = smoothstep(_Radius * (1.0 - _Smoothness), _Radius, vignetteDist);
+                
+                // 5. Apply Colors
+                fixed4 gradColor = lerp(_CenterColor, _EdgeColor, vignette);
+                color.rgb *= gradColor.rgb;
+                color.a *= gradColor.a;
 
-                // Standard UI Masking support
+                // 6. Transparent Corners (Anti-aliased soft clip outside the box bounds)
+                if (_TransparentCorners > 0.5)
+                {
+                    float alphaMask = smoothstep(0.01, -0.01, dist);
+                    color.a *= alphaMask;
+                }
+
+                // UI Clipping Support
                 #ifdef UNITY_UI_CLIP_RECT
-                finalColor.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
+                color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
                 #endif
 
-                return finalColor;
+                #ifdef UNITY_UI_ALPHACLIP
+                clip (color.a - 0.001);
+                #endif
+
+                return color;
             }
             ENDCG
         }
