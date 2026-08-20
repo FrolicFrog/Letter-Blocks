@@ -47,7 +47,7 @@ public class PopupAnimator : MonoBehaviour
         sequence.OnComplete(() =>
         {
             transform.parent.gameObject.SetActive(false);
-            gameObject.SetActive(false);
+           
         });
     }
 
