@@ -53,9 +53,9 @@ Material:
     - _Width: 301.28
     m_Colors:
     - _BorderColor: {r: 1, g: 0.13043821, b: 0, a: 1}
-    - _CenterColor: {r: 0.43529412, g: 0, b: 0.031703595, a: 1}
+    - _CenterColor: {r: 0.2679245, g: 0, b: 0.019309862, a: 1}
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
-    - _EdgeColor: {r: 1, g: 0.019607842, b: 0.13550825, a: 1}
+    - _EdgeColor: {r: 1, g: 0.2320754, b: 0.32422626, a: 1}
     - _HighlightColor: {r: 0.65, g: 0.54999995, b: 1, a: 1}
     - _MainBorderColor: {r: 0.45, g: 0.34999996, b: 0.8, a: 1}
     - _OuterRimColor: {r: 0.6679245, g: 0, b: 0.24643068, a: 1}
