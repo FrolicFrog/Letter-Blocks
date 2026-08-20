@@ -3203,7 +3203,7 @@ MonoBehaviour:
   hardPanel: {fileID: 540820769}
   superHardPanel: {fileID: 406231857}
   effect: {fileID: 8170460312813454221, guid: 69e6c3150a29b6746814e6db01eead6e, type: 3}
-  TestLevelToLoad: 1
+  TestLevelToLoad: 8
   ticks: []
   hearts: 0
 --- !u!114 &558711660
