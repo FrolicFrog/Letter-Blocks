@@ -99,7 +99,7 @@ Material:
     - _Enable_Highlights: 0
     - _Enable_Shine: 1
     - _EnvironmentReflections: 1
-    - _FresnelPower: 1
+    - _FresnelPower: 0.75
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
