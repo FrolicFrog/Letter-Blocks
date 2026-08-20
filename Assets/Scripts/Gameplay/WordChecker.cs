@@ -67,7 +67,7 @@ public class WordChecker : MonoBehaviour
     public Vector3 spinAngle = new Vector3(360, 0, 0);
     public Ease spinEase = Ease.OutBack;
 
-    public ParticleSystem effect;
+    public ParticleSystem effect,confettiEffect;
     private int? cachedColumns = null;
 
     private struct GravityMoveInfo
@@ -243,6 +243,7 @@ public class WordChecker : MonoBehaviour
             blockRenderer.material.SetFloat("_ShineSize", slotRenderer.material.GetFloat("_ShineSize"));
             blockRenderer.material.SetFloat("_ShineSoftness", slotRenderer.material.GetFloat("_ShineSoftness"));
             blockRenderer.material.SetFloat("_ShineAngle", slotRenderer.material.GetFloat("_ShineAngle"));
+            blockRenderer.material.SetFloat("_FresnelPower", slotRenderer.material.GetFloat("_FresnelPower"));
             if (slotRenderer.materials.Length > 1)
             {
                 slotRenderer.materials[1].DOColor(Color.green, trayJumpDuration / 2f).SetEase(Ease.InOutBack);
@@ -549,19 +550,37 @@ public class WordChecker : MonoBehaviour
             Vector3 centerPos = Vector3.zero;
             foreach (var b in blocksInWord) centerPos += b.originalWorldPos;
             centerPos /= blocksInWord.Count;
-
             if (effect != null)
             {
+                // Grab the target color from the first block in the word
+                Color targetColor = Color.white; // Default fallback
+                if (blocksInWord.Count > 0 && blocksInWord[0].elements.Count > 0)
+                {
+                    MeshRenderer mr = blocksInWord[0].elements[0].GetComponent<MeshRenderer>();
+                    if (mr != null)
+                    {
+                        targetColor = mr.material.color;
+                    }
+                }
+
                 // Shift the spawn position up to match where the word is arcing
                 Vector3 effectPos = centerPos + new Vector3(0f, arcHeightOffset, -1.4f);
 
                 ParticleSystem spawnedEffect = Instantiate(effect, effectPos, Quaternion.identity);
+
+                // Loop through the parent and ALL child particle systems and apply the color
+                ParticleSystem[] allParticleSystems = spawnedEffect.GetComponentsInChildren<ParticleSystem>();
+                foreach (ParticleSystem ps in allParticleSystems)
+                {
+                    var mainModule = ps.main;
+                    mainModule.startColor = targetColor;
+                }
+
                 spawnedEffect.Play();
 
                 // Destroys the particle system object after it finishes playing to free up memory
                 Destroy(spawnedEffect.gameObject, spawnedEffect.main.duration + spawnedEffect.main.startLifetime.constantMax);
             }
- 
 
             int blockCount = blocksInWord.Count;
             float centerIndex = (blockCount - 1) / 2f;
@@ -706,30 +725,85 @@ public class WordChecker : MonoBehaviour
                                 }
                                 if (isLastLetter)
                                 {
-                                    if (!categoryHasActiveWordsLeft)
+                                    // 1. Get the category text from the UI to find its current count
+                                    string uiCategoryText = targetUITransform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
+                                    int remainingCount = 0;
+
+                                    foreach (var key in lvlManager.wordsCategory.Keys)
+                                    {
+                                        if (key.Trim().Equals(uiCategoryText.Trim(), System.StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            remainingCount = lvlManager.wordsCategory[key].Count;
+                                            break;
+                                        }
+                                    }
+
+                                    // 2. Check if the remaining count has reached 0
+                                    if (remainingCount <= 0)
                                     {
                                         if (targetUITransform.childCount > 2)
                                         {
-                                            targetUITransform.GetChild(1).gameObject.SetActive(false);
-                                            targetUITransform.GetChild(2).gameObject.SetActive(true);
+                                            targetUITransform.GetChild(1).gameObject.SetActive(false); // Hide the counter
+                                            Transform checkmarkTransform = targetUITransform.GetChild(2);
+                                            checkmarkTransform.gameObject.SetActive(true);             // Show the checkmark
+
+                                            // --- INSTANTIATE CONFETTI EFFECT ---
+                                            if (confettiEffect != null)
+                                            {
+                                                // Instantiate as a child of the 3rd element (index 2)
+                                                ParticleSystem confettiInstance = Instantiate(confettiEffect, checkmarkTransform);
+
+                                                // Reset local transform to center it on the UI element
+                                                confettiInstance.transform.localPosition = Vector3.zero;
+                                                confettiInstance.transform.localRotation = Quaternion.identity;
+
+                                                // Force scale to 1 * 50 so it respects the Canvas/UI scaling
+                                                confettiInstance.transform.localScale = Vector3.one * 50;
+
+                                                // Move the particle system and its children to the UI layer for screen space visibility
+                                                int uiLayer = LayerMask.NameToLayer("UI");
+                                                ParticleSystem[] allPs = confettiInstance.GetComponentsInChildren<ParticleSystem>(true);
+                                                foreach (ParticleSystem ps in allPs)
+                                                {
+                                                    ps.gameObject.layer = uiLayer;
+
+                                                    // --- DISABLE LOOPING ---
+                                                    var main = ps.main;
+                                                    main.loop = false;
+
+                                                    // Adjust the sorting order dynamically to render over UI elements
+                                                    var renderer = ps.GetComponent<ParticleSystemRenderer>();
+                                                    if (renderer != null)
+                                                    {
+                                                        renderer.sortingLayerName = "UI";
+                                                        renderer.sortingOrder = 100; // Force it to render on top
+                                                    }
+                                                }
+
+                                                confettiInstance.Play();
+
+                                                // Destroy the particle system after it finishes playing to free up memory
+                                                float destroyDelay = confettiInstance.main.duration + confettiInstance.main.startLifetime.constantMax;
+                                                Destroy(confettiInstance.gameObject, destroyDelay);
+                                            }
                                         }
                                     }
                                     else
                                     {
-                                        var tmp = targetUITransform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
-                                        string uiCategoryText = targetUITransform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
-
-                                        foreach (var key in lvlManager.wordsCategory.Keys)
+                                        // 3. Count is still greater than 0, just update the UI text
+                                        if (targetUITransform.childCount > 1)
                                         {
-                                            if (key.Trim().Equals(uiCategoryText.Trim(), System.StringComparison.OrdinalIgnoreCase))
+                                            var tmp = targetUITransform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
+                                            if (tmp != null)
                                             {
-                                                tmp.text = lvlManager.wordsCategory[key].Count.ToString();
-                                                break;
+                                                tmp.text = remainingCount.ToString();
                                             }
                                         }
                                     }
                                 }
+
                             }
+
                         });
                     }
                     else
@@ -740,6 +814,7 @@ public class WordChecker : MonoBehaviour
                     destroySeq.Insert(0, blockSeq);
                 }
             }
+
         }
 
         if (objectsToDestroy.Count > 0)
