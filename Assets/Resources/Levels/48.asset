@@ -1,0 +1,778 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 48
+  m_EditorClassIdentifier: 
+  timer: 0
+  LevelNumber: 48
+  rows: 30
+  columns: 9
+  height: 6
+  width: 6
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.11
+  categoryMaterial: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
+  words:
+  - CRAVET
+  - JUICE
+  - CHOKER
+  - HONEY
+  - NECLKLACE
+  - WATER
+  - SCARF
+  - VINEGAR
+  - LEMUR
+  - LAVA
+  - FROG
+  - JELLYFISH
+  - RABBIT
+  - TIE
+  - MILK
+  - CANDLE
+  - KANGAROO
+  - STAR
+  - CRICKET
+  - FIREFLY
+  tray:
+  - Tray 1
+  horizontal: []
+  excludedChar:
+  - {x: 29, y: 3}
+  - {x: 29, y: 5}
+  - {x: 27, y: 7}
+  - {x: 25, y: 7}
+  - {x: 22, y: 3}
+  - {x: 22, y: 6}
+  - {x: 20, y: 5}
+  - {x: 28, y: 2}
+  - {x: 28, y: 5}
+  - {x: 23, y: 3}
+  - {x: 21, y: 3}
+  - {x: 19, y: 5}
+  - {x: 26, y: 6}
+  - {x: 24, y: 6}
+  - {x: 18, y: 2}
+  - {x: 18, y: 4}
+  - {x: 16, y: 6}
+  - {x: 14, y: 2}
+  - {x: 12, y: 6}
+  - {x: 24, y: 2}
+  - {x: 17, y: 2}
+  - {x: 15, y: 1}
+  - {x: 15, y: 6}
+  - {x: 13, y: 7}
+  - {x: 11, y: 3}
+  - {x: 11, y: 5}
+  blockedCells: []
+  wordCategory:
+  - Key: Neck Accessories
+    Value:
+    - CRAVET
+    - CHOKER
+    - NECLKLACE
+    - SCARF
+    - TIE
+  - Key: Liquids
+    Value:
+    - JUICE
+    - HONEY
+    - WATER
+    - VINEGAR
+    - MILK
+  - Key: Hopping Animals
+    Value:
+    - LEMUR
+    - FROG
+    - RABBIT
+    - KANGAROO
+    - CRICKET
+  - Key: Glowing Things
+    Value:
+    - LAVA
+    - JELLYFISH
+    - CANDLE
+    - STAR
+    - FIREFLY
+  cellCategory:
+  - Key: {x: 29, y: 2}
+    Value: Glowing Things
+  - Key: {x: 29, y: 3}
+    Value: Glowing Things
+  - Key: {x: 29, y: 4}
+    Value: Glowing Things
+  - Key: {x: 29, y: 5}
+    Value: Glowing Things
+  - Key: {x: 29, y: 6}
+    Value: Glowing Things
+  - Key: {x: 29, y: 7}
+    Value: Glowing Things
+  - Key: {x: 29, y: 8}
+    Value: Glowing Things
+  - Key: {x: 27, y: 5}
+    Value: Glowing Things
+  - Key: {x: 27, y: 6}
+    Value: Glowing Things
+  - Key: {x: 27, y: 7}
+    Value: Glowing Things
+  - Key: {x: 27, y: 8}
+    Value: Glowing Things
+  - Key: {x: 25, y: 3}
+    Value: Glowing Things
+  - Key: {x: 25, y: 4}
+    Value: Glowing Things
+  - Key: {x: 25, y: 5}
+    Value: Glowing Things
+  - Key: {x: 25, y: 6}
+    Value: Glowing Things
+  - Key: {x: 25, y: 7}
+    Value: Glowing Things
+  - Key: {x: 25, y: 8}
+    Value: Glowing Things
+  - Key: {x: 22, y: 1}
+    Value: Glowing Things
+  - Key: {x: 22, y: 2}
+    Value: Glowing Things
+  - Key: {x: 22, y: 3}
+    Value: Glowing Things
+  - Key: {x: 22, y: 4}
+    Value: Glowing Things
+  - Key: {x: 22, y: 5}
+    Value: Glowing Things
+  - Key: {x: 22, y: 0}
+    Value: Glowing Things
+  - Key: {x: 22, y: 6}
+    Value: Glowing Things
+  - Key: {x: 22, y: 7}
+    Value: Glowing Things
+  - Key: {x: 22, y: 8}
+    Value: Glowing Things
+  - Key: {x: 20, y: 3}
+    Value: Glowing Things
+  - Key: {x: 20, y: 4}
+    Value: Glowing Things
+  - Key: {x: 20, y: 5}
+    Value: Glowing Things
+  - Key: {x: 20, y: 6}
+    Value: Glowing Things
+  - Key: {x: 28, y: 0}
+    Value: Hopping Animals
+  - Key: {x: 28, y: 1}
+    Value: Hopping Animals
+  - Key: {x: 28, y: 2}
+    Value: Hopping Animals
+  - Key: {x: 28, y: 3}
+    Value: Hopping Animals
+  - Key: {x: 28, y: 4}
+    Value: Hopping Animals
+  - Key: {x: 28, y: 5}
+    Value: Hopping Animals
+  - Key: {x: 28, y: 6}
+    Value: Hopping Animals
+  - Key: {x: 23, y: 2}
+    Value: Hopping Animals
+  - Key: {x: 23, y: 3}
+    Value: Hopping Animals
+  - Key: {x: 23, y: 4}
+    Value: Hopping Animals
+  - Key: {x: 23, y: 5}
+    Value: Hopping Animals
+  - Key: {x: 23, y: 6}
+    Value: Hopping Animals
+  - Key: {x: 23, y: 7}
+    Value: Hopping Animals
+  - Key: {x: 21, y: 2}
+    Value: Hopping Animals
+  - Key: {x: 21, y: 3}
+    Value: Hopping Animals
+  - Key: {x: 21, y: 4}
+    Value: Hopping Animals
+  - Key: {x: 21, y: 5}
+    Value: Hopping Animals
+  - Key: {x: 19, y: 2}
+    Value: Hopping Animals
+  - Key: {x: 19, y: 3}
+    Value: Hopping Animals
+  - Key: {x: 19, y: 4}
+    Value: Hopping Animals
+  - Key: {x: 19, y: 5}
+    Value: Hopping Animals
+  - Key: {x: 19, y: 6}
+    Value: Hopping Animals
+  - Key: {x: 26, y: 0}
+    Value: Hopping Animals
+  - Key: {x: 26, y: 1}
+    Value: Hopping Animals
+  - Key: {x: 26, y: 2}
+    Value: Hopping Animals
+  - Key: {x: 26, y: 3}
+    Value: Hopping Animals
+  - Key: {x: 26, y: 4}
+    Value: Hopping Animals
+  - Key: {x: 26, y: 5}
+    Value: Hopping Animals
+  - Key: {x: 26, y: 6}
+    Value: Hopping Animals
+  - Key: {x: 26, y: 7}
+    Value: Hopping Animals
+  - Key: {x: 24, y: 5}
+    Value: Liquids
+  - Key: {x: 24, y: 6}
+    Value: Liquids
+  - Key: {x: 24, y: 7}
+    Value: Liquids
+  - Key: {x: 24, y: 8}
+    Value: Liquids
+  - Key: {x: 18, y: 1}
+    Value: Liquids
+  - Key: {x: 18, y: 2}
+    Value: Liquids
+  - Key: {x: 18, y: 3}
+    Value: Liquids
+  - Key: {x: 18, y: 4}
+    Value: Liquids
+  - Key: {x: 18, y: 5}
+    Value: Liquids
+  - Key: {x: 18, y: 6}
+    Value: Liquids
+  - Key: {x: 18, y: 7}
+    Value: Liquids
+  - Key: {x: 16, y: 4}
+    Value: Liquids
+  - Key: {x: 16, y: 5}
+    Value: Liquids
+  - Key: {x: 16, y: 6}
+    Value: Liquids
+  - Key: {x: 16, y: 7}
+    Value: Liquids
+  - Key: {x: 16, y: 8}
+    Value: Liquids
+  - Key: {x: 14, y: 1}
+    Value: Liquids
+  - Key: {x: 14, y: 2}
+    Value: Liquids
+  - Key: {x: 14, y: 3}
+    Value: Liquids
+  - Key: {x: 14, y: 4}
+    Value: Liquids
+  - Key: {x: 14, y: 5}
+    Value: Liquids
+  - Key: {x: 12, y: 4}
+    Value: Liquids
+  - Key: {x: 12, y: 5}
+    Value: Liquids
+  - Key: {x: 12, y: 6}
+    Value: Liquids
+  - Key: {x: 12, y: 7}
+    Value: Liquids
+  - Key: {x: 12, y: 8}
+    Value: Liquids
+  - Key: {x: 24, y: 0}
+    Value: Neck Accessories
+  - Key: {x: 24, y: 1}
+    Value: Neck Accessories
+  - Key: {x: 24, y: 2}
+    Value: Neck Accessories
+  - Key: {x: 17, y: 0}
+    Value: Neck Accessories
+  - Key: {x: 17, y: 1}
+    Value: Neck Accessories
+  - Key: {x: 17, y: 2}
+    Value: Neck Accessories
+  - Key: {x: 17, y: 3}
+    Value: Neck Accessories
+  - Key: {x: 17, y: 4}
+    Value: Neck Accessories
+  - Key: {x: 15, y: 0}
+    Value: Neck Accessories
+  - Key: {x: 15, y: 1}
+    Value: Neck Accessories
+  - Key: {x: 15, y: 2}
+    Value: Neck Accessories
+  - Key: {x: 15, y: 3}
+    Value: Neck Accessories
+  - Key: {x: 15, y: 4}
+    Value: Neck Accessories
+  - Key: {x: 15, y: 5}
+    Value: Neck Accessories
+  - Key: {x: 15, y: 6}
+    Value: Neck Accessories
+  - Key: {x: 15, y: 7}
+    Value: Neck Accessories
+  - Key: {x: 15, y: 8}
+    Value: Neck Accessories
+  - Key: {x: 13, y: 3}
+    Value: Neck Accessories
+  - Key: {x: 13, y: 4}
+    Value: Neck Accessories
+  - Key: {x: 13, y: 5}
+    Value: Neck Accessories
+  - Key: {x: 13, y: 6}
+    Value: Neck Accessories
+  - Key: {x: 13, y: 7}
+    Value: Neck Accessories
+  - Key: {x: 13, y: 8}
+    Value: Neck Accessories
+  - Key: {x: 11, y: 1}
+    Value: Neck Accessories
+  - Key: {x: 11, y: 2}
+    Value: Neck Accessories
+  - Key: {x: 11, y: 3}
+    Value: Neck Accessories
+  - Key: {x: 11, y: 4}
+    Value: Neck Accessories
+  - Key: {x: 11, y: 5}
+    Value: Neck Accessories
+  - Key: {x: 11, y: 6}
+    Value: Neck Accessories
+  cellTexts:
+  - Key: {x: 29, y: 2}
+    Value: F
+  - Key: {x: 29, y: 3}
+    Value: I
+  - Key: {x: 29, y: 4}
+    Value: R
+  - Key: {x: 29, y: 5}
+    Value: E
+  - Key: {x: 29, y: 6}
+    Value: F
+  - Key: {x: 29, y: 7}
+    Value: L
+  - Key: {x: 29, y: 8}
+    Value: Y
+  - Key: {x: 27, y: 5}
+    Value: S
+  - Key: {x: 27, y: 6}
+    Value: T
+  - Key: {x: 27, y: 7}
+    Value: A
+  - Key: {x: 27, y: 8}
+    Value: R
+  - Key: {x: 25, y: 3}
+    Value: C
+  - Key: {x: 25, y: 4}
+    Value: A
+  - Key: {x: 25, y: 5}
+    Value: N
+  - Key: {x: 25, y: 6}
+    Value: D
+  - Key: {x: 25, y: 7}
+    Value: L
+  - Key: {x: 25, y: 8}
+    Value: E
+  - Key: {x: 22, y: 1}
+    Value: E
+  - Key: {x: 22, y: 2}
+    Value: L
+  - Key: {x: 22, y: 3}
+    Value: L
+  - Key: {x: 22, y: 4}
+    Value: Y
+  - Key: {x: 22, y: 5}
+    Value: F
+  - Key: {x: 22, y: 0}
+    Value: J
+  - Key: {x: 22, y: 6}
+    Value: I
+  - Key: {x: 22, y: 7}
+    Value: S
+  - Key: {x: 22, y: 8}
+    Value: H
+  - Key: {x: 20, y: 3}
+    Value: L
+  - Key: {x: 20, y: 4}
+    Value: A
+  - Key: {x: 20, y: 5}
+    Value: V
+  - Key: {x: 20, y: 6}
+    Value: A
+  - Key: {x: 28, y: 0}
+    Value: C
+  - Key: {x: 28, y: 1}
+    Value: R
+  - Key: {x: 28, y: 2}
+    Value: I
+  - Key: {x: 28, y: 3}
+    Value: C
+  - Key: {x: 28, y: 4}
+    Value: K
+  - Key: {x: 28, y: 5}
+    Value: E
+  - Key: {x: 28, y: 6}
+    Value: T
+  - Key: {x: 23, y: 2}
+    Value: R
+  - Key: {x: 23, y: 3}
+    Value: A
+  - Key: {x: 23, y: 4}
+    Value: B
+  - Key: {x: 23, y: 5}
+    Value: B
+  - Key: {x: 23, y: 6}
+    Value: I
+  - Key: {x: 23, y: 7}
+    Value: T
+  - Key: {x: 21, y: 2}
+    Value: F
+  - Key: {x: 21, y: 3}
+    Value: R
+  - Key: {x: 21, y: 4}
+    Value: O
+  - Key: {x: 21, y: 5}
+    Value: G
+  - Key: {x: 19, y: 2}
+    Value: L
+  - Key: {x: 19, y: 3}
+    Value: E
+  - Key: {x: 19, y: 4}
+    Value: M
+  - Key: {x: 19, y: 5}
+    Value: U
+  - Key: {x: 19, y: 6}
+    Value: R
+  - Key: {x: 26, y: 0}
+    Value: K
+  - Key: {x: 26, y: 1}
+    Value: A
+  - Key: {x: 26, y: 2}
+    Value: N
+  - Key: {x: 26, y: 3}
+    Value: G
+  - Key: {x: 26, y: 4}
+    Value: A
+  - Key: {x: 26, y: 5}
+    Value: R
+  - Key: {x: 26, y: 6}
+    Value: O
+  - Key: {x: 26, y: 7}
+    Value: O
+  - Key: {x: 24, y: 5}
+    Value: M
+  - Key: {x: 24, y: 6}
+    Value: I
+  - Key: {x: 24, y: 7}
+    Value: L
+  - Key: {x: 24, y: 8}
+    Value: K
+  - Key: {x: 18, y: 1}
+    Value: V
+  - Key: {x: 18, y: 2}
+    Value: I
+  - Key: {x: 18, y: 3}
+    Value: N
+  - Key: {x: 18, y: 4}
+    Value: E
+  - Key: {x: 18, y: 5}
+    Value: G
+  - Key: {x: 18, y: 6}
+    Value: A
+  - Key: {x: 18, y: 7}
+    Value: R
+  - Key: {x: 16, y: 4}
+    Value: W
+  - Key: {x: 16, y: 5}
+    Value: A
+  - Key: {x: 16, y: 6}
+    Value: T
+  - Key: {x: 16, y: 7}
+    Value: E
+  - Key: {x: 16, y: 8}
+    Value: R
+  - Key: {x: 14, y: 1}
+    Value: H
+  - Key: {x: 14, y: 2}
+    Value: O
+  - Key: {x: 14, y: 3}
+    Value: N
+  - Key: {x: 14, y: 4}
+    Value: E
+  - Key: {x: 14, y: 5}
+    Value: Y
+  - Key: {x: 12, y: 4}
+    Value: J
+  - Key: {x: 12, y: 5}
+    Value: U
+  - Key: {x: 12, y: 6}
+    Value: I
+  - Key: {x: 12, y: 7}
+    Value: C
+  - Key: {x: 12, y: 8}
+    Value: E
+  - Key: {x: 24, y: 0}
+    Value: T
+  - Key: {x: 24, y: 1}
+    Value: I
+  - Key: {x: 24, y: 2}
+    Value: E
+  - Key: {x: 17, y: 0}
+    Value: S
+  - Key: {x: 17, y: 1}
+    Value: C
+  - Key: {x: 17, y: 2}
+    Value: A
+  - Key: {x: 17, y: 3}
+    Value: R
+  - Key: {x: 17, y: 4}
+    Value: F
+  - Key: {x: 15, y: 0}
+    Value: N
+  - Key: {x: 15, y: 1}
+    Value: E
+  - Key: {x: 15, y: 2}
+    Value: C
+  - Key: {x: 15, y: 3}
+    Value: L
+  - Key: {x: 15, y: 4}
+    Value: K
+  - Key: {x: 15, y: 5}
+    Value: L
+  - Key: {x: 15, y: 6}
+    Value: A
+  - Key: {x: 15, y: 7}
+    Value: C
+  - Key: {x: 15, y: 8}
+    Value: E
+  - Key: {x: 13, y: 3}
+    Value: C
+  - Key: {x: 13, y: 4}
+    Value: H
+  - Key: {x: 13, y: 5}
+    Value: O
+  - Key: {x: 13, y: 6}
+    Value: K
+  - Key: {x: 13, y: 7}
+    Value: E
+  - Key: {x: 13, y: 8}
+    Value: R
+  - Key: {x: 11, y: 1}
+    Value: C
+  - Key: {x: 11, y: 2}
+    Value: R
+  - Key: {x: 11, y: 3}
+    Value: A
+  - Key: {x: 11, y: 4}
+    Value: V
+  - Key: {x: 11, y: 5}
+    Value: E
+  - Key: {x: 11, y: 6}
+    Value: T
+  trayCells: []
+  trayName: []
+  categoryColors:
+  - Key: Glowing Things
+    Value: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
+  - Key: Hopping Animals
+    Value: {fileID: 2100000, guid: edabce0cfcba9a24c82f1d558e628e72, type: 2}
+  - Key: Liquids
+    Value: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  - Key: Neck Accessories
+    Value: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
+  trayColors: []
+  wordPositions:
+  - Key: CRAVET
+    Value:
+    - {x: 11, y: 1}
+    - {x: 11, y: 2}
+    - {x: 11, y: 3}
+    - {x: 11, y: 4}
+    - {x: 11, y: 5}
+    - {x: 11, y: 6}
+  - Key: JUICE
+    Value:
+    - {x: 12, y: 4}
+    - {x: 12, y: 5}
+    - {x: 12, y: 6}
+    - {x: 12, y: 7}
+    - {x: 12, y: 8}
+  - Key: CHOKER
+    Value:
+    - {x: 13, y: 3}
+    - {x: 13, y: 4}
+    - {x: 13, y: 5}
+    - {x: 13, y: 6}
+    - {x: 13, y: 7}
+    - {x: 13, y: 8}
+  - Key: HONEY
+    Value:
+    - {x: 14, y: 1}
+    - {x: 14, y: 2}
+    - {x: 14, y: 3}
+    - {x: 14, y: 4}
+    - {x: 14, y: 5}
+  - Key: NECLKLACE
+    Value:
+    - {x: 15, y: 0}
+    - {x: 15, y: 1}
+    - {x: 15, y: 2}
+    - {x: 15, y: 3}
+    - {x: 15, y: 4}
+    - {x: 15, y: 5}
+    - {x: 15, y: 6}
+    - {x: 15, y: 7}
+    - {x: 15, y: 8}
+  - Key: WATER
+    Value:
+    - {x: 16, y: 4}
+    - {x: 16, y: 5}
+    - {x: 16, y: 6}
+    - {x: 16, y: 7}
+    - {x: 16, y: 8}
+  - Key: SCARF
+    Value:
+    - {x: 17, y: 0}
+    - {x: 17, y: 1}
+    - {x: 17, y: 2}
+    - {x: 17, y: 3}
+    - {x: 17, y: 4}
+  - Key: VINEGAR
+    Value:
+    - {x: 18, y: 1}
+    - {x: 18, y: 2}
+    - {x: 18, y: 3}
+    - {x: 18, y: 4}
+    - {x: 18, y: 5}
+    - {x: 18, y: 6}
+    - {x: 18, y: 7}
+  - Key: LEMUR
+    Value:
+    - {x: 19, y: 2}
+    - {x: 19, y: 3}
+    - {x: 19, y: 4}
+    - {x: 19, y: 5}
+    - {x: 19, y: 6}
+  - Key: LAVA
+    Value:
+    - {x: 20, y: 3}
+    - {x: 20, y: 4}
+    - {x: 20, y: 5}
+    - {x: 20, y: 6}
+  - Key: FROG
+    Value:
+    - {x: 21, y: 2}
+    - {x: 21, y: 3}
+    - {x: 21, y: 4}
+    - {x: 21, y: 5}
+  - Key: JELLYFISH
+    Value:
+    - {x: 22, y: 0}
+    - {x: 22, y: 1}
+    - {x: 22, y: 2}
+    - {x: 22, y: 3}
+    - {x: 22, y: 4}
+    - {x: 22, y: 5}
+    - {x: 22, y: 6}
+    - {x: 22, y: 7}
+    - {x: 22, y: 8}
+  - Key: RABBIT
+    Value:
+    - {x: 23, y: 2}
+    - {x: 23, y: 3}
+    - {x: 23, y: 4}
+    - {x: 23, y: 5}
+    - {x: 23, y: 6}
+    - {x: 23, y: 7}
+  - Key: TIE
+    Value:
+    - {x: 24, y: 0}
+    - {x: 24, y: 1}
+    - {x: 24, y: 2}
+  - Key: MILK
+    Value:
+    - {x: 24, y: 5}
+    - {x: 24, y: 6}
+    - {x: 24, y: 7}
+    - {x: 24, y: 8}
+  - Key: CANDLE
+    Value:
+    - {x: 25, y: 3}
+    - {x: 25, y: 4}
+    - {x: 25, y: 5}
+    - {x: 25, y: 6}
+    - {x: 25, y: 7}
+    - {x: 25, y: 8}
+  - Key: KANGAROO
+    Value:
+    - {x: 26, y: 0}
+    - {x: 26, y: 1}
+    - {x: 26, y: 2}
+    - {x: 26, y: 3}
+    - {x: 26, y: 4}
+    - {x: 26, y: 5}
+    - {x: 26, y: 6}
+    - {x: 26, y: 7}
+  - Key: STAR
+    Value:
+    - {x: 27, y: 5}
+    - {x: 27, y: 6}
+    - {x: 27, y: 7}
+    - {x: 27, y: 8}
+  - Key: CRICKET
+    Value:
+    - {x: 28, y: 0}
+    - {x: 28, y: 1}
+    - {x: 28, y: 2}
+    - {x: 28, y: 3}
+    - {x: 28, y: 4}
+    - {x: 28, y: 5}
+    - {x: 28, y: 6}
+  - Key: FIREFLY
+    Value:
+    - {x: 29, y: 2}
+    - {x: 29, y: 3}
+    - {x: 29, y: 4}
+    - {x: 29, y: 5}
+    - {x: 29, y: 6}
+    - {x: 29, y: 7}
+    - {x: 29, y: 8}
+  freezedTray: []
+  firstCharPos:
+  - Key: CRAVET
+    Value: 1
+  - Key: JUICE
+    Value: 4
+  - Key: CHOKER
+    Value: 3
+  - Key: HONEY
+    Value: 1
+  - Key: NECLKLACE
+    Value: 0
+  - Key: WATER
+    Value: 4
+  - Key: SCARF
+    Value: 0
+  - Key: VINEGAR
+    Value: 1
+  - Key: LEMUR
+    Value: 2
+  - Key: LAVA
+    Value: 3
+  - Key: FROG
+    Value: 2
+  - Key: JELLYFISH
+    Value: 0
+  - Key: RABBIT
+    Value: 2
+  - Key: TIE
+    Value: 0
+  - Key: MILK
+    Value: 5
+  - Key: CANDLE
+    Value: 3
+  - Key: KANGAROO
+    Value: 0
+  - Key: STAR
+    Value: 5
+  - Key: CRICKET
+    Value: 0
+  - Key: FIREFLY
+    Value: 2
+  levelMode: 0

@@ -99,7 +99,7 @@ Material:
     - _Enable_Highlights: 0
     - _Enable_Shine: 1
     - _EnvironmentReflections: 1
-    - _FresnelPower: 3
+    - _FresnelPower: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -131,7 +131,7 @@ Material:
     - _Color: {r: 0.9811321, g: 0.6508647, b: 0.29156283, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Highlight_Color: {r: 1, g: 1, b: 1, a: 0}
-    - _RimColor: {r: 0.9622642, g: 0.6082264, b: 0.24056605, a: 0.5}
+    - _RimColor: {r: 0.990566, g: 0.53576094, b: 0.06074228, a: 1}
     - _ShineColor: {r: 1, g: 1, b: 1, a: 0.4}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
