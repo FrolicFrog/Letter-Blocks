@@ -136,7 +136,7 @@ public class GlobalTrayDragger : MonoBehaviour
     {
         Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, trayLayer))
+        if (!ResultManager.levelFailed && Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, trayLayer))
         {
             if (hit.transform.parent != null && (hit.transform.name.Contains("Tile letter") || hit.transform.name.Contains("Double Letter")))
             {

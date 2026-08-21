@@ -139,7 +139,7 @@ public class LevelManager : Manager<LevelManager>
             {
                 var heading = Instantiate(categoryHeading, categoryHeadingParent);
                 heading.GetComponent<Image>().sprite = _colorSprite[categoryColors[category]];
-                heading.GetComponentsInChildren<TextMeshProUGUI>()[0].text = category;
+                heading.GetComponentsInChildren<TextMeshProUGUI>()[0].text = char.ToUpper(category[0])+category.Substring(1);
                 heading.GetComponentsInChildren<TextMeshProUGUI>()[1].text = wordsCategory[category].Count.ToString();
                 heading.transform.GetChild(1).GetComponent<Image>().color = categoryColors[category].color;
                 ticks.Add(heading.transform.GetChild(heading.transform.childCount - 1).gameObject);
@@ -236,7 +236,7 @@ public class LevelManager : Manager<LevelManager>
             group.renderers = hintManager.wordChain["PUMPKIN"].Key.Select(x => x.GetComponent<Renderer>()).ToList();
             panel.cutoutGroups.Add(group);
             panel.gameObject.SetActive(true);
-            tutorialMsg.text = "Tap and hold letter to reveal the word!";
+            tutorialMsg.text = "Tap and hold letter\nto reveal the word!";
             hand.SetActive(true);
             hand.transform.position = new Vector3(4, 12.8f, 13);
             hand.GetComponent<ScaleCycleDOTween>().StartScalingCycle();

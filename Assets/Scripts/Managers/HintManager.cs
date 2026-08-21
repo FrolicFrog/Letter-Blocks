@@ -34,7 +34,7 @@ public class HintManager : MonoBehaviour
     private void Update()
     {
         // 1. Initial click detection on "Word" layer
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !ResultManager.levelFailed)
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
