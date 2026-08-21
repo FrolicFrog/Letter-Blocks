@@ -20,11 +20,9 @@ MonoBehaviour:
   width: 6
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.1
-  categoryMaterial: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
+  bottomGridSize: 0.11
+  categoryMaterial: {fileID: 0}
   words:
-  - STEEL
-  - RESPECT
   - BUILDER
   - TANKTOP
   - COLLECT
@@ -48,6 +46,25 @@ MonoBehaviour:
   - SHORT
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
+  - Tray 11
+  - Tray 12
+  - Tray 13
+  - Tray 14
+  - Tray 15
+  - Tray 16
+  - Tray 17
+  - Tray 18
+  - Tray 19
+  - Tray 20
   horizontal: []
   excludedChar:
   - {x: 29, y: 5}
@@ -81,26 +98,16 @@ MonoBehaviour:
   - {x: 10, y: 5}
   - {x: 9, y: 3}
   - {x: 9, y: 6}
-  - {x: 7, y: 4}
-  - {x: 8, y: 2}
-  - {x: 8, y: 5}
   blockedCells: []
   wordCategory:
   - Key: Construction
     Value:
-    - STEEL
     - BUILDER
     - SHOVEL
     - LADDER
     - CEMENT
     - BRICK
     - HELMET
-  - Key: Things Parents Say
-    Value:
-    - RESPECT
-    - CLEANUP
-    - BEDTIME
-    - HOMEWORK
   - Key: Tops
     Value:
     - TANKTOP
@@ -117,6 +124,11 @@ MonoBehaviour:
     - HIKING
     - YOGA
     - READING
+  - Key: Things Parents Say
+    Value:
+    - CLEANUP
+    - BEDTIME
+    - HOMEWORK
   cellCategory:
   - Key: {x: 29, y: 3}
     Value: Tops
@@ -376,30 +388,6 @@ MonoBehaviour:
     Value: Construction
   - Key: {x: 9, y: 8}
     Value: Construction
-  - Key: {x: 7, y: 3}
-    Value: Construction
-  - Key: {x: 7, y: 4}
-    Value: Construction
-  - Key: {x: 7, y: 5}
-    Value: Construction
-  - Key: {x: 7, y: 6}
-    Value: Construction
-  - Key: {x: 7, y: 7}
-    Value: Construction
-  - Key: {x: 8, y: 1}
-    Value: Things Parents Say
-  - Key: {x: 8, y: 2}
-    Value: Things Parents Say
-  - Key: {x: 8, y: 3}
-    Value: Things Parents Say
-  - Key: {x: 8, y: 4}
-    Value: Things Parents Say
-  - Key: {x: 8, y: 5}
-    Value: Things Parents Say
-  - Key: {x: 8, y: 6}
-    Value: Things Parents Say
-  - Key: {x: 8, y: 7}
-    Value: Things Parents Say
   cellTexts:
   - Key: {x: 29, y: 3}
     Value: S
@@ -659,32 +647,132 @@ MonoBehaviour:
     Value: E
   - Key: {x: 9, y: 8}
     Value: R
-  - Key: {x: 7, y: 3}
-    Value: S
-  - Key: {x: 7, y: 4}
-    Value: T
-  - Key: {x: 7, y: 5}
+  trayCells:
+  - Key: {x: 0, y: 2}
+    Value: Y
+  - Key: {x: 1, y: 2}
+    Value: N
+  - Key: {x: 2, y: 2}
+    Value: O
+  - Key: {x: 3, y: 2}
+    Value: K
+  - Key: {x: 3, y: 3}
+    Value: M
+  - Key: {x: 2, y: 3}
+    Value: D
+  - Key: {x: 1, y: 3}
+    Value: O
+  - Key: {x: 0, y: 3}
     Value: E
-  - Key: {x: 7, y: 6}
+  - Key: {x: 5, y: 4}
+    Value: O
+  - Key: {x: 5, y: 5}
+    Value: O
+  - Key: {x: 4, y: 4}
     Value: E
-  - Key: {x: 7, y: 7}
-    Value: L
-  - Key: {x: 8, y: 1}
-    Value: R
-  - Key: {x: 8, y: 2}
+  - Key: {x: 4, y: 5}
     Value: E
-  - Key: {x: 8, y: 3}
-    Value: S
-  - Key: {x: 8, y: 4}
-    Value: P
-  - Key: {x: 8, y: 5}
+  - Key: {x: 3, y: 4}
+    Value: I
+  - Key: {x: 3, y: 5}
+    Value: I
+  - Key: {x: 2, y: 4}
     Value: E
-  - Key: {x: 8, y: 6}
+  - Key: {x: 2, y: 5}
+    Value: E
+  - Key: {x: 1, y: 4}
+    Value: E
+  - Key: {x: 1, y: 5}
+    Value: E
+  - Key: {x: 5, y: 1}
     Value: C
-  - Key: {x: 8, y: 7}
-    Value: T
-  trayCells: []
-  trayName: []
+  - Key: {x: 5, y: 2}
+    Value: C
+  - Key: {x: 4, y: 1}
+    Value: R
+  - Key: {x: 4, y: 2}
+    Value: R
+  - Key: {x: 5, y: 0}
+    Value: W
+  - Key: {x: 3, y: 1}
+    Value: W
+  - Key: {x: 4, y: 0}
+    Value: H
+  - Key: {x: 3, y: 0}
+    Value: I
+  - Key: {x: 2, y: 0}
+    Value: U
+  - Key: {x: 2, y: 1}
+    Value: N
+  - Key: {x: 1, y: 0}
+    Value: L
+  - Key: {x: 1, y: 1}
+    Value: U
+  - Key: {x: 0, y: 0}
+    Value: E
+  trayName:
+  - Key: {x: 0, y: 2}
+    Value: Tray 1
+  - Key: {x: 1, y: 2}
+    Value: Tray 1
+  - Key: {x: 2, y: 2}
+    Value: Tray 1
+  - Key: {x: 3, y: 2}
+    Value: Tray 1
+  - Key: {x: 3, y: 3}
+    Value: Tray 1
+  - Key: {x: 2, y: 3}
+    Value: Tray 1
+  - Key: {x: 1, y: 3}
+    Value: Tray 1
+  - Key: {x: 0, y: 3}
+    Value: Tray 1
+  - Key: {x: 5, y: 4}
+    Value: Tray 18
+  - Key: {x: 5, y: 5}
+    Value: Tray 2
+  - Key: {x: 4, y: 4}
+    Value: Tray 3
+  - Key: {x: 4, y: 5}
+    Value: Tray 3
+  - Key: {x: 3, y: 4}
+    Value: Tray 4
+  - Key: {x: 3, y: 5}
+    Value: Tray 4
+  - Key: {x: 2, y: 4}
+    Value: Tray 5
+  - Key: {x: 2, y: 5}
+    Value: Tray 5
+  - Key: {x: 1, y: 4}
+    Value: Tray 6
+  - Key: {x: 1, y: 5}
+    Value: Tray 6
+  - Key: {x: 5, y: 1}
+    Value: Tray 7
+  - Key: {x: 5, y: 2}
+    Value: Tray 19
+  - Key: {x: 4, y: 1}
+    Value: Tray 8
+  - Key: {x: 4, y: 2}
+    Value: Tray 20
+  - Key: {x: 5, y: 0}
+    Value: Tray 9
+  - Key: {x: 3, y: 1}
+    Value: Tray 10
+  - Key: {x: 4, y: 0}
+    Value: Tray 11
+  - Key: {x: 3, y: 0}
+    Value: Tray 12
+  - Key: {x: 2, y: 0}
+    Value: Tray 13
+  - Key: {x: 2, y: 1}
+    Value: Tray 14
+  - Key: {x: 1, y: 0}
+    Value: Tray 15
+  - Key: {x: 1, y: 1}
+    Value: Tray 16
+  - Key: {x: 0, y: 0}
+    Value: Tray 17
   categoryColors:
   - Key: Birds
     Value: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
@@ -698,22 +786,6 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: ca799e8bd8421c3489f37623cd01a3e0, type: 2}
   trayColors: []
   wordPositions:
-  - Key: STEEL
-    Value:
-    - {x: 7, y: 3}
-    - {x: 7, y: 4}
-    - {x: 7, y: 5}
-    - {x: 7, y: 6}
-    - {x: 7, y: 7}
-  - Key: RESPECT
-    Value:
-    - {x: 8, y: 1}
-    - {x: 8, y: 2}
-    - {x: 8, y: 3}
-    - {x: 8, y: 4}
-    - {x: 8, y: 5}
-    - {x: 8, y: 6}
-    - {x: 8, y: 7}
   - Key: BUILDER
     Value:
     - {x: 9, y: 2}
@@ -885,12 +957,10 @@ MonoBehaviour:
     - {x: 29, y: 5}
     - {x: 29, y: 6}
     - {x: 29, y: 7}
-  freezedTray: []
+  freezedTray:
+  - Key: Tray 1
+    Value: 10
   firstCharPos:
-  - Key: STEEL
-    Value: 3
-  - Key: RESPECT
-    Value: 1
   - Key: BUILDER
     Value: 2
   - Key: TANKTOP
@@ -933,3 +1003,4 @@ MonoBehaviour:
     Value: 1
   - Key: SHORT
     Value: 3
+  levelMode: 0
