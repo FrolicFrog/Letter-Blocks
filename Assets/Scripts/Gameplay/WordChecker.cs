@@ -777,7 +777,7 @@ public class WordChecker : MonoBehaviour
                                                 confettiInstance.transform.localRotation = Quaternion.identity;
 
                                                 // Force scale to 1 * 50 so it respects the Canvas/UI scaling
-                                                confettiInstance.transform.localScale = Vector3.one * 50;
+                                                confettiInstance.transform.localScale = Vector3.one * 25;
 
                                                 // Move the particle system and its children to the UI layer for screen space visibility
                                                 int uiLayer = LayerMask.NameToLayer("UI");
