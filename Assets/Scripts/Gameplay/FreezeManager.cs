@@ -13,6 +13,7 @@ public class FreezeManager : MonoBehaviour
     public static ParticleSystem effect;
     public static Material trayMat;
     public static GameObject arrow;
+    public static AudioClip clip;
     public static List<FreezeManager> instances = new List<FreezeManager>();
     void Start()
     {
@@ -42,6 +43,7 @@ public class FreezeManager : MonoBehaviour
                     BottomGridManager.Instance.CreateTray(instance.trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, instance.trayCells);
                 }
                 Instantiate(effect, instance.transform.position+new Vector3(0,5,0),Quaternion.identity);
+                AudioSource.PlayClipAtPoint(clip, Vector3.up);
                Destroy(instance.gameObject);
 
                 instances.Remove(instance);

@@ -67,7 +67,9 @@ public class WordChecker : MonoBehaviour
     public Vector3 spinAngle = new Vector3(360, 0, 0);
     public Ease spinEase = Ease.OutBack;
 
-    public ParticleSystem effect,confettiEffect;
+    public AudioClip jumpingToGrid, flying, shifting;
+
+    public ParticleSystem effect, confettiEffect;
     private int? cachedColumns = null;
 
     private struct GravityMoveInfo
@@ -229,6 +231,13 @@ public class WordChecker : MonoBehaviour
 
     public void AnimateTrayBlockToGrid(Transform block, Transform slotTransform, Vector2Int matchedKey)
     {
+        // ==== PLAY JUMPING AUDIO ====
+        if (jumpingToGrid != null)
+        {
+            AudioSource.PlayClipAtPoint(jumpingToGrid, block.position);
+        }
+        // ============================
+
         block.SetParent(slotTransform.parent);
 
         MeshRenderer blockRenderer = block.GetComponent<MeshRenderer>();
@@ -307,7 +316,7 @@ public class WordChecker : MonoBehaviour
                 {
                     if (!HintManager.instance.wordChain.ContainsKey(targetWord))
                     {
-                        HintManager.instance.wordChain[targetWord] = new ();
+                        HintManager.instance.wordChain[targetWord] = new();
                     }
 
                     if (!HintManager.instance.wordChain[targetWord].Key.Contains(block.gameObject))
@@ -684,6 +693,16 @@ public class WordChecker : MonoBehaviour
 
                     if (foundUI && targetUITransform != null)
                     {
+                        // ==== PLAY FLYING AUDIO ====
+                        blockSeq.AppendCallback(() =>
+                        {
+                            if (flying != null && child != null)
+                            {
+                                AudioSource.PlayClipAtPoint(flying, child.position);
+                            }
+                        });
+                        // ===========================
+
                         Camera cam = Camera.main;
                         float distanceToCamera = Mathf.Max(0.5f, cam.WorldToScreenPoint(targetPos).z - flightElevationOffset);
                         Vector3 finalWorldPos = cam.ScreenToWorldPoint(new Vector3(targetScreenPos.x, targetScreenPos.y, distanceToCamera));
@@ -961,6 +980,15 @@ public class WordChecker : MonoBehaviour
         }
 
         if (moves.Count == 0 && logicalMoves.Count == 0) return null;
+
+        // ==== PLAY SHIFTING AUDIO ====
+        // Plays once per gravity drop action instead of spamming per block
+        if (shifting != null)
+        {
+            Vector3 soundPos = Camera.main != null ? Camera.main.transform.position : transform.position;
+            AudioSource.PlayClipAtPoint(shifting, soundPos);
+        }
+        // =============================
 
         foreach (var logicMove in logicalMoves)
         {

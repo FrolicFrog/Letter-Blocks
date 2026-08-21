@@ -71,11 +71,13 @@ public class GlobalTrayDragger : MonoBehaviour
 
     [Tooltip("Easing function for the return animation.")]
     public Ease snapBackEase = Ease.OutBack;
-    public GameObject Panel,Hand;
+    public GameObject Panel, Hand;
     [Header("Debug")]
     [Tooltip("Draw wireframes of the physics overlap checks in the Scene view while dragging.")]
     public bool showPhysicsGizmos = true;
     public ParticleSystem effect;
+
+    public AudioClip select, deselect, snap;
     #endregion
 
     #region Private State Variables
@@ -147,6 +149,13 @@ public class GlobalTrayDragger : MonoBehaviour
 
             if (currentlyDraggedParent != null)
             {
+                // ==== AUDIO PLAYBACK ====
+                if (select != null)
+                {
+                    AudioSource.PlayClipAtPoint(select, currentlyDraggedParent.position);
+                }
+                // ========================
+
                 isReadyToJump = false;
                 lockedSnapValue = 0f;
 
@@ -289,6 +298,14 @@ public class GlobalTrayDragger : MonoBehaviour
 
                 if (!IsOverlappingTray(testSnapPos, true))
                 {
+                    // ==== AUDIO PLAYBACK ====
+                    // Play snap sound only when it transitions into the ready-to-jump snap state
+                    if (!isReadyToJump && snap != null)
+                    {
+                        AudioSource.PlayClipAtPoint(snap, currentlyDraggedParent.position);
+                    }
+                    // ========================
+
                     lockedSnapValue = proposedSnapValue;
                     isReadyToJump = true;
                     targetStepPos.x = testSnapPos.x;
@@ -988,6 +1005,13 @@ public class GlobalTrayDragger : MonoBehaviour
     private void ReleaseAndSnapBack()
     {
         if (currentlyDraggedParent == null) return;
+
+        // ==== AUDIO PLAYBACK ====
+        if (deselect != null)
+        {
+            AudioSource.PlayClipAtPoint(deselect, currentlyDraggedParent.position);
+        }
+        // ========================
 
         if (isReadyToJump)
         {

@@ -7,7 +7,7 @@ public class ResultManager : MonoBehaviour
 {
     public TextMeshProUGUI tmp;
     public GameObject failMenu, completeMenu;
-
+    public AudioClip complete;
     [HideInInspector]public bool timer;
     [HideInInspector]public float time;
     [HideInInspector] public bool startTimer = false;
@@ -87,6 +87,7 @@ public class ResultManager : MonoBehaviour
     IEnumerator ShowScreen(GameObject obj)
     {
         yield return new WaitForSeconds(1.3f);
+        AudioSource.PlayClipAtPoint(complete, Vector3.up);
         completeMenu.SetActive(true);
     }
 }

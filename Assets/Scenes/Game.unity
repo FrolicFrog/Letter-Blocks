@@ -3203,6 +3203,7 @@ MonoBehaviour:
   hardPanel: {fileID: 540820769}
   superHardPanel: {fileID: 406231857}
   effect: {fileID: 8170460312813454221, guid: 69e6c3150a29b6746814e6db01eead6e, type: 3}
+  unfreeze: {fileID: 8300000, guid: 6c4768370c68a7340874edc1ae402191, type: 3}
   TestLevelToLoad: 8
   ticks: []
   hearts: 0
@@ -4738,7 +4739,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1083163444}
   - component: {fileID: 1083163447}
-  - component: {fileID: 1083163446}
   - component: {fileID: 1083163445}
   m_Layer: 0
   m_Name: Camera
@@ -4806,14 +4806,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!81 &1083163446
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1083163443}
-  m_Enabled: 1
 --- !u!20 &1083163447
 Camera:
   m_ObjectHideFlags: 0
@@ -5892,6 +5884,9 @@ MonoBehaviour:
   spinDuration: 0.5
   spinAngle: {x: 1080, y: 0, z: 0}
   spinEase: 27
+  jumpingToGrid: {fileID: 8300000, guid: 1cc2b630bc9e1da42839757e25f11726, type: 3}
+  flying: {fileID: 8300000, guid: abc4d23c31d816f4aba231c00f6f608a, type: 3}
+  shifting: {fileID: 8300000, guid: eddf20b7f31cce9448e1afb8488be7ca, type: 3}
   effect: {fileID: 19864782, guid: 27bec7bc47f580b41b60cd2d2cac5908, type: 3}
   confettiEffect: {fileID: 19877600, guid: 36bdc02b23d9ca94d93bd715c0cca5c0, type: 3}
 --- !u!114 &1371688891
@@ -7481,6 +7476,9 @@ MonoBehaviour:
   Hand: {fileID: 537397412}
   showPhysicsGizmos: 1
   effect: {fileID: 19855088, guid: cc4edba986607ba48b17927b27d25e4e, type: 3}
+  select: {fileID: 8300000, guid: 8380380647057dc48a615aef8e96e323, type: 3}
+  deselect: {fileID: 8300000, guid: dcb30ec6b9b144940bc35ca76df13e3b, type: 3}
+  snap: {fileID: 8300000, guid: 550bb3782a0c746429dc8bd64dc045bb, type: 3}
 --- !u!4 &1666533667 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 437938, guid: 9bcdb1b8180c1394ea37716601148607,
@@ -8463,6 +8461,7 @@ MonoBehaviour:
   tmp: {fileID: 1457105257}
   failMenu: {fileID: 259769126}
   completeMenu: {fileID: 345656592}
+  complete: {fileID: 8300000, guid: 5561431be961e5144875503801e381ca, type: 3}
   timer: 0
   time: 0
   startTimer: 0
