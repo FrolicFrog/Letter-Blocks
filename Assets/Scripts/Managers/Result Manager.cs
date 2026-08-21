@@ -9,7 +9,7 @@ public class ResultManager : MonoBehaviour
     public TextMeshProUGUI tmp;
     public Image timerImage; // 2. Added Image component reference
     public float flashSpeed = 2f; // Speed at which the alpha cycles
-
+    public AudioClip clip;
     public GameObject failMenu, completeMenu;
     public AudioClip complete;
     [HideInInspector] public bool timer;
@@ -37,6 +37,7 @@ public class ResultManager : MonoBehaviour
             {
                 time = 0;
                 failMenu.SetActive(true);
+                GetComponent<AudioSource>().Play();
                 startTimer = false;
                 levelFailed = true;
             }
