@@ -1,14 +1,17 @@
 using UnityEngine;
 using TMPro;
 
-
 [RequireComponent(typeof(TextMeshProUGUI))]
 [RequireComponent(typeof(RectTransform))]
 public class AutoAdjustTMP : MonoBehaviour
 {
     [Header("Font Size Settings")]
     public float minFontSize = 10f;
-    public float maxFontSize = 72f;
+    public float maxFontSize = 35f;
+
+    [Header("Text Formatting")]
+    [Tooltip("If true, automatically replaces spaces with new lines to stack words.")]
+    public bool forceStackWords = true;
 
     [Header("Padding (Inside Parent)")]
     public float margin = 5f;
@@ -20,18 +23,22 @@ public class AutoAdjustTMP : MonoBehaviour
     {
         CacheComponents();
         SetupTextToFit();
+        FormatText();
     }
 
     private void OnEnable()
     {
         CacheComponents();
         SetupTextToFit();
+        FormatText();
     }
 
-    private void OnValidate()
+    private void Update()
     {
+        // Continuously check and apply formatting every frame
         CacheComponents();
         SetupTextToFit();
+        FormatText();
     }
 
     private void OnRectTransformDimensionsChange()
@@ -46,33 +53,49 @@ public class AutoAdjustTMP : MonoBehaviour
         if (rectTransform == null) rectTransform = GetComponent<RectTransform>();
     }
 
-    /// <summary>
-    /// Configures the TextMeshPro component to automatically scale and wrap 
-    /// within the bounds of its parent object.
-    /// </summary>
     public void SetupTextToFit()
     {
         if (tmpText == null || rectTransform == null) return;
 
-        // 1. Stretch RectTransform to fill the parent Image
-        rectTransform.anchorMin = Vector2.zero; // Bottom-Left
-        rectTransform.anchorMax = Vector2.one;  // Top-Right
-        rectTransform.offsetMin = Vector2.zero; // Clear left/bottom offsets
-        rectTransform.offsetMax = Vector2.zero; // Clear right/top offsets
+        rectTransform.anchorMin = Vector2.zero;
+        rectTransform.anchorMax = Vector2.one;
+        rectTransform.offsetMin = Vector2.zero;
+        rectTransform.offsetMax = Vector2.zero;
         rectTransform.pivot = new Vector2(0.5f, 0.5f);
 
-        // 2. Enable Word Wrapping (forces words to the next line if there's space)
-        tmpText.enableWordWrapping = true;
+        tmpText.enableWordWrapping = false;
+        tmpText.overflowMode = TextOverflowModes.Truncate;
 
-        // 3. Enable Auto-Sizing (shrinks text if it overflows)
         tmpText.enableAutoSizing = true;
         tmpText.fontSizeMin = minFontSize;
         tmpText.fontSizeMax = maxFontSize;
 
-        // 4. Center the text
         tmpText.alignment = TextAlignmentOptions.Center;
-
-        // 5. Apply margins so text doesn't touch the very edge of the image
         tmpText.margin = new Vector4(margin, margin, margin, margin);
+    }
+
+    /// <summary>
+    /// Replaces spaces with newlines (and vice versa) based on the toggle.
+    /// </summary>
+    private void FormatText()
+    {
+        if (tmpText == null) return;
+
+        if (forceStackWords)
+        {
+            // If toggled ON: Replace spaces with line breaks
+            if (tmpText.text.Contains(" "))
+            {
+                tmpText.text = tmpText.text.Replace(" ", "\n");
+            }
+        }
+        else
+        {
+            // If toggled OFF: Revert line breaks back into spaces
+            if (tmpText.text.Contains("\n"))
+            {
+                tmpText.text = tmpText.text.Replace("\n", " ");
+            }
+        }
     }
 }

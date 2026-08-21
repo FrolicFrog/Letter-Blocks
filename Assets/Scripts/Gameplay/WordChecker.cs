@@ -71,7 +71,8 @@ public class WordChecker : MonoBehaviour
 
     public ParticleSystem effect, confettiEffect;
     private int? cachedColumns = null;
-
+    // Tracks words that have left the board but haven't reached the UI yet
+    private Dictionary<string, int> flyingWordsPerCategory = new Dictionary<string, int>();
     private struct GravityMoveInfo
     {
         public Transform block;
@@ -559,25 +560,19 @@ public class WordChecker : MonoBehaviour
             Vector3 centerPos = Vector3.zero;
             foreach (var b in blocksInWord) centerPos += b.originalWorldPos;
             centerPos /= blocksInWord.Count;
+
             if (effect != null)
             {
-                // Grab the target color from the first block in the word
-                Color targetColor = Color.white; // Default fallback
+                Color targetColor = Color.white;
                 if (blocksInWord.Count > 0 && blocksInWord[0].elements.Count > 0)
                 {
                     MeshRenderer mr = blocksInWord[0].elements[0].GetComponent<MeshRenderer>();
-                    if (mr != null)
-                    {
-                        targetColor = mr.material.color;
-                    }
+                    if (mr != null) targetColor = mr.material.color;
                 }
 
-                // Shift the spawn position up to match where the word is arcing
                 Vector3 effectPos = centerPos + new Vector3(0f, arcHeightOffset, -1.4f);
-
                 ParticleSystem spawnedEffect = Instantiate(effect, effectPos, Quaternion.identity);
 
-                // Loop through the parent and ALL child particle systems and apply the color
                 ParticleSystem[] allParticleSystems = spawnedEffect.GetComponentsInChildren<ParticleSystem>();
                 foreach (ParticleSystem ps in allParticleSystems)
                 {
@@ -586,14 +581,22 @@ public class WordChecker : MonoBehaviour
                 }
 
                 spawnedEffect.Play();
-
-                // Destroys the particle system object after it finishes playing to free up memory
                 Destroy(spawnedEffect.gameObject, spawnedEffect.main.duration + spawnedEffect.main.startLifetime.constantMax);
             }
 
             int blockCount = blocksInWord.Count;
             float centerIndex = (blockCount - 1) / 2f;
-            string wordCategoryTarget = blocksInWord[0].category;
+
+            // Find category for the entire word once
+            string wordCategoryTarget = "";
+            foreach (var b in blocksInWord)
+            {
+                if (!string.IsNullOrEmpty(b.category))
+                {
+                    wordCategoryTarget = b.category;
+                    break;
+                }
+            }
 
             if (lvlManager.wordsCategory != null && !string.IsNullOrEmpty(wordCategoryTarget))
             {
@@ -606,13 +609,39 @@ public class WordChecker : MonoBehaviour
 
                     var wordList = lvlManager.wordsCategory[dictKey];
                     string matchedItem = wordList.FirstOrDefault(w => w.Trim().Equals(baseWord.Trim(), System.StringComparison.OrdinalIgnoreCase));
-                    if (matchedItem != null)
-                    {
-                        wordList.Remove(matchedItem);
-                    }
+                    if (matchedItem != null) wordList.Remove(matchedItem);
                 }
             }
 
+            Transform wordUITransform = null;
+            Vector2 targetScreenPos = Vector2.zero;
+
+            if (categoryUIParent != null && !string.IsNullOrEmpty(wordCategoryTarget))
+            {
+                string searchCat = wordCategoryTarget.Trim().ToLower().Replace("\n", " ").Replace("\r", "");
+                foreach (Transform categoryImage in categoryUIParent)
+                {
+                    TextMeshProUGUI[] textComps = categoryImage.GetComponentsInChildren<TextMeshProUGUI>(true);
+                    foreach (var tmpComp in textComps)
+                    {
+                        if (tmpComp != null)
+                        {
+                            string cleanUIText = tmpComp.text.Trim().ToLower().Replace("\n", " ").Replace("\r", "");
+                            if (cleanUIText == searchCat)
+                            {
+                                Canvas canvas = categoryImage.GetComponentInParent<Canvas>();
+                                Camera uiCam = (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay) ? canvas.worldCamera : null;
+                                targetScreenPos = RectTransformUtility.WorldToScreenPoint(uiCam, categoryImage.position);
+                                wordUITransform = categoryImage;
+                                break;
+                            }
+                        }
+                    }
+                    if (wordUITransform != null) break;
+                }
+            }
+
+            // Animate the blocks
             for (int i = 0; i < blockCount; i++)
             {
                 float idx = i - centerIndex;
@@ -621,41 +650,6 @@ public class WordChecker : MonoBehaviour
                 float offsetX = arcRadius * Mathf.Sin(theta);
                 float offsetZ = arcRadius * (1f - Mathf.Cos(theta));
                 float angleY = -theta * Mathf.Rad2Deg;
-
-                Vector2 targetScreenPos = Vector2.zero;
-                Transform targetUITransform = null;
-                bool foundUI = false;
-                string targetCategory = blocksInWord[i].category;
-
-                if (categoryUIParent != null && !string.IsNullOrEmpty(targetCategory))
-                {
-                    string searchCat = targetCategory.Trim().ToLower();
-
-                    foreach (Transform categoryImage in categoryUIParent)
-                    {
-                        foreach (Transform tChild in categoryImage)
-                        {
-                            var tmpComp = tChild.GetComponent<TextMeshProUGUI>();
-                            if (tmpComp != null)
-                            {
-                                string cleanUIText = tmpComp.text.Trim().ToLower();
-                                if (cleanUIText == searchCat)
-                                {
-                                    Canvas canvas = categoryImage.GetComponentInParent<Canvas>();
-                                    Camera uiCam = (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay) ? canvas.worldCamera : null;
-
-                                    targetScreenPos = RectTransformUtility.WorldToScreenPoint(uiCam, categoryImage.position);
-                                    targetUITransform = categoryImage;
-                                    foundUI = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (foundUI) break;
-                    }
-                }
-
-                bool isLastLetter = (i == blockCount - 1);
 
                 foreach (var child in blocksInWord[i].elements)
                 {
@@ -691,17 +685,12 @@ public class WordChecker : MonoBehaviour
                         }
                     });
 
-                    if (foundUI && targetUITransform != null)
+                    if (wordUITransform != null)
                     {
-                        // ==== PLAY FLYING AUDIO ====
                         blockSeq.AppendCallback(() =>
                         {
-                            if (flying != null && child != null)
-                            {
-                                AudioSource.PlayClipAtPoint(flying, child.position);
-                            }
+                            if (flying != null && child != null) AudioSource.PlayClipAtPoint(flying, child.position);
                         });
-                        // ===========================
 
                         Camera cam = Camera.main;
                         float distanceToCamera = Mathf.Max(0.5f, cam.WorldToScreenPoint(targetPos).z - flightElevationOffset);
@@ -711,118 +700,14 @@ public class WordChecker : MonoBehaviour
                         blockSeq.Join(child.DORotate(flightRotation, flyToUIDuration, RotateMode.FastBeyond360).SetRelative(true).SetEase(flyEase));
                         blockSeq.Join(child.DOScale(Vector3.zero, flyToUIDuration).SetEase(destroyEase));
 
-                        string capturedCategory = targetCategory;
-
                         blockSeq.OnComplete(() =>
                         {
-                            if (targetUITransform != null)
+                            if (wordUITransform != null)
                             {
-                                targetUITransform.DOKill(true);
-
+                                wordUITransform.DOKill(true);
                                 Vector3 punchStrength = uiPopScale - Vector3.one;
-                                targetUITransform.DOPunchScale(punchStrength, uiPopDuration, 5, 0.3f)
-                                                 .SetLink(targetUITransform.gameObject);
-
-                                bool categoryHasActiveWordsLeft = false;
-                                if (LevelManager.Instance != null && LevelManager.Instance.wordPositions != null &&
-                                    LevelManager.Instance.cellCategory != null && !string.IsNullOrEmpty(capturedCategory))
-                                {
-                                    foreach (var remainingWordPositions in LevelManager.Instance.wordPositions.Values)
-                                    {
-                                        if (remainingWordPositions != null && remainingWordPositions.Count > 0)
-                                        {
-                                            if (LevelManager.Instance.cellCategory.TryGetValue(remainingWordPositions[0], out string remainingCat))
-                                            {
-                                                if (!string.IsNullOrEmpty(remainingCat) && remainingCat.Trim().Equals(capturedCategory.Trim(), System.StringComparison.OrdinalIgnoreCase))
-                                                {
-                                                    categoryHasActiveWordsLeft = true;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                if (isLastLetter)
-                                {
-                                    // 1. Get the category text from the UI to find its current count
-                                    string uiCategoryText = targetUITransform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
-                                    int remainingCount = 0;
-
-                                    foreach (var key in lvlManager.wordsCategory.Keys)
-                                    {
-                                        if (key.Trim().Equals(uiCategoryText.Trim(), System.StringComparison.OrdinalIgnoreCase))
-                                        {
-                                            remainingCount = lvlManager.wordsCategory[key].Count;
-                                            break;
-                                        }
-                                    }
-
-                                    // 2. Check if the remaining count has reached 0
-                                    if (remainingCount <= 0)
-                                    {
-                                        if (targetUITransform.childCount > 2)
-                                        {
-                                            targetUITransform.GetChild(1).gameObject.SetActive(false); // Hide the counter
-                                            Transform checkmarkTransform = targetUITransform.GetChild(2);
-                                            checkmarkTransform.gameObject.SetActive(true);             // Show the checkmark
-
-                                            // --- INSTANTIATE CONFETTI EFFECT ---
-                                            if (confettiEffect != null)
-                                            {
-                                                // Instantiate as a child of the 3rd element (index 2)
-                                                ParticleSystem confettiInstance = Instantiate(confettiEffect, checkmarkTransform);
-
-                                                // Reset local transform to center it on the UI element
-                                                confettiInstance.transform.localPosition = Vector3.zero;
-                                                confettiInstance.transform.localRotation = Quaternion.identity;
-
-                                                // Force scale to 1 * 50 so it respects the Canvas/UI scaling
-                                                confettiInstance.transform.localScale = Vector3.one * 25;
-
-                                                // Move the particle system and its children to the UI layer for screen space visibility
-                                                int uiLayer = LayerMask.NameToLayer("UI");
-                                                ParticleSystem[] allPs = confettiInstance.GetComponentsInChildren<ParticleSystem>(true);
-                                                foreach (ParticleSystem ps in allPs)
-                                                {
-                                                    ps.gameObject.layer = uiLayer;
-
-                                                    // --- DISABLE LOOPING ---
-                                                    var main = ps.main;
-                                                    main.loop = false;
-
-                                                    // Adjust the sorting order dynamically to render over UI elements
-                                                    var renderer = ps.GetComponent<ParticleSystemRenderer>();
-                                                    if (renderer != null)
-                                                    {
-                                                        renderer.sortingLayerName = "UI";
-                                                        renderer.sortingOrder = 100; // Force it to render on top
-                                                    }
-                                                }
-
-                                                confettiInstance.Play();
-
-                                                // Destroy the particle system after it finishes playing to free up memory
-                                                float destroyDelay = confettiInstance.main.duration + confettiInstance.main.startLifetime.constantMax;
-                                                Destroy(confettiInstance.gameObject, destroyDelay);
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        // 3. Count is still greater than 0, just update the UI text
-                                        if (targetUITransform.childCount > 1)
-                                        {
-                                            var tmp = targetUITransform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>();
-                                            if (tmp != null)
-                                            {
-                                                tmp.text = remainingCount.ToString();
-                                            }
-                                        }
-                                    }
-                                }
-
+                                wordUITransform.DOPunchScale(punchStrength, uiPopDuration, 5, 0.3f).SetLink(wordUITransform.gameObject);
                             }
-
                         });
                     }
                     else
@@ -834,6 +719,74 @@ public class WordChecker : MonoBehaviour
                 }
             }
 
+            // Execute EXACTLY ONCE when the whole word finishes flying
+            destroySeq.OnComplete(() =>
+            {
+                if (wordUITransform != null && !string.IsNullOrEmpty(wordCategoryTarget))
+                {
+                    int remainingCount = 0;
+                    if (lvlManager.wordsCategory != null)
+                    {
+                        foreach (var key in lvlManager.wordsCategory.Keys)
+                        {
+                            if (key.Trim().Equals(wordCategoryTarget.Trim(), System.StringComparison.OrdinalIgnoreCase))
+                            {
+                                remainingCount = lvlManager.wordsCategory[key].Count;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (remainingCount <= 0)
+                    {
+                        if (wordUITransform.childCount > 2)
+                        {
+                            wordUITransform.GetChild(1).gameObject.SetActive(false); // Hide the counter
+                            Transform checkmarkTransform = wordUITransform.GetChild(2);
+                            checkmarkTransform.gameObject.SetActive(true); // Show the tick
+
+                            if (confettiEffect != null)
+                            {
+                                ParticleSystem confettiInstance = Instantiate(confettiEffect, checkmarkTransform);
+                                confettiInstance.transform.localPosition = Vector3.zero;
+                                confettiInstance.transform.localRotation = Quaternion.identity;
+                                confettiInstance.transform.localScale = Vector3.one * 25;
+
+                                int uiLayer = LayerMask.NameToLayer("UI");
+                                ParticleSystem[] allPs = confettiInstance.GetComponentsInChildren<ParticleSystem>(true);
+                                foreach (ParticleSystem ps in allPs)
+                                {
+                                    ps.gameObject.layer = uiLayer;
+                                    var main = ps.main;
+                                    main.loop = false;
+
+                                    var renderer = ps.GetComponent<ParticleSystemRenderer>();
+                                    if (renderer != null)
+                                    {
+                                        renderer.sortingLayerName = "UI";
+                                        renderer.sortingOrder = 100;
+                                    }
+                                }
+
+                                confettiInstance.Play();
+                                float destroyDelay = confettiInstance.main.duration + confettiInstance.main.startLifetime.constantMax;
+                                Destroy(confettiInstance.gameObject, destroyDelay);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (wordUITransform.childCount > 1)
+                        {
+                            var tmp = wordUITransform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
+                            if (tmp != null)
+                            {
+                                tmp.text = remainingCount.ToString();
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         if (objectsToDestroy.Count > 0)
@@ -847,7 +800,6 @@ public class WordChecker : MonoBehaviour
 
         activeDestructions--;
     }
-
     private IEnumerator WaitForGridStability()
     {
         bool stable = false;
