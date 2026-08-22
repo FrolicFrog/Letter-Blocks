@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 2
   m_EditorClassIdentifier: 
-  timer: 1
+  timer: 0
   LevelNumber: 2
   rows: 10
   columns: 8

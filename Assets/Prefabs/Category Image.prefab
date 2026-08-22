@@ -378,7 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minFontSize: 6
-  maxFontSize: 12
+  maxFontSize: 25
   forceStackWords: 1
   margin: 8
 --- !u!1 &8678158912313709650

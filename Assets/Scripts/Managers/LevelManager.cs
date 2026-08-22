@@ -29,9 +29,10 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private GameObject hardPanel,superHardPanel;
     [SerializeField] private ParticleSystem effect;
     [SerializeField] private AudioClip unfreeze;
+    [SerializeField] private GridLayoutTweener gridAnimator;
     [HideInInspector] public int TestLevelToLoad = 1;
     [HideInInspector] public List<GameObject> ticks = new();
-    
+  
     private Dictionary<Material, Sprite> _colorSprite = new(); //Do not clear
 
     private Dictionary<string, int> freezedTray = new();
@@ -72,6 +73,7 @@ public class LevelManager : Manager<LevelManager>
         DataSetup();
         LoadInScene();
         base.Initialize();
+     
     }
 
     void DataSetup()
@@ -141,6 +143,7 @@ public class LevelManager : Manager<LevelManager>
                 heading.GetComponent<Image>().sprite = _colorSprite[categoryColors[category]];
                 heading.GetComponentsInChildren<TextMeshProUGUI>()[0].text = char.ToUpper(category[0])+category.Substring(1);
                 heading.GetComponentsInChildren<TextMeshProUGUI>()[1].text = wordsCategory[category].Count.ToString();
+                heading.GetComponentsInChildren<TextMeshProUGUI>()[1].transform.parent.gameObject.SetActive(false);
                 heading.transform.GetChild(1).GetComponent<Image>().color = categoryColors[category].color;
                 ticks.Add(heading.transform.GetChild(heading.transform.childCount - 1).gameObject);
             }
@@ -156,6 +159,14 @@ public class LevelManager : Manager<LevelManager>
            superHardPanel.SetActive(true);
         
         }
+        bool instant = false;
+        if (CurLevelNumber == 1 || CurLevelNumber == 2 || tutorialPopup.group.Any(x => CurLevelNumber == x.Key))
+        {
+            instant = true;
+        }
+
+        gridAnimator.AnimateGrid(instant);
+
     }
     void ManageWords()
     {
@@ -368,6 +379,7 @@ public class LevelManager : Manager<LevelManager>
         {
             Destroy(categoryHeadingParent.GetChild(i).gameObject);
         }
+        GridLayoutTweener.instance.ResetToOriginal();
     }
 
     void ResetWords()

@@ -119,9 +119,14 @@ public class ResultManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         LevelManager.Instance.Initialize();
+       
         completeMenu.SetActive(false);
         failMenu.SetActive(false);
         UpdateTimerDisplay();
+        if(!timer)
+        {
+            tmp.text = "";
+        }
     }
 
     IEnumerator ShowScreen(GameObject obj)
