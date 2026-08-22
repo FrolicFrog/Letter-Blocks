@@ -21,12 +21,12 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.1
-  categoryMaterial: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
+  categoryMaterial: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
   words:
   - DRAMA
   - TANKER
   - MAKEUP
-  - RDINE
+  - SARDINE
   - CRUISER
   - SCRIPT
   - FLOWERS
@@ -131,7 +131,7 @@ MonoBehaviour:
     - CANOE
   - Key: Fish
     Value:
-    - RDINE
+    - SARDINE
     - SALMON
     - CARP
     - CATFISH
@@ -397,7 +397,7 @@ MonoBehaviour:
   - Key: {x: 9, y: 2}
     Value: Fish
   - Key: {x: 9, y: 3}
-    Value: Theatre
+    Value: Fish
   - Key: {x: 9, y: 4}
     Value: Fish
   - Key: {x: 9, y: 5}
@@ -949,8 +949,10 @@ MonoBehaviour:
     - {x: 8, y: 4}
     - {x: 8, y: 5}
     - {x: 8, y: 6}
-  - Key: RDINE
+  - Key: SARDINE
     Value:
+    - {x: 9, y: 2}
+    - {x: 9, y: 3}
     - {x: 9, y: 4}
     - {x: 9, y: 5}
     - {x: 9, y: 6}
@@ -1150,8 +1152,8 @@ MonoBehaviour:
     Value: 3
   - Key: MAKEUP
     Value: 1
-  - Key: RDINE
-    Value: 4
+  - Key: SARDINE
+    Value: 2
   - Key: CRUISER
     Value: 1
   - Key: SCRIPT
