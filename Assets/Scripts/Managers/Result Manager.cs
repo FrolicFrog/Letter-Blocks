@@ -9,7 +9,7 @@ public class ResultManager : MonoBehaviour
     public TextMeshProUGUI tmp;
     public Image timerImage; // 2. Added Image component reference
     public float flashSpeed = 2f; // Speed at which the alpha cycles
-    public AudioClip clip;
+    public AudioClip failSound,timerSound;
     public GameObject failMenu, completeMenu;
     public AudioClip complete;
     [HideInInspector] public bool timer;
@@ -54,7 +54,10 @@ public class ResultManager : MonoBehaviour
                 }
                 else if (time <= 10f)
                 {
-                    // Cycles alpha between 0 and 1 smoothly over time
+                    if(!GetComponent<AudioSource>().isPlaying)
+                    {
+                        GetComponent<AudioSource>().PlayOneShot(timerSound);
+                    }
                     imgColor.a = Mathf.PingPong(Time.time * flashSpeed, 1f);
                 }
        
@@ -124,7 +127,12 @@ public class ResultManager : MonoBehaviour
     IEnumerator ShowScreen(GameObject obj)
     {
         yield return new WaitForSeconds(1.3f);
+        Color imgColor = timerImage.color;
+        imgColor.a = 0;
+        timerImage.color = imgColor;
+        GetComponent<AudioSource>().Stop();
         AudioSource.PlayClipAtPoint(complete, Vector3.up);
         completeMenu.SetActive(true);
+        startTimer = false;
     }
 }

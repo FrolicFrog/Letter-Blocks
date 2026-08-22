@@ -3204,7 +3204,7 @@ MonoBehaviour:
   superHardPanel: {fileID: 406231857}
   effect: {fileID: 8170460312813454221, guid: 69e6c3150a29b6746814e6db01eead6e, type: 3}
   unfreeze: {fileID: 8300000, guid: 6c4768370c68a7340874edc1ae402191, type: 3}
-  TestLevelToLoad: 25
+  TestLevelToLoad: 2
   ticks: []
   hearts: 0
 --- !u!114 &558711660
@@ -8400,8 +8400,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tmp: {fileID: 1457105257}
   timerImage: {fileID: 1726348919}
-  flashSpeed: 2
-  clip: {fileID: 8300000, guid: a4eb1f55ef74b6843a5a951a121f3bb5, type: 3}
+  flashSpeed: 1.3
+  failSound: {fileID: 0}
+  timerSound: {fileID: 8300000, guid: e208c8656979fb346986b7b1bd5b6d5c, type: 3}
   failMenu: {fileID: 259769126}
   completeMenu: {fileID: 345656592}
   complete: {fileID: 8300000, guid: 5561431be961e5144875503801e381ca, type: 3}

@@ -236,7 +236,8 @@ public class LevelManager : Manager<LevelManager>
             group.renderers = hintManager.wordChain["PUMPKIN"].Key.Select(x => x.GetComponent<Renderer>()).ToList();
             panel.cutoutGroups.Add(group);
             panel.gameObject.SetActive(true);
-            tutorialMsg.text = "Tap and hold letter\nto reveal the word!";
+            string t = " <color=green>Tap</color> and <color=green>hold</color> letter\nto reveal the word!";
+            tutorialMsg.text = t;
             hand.SetActive(true);
             hand.transform.position = new Vector3(4, 12.8f, 13);
             hand.GetComponent<ScaleCycleDOTween>().StartScalingCycle();
