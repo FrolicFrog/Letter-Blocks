@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using TMPro;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -133,6 +135,7 @@ public class LevelManager : Manager<LevelManager>
 
     void SetUIElements()
     {
+        categoryHeadingParent.gameObject.SetActive(true);
         foreach (var category in categoryColors.Keys)
         {
        
@@ -149,25 +152,33 @@ public class LevelManager : Manager<LevelManager>
             }
 
         }
+        categoryHeadingParent.gameObject.SetActive(false);
+        float time = 0;
         if (_LevelData.levelMode == Mode.Hard)
         {
+            time = 1.8f;
             hardPanel.SetActive(true);
         
         }
         else if(_LevelData.levelMode == Mode.SuperHard)
         {
-           superHardPanel.SetActive(true);
+            time = 1.8f;
+            superHardPanel.SetActive(true);
         
         }
-        bool instant = false;
+        
+          bool instant = false;
         if (CurLevelNumber == 1 || CurLevelNumber == 2 || tutorialPopup.group.Any(x => CurLevelNumber == x.Key))
         {
             instant = true;
         }
+        StartCoroutine(EnableUIHeading(instant,time));
+      
 
-        gridAnimator.AnimateGrid(instant);
+        
 
     }
+
     void ManageWords()
     {
         var firstCharPos = CurLvlData.firstCharPos.ToDictionary(item => item.Key, item => item.Value);
@@ -420,5 +431,12 @@ public class LevelManager : Manager<LevelManager>
         freezedTray.Clear();
         trayPos.Clear();
         horizontal.Clear();
+    }
+
+    IEnumerator EnableUIHeading( bool instant,float time = 1.8f)
+    {
+        yield return new WaitForSeconds(time);
+        categoryHeadingParent.gameObject.SetActive(true);
+        gridAnimator.AnimateGrid(instant);
     }
 }
