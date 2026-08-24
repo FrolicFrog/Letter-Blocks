@@ -1039,3 +1039,4 @@ MonoBehaviour:
     Value: 0
   - Key: CIRCLE
     Value: 2
+  levelMode: 2

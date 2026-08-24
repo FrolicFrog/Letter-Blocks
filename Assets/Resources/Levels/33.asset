@@ -20,7 +20,7 @@ MonoBehaviour:
   width: 7
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.09
+  bottomGridSize: 0.1
   categoryMaterial: {fileID: 0}
   words:
   - SODIUM
@@ -1211,3 +1211,4 @@ MonoBehaviour:
     Value: 1
   - Key: GRILL
     Value: 2
+  levelMode: 1

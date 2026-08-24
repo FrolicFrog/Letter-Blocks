@@ -1141,3 +1141,4 @@ MonoBehaviour:
     Value: 0
   - Key: RAPTOR
     Value: 1
+  levelMode: 2

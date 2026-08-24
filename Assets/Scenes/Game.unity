@@ -1344,7 +1344,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &245620292
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3216,7 +3216,7 @@ MonoBehaviour:
   effect: {fileID: 8170460312813454221, guid: 69e6c3150a29b6746814e6db01eead6e, type: 3}
   unfreeze: {fileID: 8300000, guid: 6c4768370c68a7340874edc1ae402191, type: 3}
   gridAnimator: {fileID: 1855233891}
-  TestLevelToLoad: 1
+  TestLevelToLoad: 39
   ticks: []
   hearts: 0
 --- !u!114 &558711660
@@ -5748,7 +5748,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fillImage: {fileID: 1304144533}
   tmp: {fileID: 843853677}
-  unlockMessage: Verical Movement only Unlocked!
+  unlockMessage: Verical Movement Letter Unlocked!
   currentPercentage: 100
 --- !u!224 &1327564900
 RectTransform:
@@ -8565,7 +8565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e1e030db6db2e4c8501bbf659c2a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnvironmentMode: 0
+  EnvironmentMode: 1
 --- !u!114 &1887342594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9289,7 +9289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fillImage: {fileID: 137290957}
   tmp: {fileID: 14658019}
-  unlockMessage: Letter Inside Inside Unlocked!
+  unlockMessage: Letter Inside Letter Unlocked!
   currentPercentage: 100
 --- !u!224 &2022986133
 RectTransform:

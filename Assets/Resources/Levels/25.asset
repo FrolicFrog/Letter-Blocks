@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 25
   m_EditorClassIdentifier: 
-  timer: 1
+  timer: 0
   LevelNumber: 25
   rows: 30
   columns: 8
@@ -835,7 +835,9 @@ MonoBehaviour:
     - {x: 29, y: 4}
     - {x: 29, y: 5}
     - {x: 29, y: 6}
-  freezedTray: []
+  freezedTray:
+  - Key: Tray 7
+    Value: 8
   firstCharPos:
   - Key: CURRENT
     Value: 1
@@ -875,4 +877,4 @@ MonoBehaviour:
     Value: 1
   - Key: MONEY
     Value: 2
-  levelMode: 0
+  levelMode: 2
