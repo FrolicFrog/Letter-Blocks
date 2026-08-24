@@ -3216,7 +3216,7 @@ MonoBehaviour:
   effect: {fileID: 8170460312813454221, guid: 69e6c3150a29b6746814e6db01eead6e, type: 3}
   unfreeze: {fileID: 8300000, guid: 6c4768370c68a7340874edc1ae402191, type: 3}
   gridAnimator: {fileID: 1855233891}
-  TestLevelToLoad: 2
+  TestLevelToLoad: 1
   ticks: []
   hearts: 0
 --- !u!114 &558711660

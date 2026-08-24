@@ -49,6 +49,7 @@ public class HintManager : MonoBehaviour
                 currentWordObject = hit.collider.gameObject;
                 holdTimer = 0f;
                 isHoldingTriggered = false;
+                Taptic.Vibrate();
             }
         }
 

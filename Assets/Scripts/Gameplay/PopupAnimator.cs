@@ -53,7 +53,7 @@ public class PopupAnimator : MonoBehaviour
 
     private void OnDisable()
     {
-        // Safety net: Ensure tweens are killed if the object is turned off manually
+        Taptic.Vibrate();
         transform.DOKill();
     }
 }

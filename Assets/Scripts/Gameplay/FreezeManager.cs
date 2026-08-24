@@ -45,7 +45,7 @@ public class FreezeManager : MonoBehaviour
                 Instantiate(effect, instance.transform.position+new Vector3(0,5,0),Quaternion.identity);
                 AudioSource.PlayClipAtPoint(clip, Vector3.up);
                Destroy(instance.gameObject);
-
+                Taptic.Heavy();
                 instances.Remove(instance);
             }
             else

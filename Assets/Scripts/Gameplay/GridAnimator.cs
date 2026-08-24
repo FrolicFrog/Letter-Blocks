@@ -86,6 +86,10 @@ public class GridLayoutTweener : MonoBehaviour
         instance = this;
         EnsureComponentsExist();
 
+        // Safely capture original alpha on Frame 0 before any tweens or scripts can alter it
+        if (backgroundImage != null)
+            originalAlpha = backgroundImage.color.a;
+
         if (targetPadding == null) targetPadding = new RectOffset();
         if (animateAlpha && backgroundImage == null)
             Debug.LogWarning("Animate Alpha is enabled, but no Image component was found!", this);
@@ -162,7 +166,6 @@ public class GridLayoutTweener : MonoBehaviour
             }
         }
 
-        if (backgroundImage != null) originalAlpha = backgroundImage.color.a;
         hasCachedValues = true;
     }
 
@@ -220,6 +223,7 @@ public class GridLayoutTweener : MonoBehaviour
         if (killTweens)
         {
             DOTween.Kill(gridLayout, complete: false);
+            if (backgroundImage != null) DOTween.Kill(backgroundImage, complete: false);
             if (activeAnimationRoutine != null) StopCoroutine(activeAnimationRoutine);
         }
 
@@ -232,7 +236,6 @@ public class GridLayoutTweener : MonoBehaviour
             Color c = backgroundImage.color;
             c.a = originalAlpha;
             backgroundImage.color = c;
-            backgroundImage.canvasRenderer.SetAlpha(originalAlpha);
         }
 
         for (int i = 0; i < gridLayout.transform.childCount; i++)
@@ -272,9 +275,28 @@ public class GridLayoutTweener : MonoBehaviour
         EnsureComponentsExist();
         if (gridLayout == null) return;
 
+        // Force instant alpha immediately so it doesn't wait for the Coroutine layout delay
+        if (instant && animateAlpha && backgroundImage != null)
+        {
+            DOTween.Kill(backgroundImage, complete: false);
+            Color c = backgroundImage.color;
+            c.a = targetAlpha;
+            backgroundImage.color = c;
+        }
+
         // Hide items visually on Frame 0 BEFORE the layout yields to prevent flashes
         if (playIntroFirst && !instant)
         {
+            for (int i = 0; i < gridLayout.transform.childCount; i++)
+            {
+                Transform child = gridLayout.transform.GetChild(i);
+                DOTween.Kill(child, complete: false);
+                child.localScale = Vector3.zero;
+            }
+        }
+        else if (instant)
+        {
+            // If calling instantly on frame 0, hide objects so they don't sit in the wrong place while layout builds
             for (int i = 0; i < gridLayout.transform.childCount; i++)
             {
                 Transform child = gridLayout.transform.GetChild(i);
@@ -319,7 +341,6 @@ public class GridLayoutTweener : MonoBehaviour
             {
                 Color c = backgroundImage.color; c.a = targetAlpha;
                 backgroundImage.color = c;
-                backgroundImage.canvasRenderer.SetAlpha(targetAlpha);
             }
 
             if (animateMaxFontSize)
@@ -378,11 +399,8 @@ public class GridLayoutTweener : MonoBehaviour
         // PHASE 2 & 3: CALCULATE AND STAGGERED MOVE
         // ==========================================
 
-        // 1. Calculate Target Positions
         Vector2[] targetPositions = GetCenteredPositions(targetCellSize, targetSpacing, targetConstraintCount, targetPadding);
 
-        // 2. Put the elements BACK to their original positions (bottom) before moving them!
-        // We set killTweens to false (don't break our flow) and resetScale to false (preserve Intro phase scale)
         ResetToOriginal(false, false);
 
         gridLayout.enabled = false;
@@ -449,7 +467,7 @@ public class GridLayoutTweener : MonoBehaviour
             }, targetAlpha, clampedAlphaDur)
             .SetDelay(alphaDel)
             .SetEase(easeType)
-            .SetTarget(gridLayout);
+            .SetTarget(backgroundImage);
         }
 
         DOVirtual.DelayedCall(maxTotalTime, () => {
@@ -475,5 +493,7 @@ public class GridLayoutTweener : MonoBehaviour
                 gridChild.GetChild(1).gameObject.SetActive(true);
             }
         }
+        Taptic.Vibrate();
     }
+
 }

@@ -35,6 +35,7 @@ public class ResultManager : MonoBehaviour
 
             if (time <= 0) // Changed to <= 0 for safety
             {
+                Taptic.Failure();
                 time = 0;
                 failMenu.SetActive(true);
                 GetComponent<AudioSource>().Play();
@@ -113,6 +114,7 @@ public class ResultManager : MonoBehaviour
         }
         LevelManager.Instance.UnloadInScene();
         StartCoroutine(Inittalize());
+        Taptic.Vibrate();
     }
 
     IEnumerator Inittalize()
@@ -132,6 +134,7 @@ public class ResultManager : MonoBehaviour
     IEnumerator ShowScreen(GameObject obj)
     {
         yield return new WaitForSeconds(1.3f);
+        Taptic.Success();
         Color imgColor = timerImage.color;
         imgColor.a = 0;
         timerImage.color = imgColor;

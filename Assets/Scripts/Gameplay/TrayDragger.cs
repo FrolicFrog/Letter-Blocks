@@ -153,6 +153,7 @@ public class GlobalTrayDragger : MonoBehaviour
                 if (select != null)
                 {
                     AudioSource.PlayClipAtPoint(select, currentlyDraggedParent.position);
+                    Taptic.Medium();
                 }
                 // ========================
 
@@ -303,6 +304,7 @@ public class GlobalTrayDragger : MonoBehaviour
                     if (!isReadyToJump && snap != null)
                     {
                         AudioSource.PlayClipAtPoint(snap, currentlyDraggedParent.position);
+                        Taptic.Medium();
                     }
                     // ========================
 

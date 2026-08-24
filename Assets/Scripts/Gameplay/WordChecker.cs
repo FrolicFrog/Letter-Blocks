@@ -67,7 +67,7 @@ public class WordChecker : MonoBehaviour
     public Vector3 spinAngle = new Vector3(360, 0, 0);
     public Ease spinEase = Ease.OutBack;
 
-    public AudioClip jumpingToGrid, flying, shifting;
+    public AudioClip jumpingToGrid, flying,shifting ;
 
     public ParticleSystem effect, confettiEffect;
     private int? cachedColumns = null;
@@ -98,7 +98,8 @@ public class WordChecker : MonoBehaviour
 
     private void Start()
     {
-        Application.targetFrameRate = 500;
+        Taptic.tapticOn = true;
+        Application.targetFrameRate = 60;
         StartCoroutine(InitializeDictionary());
     }
 
@@ -236,6 +237,7 @@ public class WordChecker : MonoBehaviour
         if (jumpingToGrid != null)
         {
             AudioSource.PlayClipAtPoint(jumpingToGrid, block.position);
+           
         }
         // ============================
 
@@ -295,7 +297,7 @@ public class WordChecker : MonoBehaviour
             block.gameObject.layer = LayerMask.NameToLayer("Word");
             FreezeManager.DecreaseFreezeCount();
             reservedGridSlots.Remove(matchedKey);
-
+            Taptic.Heavy();
             // --- Register block into HintManager under the landed word ---
             var lvlManager = LevelManager.Instance;
             if (lvlManager != null && lvlManager.wordPositions != null)
@@ -939,6 +941,7 @@ public class WordChecker : MonoBehaviour
         {
             Vector3 soundPos = Camera.main != null ? Camera.main.transform.position : transform.position;
             AudioSource.PlayClipAtPoint(shifting, soundPos);
+            Taptic.Heavy();
         }
         // =============================
 
