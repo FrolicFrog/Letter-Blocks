@@ -47,6 +47,7 @@ public class GridLayoutTweener : MonoBehaviour
 
     [Header("Constraint Count")]
     public bool animateConstraintCount = true;
+    [Tooltip("Requires Constraint to be set to Fixed Column/Row Count in the GridLayoutGroup.")]
     public int targetConstraintCount = 4;
 
     [Header("Padding")]
@@ -90,9 +91,22 @@ public class GridLayoutTweener : MonoBehaviour
             Debug.LogWarning("Animate Alpha is enabled, but no Image component was found!", this);
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        // Give the Canvas a split second to set up on scene load before centering
+        if (Time.frameCount < 5)
+        {
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+        }
+
         if (!hasCachedValues) CacheOriginalValues();
+
+        // Instantly force the starting layout to be centered upon starting the game (if no anim is running)
+        if (activeAnimationRoutine == null)
+        {
+            ResetToOriginal(true);
+        }
     }
 
     private void EnsureComponentsExist()
@@ -131,7 +145,6 @@ public class GridLayoutTweener : MonoBehaviour
             {
                 Transform gridChild = gridLayout.transform.GetChild(i);
 
-                // Bulletproof cache: Don't cache a 0 scale if it's already invisible
                 if (gridChild.localScale != Vector3.zero)
                 {
                     originalChildScales[gridChild] = gridChild.localScale;
@@ -153,28 +166,66 @@ public class GridLayoutTweener : MonoBehaviour
         hasCachedValues = true;
     }
 
-    public void ResetToOriginal()
+    private Vector2[] GetCenteredPositions(Vector2 cellSz, Vector2 spc, int constraint, RectOffset pad)
+    {
+        int childCount = gridLayout.transform.childCount;
+        Vector2[] positions = new Vector2[childCount];
+
+        gridLayout.enabled = true;
+        gridLayout.cellSize = cellSz;
+        gridLayout.spacing = spc;
+        gridLayout.constraintCount = constraint;
+
+        if (pad != null)
+        {
+            RectOffset safePad = gridLayout.padding ?? new RectOffset();
+            safePad.left = pad.left; safePad.right = pad.right;
+            safePad.top = pad.top; safePad.bottom = pad.bottom;
+            gridLayout.padding = safePad;
+        }
+
+        Canvas.ForceUpdateCanvases();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(gridRect);
+
+        for (int i = 0; i < childCount; i++)
+        {
+            positions[i] = (gridLayout.transform.GetChild(i) as RectTransform).anchoredPosition;
+        }
+
+        // Prevent division by zero if constraint happens to be 0
+        int actualColumns = Mathf.Max(1, Mathf.Min(childCount, constraint));
+
+        float fullRowWidth = (actualColumns * cellSz.x) + Mathf.Max(0, actualColumns - 1) * spc.x;
+
+        for (int i = 0; i < childCount; i++)
+        {
+            int row = i / actualColumns;
+            int itemsInThisRow = Mathf.Min(actualColumns, childCount - (row * actualColumns));
+
+            if (itemsInThisRow < actualColumns)
+            {
+                float currentRowWidth = (itemsInThisRow * cellSz.x) + Mathf.Max(0, itemsInThisRow - 1) * spc.x;
+                float rightwardOffset = (fullRowWidth - currentRowWidth) / 2f;
+                positions[i].x += rightwardOffset;
+            }
+        }
+
+        return positions;
+    }
+
+    public void ResetToOriginal(bool killTweens = true, bool resetScale = true)
     {
         if (!hasCachedValues) return;
 
-        DOTween.Kill(gridLayout, complete: false);
-        StopAllCoroutines();
-
-        gridLayout.enabled = true;
-
-        if (animateCellSize) gridLayout.cellSize = originalCellSize;
-        if (animateSpacing) gridLayout.spacing = originalSpacing;
-        if (animateConstraintCount) gridLayout.constraintCount = originalConstraintCount;
-
-        if (animatePadding && originalPadding != null)
+        if (killTweens)
         {
-            RectOffset pad = gridLayout.padding ?? new RectOffset();
-            pad.left = originalPadding.left;
-            pad.right = originalPadding.right;
-            pad.top = originalPadding.top;
-            pad.bottom = originalPadding.bottom;
-            gridLayout.padding = pad;
+            DOTween.Kill(gridLayout, complete: false);
+            if (activeAnimationRoutine != null) StopCoroutine(activeAnimationRoutine);
         }
+
+        Vector2[] startPositions = GetCenteredPositions(originalCellSize, originalSpacing, originalConstraintCount, originalPadding);
+
+        gridLayout.enabled = false;
 
         if (animateAlpha && backgroundImage != null)
         {
@@ -186,10 +237,15 @@ public class GridLayoutTweener : MonoBehaviour
 
         for (int i = 0; i < gridLayout.transform.childCount; i++)
         {
-            Transform child = gridLayout.transform.GetChild(i);
-            DOTween.Kill(child, complete: false);
+            RectTransform child = gridLayout.transform.GetChild(i) as RectTransform;
 
-            if (originalChildScales.ContainsKey(child))
+            if (killTweens) DOTween.Kill(child, complete: false);
+
+            child.anchoredPosition = startPositions[i];
+
+            if (animateCellSize) child.sizeDelta = originalCellSize;
+
+            if (resetScale && originalChildScales.ContainsKey(child))
                 child.localScale = originalChildScales[child];
 
             if (enableSecondChildOnComplete && child.childCount > 1)
@@ -202,7 +258,7 @@ public class GridLayoutTweener : MonoBehaviour
             {
                 if (kvp.Key != null)
                 {
-                    DOTween.Kill(kvp.Key, complete: false);
+                    if (killTweens) DOTween.Kill(kvp.Key, complete: false);
                     kvp.Key.maxFontSize = kvp.Value;
                 }
             }
@@ -216,16 +272,13 @@ public class GridLayoutTweener : MonoBehaviour
         EnsureComponentsExist();
         if (gridLayout == null) return;
 
-        // 1. Instantly cache the values before doing anything
-        CacheOriginalValues();
-
-        // 2. Hide the items instantly to prevent the frame-0 visual pop/flash
+        // Hide items visually on Frame 0 BEFORE the layout yields to prevent flashes
         if (playIntroFirst && !instant)
         {
             for (int i = 0; i < gridLayout.transform.childCount; i++)
             {
                 Transform child = gridLayout.transform.GetChild(i);
-                DOTween.Kill(child, complete: false); // Kill any active scale tweens
+                DOTween.Kill(child, complete: false);
                 child.localScale = Vector3.zero;
             }
         }
@@ -236,33 +289,30 @@ public class GridLayoutTweener : MonoBehaviour
 
     private IEnumerator AnimateGridRoutine(bool instant)
     {
-        // Yield 1 frame to ensure UI Canvas layout calculates correctly on start
-        if (Time.frameCount < 2)
+        // Wait for Unity to completely build the UI Layout if called during scene load
+        if (Time.frameCount < 5)
         {
+            yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
         }
 
+        CacheOriginalValues();
         int childCount = gridLayout.transform.childCount;
 
         if (instant)
         {
-            ResetToOriginal();
-            if (animateCellSize) gridLayout.cellSize = targetCellSize;
-            if (animateSpacing) gridLayout.spacing = targetSpacing;
-            if (animateConstraintCount) gridLayout.constraintCount = targetConstraintCount;
+            ResetToOriginal(true, true);
 
-            if (animatePadding)
-            {
-                RectOffset pad = gridLayout.padding ?? new RectOffset();
-                pad.left = targetPadding.left; pad.right = targetPadding.right;
-                pad.top = targetPadding.top; pad.bottom = targetPadding.bottom;
-                gridLayout.padding = pad;
-            }
+            Vector2[] instantPositions = GetCenteredPositions(targetCellSize, targetSpacing, targetConstraintCount, targetPadding);
 
-            if (animateChildScale)
+            gridLayout.enabled = false;
+
+            for (int i = 0; i < childCount; i++)
             {
-                for (int i = 0; i < childCount; i++)
-                    gridLayout.transform.GetChild(i).localScale = Vector3.one;
+                RectTransform child = gridLayout.transform.GetChild(i) as RectTransform;
+                child.anchoredPosition = instantPositions[i];
+                if (animateCellSize) child.sizeDelta = targetCellSize;
+                if (animateChildScale) child.localScale = Vector3.one;
             }
 
             if (animateAlpha && backgroundImage != null)
@@ -274,14 +324,24 @@ public class GridLayoutTweener : MonoBehaviour
 
             if (animateMaxFontSize)
             {
-                foreach (var kvp in originalFontSizes)
-                    if (kvp.Key != null) kvp.Key.maxFontSize = targetMaxFontSize;
+                for (int i = 0; i < childCount; i++)
+                {
+                    Transform gridChild = gridLayout.transform.GetChild(i);
+                    if (gridChild.childCount > 0)
+                    {
+                        AutoAdjustTMP textAdjuster = gridChild.GetChild(0).GetComponent<AutoAdjustTMP>();
+                        if (textAdjuster != null) textAdjuster.maxFontSize = targetMaxFontSize;
+                    }
+                }
             }
 
             if (enableSecondChildOnComplete) EnableSecondChildren();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(gridRect);
             yield break;
         }
+
+        // Snap items safely without killing this active coroutine and without restoring scale
+        bool shouldRestoreScale = !playIntroFirst;
+        ResetToOriginal(false, shouldRestoreScale);
 
         // ==========================================
         // PHASE 1: INTRO ANIMATION (0 to Default)
@@ -294,12 +354,8 @@ public class GridLayoutTweener : MonoBehaviour
             {
                 Transform child = gridLayout.transform.GetChild(i);
 
-                // Fetch valid target scale
                 Vector3 targetScale = originalChildScales.ContainsKey(child) ? originalChildScales[child] : Vector3.one;
-                if (targetScale == Vector3.zero) targetScale = Vector3.one; // Ultimate fail-safe
-
-                // Force 0 one last time right before starting the tween
-                child.localScale = Vector3.zero;
+                if (targetScale == Vector3.zero) targetScale = Vector3.one;
 
                 lastTween = child.DOScale(targetScale, introDuration)
                     .SetDelay(i * introStagger)
@@ -307,7 +363,6 @@ public class GridLayoutTweener : MonoBehaviour
                     .SetTarget(child);
             }
 
-            // Explicitly sync with DOTween so we wait exactly until the last cell lerps perfectly
             if (lastTween != null)
             {
                 yield return lastTween.WaitForCompletion();
@@ -323,26 +378,13 @@ public class GridLayoutTweener : MonoBehaviour
         // PHASE 2 & 3: CALCULATE AND STAGGERED MOVE
         // ==========================================
 
-        if (animateCellSize) gridLayout.cellSize = targetCellSize;
-        if (animateSpacing) gridLayout.spacing = targetSpacing;
-        if (animateConstraintCount) gridLayout.constraintCount = targetConstraintCount;
-        if (animatePadding)
-        {
-            RectOffset pad = gridLayout.padding ?? new RectOffset();
-            pad.left = targetPadding.left; pad.right = targetPadding.right;
-            pad.top = targetPadding.top; pad.bottom = targetPadding.bottom;
-            gridLayout.padding = pad;
-        }
+        // 1. Calculate Target Positions
+        Vector2[] targetPositions = GetCenteredPositions(targetCellSize, targetSpacing, targetConstraintCount, targetPadding);
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(gridRect);
+        // 2. Put the elements BACK to their original positions (bottom) before moving them!
+        // We set killTweens to false (don't break our flow) and resetScale to false (preserve Intro phase scale)
+        ResetToOriginal(false, false);
 
-        Vector2[] targetPositions = new Vector2[childCount];
-        for (int i = 0; i < childCount; i++)
-        {
-            targetPositions[i] = (gridLayout.transform.GetChild(i) as RectTransform).anchoredPosition;
-        }
-
-        ResetToOriginal();
         gridLayout.enabled = false;
 
         for (int i = 0; i < childCount; i++)
@@ -350,7 +392,6 @@ public class GridLayoutTweener : MonoBehaviour
             RectTransform child = gridLayout.transform.GetChild(i) as RectTransform;
             float childMoveDelay = startDelay + (i * staggerDelay);
 
-            // Phase 2: Shrink together
             if (animateChildScale && startDelay > 0f)
             {
                 child.DOScale(targetChildScale, startDelay)
@@ -358,13 +399,11 @@ public class GridLayoutTweener : MonoBehaviour
                     .SetTarget(child);
             }
 
-            // Phase 3: Move to top
             child.DOAnchorPos(targetPositions[i], duration)
                 .SetDelay(childMoveDelay)
                 .SetEase(easeType)
                 .SetTarget(child);
 
-            // Phase 3: Scale back to 1
             if (animateChildScale)
             {
                 child.DOScale(Vector3.one, duration)
@@ -414,20 +453,13 @@ public class GridLayoutTweener : MonoBehaviour
         }
 
         DOVirtual.DelayedCall(maxTotalTime, () => {
-            gridLayout.enabled = true;
-
-            if (animateCellSize) gridLayout.cellSize = targetCellSize;
-            if (animateSpacing) gridLayout.spacing = targetSpacing;
-            if (animateConstraintCount) gridLayout.constraintCount = targetConstraintCount;
-            if (animatePadding)
+            for (int i = 0; i < childCount; i++)
             {
-                RectOffset pad = gridLayout.padding ?? new RectOffset();
-                pad.left = targetPadding.left; pad.right = targetPadding.right;
-                pad.top = targetPadding.top; pad.bottom = targetPadding.bottom;
-                gridLayout.padding = pad;
+                RectTransform child = gridLayout.transform.GetChild(i) as RectTransform;
+                child.anchoredPosition = targetPositions[i];
+                if (animateCellSize) child.sizeDelta = targetCellSize;
+                if (animateChildScale) child.localScale = Vector3.one;
             }
-
-            LayoutRebuilder.ForceRebuildLayoutImmediate(gridRect);
 
             if (enableSecondChildOnComplete) EnableSecondChildren();
         }, ignoreTimeScale: false).SetTarget(gridLayout);
