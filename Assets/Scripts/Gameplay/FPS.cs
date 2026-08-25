@@ -14,9 +14,8 @@ public class FPS : MonoBehaviour
     void Start()
     {
         tmp = GetComponent<TextMeshProUGUI>();
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 500;
-        RenderPipelineAsset currentAsset = GraphicsSettings.currentRenderPipeline;
+       
+
 
       
     }

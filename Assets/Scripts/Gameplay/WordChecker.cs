@@ -29,6 +29,22 @@ public class WordChecker : MonoBehaviour
     public float trayFlightScaleMultiplier = 1.3f;
     public Ease trayJumpEase = Ease.OutQuad;
 
+    [Header("Key to Lock Animation")]
+    [Tooltip("Speed in units per second for the key flying to the lock.")]
+    public float keySpeed = 15f;
+    [Tooltip("Local position offset for the key once it lands on the lock.")]
+    public Vector3 keyOffset = Vector3.zero;
+    [Tooltip("How high the key arcs during its flight to the lock.")]
+    public float keyJumpPower = 2.0f;
+    [Tooltip("The final scale of the key when it reaches the lock.")]
+    public float keyTargetScale = 0.6f;
+    [Tooltip("How long the key waits before detaching and flying to the lock.")]
+    public float keyFlightDelay = 0.45f;
+    [Tooltip("How long it takes to turn the key inside the lock.")]
+    public float keyTurnDuration = 0.3f;
+    [Tooltip("How long it takes the lock to shrink and disappear.")]
+    public float lockDestroyDuration = 0.3f;
+
     [Header("Destruction Animation")]
     public float destructionDelay = 0.15f;
     public float popDuration = 0.35f;
@@ -67,7 +83,7 @@ public class WordChecker : MonoBehaviour
     public Vector3 spinAngle = new Vector3(360, 0, 0);
     public Ease spinEase = Ease.OutBack;
 
-    public AudioClip jumpingToGrid, flying,shifting ;
+    public AudioClip jumpingToGrid, flying, shifting;
 
     public ParticleSystem effect, confettiEffect;
     private int? cachedColumns = null;
@@ -237,9 +253,101 @@ public class WordChecker : MonoBehaviour
         if (jumpingToGrid != null)
         {
             AudioSource.PlayClipAtPoint(jumpingToGrid, block.position);
-           
         }
         // ============================
+
+        // ==== CHECK FOR SECOND CHILD (KEY) TO FLY TO LOCK ====
+        if (block.childCount >= 2)
+        {
+            Transform secondChild = block.GetChild(1);
+            GameObject[] locks = GameObject.FindGameObjectsWithTag("Lock");
+
+            if (locks != null && locks.Length > 0)
+            {
+                GameObject targetLock = null;
+                float maxZ = float.MinValue;
+
+                // Find the Lock with the highest Z coordinate
+                foreach (GameObject l in locks)
+                {
+                    if (l.transform.position.z > maxZ)
+                    {
+                        maxZ = l.transform.position.z;
+                        targetLock = l;
+                    }
+                }
+
+                if (targetLock != null)
+                {
+                    // Untag it so no other key targets this lock
+                    targetLock.tag = "Untagged";
+
+                    Sequence keySeq = DOTween.Sequence().SetLink(secondChild.gameObject);
+
+                    // Wait for the main block to land in the grid first
+                    keySeq.AppendInterval(keyFlightDelay);
+
+                    // Fly to lock logic
+                    keySeq.AppendCallback(() =>
+                    {
+                        if (secondChild == null || targetLock == null) return;
+
+                        secondChild.SetParent(targetLock.transform);
+                        Vector3 destination = targetLock.transform.position + keyOffset;
+
+                        float distance = Vector3.Distance(secondChild.position, destination);
+                        float duration = keySpeed > 0 ? distance / keySpeed : 0.5f;
+
+                        Vector3 startScale = secondChild.localScale;
+
+                        Sequence flightSeq = DOTween.Sequence();
+
+                        // Pop up slightly before taking off
+                        flightSeq.Append(secondChild.DOScale(startScale * 1.3f, 0.15f).SetEase(Ease.OutBack));
+
+                        // Arc/Jump to lock while rotating and scaling down
+                        flightSeq.Append(secondChild.DOJump(destination, keyJumpPower, 1, duration).SetEase(Ease.InOutSine));
+                        flightSeq.Join(secondChild.DORotate(new Vector3(0, 0, 90), duration).SetEase(Ease.InOutSine));
+                        flightSeq.Join(secondChild.DOScale(startScale * keyTargetScale, duration).SetEase(Ease.InCubic));
+
+                        // Snap perfectly to offset and trigger the lock bounce reaction
+                        flightSeq.AppendCallback(() =>
+                        {
+                            if (secondChild != null)
+                            {
+                                secondChild.localPosition = keyOffset;
+                                secondChild.localEulerAngles = new Vector3(0, 0, 90);
+                            }
+
+                            // Visual impact punch on the lock to match the video feel
+                            if (targetLock != null)
+                            {
+                                targetLock.transform.DOPunchScale(Vector3.one * 0.2f, 0.25f, 10, 1f);
+                            }
+                        });
+
+                        // Wait for the punch animation (0.25s) before turning the key
+                        flightSeq.AppendInterval(0.25f);
+
+                        // Turn the key to 180 degrees
+                        flightSeq.Append(secondChild.DOLocalRotate(new Vector3(0, 0, 180), keyTurnDuration).SetEase(Ease.InOutQuad));
+
+                        // Scale down the lock (which also scales down the key since it's a child)
+                        flightSeq.Append(targetLock.transform.DOScale(Vector3.zero, lockDestroyDuration).SetEase(Ease.InBack));
+
+                        // Destroy the lock completely
+                        flightSeq.OnComplete(() =>
+                        {
+                            if (targetLock != null)
+                            {
+                                Destroy(targetLock);
+                            }
+                        });
+                    });
+                }
+            }
+        }
+        // =====================================================
 
         block.SetParent(slotTransform.parent);
 

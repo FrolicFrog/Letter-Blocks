@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class LevelEditor : EditorWindow
 {
-  
-
     private int rows = 5;
     private int columns = 8;
     private int height = 8; // Bottom Grid Rows
@@ -40,19 +38,17 @@ public class LevelEditor : EditorWindow
     private Dictionary<Vector2Int, string> cellCategory = new(), trayName = new();
     private Dictionary<Vector2Int, string> cellTexts = new(), trayCells = new();
     private Dictionary<string, Material> categoryColors = new();
-    private Dictionary<string, int> freezedTray = new(),firstCharPos = new();
-
-    
+    private Dictionary<string, int> freezedTray = new(), firstCharPos = new();
 
     // Auto-generated colors for the trays
     private Dictionary<string, Color> trayDisplayColors = new();
 
     private Dictionary<string, List<Vector2Int>> wordPositions = new();
     private Dictionary<string, List<string>> wordCategory = new();
-
+    private HashSet<string> lockedTray = new();
     private HashSet<string> horizontalTrays = new();
-    private string buttonText = "Freeze Tray", horizontalButton = "Lock Horizontal";
-    private Color buttonColor = Color.green, horizontalColor = Color.green;
+    private string buttonText = "Freeze Tray", horizontalButton = "Lock Horizontal", lockedButtonText = "Lock Tray";
+    private Color buttonColor = Color.green, horizontalColor = Color.green, lockedButtonColor = Color.green;
 
     SerializedObject window;
     SerializedProperty categoryList, trayList;
@@ -218,6 +214,7 @@ public class LevelEditor : EditorWindow
                 trayDropdown = "Tray 1";
                 freezedTray.Clear();
                 horizontalTrays.Clear();
+                lockedTray.Clear(); // Cleared locked trays
                 CachedLvlData = null;
                 firstCharPos.Clear();
                 levelMode = Mode.Normal;
@@ -245,7 +242,7 @@ public class LevelEditor : EditorWindow
             }
 
             GUILayout.EndHorizontal();
-          
+
             GUILayout.EndVertical();
             Actions();
             GridSystem();
@@ -304,6 +301,10 @@ public class LevelEditor : EditorWindow
         currentData.words = words.ToList();
         currentData.excludedChar = excludedChar.ToList();
         currentData.horizontal = horizontalTrays.ToList();
+
+        // ** Make sure you add "public List<string> lockedTray;" to your LevelData class! **
+        currentData.lockedTray = lockedTray.ToList();
+
         // Save blocked cells data
         currentData.blockedCells = blockedCells.ToList();
         currentData.levelMode = levelMode;
@@ -354,6 +355,13 @@ public class LevelEditor : EditorWindow
         words = CurLvlData.words.ToHashSet();
         excludedChar = CurLvlData.excludedChar.ToHashSet();
         horizontalTrays = CurLvlData.horizontal.ToHashSet();
+
+        // Load locked trays
+        if (CurLvlData.lockedTray != null)
+            lockedTray = CurLvlData.lockedTray.ToHashSet();
+        else
+            lockedTray.Clear();
+
         // Load blocked cells data
         blockedCells = CurLvlData.blockedCells != null ? CurLvlData.blockedCells.ToHashSet() : new HashSet<Vector2Int>();
         if (CurLvlData.firstCharPos != null)
@@ -469,17 +477,23 @@ public class LevelEditor : EditorWindow
             GUI.FocusControl(null);
         }
         GUILayout.EndHorizontal();
+
+        bool isLockedTray = lockedTray.Contains(trayDropdown);
+        bool isFreezedTray = freezedTray.ContainsKey(trayDropdown);
+
+        // --- BUTTON ROW 1: Freeze Tray ---
         GUILayout.BeginHorizontal();
 
-        if (freezedTray.ContainsKey(trayDropdown))
+        // Mutually exclusive: Can't interact with freeze controls if locked
+        GUI.enabled = !isLockedTray;
+
+        if (isFreezedTray)
         {
             EditorGUI.BeginChangeCheck();
             freezeCount = EditorGUILayout.IntField("Freeze Count:", freezeCount);
             if (EditorGUI.EndChangeCheck())
             {
-
                 freezedTray[trayDropdown] = freezeCount;
-
             }
             freezeCount = freezedTray[trayDropdown];
             buttonColor = Color.yellow;
@@ -491,6 +505,30 @@ public class LevelEditor : EditorWindow
             buttonText = "Freeze Tray";
         }
 
+        Color oldColor = GUI.backgroundColor;
+        GUI.backgroundColor = buttonColor;
+        if (GUILayout.Button(buttonText))
+        {
+            if (isFreezedTray)
+            {
+                freezedTray.Remove(trayDropdown);
+            }
+            else
+            {
+                freezeCount = 1;
+                freezedTray[trayDropdown] = freezeCount;
+            }
+        }
+        GUI.backgroundColor = oldColor;
+
+        // Re-enable GUI for remaining UI
+        GUI.enabled = true;
+        GUILayout.EndHorizontal();
+
+        // --- BUTTON ROW 2: Lock Horizontal & Lock Tray ---
+        GUILayout.BeginHorizontal();
+
+        // 1. Lock Horizontal Logic
         if (horizontalTrays.Contains(trayDropdown))
         {
             horizontalButton = "Unlock Horizontal";
@@ -502,27 +540,6 @@ public class LevelEditor : EditorWindow
             horizontalColor = Color.green;
         }
 
-        Color oldColor = GUI.backgroundColor;
-        GUI.backgroundColor = buttonColor;
-        if (GUILayout.Button(buttonText))
-        {
-            if (freezedTray.ContainsKey(trayDropdown))
-            {
-
-                freezedTray.Remove(trayDropdown);
-            }
-            else
-            {
-
-                freezeCount = 1;
-                freezedTray[trayDropdown] = freezeCount;
-
-            }
-        }
-        GUI.backgroundColor = oldColor;
-
-
-        GUILayout.EndHorizontal();
         GUI.backgroundColor = horizontalColor;
         if (GUILayout.Button(horizontalButton))
         {
@@ -534,14 +551,41 @@ public class LevelEditor : EditorWindow
             {
                 horizontalTrays.Add(trayDropdown);
             }
-
         }
+
+        // 2. Lock Tray Logic (Mutually exclusive: Can't lock if freezed)
+        GUI.enabled = !isFreezedTray;
+
+        if (isLockedTray)
+        {
+            lockedButtonText = "Unlock Tray";
+            lockedButtonColor = Color.red;
+        }
+        else
+        {
+            lockedButtonText = "Lock Tray";
+            lockedButtonColor = Color.green;
+        }
+
+        GUI.backgroundColor = lockedButtonColor;
+        if (GUILayout.Button(lockedButtonText))
+        {
+            if (isLockedTray)
+            {
+                lockedTray.Remove(trayDropdown);
+            }
+            else
+            {
+                lockedTray.Add(trayDropdown);
+            }
+        }
+
+        GUI.enabled = true;
         GUI.backgroundColor = oldColor;
-        GUILayout.BeginHorizontal();
-
-
-
         GUILayout.EndHorizontal();
+
+
+        // Render Bottom Grid Below
         totalGapWidth = (width - 1) * gap;
         totalGapHeight = (height - 1) * gap;
 
@@ -701,8 +745,6 @@ public class LevelEditor : EditorWindow
                     activeStyle = new GUIStyle(boldLabelStyle) { fontSize = 11 };
                 }
 
-
-
                 Color previousContentColor = GUI.contentColor;
                 GUI.contentColor = cellHasText ? GetContrastColor(cellBgColor) : Color.white;
 
@@ -738,6 +780,13 @@ public class LevelEditor : EditorWindow
                 {
                     tName += " ↑↓";
                 }
+
+                // Add suffix if the tray is in the locked state
+                if (lockedTray.Contains(kvp.Key))
+                {
+                    tName += " (Locked)";
+                }
+
                 GUI.Label(shadowRect, tName, overlayTrayStyle);
 
 
@@ -835,7 +884,7 @@ public class LevelEditor : EditorWindow
                 }
             }
         }
-        // Right Click to toggle Excluded Character (Primary) or Toggle Blocked State (Bottom)
+        // Right Click to toggle Excluded Character (Primary) or Toggle Blocked State / Asterisk (Bottom)
         else if (e.type == EventType.MouseDown && e.button == 1)
         {
             if (TryGetGridPosFromMouse(e.mousePosition, gridArea, gridRows, gridCols, out Vector2Int gridPos))
@@ -849,15 +898,29 @@ public class LevelEditor : EditorWindow
                 }
                 else
                 {
-                    // Bottom grid: only works on empty cells (no letter assigned)
                     bool isEmpty = !trayCells.ContainsKey(gridPos) || string.IsNullOrEmpty(trayCells[gridPos]);
 
                     if (isEmpty)
                     {
+                        // Empty cell: Right click toggles blocked cell state
                         if (blockedCells.Contains(gridPos))
                             blockedCells.Remove(gridPos);
                         else
                             blockedCells.Add(gridPos);
+                    }
+                    else
+                    {
+                        // Has letter: Right click appends/toggles a '*'
+                        string currentText = trayCells[gridPos];
+                        if (currentText.Length == 1)
+                        {
+                            trayCells[gridPos] = currentText + "*";
+                        }
+                        else if (currentText.Length == 2 && currentText.EndsWith("*"))
+                        {
+                            // Remove the '*' if the user right clicks again
+                            trayCells[gridPos] = currentText.Substring(0, 1);
+                        }
                     }
                 }
 
@@ -1145,11 +1208,12 @@ public class LevelEditor : EditorWindow
             .ToList();
 
         // 2. Collect characters typed in the bottom grid, splitting 2-character strings into individuals
+        // Strip out the asterisks when gathering typed characters
         List<string> bottomChars = trayCells
             .Where(kvp => !string.IsNullOrEmpty(kvp.Value))
             .OrderBy(kvp => kvp.Key.x)
             .ThenBy(kvp => kvp.Key.y)
-            .SelectMany(kvp => kvp.Value.Select(c => c.ToString()))
+            .SelectMany(kvp => kvp.Value.Replace("*", "").Select(c => c.ToString()))
             .ToList();
 
         List<string> extraCharsList = new List<string>();

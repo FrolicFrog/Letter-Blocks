@@ -19,17 +19,17 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private TopGridManager gridManager;
     [SerializeField] private BottomGridManager letterGridManager;
     [SerializeField] private ResultManager resultManager;
-    [SerializeField] private GameObject categoryHeading,arrow,freezeCount;
+    [SerializeField] private GameObject categoryHeading,arrow,freezeCount,Lock;
     [SerializeField] private Transform categoryHeadingParent,trayList;
     [SerializeField] private TextMeshProUGUI levelText,tutorialMsg;
-    [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial,trayOutlineMat,freezeTray,freezeBox;
+    [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial,trayOutlineMat,freezeTray,freezeBox,greyOut;
     [SerializeField] private List<KeyValueGroup<Material, Sprite>> colorSprite;
     [SerializeField] private FocusCutOut panel;
     [SerializeField] private Renderer halfArea;
     [SerializeField] private GameObject hand;
     [SerializeField] private TutorialPopup tutorialPopup;
     [SerializeField] private GameObject hardPanel,superHardPanel;
-    [SerializeField] private ParticleSystem effect;
+    [SerializeField] private ParticleSystem frostEffect,trayEffect;
     [SerializeField] private AudioClip unfreeze;
     [SerializeField] private GridLayoutTweener gridAnimator;
     [HideInInspector] public int TestLevelToLoad = 1;
@@ -49,7 +49,7 @@ public class LevelManager : Manager<LevelManager>
     public Dictionary<string, Material> categoryColors = new(),trayColors = new();
     public Dictionary<string, List<Vector2Int>> wordPositions = new(),trayPos = new();
     public Dictionary<string, List<string>> wordsCategory = new();
-    public HashSet<string> horizontal = new();
+    public HashSet<string> horizontal = new(),locked =new();
 
     [HideInInspector] public int hearts;
 
@@ -97,6 +97,7 @@ public class LevelManager : Manager<LevelManager>
         letterGridManager.screenPadding = _LevelData.bottomGridSize;
         freezedTray = _LevelData.freezedTray.ToDictionary(item => item.Key, item => item.Value);
         horizontal = _LevelData.horizontal.ToHashSet();
+        locked = _LevelData.lockedTray.ToHashSet();
         foreach (var item in CurLvlData.wordPositions)
         {
             wordPositions[item.Key] = new List<Vector2Int>( item.Value);
@@ -117,8 +118,12 @@ public class LevelManager : Manager<LevelManager>
 
         FreezeManager.trayMat = trayMaterial;
         FreezeManager.arrow = arrow;
-        FreezeManager.effect = effect;
+        FreezeManager.effect = frostEffect;
         FreezeManager.clip = unfreeze;
+
+        UnlockTray.arrow = arrow;
+        UnlockTray.trayMat = trayMaterial;
+        UnlockTray.effect = trayEffect;
     }
     void LoadInScene()
     {
@@ -332,6 +337,19 @@ public class LevelManager : Manager<LevelManager>
 
                
             }
+            else if(locked.Contains(tray))
+            {
+                var trayMesh = letterGridManager.CreateTray(trayPos[tray], 2.4f, greyOut, new Vector3(.995f, .988f, .988f), false);
+                trayMesh.layer = LayerMask.NameToLayer("Block");
+                var lockObj = Instantiate(Lock, trayMesh.transform).GetComponent<UnlockTray>();
+
+                lockObj.trayCells = trayCells;
+                lockObj.trayPos = trayPos[tray];
+                if (horizontal.Contains(tray))
+                {
+                    lockObj.horizontalLock = true;
+                }
+            }
             else
             {
               
@@ -431,6 +449,7 @@ public class LevelManager : Manager<LevelManager>
         freezedTray.Clear();
         trayPos.Clear();
         horizontal.Clear();
+        locked.Clear();
     }
 
     IEnumerator EnableUIHeading( bool instant,float time = 1.8f)

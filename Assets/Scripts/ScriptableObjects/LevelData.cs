@@ -17,4 +17,5 @@ public class LevelData : ScriptableObject
     public List<KeyValueGroup<string, int>> freezedTray = new();
     public List<KeyValueGroup<string, int>> firstCharPos = new();
     public Mode levelMode = Mode.Normal;
+    public List<string> lockedTray;
 }
