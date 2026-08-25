@@ -3154,10 +3154,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OriginalLvls:
     _min: 1
-    _max: 100
+    _max: 39
   FakeLvls:
-    _min: 1
-    _max: 100
+    _min: 10
+    _max: 38
   gridManager: {fileID: 1371688889}
   letterGridManager: {fileID: 1661794639}
   resultManager: {fileID: 1887342594}
@@ -3215,10 +3215,12 @@ MonoBehaviour:
   tutorialPopup: {fileID: 1100140744}
   hardPanel: {fileID: 540820769}
   superHardPanel: {fileID: 406231857}
-  effect: {fileID: 8170460312813454221, guid: 69e6c3150a29b6746814e6db01eead6e, type: 3}
+  frostEffect: {fileID: 8170460312813454221, guid: 69e6c3150a29b6746814e6db01eead6e,
+    type: 3}
+  trayEffect: {fileID: 19855088, guid: cc4edba986607ba48b17927b27d25e4e, type: 3}
   unfreeze: {fileID: 8300000, guid: 6c4768370c68a7340874edc1ae402191, type: 3}
   gridAnimator: {fileID: 1855233891}
-  TestLevelToLoad: 39
+  TestLevelToLoad: 8
   ticks: []
   hearts: 0
 --- !u!114 &558711660
@@ -5962,8 +5964,10 @@ MonoBehaviour:
   keySpeed: 25
   keyOffset: {x: 0, y: 0.0085, z: 0.0145}
   keyJumpPower: 18
-  keyTargetScale: 0.6
+  keyTargetScale: 1
   keyFlightDelay: 0.45
+  keyTurnDuration: 0.3
+  lockDestroyDuration: 0.3
   destructionDelay: 0.3
   popDuration: 0.1
   categoryUIParent: {fileID: 1855233887}
@@ -8574,7 +8578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e1e030db6db2e4c8501bbf659c2a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnvironmentMode: 0
+  EnvironmentMode: 1
 --- !u!114 &1887342594
 MonoBehaviour:
   m_ObjectHideFlags: 0

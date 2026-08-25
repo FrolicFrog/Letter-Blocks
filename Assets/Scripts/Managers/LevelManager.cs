@@ -21,7 +21,7 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private ResultManager resultManager;
     [SerializeField] private GameObject categoryHeading,arrow,freezeCount,Lock;
     [SerializeField] private Transform categoryHeadingParent,trayList;
-    [SerializeField] private TextMeshProUGUI levelText,tutorialMsg;
+    [SerializeField] private TextMeshProUGUI levelText, tutorialMsg;
     [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial,trayOutlineMat,freezeTray,freezeBox,greyOut;
     [SerializeField] private List<KeyValueGroup<Material, Sprite>> colorSprite;
     [SerializeField] private FocusCutOut panel;
@@ -68,9 +68,15 @@ public class LevelManager : Manager<LevelManager>
         if ((_LevelData == null || _CurrentLevelNumber > OriginalLvls.Max) && !GameManager.Instance.IsTestMode)
         {
             int LevelNumber = FakeLvls.GetRandom();
+
+            for(; tutorialPopup.group.Any(x => LevelNumber == x.Key);)
+            {
+                Debug.Log("Tutorial Level Skiped!");
+                LevelNumber = FakeLvls.GetRandom();
+            }
             _LevelData = Resources.Load<LevelData>($"Levels/{LevelNumber}");
         }
-        levelText.text = "Level: "+_LevelData.LevelNumber;
+        levelText.text = "Level: "+CurLevelNumber;
         hintManager = GetComponent<HintManager>();
         DataSetup();
         LoadInScene();
