@@ -3220,7 +3220,7 @@ MonoBehaviour:
   trayEffect: {fileID: 19855088, guid: cc4edba986607ba48b17927b27d25e4e, type: 3}
   unfreeze: {fileID: 8300000, guid: 6c4768370c68a7340874edc1ae402191, type: 3}
   gridAnimator: {fileID: 1855233891}
-  TestLevelToLoad: 8
+  TestLevelToLoad: 15
   ticks: []
   hearts: 0
 --- !u!114 &558711660
@@ -7408,6 +7408,7 @@ GameObject:
   - component: {fileID: 1661794640}
   - component: {fileID: 1661794641}
   - component: {fileID: 1661794639}
+  - component: {fileID: 1661794642}
   m_Layer: 0
   m_Name: LetterManager
   m_TagString: Untagged
@@ -7527,6 +7528,26 @@ MonoBehaviour:
   select: {fileID: 8300000, guid: 8380380647057dc48a615aef8e96e323, type: 3}
   deselect: {fileID: 8300000, guid: dcb30ec6b9b144940bc35ca76df13e3b, type: 3}
   snap: {fileID: 8300000, guid: 550bb3782a0c746429dc8bd64dc045bb, type: 3}
+--- !u!114 &1661794642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661794637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34426bb9abc553445b39dd90ccf96a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleTimeThreshold: 8
+  jumpHeight: 0.6
+  moveUpDuration: 0.2
+  stayUpDuration: 2.5
+  moveDownDuration: 0.2
+  staggerDelay: 0.2
+  vibrateStrength: 3
+  vibrateVibrato: 30
 --- !u!4 &1666533667 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 437938, guid: 9bcdb1b8180c1394ea37716601148607,
@@ -8653,7 +8674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e1e030db6db2e4c8501bbf659c2a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnvironmentMode: 1
+  EnvironmentMode: 0
 --- !u!114 &1887342594
 MonoBehaviour:
   m_ObjectHideFlags: 0
