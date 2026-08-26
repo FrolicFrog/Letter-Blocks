@@ -107,11 +107,15 @@ public class GlobalTrayDragger : MonoBehaviour
     }
 
     private List<BlockColliderData> pieceColliders = new List<BlockColliderData>();
-
+    public static GlobalTrayDragger Instance;
+    public bool IsDragging => currentlyDraggedParent != null;
     #endregion
 
     #region Unity Lifecycle
-
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         mainCam = Camera.main;
