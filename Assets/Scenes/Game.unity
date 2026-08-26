@@ -3154,10 +3154,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OriginalLvls:
     _min: 1
-    _max: 39
+    _max: 50
   FakeLvls:
     _min: 10
-    _max: 38
+    _max: 47
   gridManager: {fileID: 1371688889}
   letterGridManager: {fileID: 1661794639}
   resultManager: {fileID: 1887342594}
@@ -3220,7 +3220,7 @@ MonoBehaviour:
   trayEffect: {fileID: 19855088, guid: cc4edba986607ba48b17927b27d25e4e, type: 3}
   unfreeze: {fileID: 8300000, guid: 6c4768370c68a7340874edc1ae402191, type: 3}
   gridAnimator: {fileID: 1855233891}
-  TestLevelToLoad: 15
+  TestLevelToLoad: 5
   ticks: []
   hearts: 0
 --- !u!114 &558711660
@@ -7540,12 +7540,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34426bb9abc553445b39dd90ccf96a80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleTimeThreshold: 8
+  idleTimeThreshold: 5
   shineThresholdTime: 4
   shinePropertyName: _UseSweep
   jumpHeight: 0.6
   moveUpDuration: 0.2
-  stayUpDuration: 2.5
+  stayUpDuration: 0.5
   moveDownDuration: 0.2
   staggerDelay: 0.2
   vibrateStrength: 3
