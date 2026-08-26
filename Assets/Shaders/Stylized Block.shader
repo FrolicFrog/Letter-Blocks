@@ -19,6 +19,21 @@ Shader "Custom/StylizedBlockOptimizedTransparent"
         [Toggle] _Enable_Highlights ("Enable Rim Light", Float) = 1.0
         _RimColor ("Rim Color", Color) = (1.0, 1.0, 1.0, 0.5)
         _FresnelPower ("Fresnel Power", Range(0.1, 10.0)) = 3.0
+
+        [Header(Sweeping Reflection (Sheen))]
+        [Toggle] _UseSweep ("Enable Sweeping Reflection", Float) = 0.0 
+        [Toggle] _SweepStatic ("Static Sweep (No Movement)", Float) = 0.0
+        _SweepPosition ("Static Sweep Position", Range(-1.0, 2.0)) = 0.5
+        _SweepColor ("Sweep Color", Color) = (1.0, 1.0, 1.0, 0.6)
+        
+        // --- NEW START/END BOUNDS ---
+        _SweepStart ("Sweep Start Pos", Float) = 1.5
+        _SweepEnd ("Sweep End Pos", Float) = -0.5
+        
+        _SweepSpeed ("Sweep Speed", Range(0.1, 5.0)) = 1.5
+        _SweepDelay ("Sweep Delay (Seconds)", Range(0.0, 10.0)) = 0.0 
+        _SweepWidth ("Sweep Width", Range(0.01, 1.0)) = 0.2
+        _SweepAngle ("Sweep Angle", Range(0.0, 360.0)) = 45.0
     }
     SubShader
     {
@@ -46,6 +61,7 @@ Shader "Custom/StylizedBlockOptimizedTransparent"
             {
                 float4 vertex : POSITION;
                 float3 normal : NORMAL;
+                float2 uv : TEXCOORD0; 
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -54,6 +70,7 @@ Shader "Custom/StylizedBlockOptimizedTransparent"
                 float4 pos : SV_POSITION;
                 float3 worldNormal : TEXCOORD0;
                 float3 worldPos : TEXCOORD1;
+                float2 uv : TEXCOORD2; 
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -72,6 +89,20 @@ Shader "Custom/StylizedBlockOptimizedTransparent"
                 UNITY_DEFINE_INSTANCED_PROP(float, _Enable_Highlights)
                 UNITY_DEFINE_INSTANCED_PROP(float4, _RimColor)
                 UNITY_DEFINE_INSTANCED_PROP(float, _FresnelPower)
+
+                UNITY_DEFINE_INSTANCED_PROP(float, _UseSweep) 
+                UNITY_DEFINE_INSTANCED_PROP(float, _SweepStatic)
+                UNITY_DEFINE_INSTANCED_PROP(float, _SweepPosition)
+                UNITY_DEFINE_INSTANCED_PROP(float4, _SweepColor)
+                
+                // Registered new variables for instancing
+                UNITY_DEFINE_INSTANCED_PROP(float, _SweepStart)
+                UNITY_DEFINE_INSTANCED_PROP(float, _SweepEnd)
+                
+                UNITY_DEFINE_INSTANCED_PROP(float, _SweepSpeed)
+                UNITY_DEFINE_INSTANCED_PROP(float, _SweepDelay)
+                UNITY_DEFINE_INSTANCED_PROP(float, _SweepWidth)
+                UNITY_DEFINE_INSTANCED_PROP(float, _SweepAngle)
             UNITY_INSTANCING_BUFFER_END(Props)
 
             v2f vert (appdata v)
@@ -83,6 +114,7 @@ Shader "Custom/StylizedBlockOptimizedTransparent"
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.worldNormal = UnityObjectToWorldNormal(v.normal);
                 o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+                o.uv = v.uv; 
                 
                 return o;
             }
@@ -93,7 +125,6 @@ Shader "Custom/StylizedBlockOptimizedTransparent"
 
                 float3 normal = normalize(i.worldNormal);
                 
-                // Adaptive view direction for both Perspective and Orthographic cameras
                 float3 viewDir = (unity_OrthoParams.w == 1.0) 
                     ? -float3(unity_CameraToWorld._m02, unity_CameraToWorld._m12, unity_CameraToWorld._m22)
                     : normalize(_WorldSpaceCameraPos.xyz - i.worldPos);
@@ -101,7 +132,6 @@ Shader "Custom/StylizedBlockOptimizedTransparent"
                 float topMask = saturate(normal.y);
                 float bottomMask = saturate(-normal.y);
 
-                // Instanced Properties
                 float4 mainColor = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
                 float transparency = UNITY_ACCESS_INSTANCED_PROP(Props, _Transparency);
                 float sideDark = UNITY_ACCESS_INSTANCED_PROP(Props, _SideDarkness);
@@ -116,6 +146,20 @@ Shader "Custom/StylizedBlockOptimizedTransparent"
                 float enableHL = UNITY_ACCESS_INSTANCED_PROP(Props, _Enable_Highlights);
                 float4 rimColor = UNITY_ACCESS_INSTANCED_PROP(Props, _RimColor);
                 float fresnelPower = UNITY_ACCESS_INSTANCED_PROP(Props, _FresnelPower);
+
+                float useSweep = UNITY_ACCESS_INSTANCED_PROP(Props, _UseSweep); 
+                float sweepStatic = UNITY_ACCESS_INSTANCED_PROP(Props, _SweepStatic);
+                float sweepPos = UNITY_ACCESS_INSTANCED_PROP(Props, _SweepPosition);
+                float4 sweepColor = UNITY_ACCESS_INSTANCED_PROP(Props, _SweepColor);
+                
+                // Fetching bounds
+                float sweepStart = UNITY_ACCESS_INSTANCED_PROP(Props, _SweepStart);
+                float sweepEnd = UNITY_ACCESS_INSTANCED_PROP(Props, _SweepEnd);
+                
+                float sweepSpeed = UNITY_ACCESS_INSTANCED_PROP(Props, _SweepSpeed);
+                float sweepDelay = UNITY_ACCESS_INSTANCED_PROP(Props, _SweepDelay); 
+                float sweepWidth = UNITY_ACCESS_INSTANCED_PROP(Props, _SweepWidth);
+                float sweepAngle = UNITY_ACCESS_INSTANCED_PROP(Props, _SweepAngle);
 
                 float baseAlpha = mainColor.a * transparency;
 
@@ -139,8 +183,28 @@ Shader "Custom/StylizedBlockOptimizedTransparent"
                 float fresnel = pow(1.0f - nDotV, fresnelPower); 
                 float3 rimContribution = rimColor.rgb * (fresnel * rimColor.a * enableHL);
 
+                // --- 4. Sweeping Reflection (Sheen) ---
+                float sweepRad = sweepAngle * 0.0174533f;
+                float rotatedUV = i.uv.x * cos(sweepRad) + i.uv.y * sin(sweepRad);
+                
+                float sweepActiveDuration = 1.0 / max(sweepSpeed, 0.0001); 
+                float sweepTotalDuration = sweepActiveDuration + sweepDelay;
+                
+                float sweepLocalTime = fmod(_Time.y, sweepTotalDuration);
+                float sweepProgress = saturate(sweepLocalTime / sweepActiveDuration);
+
+                // FIXED: We now use lerp to move exactly from the Start Pos to the End Pos
+                float animatedPhase = lerp(sweepStart, sweepEnd, sweepProgress); 
+                
+                float sweepPhase = lerp(animatedPhase, sweepPos, sweepStatic);
+                
+                float sweepDist = abs(rotatedUV - sweepPhase);
+                float sweepIntensityEffect = smoothstep(sweepWidth, 0.0, sweepDist);
+                
+                float3 sweepContribution = sweepColor.rgb * (sweepIntensityEffect * sweepColor.a * useSweep * topMask); 
+
                 // Combine RGB & Alpha cleanly
-                float3 finalRgb = baseRgb + shineContribution + rimContribution;
+                float3 finalRgb = baseRgb + shineContribution + rimContribution + sweepContribution;
                 float finalAlpha = saturate(baseAlpha + (fresnel * rimColor.a * enableHL * 0.5));
 
                 return float4(finalRgb, finalAlpha);
