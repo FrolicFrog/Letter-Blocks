@@ -7465,7 +7465,7 @@ MonoBehaviour:
   mainCamera: {fileID: 330585545}
   floorHeight: 0
   screenPadding: 0.081
-  bottomScreenPadding: 0
+  bottomScreenPadding: 0.085
   topBoundaryReserved: 0.557
   wallBevelSize: 0.08
   wallBevelSmoothness: 3
@@ -7541,6 +7541,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleTimeThreshold: 8
+  shineThresholdTime: 4
+  shinePropertyName: _UseSweep
   jumpHeight: 0.6
   moveUpDuration: 0.2
   stayUpDuration: 2.5

@@ -11,68 +11,93 @@ public class IdleHintManager : MonoBehaviour
     [Tooltip("Time in seconds before the hint animation plays.")]
     public float idleTimeThreshold = 8f;
 
+    [Header("Shine Settings")]
+    [Tooltip("Time in seconds before the material shine activates.")]
+    public float shineThresholdTime = 4f;
+    [Tooltip("The exact variable name in your shader to toggle (e.g., _UseSweep).")]
+    public string shinePropertyName = "_UseSweep";
+
     [Header("Animation Settings")]
     public float jumpHeight = 0.5f;
-    [Tooltip("How long it takes to travel up.")]
     public float moveUpDuration = 0.2f;
-    [Tooltip("How long it stays hovering in the up position.")]
     public float stayUpDuration = 0.15f;
-    [Tooltip("How long it takes to fall back down.")]
     public float moveDownDuration = 0.2f;
     public float staggerDelay = 0.1f;
 
     [Header("Vibration Settings")]
-    [Tooltip("How much the letter wiggles/vibrates while up (Z-axis rotation).")]
     public float vibrateStrength = 8f;
-    [Tooltip("How fast the vibration shakes.")]
     public int vibrateVibrato = 15;
 
     private float idleTimer = 0f;
     private bool isAnimating = false;
+    private bool isShining = false;
 
-    // Track state to instantly reset if the user interrupts
     private Dictionary<Transform, Vector3> originalPositions = new Dictionary<Transform, Vector3>();
     private Dictionary<Transform, Quaternion> originalRotations = new Dictionary<Transform, Quaternion>();
-
-    // Explicitly track active sequences to forcefully kill them
     private List<Sequence> activeSequences = new List<Sequence>();
+
+    private List<Transform> shiningTiles = new List<Transform>();
+    private MaterialPropertyBlock propBlock;
+
+    // Specific tracking to avoid killing the wrong coroutines
+    private Coroutine animationCoroutine;
+    private Coroutine gracefulCancelCoroutine;
+
+    private void Awake()
+    {
+        propBlock = new MaterialPropertyBlock();
+    }
 
     private void Update()
     {
         // If the user touches the screen or drags a tray
         if (Input.GetMouseButton(0) || Input.touchCount > 0 || (GlobalTrayDragger.Instance != null && GlobalTrayDragger.Instance.IsDragging))
         {
-            // Instantly abort the animation and sit the letters down if it was running
-            if (isAnimating)
-            {
-                CancelHintAnimation();
-            }
-
-            idleTimer = 0f;
+            ResetAllIdleHints();
             return;
         }
 
-        // Only tick the timer if we aren't currently animating and no grid processing is happening
-        if (!isAnimating && (WordChecker.instance == null || !WordChecker.instance.isProcessing))
+        // Only tick the timer if no grid processing is happening
+        if (WordChecker.instance == null || !WordChecker.instance.isProcessing)
         {
             idleTimer += Time.deltaTime;
 
-            if (idleTimer >= idleTimeThreshold)
+            // Trigger Shine Phase
+            if (idleTimer >= shineThresholdTime && !isShining)
+            {
+                TriggerShineHint();
+            }
+
+            // Trigger Animation Phase
+            if (idleTimer >= idleTimeThreshold && !isAnimating)
             {
                 TriggerIdleHint();
-                idleTimer = 0f; // Reset so it waits before repeating
+                idleTimer = 0f;
             }
         }
     }
 
-    private void TriggerIdleHint()
+    private void ResetAllIdleHints()
+    {
+        if (isAnimating) CancelHintAnimation();
+
+        // Only trigger graceful cancel if it's shining and not already cancelling
+        if (isShining && gracefulCancelCoroutine == null)
+        {
+            gracefulCancelCoroutine = StartCoroutine(CancelShineGracefullyRoutine());
+        }
+
+        idleTimer = 0f;
+    }
+
+    // --- Core Logic: Find the right tiles to hint ---
+    private List<Transform> GetTargetTiles()
     {
         var grid = TopGridManager.instance;
         var lvl = LevelManager.Instance;
 
-        if (grid == null || lvl == null) return;
+        if (grid == null || lvl == null) return new List<Transform>();
 
-        // 1. Find missing letters in the last 3 rows of the TOP grid
         Dictionary<string, int> neededLettersCount = new Dictionary<string, int>();
         int startRow = Mathf.Max(0, grid.rows - 3);
 
@@ -85,68 +110,46 @@ public class IdleHintManager : MonoBehaviour
                 if (lvl.excludedChar.Contains(key) && lvl.cellTexts.ContainsKey(key))
                 {
                     string letter = lvl.cellTexts[key].Trim().ToUpper().Replace("\u200B", "");
-
-                    if (!neededLettersCount.ContainsKey(letter))
-                        neededLettersCount[letter] = 0;
-
+                    if (!neededLettersCount.ContainsKey(letter)) neededLettersCount[letter] = 0;
                     neededLettersCount[letter]++;
                 }
             }
         }
 
-        if (neededLettersCount.Count == 0) return;
+        if (neededLettersCount.Count == 0) return new List<Transform>();
 
-        // 2. Gather all valid candidate tiles across ALL Procedural_Trays
         List<Transform> candidateTiles = new List<Transform>();
-
-        if (transform.name.Contains("Procedural_Tray"))
-        {
-            GatherTilesFromTray(transform, candidateTiles, neededLettersCount);
-        }
+        if (transform.name.Contains("Procedural_Tray")) GatherTilesFromTray(transform, candidateTiles, neededLettersCount);
         else
         {
             foreach (Transform child in transform)
             {
-                if (child.name.Contains("Procedural_Tray"))
-                {
-                    GatherTilesFromTray(child, candidateTiles, neededLettersCount);
-                }
+                if (child.name.Contains("Procedural_Tray")) GatherTilesFromTray(child, candidateTiles, neededLettersCount);
             }
         }
 
-        if (candidateTiles.Count == 0) return;
+        if (candidateTiles.Count == 0) return new List<Transform>();
 
-        // 3. Sort tiles: Highest Z first, then lowest X (Left to Right)
         candidateTiles.Sort((a, b) =>
         {
             float zDiff = b.position.z - a.position.z;
-            if (Mathf.Abs(zDiff) > 0.05f)
-            {
-                return zDiff.CompareTo(0f);
-            }
-
+            if (Mathf.Abs(zDiff) > 0.05f) return zDiff.CompareTo(0f);
             float xDiff = a.position.x - b.position.x;
             return xDiff.CompareTo(0f);
         });
 
-        // 4. Select exactly the required amount of tiles based on the sorted list
-        List<Transform> finalTilesToAnimate = new List<Transform>();
+        List<Transform> finalTiles = new List<Transform>();
         foreach (Transform tile in candidateTiles)
         {
             string letter = tile.GetComponentInChildren<TextMeshPro>(true).text.Trim().ToUpper().Replace("\u200B", "");
-
             if (neededLettersCount.ContainsKey(letter) && neededLettersCount[letter] > 0)
             {
-                finalTilesToAnimate.Add(tile);
+                finalTiles.Add(tile);
                 neededLettersCount[letter]--;
             }
         }
 
-        // 5. Play staggered DOTween animation
-        if (finalTilesToAnimate.Count > 0)
-        {
-            StartCoroutine(AnimateTilesRoutine(finalTilesToAnimate));
-        }
+        return finalTiles;
     }
 
     private void GatherTilesFromTray(Transform tray, List<Transform> candidateTiles, Dictionary<string, int> neededLettersCount)
@@ -159,12 +162,105 @@ public class IdleHintManager : MonoBehaviour
             if (tmp != null)
             {
                 string letter = tmp.text.Trim().ToUpper().Replace("\u200B", "");
-
                 if (neededLettersCount.ContainsKey(letter) && neededLettersCount[letter] > 0)
                 {
                     candidateTiles.Add(tile);
                 }
             }
+        }
+    }
+
+    // --- Shine Logic ---
+    private void TriggerShineHint()
+    {
+        List<Transform> tilesToShine = GetTargetTiles();
+        if (tilesToShine.Count == 0) return;
+
+        isShining = true;
+        shiningTiles.Clear();
+
+        // Stop graceful cancel if a new shine starts
+        if (gracefulCancelCoroutine != null)
+        {
+            StopCoroutine(gracefulCancelCoroutine);
+            gracefulCancelCoroutine = null;
+        }
+
+        foreach (Transform tile in tilesToShine)
+        {
+            Renderer r = tile.GetComponent<Renderer>();
+            if (r != null)
+            {
+                r.GetPropertyBlock(propBlock);
+                propBlock.SetFloat(shinePropertyName, 1f);
+                r.SetPropertyBlock(propBlock);
+                shiningTiles.Add(tile);
+            }
+        }
+    }
+
+    private IEnumerator CancelShineGracefullyRoutine()
+    {
+        // 1. Find the first valid shining tile to read the material properties
+        Transform validTile = shiningTiles.FirstOrDefault(t => t != null);
+
+        if (validTile != null)
+        {
+            Renderer r = validTile.GetComponent<Renderer>();
+            if (r != null && r.sharedMaterial != null)
+            {
+                // Replicate the math done inside the shader
+                float sweepSpeed = r.sharedMaterial.HasProperty("_SweepSpeed") ? r.sharedMaterial.GetFloat("_SweepSpeed") : 1.5f;
+                float sweepDelay = r.sharedMaterial.HasProperty("_SweepDelay") ? r.sharedMaterial.GetFloat("_SweepDelay") : 0f;
+
+                float activeDuration = 1.0f / Mathf.Max(sweepSpeed, 0.0001f);
+                float totalDuration = activeDuration + sweepDelay;
+
+                // _Time.y in Unity corresponds exactly to Time.time
+                float currentCycleTime = Time.time % totalDuration;
+
+                // If we are currently in the active sweeping portion, wait until it finishes
+                if (currentCycleTime < activeDuration)
+                {
+                    float remainingTime = activeDuration - currentCycleTime;
+                    yield return new WaitForSeconds(remainingTime);
+                }
+            }
+        }
+
+        // 2. Shut off the shine immediately after the sweep finishes
+        CancelShine();
+    }
+
+    private void CancelShine()
+    {
+        foreach (Transform tile in shiningTiles)
+        {
+            if (tile != null) // Null check in case the tile was destroyed while waiting
+            {
+                Renderer r = tile.GetComponent<Renderer>();
+                if (r != null)
+                {
+                    r.GetPropertyBlock(propBlock);
+                    propBlock.SetFloat(shinePropertyName, 0f);
+                    r.SetPropertyBlock(propBlock);
+                }
+            }
+        }
+        shiningTiles.Clear();
+        isShining = false;
+        gracefulCancelCoroutine = null;
+    }
+
+    // --- Animation Logic ---
+    private void TriggerIdleHint()
+    {
+        List<Transform> finalTilesToAnimate = GetTargetTiles();
+
+        if (finalTilesToAnimate.Count > 0)
+        {
+            if (animationCoroutine != null) StopCoroutine(animationCoroutine);
+            animationCoroutine = StartCoroutine(AnimateTilesRoutine(finalTilesToAnimate));
         }
     }
 
@@ -182,39 +278,27 @@ public class IdleHintManager : MonoBehaviour
             Transform tile = tiles[i];
             if (tile == null) continue;
 
-            // Save state so we can restore it if interrupted
             originalPositions[tile] = tile.localPosition;
             originalRotations[tile] = tile.localRotation;
 
             float delay = i * staggerDelay;
             float animDuration = moveUpDuration + stayUpDuration + moveDownDuration;
 
-            // Link the sequence AND set the target explicitly
             Sequence seq = DOTween.Sequence().SetLink(tile.gameObject).SetTarget(tile);
-            activeSequences.Add(seq); // Track it so we can slaughter it later
+            activeSequences.Add(seq);
 
             seq.AppendInterval(delay);
-
-            // Move up
             seq.Append(tile.DOLocalMoveY(originalPositions[tile].y + jumpHeight, moveUpDuration).SetEase(Ease.OutQuad));
-
-            // Hover and Vibrate
             seq.Append(tile.DOShakeRotation(stayUpDuration, new Vector3(0, 0, vibrateStrength), vibrateVibrato, 90, false));
-
-            // Ensure rotation is perfectly flat before coming down
             seq.Append(tile.DOLocalRotateQuaternion(originalRotations[tile], 0f));
-
-            // Move back down
             seq.Append(tile.DOLocalMoveY(originalPositions[tile].y, moveDownDuration).SetEase(Ease.InQuad));
 
             float timeToFinish = delay + animDuration;
             if (timeToFinish > totalAnimTime) totalAnimTime = timeToFinish;
         }
 
-        // Wait for all animations to finish before resetting
         yield return new WaitForSeconds(totalAnimTime);
 
-        // Clear dictionaries cleanly if animation finishes uninterrupted
         if (isAnimating)
         {
             originalPositions.Clear();
@@ -226,10 +310,13 @@ public class IdleHintManager : MonoBehaviour
 
     private void CancelHintAnimation()
     {
-        // 1. Stop the coroutine from firing off any more logic
-        StopAllCoroutines();
+        // Only stop the specific animation coroutine to avoid killing the graceful shader cancel
+        if (animationCoroutine != null)
+        {
+            StopCoroutine(animationCoroutine);
+            animationCoroutine = null;
+        }
 
-        // 2. Forcefully kill all active sequences
         foreach (var seq in activeSequences)
         {
             if (seq != null && seq.IsActive())
@@ -239,12 +326,11 @@ public class IdleHintManager : MonoBehaviour
         }
         activeSequences.Clear();
 
-        // 3. Instantly snap tiles back to their saved origin
         foreach (var tile in originalPositions.Keys)
         {
             if (tile != null)
             {
-                tile.DOKill(); // Catch any stray tweens on the transform itself
+                tile.DOKill();
                 tile.localPosition = originalPositions[tile];
                 tile.localRotation = originalRotations[tile];
             }
