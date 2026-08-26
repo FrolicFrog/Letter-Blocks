@@ -5436,7 +5436,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Take the inner letter first to unlock the one below!
+  m_text: Take the outer letter first to unlock the one below!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d57abb355db601a4ab2bad99e3d0db5d, type: 2}
   m_sharedMaterial: {fileID: -8220972855079185405, guid: d57abb355db601a4ab2bad99e3d0db5d,
