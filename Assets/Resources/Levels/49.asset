@@ -21,12 +21,8 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
-  - SOLAR
-  - SHEET
-  - WIND
-  - HEAT
   - BRACELET
   - SARDINE
   - CHEMICAL
@@ -50,7 +46,28 @@ MonoBehaviour:
   - THERMAL
   tray:
   - Tray 1
-  horizontal: []
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
+  - Tray 11
+  - Tray 12
+  - Tray 13
+  - Tray 14
+  - Tray 15
+  - Tray 16
+  - Tray 17
+  - Tray 18
+  - Tray 19
+  - Tray 20
+  horizontal:
+  - Tray 1
+  - Tray 2
   excludedChar:
   - {x: 29, y: 5}
   - {x: 26, y: 3}
@@ -63,8 +80,6 @@ MonoBehaviour:
   - {x: 15, y: 6}
   - {x: 12, y: 5}
   - {x: 12, y: 7}
-  - {x: 9, y: 7}
-  - {x: 7, y: 3}
   - {x: 28, y: 2}
   - {x: 25, y: 5}
   - {x: 14, y: 5}
@@ -78,7 +93,6 @@ MonoBehaviour:
   - {x: 17, y: 4}
   - {x: 13, y: 1}
   - {x: 13, y: 5}
-  - {x: 8, y: 2}
   - {x: 24, y: 5}
   - {x: 21, y: 5}
   - {x: 21, y: 7}
@@ -87,28 +101,8 @@ MonoBehaviour:
   - {x: 14, y: 2}
   - {x: 11, y: 1}
   - {x: 11, y: 4}
-  - {x: 9, y: 1}
   blockedCells: []
   wordCategory:
-  - Key: Energy
-    Value:
-    - SOLAR
-    - WIND
-    - HEAT
-    - CHEMICAL
-    - KINETIC
-    - RADIATION
-    - ELECTRIC
-    - NUCLEAR
-    - THERMAL
-  - Key: Paper
-    Value:
-    - SHEET
-    - CARDBOARD
-    - FLYER
-    - POSTER
-    - JOURNAL
-    - LETTER
   - Key: Hand Accessories
     Value:
     - BRACELET
@@ -123,6 +117,21 @@ MonoBehaviour:
     - OYSTER
     - OCTOPUS
     - CAVIAR
+  - Key: Energy
+    Value:
+    - CHEMICAL
+    - KINETIC
+    - RADIATION
+    - ELECTRIC
+    - NUCLEAR
+    - THERMAL
+  - Key: Paper
+    Value:
+    - CARDBOARD
+    - FLYER
+    - POSTER
+    - JOURNAL
+    - LETTER
   cellCategory:
   - Key: {x: 29, y: 2}
     Value: Energy
@@ -215,32 +224,6 @@ MonoBehaviour:
   - Key: {x: 12, y: 7}
     Value: Energy
   - Key: {x: 12, y: 8}
-    Value: Energy
-  - Key: {x: 9, y: 0}
-    Value: Energy
-  - Key: {x: 9, y: 2}
-    Value: Energy
-  - Key: {x: 9, y: 1}
-    Value: Energy
-  - Key: {x: 9, y: 5}
-    Value: Energy
-  - Key: {x: 9, y: 3}
-    Value: Energy
-  - Key: {x: 9, y: 6}
-    Value: Energy
-  - Key: {x: 9, y: 7}
-    Value: Energy
-  - Key: {x: 9, y: 8}
-    Value: Energy
-  - Key: {x: 7, y: 2}
-    Value: Energy
-  - Key: {x: 7, y: 3}
-    Value: Energy
-  - Key: {x: 7, y: 4}
-    Value: Energy
-  - Key: {x: 7, y: 5}
-    Value: Energy
-  - Key: {x: 7, y: 6}
     Value: Energy
   - Key: {x: 28, y: 1}
     Value: Hand Accessories
@@ -353,16 +336,6 @@ MonoBehaviour:
   - Key: {x: 13, y: 7}
     Value: Paper
   - Key: {x: 13, y: 8}
-    Value: Paper
-  - Key: {x: 8, y: 1}
-    Value: Paper
-  - Key: {x: 8, y: 2}
-    Value: Paper
-  - Key: {x: 8, y: 3}
-    Value: Paper
-  - Key: {x: 8, y: 4}
-    Value: Paper
-  - Key: {x: 8, y: 5}
     Value: Paper
   - Key: {x: 24, y: 1}
     Value: Seafoods
@@ -531,32 +504,6 @@ MonoBehaviour:
     Value: A
   - Key: {x: 12, y: 8}
     Value: L
-  - Key: {x: 9, y: 0}
-    Value: W
-  - Key: {x: 9, y: 2}
-    Value: N
-  - Key: {x: 9, y: 1}
-    Value: I
-  - Key: {x: 9, y: 5}
-    Value: H
-  - Key: {x: 9, y: 3}
-    Value: D
-  - Key: {x: 9, y: 6}
-    Value: E
-  - Key: {x: 9, y: 7}
-    Value: A
-  - Key: {x: 9, y: 8}
-    Value: T
-  - Key: {x: 7, y: 2}
-    Value: S
-  - Key: {x: 7, y: 3}
-    Value: O
-  - Key: {x: 7, y: 4}
-    Value: L
-  - Key: {x: 7, y: 5}
-    Value: A
-  - Key: {x: 7, y: 6}
-    Value: R
   - Key: {x: 28, y: 1}
     Value: W
   - Key: {x: 28, y: 2}
@@ -669,16 +616,6 @@ MonoBehaviour:
     Value: R
   - Key: {x: 13, y: 8}
     Value: D
-  - Key: {x: 8, y: 1}
-    Value: S
-  - Key: {x: 8, y: 2}
-    Value: H
-  - Key: {x: 8, y: 3}
-    Value: E
-  - Key: {x: 8, y: 4}
-    Value: E
-  - Key: {x: 8, y: 5}
-    Value: T
   - Key: {x: 24, y: 1}
     Value: C
   - Key: {x: 24, y: 2}
@@ -753,8 +690,136 @@ MonoBehaviour:
     Value: N
   - Key: {x: 11, y: 6}
     Value: E
-  trayCells: []
-  trayName: []
+  trayCells:
+  - Key: {x: 4, y: 0}
+    Value: A
+  - Key: {x: 5, y: 0}
+    Value: A
+  - Key: {x: 2, y: 5}
+    Value: R
+  - Key: {x: 3, y: 5}
+    Value: U
+  - Key: {x: 5, y: 2}
+    Value: E
+  - Key: {x: 5, y: 3}
+    Value: R
+  - Key: {x: 5, y: 4}
+    Value: T
+  - Key: {x: 5, y: 5}
+    Value: Y*
+  - Key: {x: 4, y: 5}
+    Value: I
+  - Key: {x: 4, y: 4}
+    Value: I
+  - Key: {x: 4, y: 3}
+    Value: I
+  - Key: {x: 5, y: 1}
+    Value: N
+  - Key: {x: 4, y: 1}
+    Value: E
+  - Key: {x: 4, y: 2}
+    Value: N
+  - Key: {x: 3, y: 0}
+    Value: W
+  - Key: {x: 3, y: 1}
+    Value: A
+  - Key: {x: 3, y: 2}
+    Value: A
+  - Key: {x: 3, y: 4}
+    Value: C
+  - Key: {x: 3, y: 3}
+    Value: O
+  - Key: {x: 2, y: 4}
+    Value: O
+  - Key: {x: 2, y: 3}
+    Value: A
+  - Key: {x: 2, y: 0}
+    Value: A
+  - Key: {x: 2, y: 1}
+    Value: A
+  - Key: {x: 2, y: 2}
+    Value: A
+  - Key: {x: 1, y: 0}
+    Value: E
+  - Key: {x: 1, y: 1}
+    Value: E
+  - Key: {x: 1, y: 5}
+    Value: I
+  - Key: {x: 1, y: 4}
+    Value: I
+  - Key: {x: 1, y: 3}
+    Value: E
+  - Key: {x: 1, y: 2}
+    Value: O
+  - Key: {x: 0, y: 0}
+    Value: U
+  - Key: {x: 0, y: 1}
+    Value: A
+  trayName:
+  - Key: {x: 4, y: 0}
+    Value: Tray 1
+  - Key: {x: 5, y: 0}
+    Value: Tray 1
+  - Key: {x: 2, y: 5}
+    Value: Tray 2
+  - Key: {x: 3, y: 5}
+    Value: Tray 2
+  - Key: {x: 5, y: 2}
+    Value: Tray 3
+  - Key: {x: 5, y: 3}
+    Value: Tray 3
+  - Key: {x: 5, y: 4}
+    Value: Tray 3
+  - Key: {x: 5, y: 5}
+    Value: Tray 4
+  - Key: {x: 4, y: 5}
+    Value: Tray 5
+  - Key: {x: 4, y: 4}
+    Value: Tray 5
+  - Key: {x: 4, y: 3}
+    Value: Tray 5
+  - Key: {x: 5, y: 1}
+    Value: Tray 6
+  - Key: {x: 4, y: 1}
+    Value: Tray 6
+  - Key: {x: 4, y: 2}
+    Value: Tray 6
+  - Key: {x: 3, y: 0}
+    Value: Tray 7
+  - Key: {x: 3, y: 1}
+    Value: Tray 7
+  - Key: {x: 3, y: 2}
+    Value: Tray 7
+  - Key: {x: 3, y: 4}
+    Value: Tray 8
+  - Key: {x: 3, y: 3}
+    Value: Tray 8
+  - Key: {x: 2, y: 4}
+    Value: Tray 8
+  - Key: {x: 2, y: 3}
+    Value: Tray 8
+  - Key: {x: 2, y: 0}
+    Value: Tray 9
+  - Key: {x: 2, y: 1}
+    Value: Tray 9
+  - Key: {x: 2, y: 2}
+    Value: Tray 9
+  - Key: {x: 1, y: 0}
+    Value: Tray 10
+  - Key: {x: 1, y: 1}
+    Value: Tray 10
+  - Key: {x: 1, y: 5}
+    Value: Tray 11
+  - Key: {x: 1, y: 4}
+    Value: Tray 11
+  - Key: {x: 1, y: 3}
+    Value: Tray 12
+  - Key: {x: 1, y: 2}
+    Value: Tray 12
+  - Key: {x: 0, y: 0}
+    Value: Tray 13
+  - Key: {x: 0, y: 1}
+    Value: Tray 14
   categoryColors:
   - Key: Neck Accessories
     Value: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
@@ -768,32 +833,6 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: 13f0ddb7219acc64a8cc34a292a1b695, type: 2}
   trayColors: []
   wordPositions:
-  - Key: SOLAR
-    Value:
-    - {x: 7, y: 2}
-    - {x: 7, y: 3}
-    - {x: 7, y: 4}
-    - {x: 7, y: 5}
-    - {x: 7, y: 6}
-  - Key: SHEET
-    Value:
-    - {x: 8, y: 1}
-    - {x: 8, y: 2}
-    - {x: 8, y: 3}
-    - {x: 8, y: 4}
-    - {x: 8, y: 5}
-  - Key: WIND
-    Value:
-    - {x: 9, y: 0}
-    - {x: 9, y: 1}
-    - {x: 9, y: 2}
-    - {x: 9, y: 3}
-  - Key: HEAT
-    Value:
-    - {x: 9, y: 5}
-    - {x: 9, y: 6}
-    - {x: 9, y: 7}
-    - {x: 9, y: 8}
   - Key: BRACELET
     Value:
     - {x: 10, y: 1}
@@ -977,14 +1016,6 @@ MonoBehaviour:
     - {x: 29, y: 8}
   freezedTray: []
   firstCharPos:
-  - Key: SOLAR
-    Value: 2
-  - Key: SHEET
-    Value: 1
-  - Key: WIND
-    Value: 0
-  - Key: HEAT
-    Value: 5
   - Key: BRACELET
     Value: 1
   - Key: SARDINE
@@ -1028,3 +1059,5 @@ MonoBehaviour:
   - Key: THERMAL
     Value: 2
   levelMode: 0
+  lockedTray:
+  - Tray 3

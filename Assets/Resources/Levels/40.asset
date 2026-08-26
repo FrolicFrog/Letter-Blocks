@@ -21,7 +21,7 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - PLANE
   - BIKE
@@ -31,6 +31,15 @@ MonoBehaviour:
   - CAR
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
   horizontal: []
   excludedChar:
   - {x: 29, y: 4}
@@ -152,8 +161,36 @@ MonoBehaviour:
     Value: N
   - Key: {x: 24, y: 6}
     Value: E
-  trayCells: []
-  trayName: []
+  trayCells:
+  - Key: {x: 3, y: 1}
+    Value: U
+  - Key: {x: 4, y: 1}
+    Value: I
+  - Key: {x: 4, y: 2}
+    Value: E
+  - Key: {x: 3, y: 2}
+    Value: N
+  - Key: {x: 3, y: 4}
+    Value: A*
+  - Key: {x: 5, y: 3}
+    Value: U
+  - Key: {x: 5, y: 4}
+    Value: I
+  trayName:
+  - Key: {x: 3, y: 1}
+    Value: Tray 1
+  - Key: {x: 4, y: 1}
+    Value: Tray 1
+  - Key: {x: 4, y: 2}
+    Value: Tray 1
+  - Key: {x: 3, y: 2}
+    Value: Tray 1
+  - Key: {x: 3, y: 4}
+    Value: Tray 2
+  - Key: {x: 5, y: 3}
+    Value: Tray 3
+  - Key: {x: 5, y: 4}
+    Value: Tray 3
   categoryColors:
   - Key: Vehicles
     Value: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
@@ -211,4 +248,5 @@ MonoBehaviour:
   - Key: CAR
     Value: 3
   levelMode: 0
-  lockedTray: []
+  lockedTray:
+  - Tray 1

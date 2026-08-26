@@ -16,12 +16,12 @@ MonoBehaviour:
   LevelNumber: 46
   rows: 30
   columns: 9
-  height: 6
-  width: 6
+  height: 8
+  width: 8
   minutes: 1
   seconds: 30
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 0}
+  categoryMaterial: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
   words:
   - PERSIAN
   - SAUNA
@@ -29,8 +29,7 @@ MonoBehaviour:
   - KHAKI
   - SIAMESE
   - BUCKET
-  - SP
-  - YNX
+  - SPHYNX
   - DETOX
   - EXOTIC
   - MAROON
@@ -54,6 +53,23 @@ MonoBehaviour:
   - Tray 1
   - Tray 2
   - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
+  - Tray 11
+  - Tray 12
+  - Tray 13
+  - Tray 14
+  - Tray 15
+  - Tray 16
+  - Tray 17
+  - Tray 18
+  - Tray 19
+  - Tray 20
   horizontal: []
   excludedChar:
   - {x: 29, y: 2}
@@ -82,8 +98,8 @@ MonoBehaviour:
   - {x: 13, y: 1}
   - {x: 12, y: 7}
   - {x: 11, y: 4}
-  - {x: 10, y: 2}
   - {x: 10, y: 5}
+  - {x: 10, y: 2}
   - {x: 8, y: 5}
   - {x: 9, y: 4}
   - {x: 16, y: 1}
@@ -98,8 +114,7 @@ MonoBehaviour:
     - PERSIAN
     - BIRMAN
     - SIAMESE
-    - SP
-    - YNX
+    - SPHYNX
     - EXOTIC
     - BENGAL
     - BRITISH
@@ -360,7 +375,7 @@ MonoBehaviour:
   - Key: {x: 11, y: 3}
     Value: Cat Breeds
   - Key: {x: 11, y: 4}
-    Value: Colors
+    Value: Cat Breeds
   - Key: {x: 11, y: 5}
     Value: Cat Breeds
   - Key: {x: 11, y: 6}
@@ -751,27 +766,147 @@ MonoBehaviour:
   - Key: {x: 6, y: 7}
     Value: A
   trayCells:
-  - Key: {x: 2, y: 2}
-    Value: M
-  - Key: {x: 2, y: 3}
+  - Key: {x: 5, y: 4}
     Value: A
-  - Key: {x: 4, y: 1}
-    Value: O
-  - Key: {x: 5, y: 1}
+  - Key: {x: 5, y: 3}
+    Value: E
+  - Key: {x: 4, y: 4}
+    Value: C
+  - Key: {x: 7, y: 2}
     Value: B
-  - Key: {x: 3, y: 5}
-    Value: E*
-  trayName:
-  - Key: {x: 2, y: 2}
-    Value: Tray 1
-  - Key: {x: 2, y: 3}
-    Value: Tray 1
+  - Key: {x: 4, y: 3}
+    Value: A
+  - Key: {x: 7, y: 3}
+    Value: U
+  - Key: {x: 7, y: 4}
+    Value: L
+  - Key: {x: 7, y: 5}
+    Value: O
+  - Key: {x: 7, y: 6}
+    Value: G
+  - Key: {x: 7, y: 7}
+    Value: R
+  - Key: {x: 6, y: 7}
+    Value: X
+  - Key: {x: 7, y: 1}
+    Value: I
+  - Key: {x: 5, y: 0}
+    Value: I
+  - Key: {x: 6, y: 0}
+    Value: M
+  - Key: {x: 7, y: 0}
+    Value: H
   - Key: {x: 4, y: 1}
-    Value: Tray 3
-  - Key: {x: 5, y: 1}
-    Value: Tray 3
+    Value: E
+  - Key: {x: 3, y: 1}
+    Value: I
+  - Key: {x: 3, y: 2}
+    Value: A
+  - Key: {x: 4, y: 6}
+    Value: I
+  - Key: {x: 3, y: 6}
+    Value: U
   - Key: {x: 3, y: 5}
+    Value: M
+  - Key: {x: 6, y: 4}
+    Value: C
+  - Key: {x: 6, y: 3}
+    Value: O
+  - Key: {x: 3, y: 7}
+    Value: S*
+  - Key: {x: 2, y: 7}
+    Value: S
+  - Key: {x: 3, y: 0}
+    Value: I
+  - Key: {x: 2, y: 0}
+    Value: I
+  - Key: {x: 2, y: 2}
+    Value: S
+  - Key: {x: 2, y: 3}
+    Value: E
+  - Key: {x: 2, y: 5}
+    Value: O
+  - Key: {x: 2, y: 4}
+    Value: E
+  - Key: {x: 1, y: 0}
+    Value: T
+  - Key: {x: 1, y: 1}
+    Value: H
+  - Key: {x: 1, y: 7}
+    Value: X
+  - Key: {x: 1, y: 6}
+    Value: E
+  trayName:
+  - Key: {x: 5, y: 4}
+    Value: Tray 1
+  - Key: {x: 5, y: 3}
+    Value: Tray 1
+  - Key: {x: 4, y: 4}
+    Value: Tray 1
+  - Key: {x: 7, y: 2}
     Value: Tray 2
+  - Key: {x: 4, y: 3}
+    Value: Tray 1
+  - Key: {x: 7, y: 3}
+    Value: Tray 2
+  - Key: {x: 7, y: 4}
+    Value: Tray 2
+  - Key: {x: 7, y: 5}
+    Value: Tray 3
+  - Key: {x: 7, y: 6}
+    Value: Tray 3
+  - Key: {x: 7, y: 7}
+    Value: Tray 3
+  - Key: {x: 6, y: 7}
+    Value: Tray 3
+  - Key: {x: 7, y: 1}
+    Value: Tray 4
+  - Key: {x: 5, y: 0}
+    Value: Tray 4
+  - Key: {x: 6, y: 0}
+    Value: Tray 4
+  - Key: {x: 7, y: 0}
+    Value: Tray 4
+  - Key: {x: 4, y: 1}
+    Value: Tray 5
+  - Key: {x: 3, y: 1}
+    Value: Tray 5
+  - Key: {x: 3, y: 2}
+    Value: Tray 5
+  - Key: {x: 4, y: 6}
+    Value: Tray 6
+  - Key: {x: 3, y: 6}
+    Value: Tray 6
+  - Key: {x: 3, y: 5}
+    Value: Tray 6
+  - Key: {x: 6, y: 4}
+    Value: Tray 7
+  - Key: {x: 6, y: 3}
+    Value: Tray 8
+  - Key: {x: 3, y: 7}
+    Value: Tray 9
+  - Key: {x: 2, y: 7}
+    Value: Tray 9
+  - Key: {x: 3, y: 0}
+    Value: Tray 10
+  - Key: {x: 2, y: 0}
+    Value: Tray 10
+  - Key: {x: 2, y: 2}
+    Value: Tray 11
+  - Key: {x: 2, y: 3}
+    Value: Tray 11
+  - Key: {x: 2, y: 5}
+    Value: Tray 12
+  - Key: {x: 2, y: 4}
+    Value: Tray 12
+  - Key: {x: 1, y: 0}
+    Value: Tray 13
+  - Key: {x: 1, y: 1}
+    Value: Tray 13
+  - Key: {x: 1, y: 7}
+    Value: Tray 14
+  - Key: {x: 1, y: 6}
+    Value: Tray 14
   categoryColors:
   - Key: Self Care
     Value: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
@@ -831,12 +966,11 @@ MonoBehaviour:
     - {x: 10, y: 4}
     - {x: 10, y: 5}
     - {x: 10, y: 6}
-  - Key: SP
+  - Key: SPHYNX
     Value:
     - {x: 11, y: 2}
     - {x: 11, y: 3}
-  - Key: YNX
-    Value:
+    - {x: 11, y: 4}
     - {x: 11, y: 5}
     - {x: 11, y: 6}
     - {x: 11, y: 7}
@@ -1005,10 +1139,8 @@ MonoBehaviour:
     Value: 1
   - Key: BUCKET
     Value: 1
-  - Key: SP
+  - Key: SPHYNX
     Value: 2
-  - Key: YNX
-    Value: 5
   - Key: DETOX
     Value: 3
   - Key: EXOTIC

@@ -20,8 +20,8 @@ MonoBehaviour:
   width: 6
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
+  bottomGridSize: 0.1
+  categoryMaterial: {fileID: 0}
   words:
   - HERBAL
   - COCOA
@@ -34,6 +34,15 @@ MonoBehaviour:
   - TEAPOT
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
   horizontal: []
   excludedChar:
   - {x: 28, y: 2}
@@ -295,8 +304,64 @@ MonoBehaviour:
     Value: A
   - Key: {x: 21, y: 8}
     Value: L
-  trayCells: []
-  trayName: []
+  trayCells:
+  - Key: {x: 4, y: 1}
+    Value: E
+  - Key: {x: 4, y: 2}
+    Value: H
+  - Key: {x: 4, y: 3}
+    Value: A
+  - Key: {x: 5, y: 5}
+    Value: A*
+  - Key: {x: 5, y: 0}
+    Value: O
+  - Key: {x: 5, y: 1}
+    Value: U
+  - Key: {x: 2, y: 3}
+    Value: I
+  - Key: {x: 3, y: 3}
+    Value: U
+  - Key: {x: 3, y: 4}
+    Value: E
+  - Key: {x: 2, y: 1}
+    Value: C
+  - Key: {x: 3, y: 1}
+    Value: E
+  - Key: {x: 3, y: 0}
+    Value: A
+  - Key: {x: 5, y: 3}
+    Value: I
+  - Key: {x: 5, y: 4}
+    Value: E
+  trayName:
+  - Key: {x: 4, y: 1}
+    Value: Tray 1
+  - Key: {x: 4, y: 2}
+    Value: Tray 1
+  - Key: {x: 4, y: 3}
+    Value: Tray 1
+  - Key: {x: 5, y: 5}
+    Value: Tray 2
+  - Key: {x: 5, y: 0}
+    Value: Tray 3
+  - Key: {x: 5, y: 1}
+    Value: Tray 3
+  - Key: {x: 2, y: 3}
+    Value: Tray 4
+  - Key: {x: 3, y: 3}
+    Value: Tray 4
+  - Key: {x: 3, y: 4}
+    Value: Tray 4
+  - Key: {x: 2, y: 1}
+    Value: Tray 5
+  - Key: {x: 3, y: 1}
+    Value: Tray 5
+  - Key: {x: 3, y: 0}
+    Value: Tray 5
+  - Key: {x: 5, y: 3}
+    Value: Tray 6
+  - Key: {x: 5, y: 4}
+    Value: Tray 6
   categoryColors:
   - Key: Tea
     Value: {fileID: 2100000, guid: 8b87ebf1389369047aa066d289a5e84c, type: 2}
@@ -400,4 +465,5 @@ MonoBehaviour:
   - Key: TEAPOT
     Value: 2
   levelMode: 0
-  lockedTray: []
+  lockedTray:
+  - Tray 1

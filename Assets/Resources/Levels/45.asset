@@ -16,12 +16,12 @@ MonoBehaviour:
   LevelNumber: 45
   rows: 30
   columns: 9
-  height: 6
+  height: 7
   width: 6
   minutes: 1
   seconds: 30
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - BEAR
   - DIVIDE
@@ -52,6 +52,30 @@ MonoBehaviour:
   - PANCAKE
   tray:
   - Tray 1
+  - Tray 2
+  - Tray 3
+  - Tray 4
+  - Tray 5
+  - Tray 6
+  - Tray 7
+  - Tray 8
+  - Tray 9
+  - Tray 10
+  - Tray 11
+  - Tray 12
+  - Tray 13
+  - Tray 14
+  - Tray 15
+  - Tray 16
+  - Tray 17
+  - Tray 18
+  - Tray 19
+  - Tray 20
+  - Tray 21
+  - Tray 22
+  - Tray 23
+  - Tray 24
+  - Tray 25
   horizontal: []
   excludedChar:
   - {x: 29, y: 2}
@@ -91,7 +115,8 @@ MonoBehaviour:
   - {x: 6, y: 5}
   - {x: 4, y: 2}
   - {x: 5, y: 4}
-  blockedCells: []
+  blockedCells:
+  - {x: 3, y: 2}
   wordCategory:
   - Key: Forest
     Value:
@@ -754,8 +779,156 @@ MonoBehaviour:
     Value: D
   - Key: {x: 5, y: 6}
     Value: E
-  trayCells: []
-  trayName: []
+  trayCells:
+  - Key: {x: 2, y: 2}
+    Value: A
+  - Key: {x: 2, y: 1}
+    Value: A
+  - Key: {x: 3, y: 1}
+    Value: A
+  - Key: {x: 2, y: 3}
+    Value: E
+  - Key: {x: 2, y: 4}
+    Value: E
+  - Key: {x: 3, y: 4}
+    Value: E
+  - Key: {x: 3, y: 0}
+    Value: U
+  - Key: {x: 4, y: 0}
+    Value: O
+  - Key: {x: 4, y: 1}
+    Value: E
+  - Key: {x: 3, y: 5}
+    Value: U
+  - Key: {x: 4, y: 5}
+    Value: I
+  - Key: {x: 4, y: 4}
+    Value: E
+  - Key: {x: 5, y: 0}
+    Value: L
+  - Key: {x: 6, y: 0}
+    Value: T
+  - Key: {x: 5, y: 5}
+    Value: A
+  - Key: {x: 6, y: 5}
+    Value: A
+  - Key: {x: 5, y: 1}
+    Value: M
+  - Key: {x: 6, y: 1}
+    Value: N
+  - Key: {x: 6, y: 2}
+    Value: E
+  - Key: {x: 6, y: 3}
+    Value: A
+  - Key: {x: 6, y: 4}
+    Value: N
+  - Key: {x: 5, y: 4}
+    Value: I
+  - Key: {x: 4, y: 3}
+    Value: A*
+  - Key: {x: 3, y: 3}
+    Value: H
+  - Key: {x: 5, y: 2}
+    Value: U
+  - Key: {x: 2, y: 0}
+    Value: R
+  - Key: {x: 2, y: 5}
+    Value: L
+  - Key: {x: 5, y: 3}
+    Value: U
+  - Key: {x: 1, y: 0}
+    Value: U
+  - Key: {x: 1, y: 1}
+    Value: F
+  - Key: {x: 1, y: 2}
+    Value: A
+  - Key: {x: 1, y: 3}
+    Value: O
+  - Key: {x: 1, y: 4}
+    Value: D
+  - Key: {x: 1, y: 5}
+    Value: P
+  - Key: {x: 0, y: 2}
+    Value: R
+  - Key: {x: 0, y: 4}
+    Value: O
+  - Key: {x: 0, y: 0}
+    Value: U
+  trayName:
+  - Key: {x: 2, y: 2}
+    Value: Tray 1
+  - Key: {x: 2, y: 1}
+    Value: Tray 1
+  - Key: {x: 3, y: 1}
+    Value: Tray 1
+  - Key: {x: 2, y: 3}
+    Value: Tray 2
+  - Key: {x: 2, y: 4}
+    Value: Tray 2
+  - Key: {x: 3, y: 4}
+    Value: Tray 2
+  - Key: {x: 3, y: 0}
+    Value: Tray 3
+  - Key: {x: 4, y: 0}
+    Value: Tray 3
+  - Key: {x: 4, y: 1}
+    Value: Tray 3
+  - Key: {x: 3, y: 5}
+    Value: Tray 4
+  - Key: {x: 4, y: 5}
+    Value: Tray 4
+  - Key: {x: 4, y: 4}
+    Value: Tray 4
+  - Key: {x: 5, y: 0}
+    Value: Tray 5
+  - Key: {x: 6, y: 0}
+    Value: Tray 5
+  - Key: {x: 5, y: 5}
+    Value: Tray 6
+  - Key: {x: 6, y: 5}
+    Value: Tray 6
+  - Key: {x: 5, y: 1}
+    Value: Tray 7
+  - Key: {x: 6, y: 1}
+    Value: Tray 7
+  - Key: {x: 6, y: 2}
+    Value: Tray 7
+  - Key: {x: 6, y: 3}
+    Value: Tray 8
+  - Key: {x: 6, y: 4}
+    Value: Tray 8
+  - Key: {x: 5, y: 4}
+    Value: Tray 8
+  - Key: {x: 4, y: 3}
+    Value: Tray 9
+  - Key: {x: 3, y: 3}
+    Value: Tray 10
+  - Key: {x: 5, y: 2}
+    Value: Tray 11
+  - Key: {x: 2, y: 0}
+    Value: Tray 12
+  - Key: {x: 2, y: 5}
+    Value: Tray 13
+  - Key: {x: 5, y: 3}
+    Value: Tray 14
+  - Key: {x: 1, y: 0}
+    Value: Tray 15
+  - Key: {x: 1, y: 1}
+    Value: Tray 16
+  - Key: {x: 1, y: 2}
+    Value: Tray 17
+  - Key: {x: 1, y: 3}
+    Value: Tray 18
+  - Key: {x: 1, y: 4}
+    Value: Tray 19
+  - Key: {x: 1, y: 5}
+    Value: Tray 20
+  - Key: {x: 0, y: 2}
+    Value: Tray 21
+  - Key: {x: 0, y: 4}
+    Value: Tray 22
+  - Key: {x: 0, y: 0}
+    Value: Tray 23
   categoryColors:
   - Key: Maths
     Value: {fileID: 2100000, guid: 5b66d3f57dd990b4a9ae9feff5b144fc, type: 2}
@@ -1034,3 +1207,5 @@ MonoBehaviour:
   - Key: PANCAKE
     Value: 1
   levelMode: 0
+  lockedTray:
+  - Tray 1

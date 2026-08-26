@@ -108,10 +108,10 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _ShineAngle: 203
-    - _ShineSize: 0.076
-    - _ShineSoftness: 0.152
-    - _SideDarkness: 0.422
+    - _ShineAngle: 351
+    - _ShineSize: 0.172
+    - _ShineSoftness: 0.244
+    - _SideDarkness: 0.416
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -123,7 +123,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 0.6606155, b: 0, a: 1}
+    - _Color: {r: 1, g: 0.59836286, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 0.5}
     - _ShineColor: {r: 1, g: 1, b: 1, a: 0.4}
