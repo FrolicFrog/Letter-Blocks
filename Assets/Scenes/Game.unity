@@ -3682,7 +3682,7 @@ MonoBehaviour:
   trayEffect: {fileID: 19855088, guid: cc4edba986607ba48b17927b27d25e4e, type: 3}
   unfreeze: {fileID: 8300000, guid: 6c4768370c68a7340874edc1ae402191, type: 3}
   gridAnimator: {fileID: 1855233891}
-  TestLevelToLoad: 11
+  TestLevelToLoad: 25
   ticks: []
   hearts: 0
 --- !u!114 &558711660
@@ -6982,7 +6982,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Make letters to break the ice!
+  m_text: Make words to break the ice!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d57abb355db601a4ab2bad99e3d0db5d, type: 2}
   m_sharedMaterial: {fileID: -8220972855079185405, guid: d57abb355db601a4ab2bad99e3d0db5d,
@@ -9731,7 +9731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e1e030db6db2e4c8501bbf659c2a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnvironmentMode: 0
+  EnvironmentMode: 1
 --- !u!114 &1887342594
 MonoBehaviour:
   m_ObjectHideFlags: 0
