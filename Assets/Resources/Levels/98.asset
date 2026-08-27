@@ -30,24 +30,13 @@ MonoBehaviour:
   horizontal:
   - Tray 2
   excludedChar: []
-  blockedCells: []
+  blockedCells:
+  - {x: 3, y: 3}
   wordCategory: []
   cellCategory: []
   cellTexts: []
-  trayCells:
-  - Key: {x: 1, y: 1}
-    Value: AB
-  - Key: {x: 4, y: 4}
-    Value: A
-  - Key: {x: 7, y: 1}
-    Value: A
-  trayName:
-  - Key: {x: 1, y: 1}
-    Value: Tray 1
-  - Key: {x: 4, y: 4}
-    Value: Tray 2
-  - Key: {x: 7, y: 1}
-    Value: Tray 3
+  trayCells: []
+  trayName: []
   categoryColors: []
   trayColors: []
   wordPositions: []
@@ -55,3 +44,5 @@ MonoBehaviour:
   - Key: Tray 3
     Value: 1
   firstCharPos: []
+  levelMode: 0
+  lockedTray: []

@@ -12,7 +12,7 @@ public class FreezeManager : MonoBehaviour
     [HideInInspector] public bool horizontalLock = false;
     public static ParticleSystem effect;
     public static Material trayMat;
-    public static GameObject arrow;
+
     public static AudioClip clip;
     public static List<FreezeManager> instances = new List<FreezeManager>();
     void Start()
@@ -35,12 +35,21 @@ public class FreezeManager : MonoBehaviour
                 
                 if (instance.horizontalLock)
                 {
-                
-                    BottomGridManager.Instance.CreateTray(instance.trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, instance.trayCells,true).tag = "Vertical";
+
+                    var letterContainer = BottomGridManager.Instance.CreateTray(instance.trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, instance.trayCells, true);
+                    letterContainer.tag = "Vertical";
+                    var ts = letterContainer.AddComponent<TraySpliter>();
+                    ts.trayCells = instance.trayCells;
+                    ts.trayPos = instance.trayPos;
+                    ts.horizontalLock = instance.horizontalLock;
                 }
                 else
                 {
-                    BottomGridManager.Instance.CreateTray(instance.trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, instance.trayCells);
+                    var letterContainer = BottomGridManager.Instance.CreateTray(instance.trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, instance.trayCells);
+                    var ts = letterContainer.AddComponent<TraySpliter>();
+                    ts.trayCells = instance.trayCells;
+                    ts.trayPos = instance.trayPos;
+                    ts.horizontalLock = instance.horizontalLock;
                 }
                 Instantiate(effect, instance.transform.position+new Vector3(0,5,0),Quaternion.identity);
                 AudioSource.PlayClipAtPoint(clip, Vector3.up);

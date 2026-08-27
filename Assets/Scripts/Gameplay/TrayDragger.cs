@@ -1,9 +1,12 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class GlobalTrayDragger : MonoBehaviour
 {
@@ -74,6 +77,8 @@ public class GlobalTrayDragger : MonoBehaviour
     public GameObject Panel, Hand;
     [Header("Debug")]
     [Tooltip("Draw wireframes of the physics overlap checks in the Scene view while dragging.")]
+
+    public List<Toggle> powerUps;
     public bool showPhysicsGizmos = true;
     public ParticleSystem effect;
 
@@ -144,11 +149,25 @@ public class GlobalTrayDragger : MonoBehaviour
         {
             if (hit.transform.parent != null && (hit.transform.name.Contains("Tile letter") || hit.transform.name.Contains("Double Letter")))
             {
+
+               
                 currentlyDraggedParent = hit.transform.parent;
             }
             else
             {
                 currentlyDraggedParent = hit.transform;
+            }
+           
+            if(powerUps.Any(x=>x.isOn))
+            {
+                PowerUpManager.Instance.HammerSmash(powerUps[0].gameObject, currentlyDraggedParent.gameObject);
+                if (currentlyDraggedParent.TryGetComponent<TraySpliter>(out TraySpliter ts))
+                {
+                    ts.Split();
+                }
+                currentlyDraggedParent = null;
+                Debug.Log("Button Pressed");
+                return;
             }
 
             if (currentlyDraggedParent != null)

@@ -489,13 +489,43 @@ public class BottomGridManager : MonoBehaviour
         return minDist;
     }
 
-    public GameObject CreateTray(List<Vector2Int> gridPos, float wallHeight, Material trayMaterial, Vector3 scale, bool openTray = true, Dictionary<Vector2Int, string> charcter = null, bool enableArrows = false)
+    // --- MAIN GENERATION ROUTER ---
+    public GameObject CreateTray(List<Vector2Int> gridPos, float wallHeight, Material trayMaterial, Vector3 scale, bool openTray = true, Dictionary<Vector2Int, string> charcter = null, bool enableArrows = false, bool individualTray = false)
     {
         ArrangeChildren();
 
         if (grid == null) grid = GetComponent<Grid>();
         if (grid == null || gridPos == null || gridPos.Count == 0) return null;
 
+        // If true, build a 1x1 tray for EVERY vector in the list as independent siblings
+        if (individualTray)
+        {
+            GameObject firstTray = null;
+
+            foreach (Vector2Int pos in gridPos)
+            {
+                // GenerateTrayInternal already sets the parent to this.transform (BottomGridManager)
+                GameObject singleTray = GenerateTrayInternal(new List<Vector2Int> { pos }, wallHeight, trayMaterial, scale, openTray, charcter, enableArrows);
+
+                // Store the first one to satisfy the GameObject return type
+                if (firstTray == null)
+                {
+                    firstTray = singleTray;
+                }
+            }
+
+            return firstTray;
+        }
+        else
+        {
+            // Standard generation mapping all points as a single shape
+            return GenerateTrayInternal(gridPos, wallHeight, trayMaterial, scale, openTray, charcter, enableArrows);
+        }
+    }
+
+    // --- INTERNAL WORKER METHOD ---
+    private GameObject GenerateTrayInternal(List<Vector2Int> gridPos, float wallHeight, Material trayMaterial, Vector3 scale, bool openTray, Dictionary<Vector2Int, string> charcter, bool enableArrows)
+    {
         float floorThickness = 0.1f;
         float maxBevel = Mathf.Min(wallThickness / 2f, wallHeight / 2f) * 0.95f;
         float bevel = Mathf.Clamp(wallBevelSize, 0f, maxBevel);
@@ -656,7 +686,6 @@ public class BottomGridManager : MonoBehaviour
 
         for (int i = 0; i < boundCount; i++)
         {
-            // Pack Start (x,y) and End (z,w) of the segment into a Vector4
             boundaryArray[i] = new Vector4(
                 boundarySegments[i].Item1.x,
                 boundarySegments[i].Item1.y,
@@ -673,7 +702,6 @@ public class BottomGridManager : MonoBehaviour
         MeshCollider mc = trayObj.AddComponent<MeshCollider>();
         mc.sharedMesh = proceduralMesh;
 
-        // Reset tray to perfectly match the cell size boundaries on the floor
         trayObj.transform.localScale = scale;
 
         // --- 5. Spawn Letters Based on Dictionary ---
@@ -690,26 +718,22 @@ public class BottomGridManager : MonoBehaviour
                     Vector3 letterLocalPos = CellLocalPos(gridX, gridY);
                     letterLocalPos.y += floorThickness;
 
-                    // 1. Calculate wall interference by checking for neighboring cells
                     bool hasTop = shape.Contains(p + Vector2Int.up);
                     bool hasRight = shape.Contains(p + Vector2Int.right);
                     bool hasBottom = shape.Contains(p + Vector2Int.down);
                     bool hasLeft = shape.Contains(p + Vector2Int.left);
 
-                    // 2. Determine available inner space inside the procedural tray walls
                     float availWidth = cellWidth - (hasLeft ? 0 : wallThickness) - (hasRight ? 0 : wallThickness);
                     float availDepth = cellDepth - (hasBottom ? 0 : wallThickness) - (hasTop ? 0 : wallThickness);
 
-                    // 3. Shift the center position away from any existing outer walls
                     float offsetX = ((hasLeft ? 0 : wallThickness) - (hasRight ? 0 : wallThickness)) / 2f;
                     float offsetZ = ((hasBottom ? 0 : wallThickness) - (hasTop ? 0 : wallThickness)) / 2f;
 
                     letterLocalPos.x += offsetX;
                     letterLocalPos.z += offsetZ;
 
-                    // --- Clean the string and determine prefab type ---
                     bool isKeyLetter = textValue.Contains("*");
-                    string cleanText = textValue.Replace("*", ""); // Strips out the asterisk
+                    string cleanText = textValue.Replace("*", "");
 
                     GameObject prefabToInstantiate = null;
                     bool isDoubleLetter = false;
@@ -733,29 +757,23 @@ public class BottomGridManager : MonoBehaviour
                     GameObject instantiatedLetter = Instantiate(prefabToInstantiate, trayObj.transform);
                     instantiatedLetter.transform.localPosition = letterLocalPos;
 
-                    // 4. Scale the letter block proportionally so it dynamically fits without overlapping
                     Vector3 baseScale = prefabToInstantiate.transform.localScale;
                     instantiatedLetter.transform.localScale = new Vector3(
                         baseScale.x * (availWidth / cellWidth),
-                        baseScale.y, // Preserve original Y height to keep blocks flat
+                        baseScale.y,
                         baseScale.z * (availDepth / cellDepth)
                     );
 
-                    // --- Handle Text Assignment ---
                     if (isDoubleLetter && cleanText.Length >= 2)
                     {
-                        // Target "Text 0" based on hierarchy
                         Transform text0Transform = instantiatedLetter.transform.Find("Text 0");
                         if (text0Transform != null)
                         {
                             TMP_Text tmp0 = text0Transform.GetComponent<TMP_Text>();
                             if (tmp0 != null) tmp0.text = cleanText[0].ToString();
-
-                            // Disable the Text 0 GameObject
                             text0Transform.gameObject.SetActive(false);
                         }
 
-                        // Target "Text 1" within "Tile letter" based on hierarchy
                         Transform text1Transform = instantiatedLetter.transform.Find("Tile letter/Text 1");
                         if (text1Transform != null)
                         {
@@ -763,12 +781,11 @@ public class BottomGridManager : MonoBehaviour
                             if (tmp1 != null) tmp1.text = cleanText[1].ToString();
                         }
                     }
-                    else // For single letter or keyLetter
+                    else
                     {
                         TMP_Text textMesh = instantiatedLetter.GetComponentInChildren<TMP_Text>();
                         if (textMesh != null)
                         {
-                            // Assign ONLY the first character (meaning the letter without the '*')
                             textMesh.text = cleanText.Length > 0 ? cleanText[0].ToString() : "";
                         }
                         else
@@ -783,7 +800,6 @@ public class BottomGridManager : MonoBehaviour
         // --- 6. Spawn Directional Arrows at Extents ---
         if (enableArrows && arrowPrefab != null)
         {
-            // Calculate exact 2D bounds of the tray's cell boundaries in local space
             float minX = float.MaxValue, maxX = float.MinValue;
             float minZ = float.MaxValue, maxZ = float.MinValue;
 
@@ -796,17 +812,15 @@ public class BottomGridManager : MonoBehaviour
             }
 
             float midX = (minX + maxX) / 2f;
-            float arrowY = floorThickness; // Lie flat, just above the floor base
+            float arrowY = floorThickness;
 
-            // Top Arrow
             GameObject topArrow = Instantiate(arrowPrefab, trayObj.transform);
             topArrow.transform.localPosition = new Vector3(midX, arrowY, maxZ + wallThickness + arrowOffset);
-            topArrow.transform.localRotation = Quaternion.identity; // Assumes your prefab points naturally forward/up (+Z)
+            topArrow.transform.localRotation = Quaternion.identity;
 
-            // Bottom Arrow
             GameObject bottomArrow = Instantiate(arrowPrefab, trayObj.transform);
             bottomArrow.transform.localPosition = new Vector3(midX, arrowY, minZ - wallThickness - arrowOffset);
-            bottomArrow.transform.localRotation = Quaternion.Euler(0, 180, 0); // Rotate 180 on Y so it points downward (-Z)
+            bottomArrow.transform.localRotation = Quaternion.Euler(0, 180, 0);
         }
 
         return trayObj;

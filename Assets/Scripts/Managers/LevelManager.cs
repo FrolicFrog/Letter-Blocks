@@ -123,13 +123,15 @@ public class LevelManager : Manager<LevelManager>
 
 
         FreezeManager.trayMat = trayMaterial;
-        FreezeManager.arrow = arrow;
+ 
         FreezeManager.effect = frostEffect;
         FreezeManager.clip = unfreeze;
 
         UnlockTray.arrow = arrow;
         UnlockTray.trayMat = trayMaterial;
         UnlockTray.effect = trayEffect;
+
+        TraySpliter.trayMat = trayMaterial;
     }
     void LoadInScene()
     {
@@ -361,18 +363,27 @@ public class LevelManager : Manager<LevelManager>
               
                 if (horizontal.Contains(tray))
                 {
-                    letterGridManager.CreateTray(trayPos[tray], 2.4f, trayMaterial, new Vector3(.995f, .988f, .988f), true, trayCells,true).tag = "Vertical";
-                  //  Instantiate(arrow,trayMesh.transform);
+                   var letterContainer = letterGridManager.CreateTray(trayPos[tray], 2.4f, trayMaterial, new Vector3(.995f, .988f, .988f), true, trayCells, true);
+                    letterContainer.tag = "Vertical";
+                    var ts=letterContainer.AddComponent<TraySpliter>();
+                    ts.trayCells = trayCells;
+                    ts.trayPos = trayPos[tray];
+                    ts.horizontalLock = horizontal.Contains(tray);
+                    //  Instantiate(arrow,trayMesh.transform);
                 }
                 else
                 {
-                   var let = letterGridManager.CreateTray(trayPos[tray], 2.4f, trayMaterial, new Vector3(.995f, .988f, .988f), true, trayCells);
+                   var letterContainer = letterGridManager.CreateTray(trayPos[tray], 2.4f, trayMaterial, new Vector3(.995f, .988f, .988f), true, trayCells);
+                    var ts = letterContainer.AddComponent<TraySpliter>();
+                    ts.trayCells = trayCells;
+                    ts.trayPos = trayPos[tray];
+                    ts.horizontalLock = horizontal.Contains(tray);
                     if (_CurrentLevelNumber == 1)
                     {
                         if (trayCells[trayPos[tray][0]] == "N")
                         {
                             hand.gameObject.SetActive(true);
-                            let.AddComponent<MoveBack>().objectToMove = hand.transform;
+                            letterContainer.AddComponent<MoveBack>().objectToMove = hand.transform;
                         }
                     }
                   

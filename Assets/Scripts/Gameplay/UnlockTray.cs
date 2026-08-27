@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class UnlockTray : MonoBehaviour
@@ -17,11 +19,21 @@ public class UnlockTray : MonoBehaviour
         if (horizontalLock)
         {
 
-            BottomGridManager.Instance.CreateTray(trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, trayCells, true).tag = "Vertical";
+
+            var letterContainer = BottomGridManager.Instance.CreateTray(trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, trayCells, true);
+            letterContainer.tag = "Vertical";
+            var ts = letterContainer.AddComponent<TraySpliter>();
+            ts.trayCells = trayCells;
+            ts.trayPos =trayPos;
+            ts.horizontalLock = horizontalLock;
         }
         else
         {
-            BottomGridManager.Instance.CreateTray(trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, trayCells);
+            var letterContainer = BottomGridManager.Instance.CreateTray(trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, trayCells);
+            var ts = letterContainer.AddComponent<TraySpliter>();
+            ts.trayCells = trayCells;
+            ts.trayPos = trayPos;
+            ts.horizontalLock = horizontalLock;
         }
         Instantiate(effect, transform.position+ new Vector3(0,3,0), Quaternion.identity).gameObject.transform.localScale = Vector3.one*3f;
       
