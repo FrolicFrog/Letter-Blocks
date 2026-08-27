@@ -469,13 +469,13 @@ MonoBehaviour:
   - Key: {x: 3, y: 2}
     Value: F
   - Key: {x: 3, y: 3}
-    Value: R
+    Value: D
   - Key: {x: 5, y: 0}
     Value: A
   - Key: {x: 4, y: 0}
     Value: O
   - Key: {x: 2, y: 2}
-    Value: E
+    Value: O
   - Key: {x: 2, y: 1}
     Value: I
   - Key: {x: 2, y: 0}
@@ -497,11 +497,11 @@ MonoBehaviour:
   - Key: {x: 5, y: 1}
     Value: T
   - Key: {x: 6, y: 0}
-    Value: D
-  - Key: {x: 6, y: 1}
-    Value: O
-  - Key: {x: 6, y: 2}
     Value: B
+  - Key: {x: 6, y: 1}
+    Value: E
+  - Key: {x: 6, y: 2}
+    Value: R
   trayName:
   - Key: {x: 2, y: 3}
     Value: Tray 2
@@ -712,3 +712,5 @@ MonoBehaviour:
     Value: 1
   - Key: CAT
     Value: 5
+  levelMode: 0
+  lockedTray: []

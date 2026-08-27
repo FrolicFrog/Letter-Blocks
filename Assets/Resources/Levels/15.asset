@@ -1118,10 +1118,6 @@ MonoBehaviour:
   freezedTray:
   - Key: Tray 3
     Value: 4
-  - Key: Tray 2
-    Value: 5
-  - Key: Tray 1
-    Value: 6
   firstCharPos:
   - Key: HORSE
     Value: 2
@@ -1177,4 +1173,5 @@ MonoBehaviour:
     Value: 0
   - Key: DIAMOND
     Value: 1
-  levelMode: 2
+  levelMode: 0
+  lockedTray: []

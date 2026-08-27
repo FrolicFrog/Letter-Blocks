@@ -468,7 +468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fillImage: {fileID: 1296285324}
   tmp: {fileID: 1007952142}
-  unlockMessage: Block Wall Unlocked!
+  unlockMessage: Blockers Unlocked!
   currentPercentage: 100
 --- !u!114 &92358366
 MonoBehaviour:
@@ -6611,7 +6611,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fillImage: {fileID: 1304144533}
   tmp: {fileID: 843853677}
-  unlockMessage: Verical Movement Letter Unlocked!
+  unlockMessage: Letter moves only in vertical direction!
   currentPercentage: 100
 --- !u!224 &1327564900
 RectTransform:
