@@ -12,46 +12,111 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 1
   m_EditorClassIdentifier: 
-  timer: 1
+  timer: 0
   LevelNumber: 1
-  rows: 5
+  rows: 10
   columns: 8
-  height: 8
-  width: 8
+  height: 4
+  width: 4
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.08
+  bottomGridSize: 0.166
   categoryMaterial: {fileID: 0}
-  words: []
+  words:
+  - APPLE
+  - BANANA
   tray:
   - Tray 1
   - Tray 2
-  - Tray 3
-  - Tray 4
-  - Tray 5
-  - Tray 6
-  - Tray 7
-  - Tray 8
-  - Tray 9
-  - Tray 10
-  - Tray 11
-  - Tray 12
-  - Tray 13
-  - Tray 14
-  - Tray 15
-  - Tray 16
   horizontal: []
-  excludedChar: []
+  excludedChar:
+  - {x: 9, y: 6}
+  - {x: 8, y: 4}
   blockedCells: []
-  wordCategory: []
-  cellCategory: []
-  cellTexts: []
-  trayCells: []
-  trayName: []
-  categoryColors: []
+  wordCategory:
+  - Key: Fruit
+    Value:
+    - APPLE
+    - BANANA
+  cellCategory:
+  - Key: {x: 8, y: 1}
+    Value: Fruit
+  - Key: {x: 8, y: 2}
+    Value: Fruit
+  - Key: {x: 8, y: 3}
+    Value: Fruit
+  - Key: {x: 8, y: 4}
+    Value: Fruit
+  - Key: {x: 8, y: 5}
+    Value: Fruit
+  - Key: {x: 9, y: 2}
+    Value: Fruit
+  - Key: {x: 9, y: 3}
+    Value: Fruit
+  - Key: {x: 9, y: 4}
+    Value: Fruit
+  - Key: {x: 9, y: 5}
+    Value: Fruit
+  - Key: {x: 9, y: 6}
+    Value: Fruit
+  - Key: {x: 9, y: 7}
+    Value: Fruit
+  cellTexts:
+  - Key: {x: 8, y: 1}
+    Value: A
+  - Key: {x: 8, y: 2}
+    Value: P
+  - Key: {x: 8, y: 3}
+    Value: P
+  - Key: {x: 8, y: 4}
+    Value: L
+  - Key: {x: 8, y: 5}
+    Value: E
+  - Key: {x: 9, y: 2}
+    Value: B
+  - Key: {x: 9, y: 3}
+    Value: A
+  - Key: {x: 9, y: 4}
+    Value: N
+  - Key: {x: 9, y: 5}
+    Value: A
+  - Key: {x: 9, y: 6}
+    Value: N
+  - Key: {x: 9, y: 7}
+    Value: A
+  trayCells:
+  - Key: {x: 3, y: 1}
+    Value: N
+  - Key: {x: 3, y: 2}
+    Value: L
+  trayName:
+  - Key: {x: 3, y: 1}
+    Value: Tray 1
+  - Key: {x: 3, y: 2}
+    Value: Tray 2
+  categoryColors:
+  - Key: Fruit
+    Value: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
   trayColors: []
-  wordPositions: []
+  wordPositions:
+  - Key: APPLE
+    Value:
+    - {x: 8, y: 1}
+    - {x: 8, y: 2}
+    - {x: 8, y: 3}
+    - {x: 8, y: 4}
+    - {x: 8, y: 5}
+  - Key: BANANA
+    Value:
+    - {x: 9, y: 2}
+    - {x: 9, y: 3}
+    - {x: 9, y: 4}
+    - {x: 9, y: 5}
+    - {x: 9, y: 6}
+    - {x: 9, y: 7}
   freezedTray: []
-  firstCharPos: []
-  levelMode: 0
-  lockedTray: []
+  firstCharPos:
+  - Key: APPLE
+    Value: 1
+  - Key: BANANA
+    Value: 2

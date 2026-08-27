@@ -160,11 +160,9 @@ public class GlobalTrayDragger : MonoBehaviour
            
             if(powerUps.Any(x=>x.isOn))
             {
-                PowerUpManager.Instance.HammerSmash(powerUps[0].gameObject, currentlyDraggedParent.gameObject);
-                if (currentlyDraggedParent.TryGetComponent<TraySpliter>(out TraySpliter ts))
-                {
-                    ts.Split();
-                }
+                var ts = currentlyDraggedParent.GetComponent<TraySpliter>();
+                PowerUpManager.Instance.HammerSmash(powerUps[0].transform, currentlyDraggedParent.gameObject,()=>ts.Split());
+               
                 currentlyDraggedParent = null;
                 Debug.Log("Button Pressed");
                 return;
@@ -230,6 +228,7 @@ public class GlobalTrayDragger : MonoBehaviour
             }
         }
     }
+
 
     private void DragSelectedParent()
     {
@@ -1042,12 +1041,10 @@ public class GlobalTrayDragger : MonoBehaviour
         {
             Transform trayToJump = currentlyDraggedParent;
 
-            // Calculate a perfectly unscaled X coordinate to fix the offset
             float perfectX = GetNearestGridColumnX(trayToJump.position.x);
             Vector3 targetSnapPos = trayToJump.position;
             targetSnapPos.x = perfectX;
 
-            // Bring the tray back down to ground level (original y or z)
             if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D)
             {
                 targetSnapPos.y = originalPosition.y;
@@ -1062,7 +1059,6 @@ public class GlobalTrayDragger : MonoBehaviour
             currentlyDraggedParent = null;
             isReadyToJump = false;
 
-            // Tween the full position (not just X)
             trayToJump.DOMove(targetSnapPos, snapBackDuration).SetEase(snapBackEase);
             trayToJump.DOScale(originalScale, snapBackDuration).SetEase(snapBackEase);
             UpdateTrayLayers(trayToJump, false);
@@ -1075,7 +1071,6 @@ public class GlobalTrayDragger : MonoBehaviour
 
         Vector3 finalTargetPos = originalPosition;
 
-        // Use the mathematically pure pieceColliders to find the snap center, NOT the shifted letters
         if (BottomGridManager.Instance != null && pieceColliders.Count > 0)
         {
             currentlyDraggedParent.localScale = originalScale;
@@ -1085,6 +1080,35 @@ public class GlobalTrayDragger : MonoBehaviour
 
         if (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) finalTargetPos.y = originalPosition.y;
         else finalTargetPos.z = originalPosition.z;
+
+        // ==============================================================
+        // UPDATE TRAY SPLITTER GRID COORDINATES
+        // ==============================================================
+        TraySpliter spliter = currentlyDraggedParent.GetComponent<TraySpliter>();
+        if (spliter != null && gridCellSize > 0.001f)
+        {
+            int rowSign = 1;
+            if (BottomGridManager.Instance != null && BottomGridManager.Instance.width > 0)
+            {
+                int w = BottomGridManager.Instance.width;
+                Transform gridT = BottomGridManager.Instance.transform;
+                if (gridT.childCount > w)
+                {
+                    float z0 = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? gridT.GetChild(0).position.z : gridT.GetChild(0).position.y;
+                    float z1 = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? gridT.GetChild(w).position.z : gridT.GetChild(w).position.y;
+                    rowSign = (z1 > z0) ? 1 : -1;
+                }
+            }
+
+            float startAxis = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? originalPosition.z : originalPosition.y;
+            float finalAxis = (planeMode == PlaneAxisMode.XZ_GroundPlane_3D) ? finalTargetPos.z : finalTargetPos.y;
+
+            int deltaCol = Mathf.RoundToInt((finalTargetPos.x - originalPosition.x) / gridCellSize);
+            int deltaRow = Mathf.RoundToInt((finalAxis - startAxis) / gridCellSize) * rowSign;
+
+            spliter.UpdateGridPosition(deltaRow, deltaCol);
+        }
+        // ==============================================================
 
         currentlyDraggedParent.DOMove(finalTargetPos, snapBackDuration).SetEase(snapBackEase);
         currentlyDraggedParent.DOScale(originalScale, snapBackDuration).SetEase(snapBackEase);

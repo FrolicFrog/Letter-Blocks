@@ -1,30 +1,86 @@
+using System;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class PowerUpManager : MonoBehaviour
 {
     public static PowerUpManager Instance { get; private set; }
 
     [Header("References")]
-    public GameObject hammerPrefab;
+    [Tooltip("Prefab of the 3D hammer to spawn.")]
+    [SerializeField] private GameObject hammerPrefab;
 
-    [Header("Animation Settings")]
-    public float flyDuration = 0.4f;
-    public float smashDuration = 0.15f;
-    public float returnDuration = 0.3f;
+    [Header("WordChecker UI Coordinate Settings")]
+    [Tooltip("Matches flightElevationOffset from WordChecker to pull the hammer closer to the camera in front of gameplay objects.")]
+    [SerializeField] private float flightElevationOffset = 5.0f;
 
-    [Tooltip("How high above the block the hammer hovers.")]
-    public float hoverHeight = 2.0f;
+    [Tooltip("Target scale to punch the UI button when the hammer spawns and when it lands back.")]
+    [SerializeField] private Vector3 uiPopScale = new Vector3(1.15f, 1.15f, 1f);
 
-    [Tooltip("Matches flightElevationOffset from WordChecker to pull it closer to the camera.")]
-    public float depthOffset = 5.0f;
+    [Tooltip("Duration of the UI button bounce/pop animation.")]
+    [SerializeField] private float uiPopDuration = 0.15f;
 
-    public float scaleMultiplier = 1.0f;
+    [Header("Flight Timing & Easing")]
+    [Tooltip("Flight time from UI button to hover position near the target.")]
+    [SerializeField] private float flyInDuration = 0.35f;
 
-    [Header("Rotations")]
-    public Vector3 defaultRotation = new Vector3(0, 0, 0);
-    public Vector3 windUpRotation = new Vector3(-20, 0, 0);
-    public Vector3 smashRotation = new Vector3(90, 0, 0);
+    [Tooltip("Easing when flying out from the UI button.")]
+    [SerializeField] private Ease flyEase = Ease.OutQuad;
+
+    [Tooltip("Time to pull back and build momentum before smashing.")]
+    [SerializeField] private float windUpDuration = 0.16f;
+
+    [Tooltip("Easing for the wind-up pull back.")]
+    [SerializeField] private Ease windUpEase = Ease.OutBack;
+
+    [Tooltip("Time taken for the hammer to strike down on the target.")]
+    [SerializeField] private float smashDuration = 0.09f;
+
+    [Tooltip("Easing for the downward smash acceleration.")]
+    [SerializeField] private Ease smashEase = Ease.InCubic;
+
+    [Tooltip("Brief pause on the target after impact.")]
+    [SerializeField] private float impactPauseDuration = 0.08f;
+
+    [Tooltip("Flight time from the target back to the UI button.")]
+    [SerializeField] private float returnDuration = 0.35f;
+
+    [Tooltip("Easing when returning and shrinking into the UI button.")]
+    [SerializeField] private Ease returnEase = Ease.InQuad;
+
+    [Header("Offsets Relative to Target")]
+    [Tooltip("Hover position beside the target tray before winding up.")]
+    [SerializeField] private Vector3 hoverOffset = new Vector3(0.5f, 1.2f, -0.4f);
+
+    [Tooltip("Pull-back position where hammer builds swing momentum.")]
+    [SerializeField] private Vector3 windUpOffset = new Vector3(0.8f, 2.0f, -0.8f);
+
+    [Tooltip("Hit point on the target tray.")]
+    [SerializeField] private Vector3 hitOffset = new Vector3(0f, 0.1f, -0.2f);
+
+    [Header("Rotations (Euler)")]
+    [Tooltip("Rotation when originating from / returning to the UI button.")]
+    [SerializeField] private Vector3 spawnRotation = new Vector3(-10f, 30f, -15f);
+
+    [Tooltip("Rotation when hovering near the target.")]
+    [SerializeField] private Vector3 hoverRotation = new Vector3(-15f, 35f, -10f);
+
+    [Tooltip("Rotation at the peak of the wind-up momentum build.")]
+    [SerializeField] private Vector3 windUpRotation = new Vector3(-60f, 45f, -25f);
+
+    [Tooltip("Rotation at the moment of impact.")]
+    [SerializeField] private Vector3 smashRotation = new Vector3(65f, 15f, 0f);
+
+    [Header("Impact Feedback / Juice")]
+    [Tooltip("Scale multiplier for the active hammer.")]
+    [SerializeField] private float scaleMultiplier = 1.0f;
+
+    [Tooltip("Punch scale applied to the target tray on hit.")]
+    [SerializeField] private Vector3 targetPunchScale = new Vector3(0.2f, -0.2f, 0.2f);
+
+    [Tooltip("Duration of the target tray squash/stretch.")]
+    [SerializeField] private float targetPunchDuration = 0.18f;
 
     private void Awake()
     {
@@ -36,68 +92,99 @@ public class PowerUpManager : MonoBehaviour
         Instance = this;
     }
 
-    public void HammerSmash(GameObject uiButton, GameObject trayGameObject)
+    /// <summary>
+    /// Launches hammer from UI button, smashes target tray, and flies back into the UI button.
+    /// </summary>
+    /// <param name="uiTransform">Transform/RectTransform of the UI Button toggle.</param>
+    /// <param name="trayGameObject">Target tray or pit GameObject to smash.</param>
+    /// <param name="onSmashHit">Callback invoked at the exact moment of impact.</param>
+    public void HammerSmash(Transform uiTransform, GameObject trayGameObject, Action onSmashHit = null)
     {
-        if (hammerPrefab == null)
+        if (hammerPrefab == null || trayGameObject == null || uiTransform == null)
         {
-            Debug.LogError("Hammer Prefab is missing!");
+            Debug.LogError("[PowerUpManager] Missing reference!");
             return;
         }
 
-        // --- MATCHING WORDCHECKER'S UI-TO-WORLD MATH ---
-
-        // 1. Get Screen Pos of the UI Button using the Canvas Camera
-        Canvas canvas = uiButton.GetComponentInParent<Canvas>();
-        Camera uiCam = (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay) ? canvas.worldCamera : null;
-        Vector2 buttonScreenPos = RectTransformUtility.WorldToScreenPoint(uiCam, uiButton.transform.position);
-
-        Camera mainCam = Camera.main;
+        // 1. Calculate UI Origin using WordChecker projection logic
         Vector3 targetPos = trayGameObject.transform.position;
+        Vector3 uiWorldPos = GetWorldPosFromUI(uiTransform, targetPos);
 
-        // 2. Determine appropriate 3D depth based on the Tray's depth (just like WordChecker)
-        float trayDepth = mainCam.WorldToScreenPoint(targetPos).z;
-        float startDepth = Mathf.Max(0.5f, trayDepth - depthOffset);
+        // 2. Setup trajectory positions
+        Vector3 hoverPos = targetPos + hoverOffset;
+        Vector3 windUpPos = targetPos + windUpOffset;
+        Vector3 strikePos = targetPos + hitOffset;
 
-        // 3. Project 2D Screen Pos into 3D World Space for the perfect starting location
-        Vector3 startWorldPos = mainCam.ScreenToWorldPoint(new Vector3(buttonScreenPos.x, buttonScreenPos.y, startDepth));
-
-        // 4. Setup Hover Position
-        Vector3 hoverPos = targetPos + (Vector3.up * hoverHeight);
-
-        // --- ANIMATION ---
-
-        GameObject activeHammer = Instantiate(hammerPrefab, startWorldPos, Quaternion.Euler(defaultRotation));
+        // 3. Spawn hammer at UI button world point with zero scale
+        GameObject activeHammer = Instantiate(hammerPrefab, uiWorldPos, Quaternion.Euler(spawnRotation));
         Vector3 targetScale = activeHammer.transform.localScale * scaleMultiplier;
         activeHammer.transform.localScale = Vector3.zero;
 
-        Sequence smashSequence = DOTween.Sequence();
+        // Trigger UI pop upon takeoff
+        PopUIElement(uiTransform);
 
-        // Fly up & wind up
-        smashSequence.Append(activeHammer.transform.DOMove(hoverPos, flyDuration).SetEase(Ease.OutQuad));
-        smashSequence.Join(activeHammer.transform.DOScale(targetScale, flyDuration).SetEase(Ease.OutBack));
-        smashSequence.Join(activeHammer.transform.DORotate(windUpRotation, flyDuration).SetEase(Ease.OutQuad));
+        // 4. Build Sequence
+        Sequence smashSeq = DOTween.Sequence();
 
-        // Smash down
-        smashSequence.Append(activeHammer.transform.DOMove(targetPos, smashDuration).SetEase(Ease.InCubic));
-        smashSequence.Join(activeHammer.transform.DORotate(smashRotation, smashDuration).SetEase(Ease.InCubic));
+        // PHASE 1: Fly out from UI button -> Hover near target
+        smashSeq.Append(activeHammer.transform.DOMove(hoverPos, flyInDuration).SetEase(flyEase));
+        smashSeq.Join(activeHammer.transform.DOScale(targetScale, flyInDuration).SetEase(Ease.OutBack));
+        smashSeq.Join(activeHammer.transform.DORotate(hoverRotation, flyInDuration).SetEase(flyEase));
 
-        // Impact callback
-        smashSequence.AppendCallback(() =>
+        // PHASE 2: Wind-Up / Build Momentum
+        smashSeq.Append(activeHammer.transform.DOMove(windUpPos, windUpDuration).SetEase(windUpEase));
+        smashSeq.Join(activeHammer.transform.DORotate(windUpRotation, windUpDuration).SetEase(windUpEase));
+
+        // PHASE 3: Smash Down
+        smashSeq.Append(activeHammer.transform.DOMove(strikePos, smashDuration).SetEase(smashEase));
+        smashSeq.Join(activeHammer.transform.DORotate(smashRotation, smashDuration).SetEase(smashEase));
+
+        // PHASE 4: Impact Feedback & Split Callback
+        smashSeq.AppendCallback(() =>
         {
-            Debug.Log("<color=yellow>Smash Impact!</color>");
-            // ADD YOUR SPLIT LOGIC HERE
+            trayGameObject.transform.DOPunchScale(targetPunchScale, targetPunchDuration, 10, 1f);
+            activeHammer.transform.DOPunchScale(new Vector3(-0.1f, 0.12f, -0.1f), 0.12f, 6, 0.8f);
+            onSmashHit?.Invoke();
         });
 
-        smashSequence.AppendInterval(0.15f);
+        smashSeq.AppendInterval(impactPauseDuration);
 
-        // Return to the calculated 3D UI position and shrink
-        smashSequence.Append(activeHammer.transform.DOMove(startWorldPos, returnDuration).SetEase(Ease.InQuad));
-        smashSequence.Join(activeHammer.transform.DORotate(defaultRotation, returnDuration).SetEase(Ease.InQuad));
-        smashSequence.Join(activeHammer.transform.DOScale(Vector3.zero, returnDuration).SetEase(Ease.InQuad));
+        // PHASE 5: Return flight directly into the UI button & shrink to zero
+        smashSeq.Append(activeHammer.transform.DOMove(uiWorldPos, returnDuration).SetEase(returnEase));
+        smashSeq.Join(activeHammer.transform.DORotate(spawnRotation, returnDuration).SetEase(returnEase));
+        smashSeq.Join(activeHammer.transform.DOScale(Vector3.zero, returnDuration).SetEase(Ease.InBack, 1.3f));
 
-        smashSequence.OnComplete(() =>
+        // PHASE 6: UI Impact Pop & Destroy
+        smashSeq.OnComplete(() =>
         {
+            PopUIElement(uiTransform);
             Destroy(activeHammer);
+            uiTransform.GetComponent<Toggle>().isOn = false;
         });
+    }
+
+    /// <summary>
+    /// Projects a 2D Canvas UI position into 3D World Space using WordChecker's camera projection formula.
+    /// </summary>
+    private Vector3 GetWorldPosFromUI(Transform uiTransform, Vector3 referenceTargetPos)
+    {
+        Canvas canvas = uiTransform.GetComponentInParent<Canvas>();
+        Camera uiCam = (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay) ? canvas.worldCamera : null;
+        Vector2 targetScreenPos = RectTransformUtility.WorldToScreenPoint(uiCam, uiTransform.position);
+
+        Camera cam = Camera.main;
+        float distanceToCamera = Mathf.Max(0.5f, cam.WorldToScreenPoint(referenceTargetPos).z - flightElevationOffset);
+        return cam.ScreenToWorldPoint(new Vector3(targetScreenPos.x, targetScreenPos.y, distanceToCamera));
+    }
+
+    /// <summary>
+    /// Applies WordChecker's punch scale feedback to the UI button.
+    /// </summary>
+    private void PopUIElement(Transform uiTransform)
+    {
+        if (uiTransform == null) return;
+        uiTransform.DOKill(true);
+        Vector3 punchStrength = uiPopScale - Vector3.one;
+        uiTransform.DOPunchScale(punchStrength, uiPopDuration, 5, 0.3f).SetLink(uiTransform.gameObject);
     }
 }
