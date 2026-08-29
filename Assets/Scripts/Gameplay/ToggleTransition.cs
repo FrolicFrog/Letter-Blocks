@@ -11,6 +11,8 @@ public class ToggleTransition : MonoBehaviour
     public static bool isInProgress = false;
     private bool isInternalChange = false; // Prevents recursive event loops
 
+    public bool inRadio = true;
+
     [Tooltip("The UI element you want to shrink (usually the Background).")]
     public Transform targetGraphic;
 
@@ -34,6 +36,7 @@ public class ToggleTransition : MonoBehaviour
     void Awake()
     {
         toggle = GetComponent<Toggle>();
+        if(inRadio)
         allToggles.Add(this); // Register this toggle to the group
 
         toggle.onValueChanged.AddListener(OnToggleValueChanged);

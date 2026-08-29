@@ -12,9 +12,7 @@ public class TraySpliter : MonoBehaviour
     /// <summary>
     /// Included for compatibility with TrayDragger references.
     /// </summary>
-    public void UpdateGridPosition(int deltaRow, int deltaCol)
-    {
-    }
+
 
     /// <summary>
     /// Scans the remaining children on the tray, discards jumped tiles,

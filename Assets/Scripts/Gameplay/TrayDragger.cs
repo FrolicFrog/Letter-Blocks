@@ -1113,7 +1113,7 @@ public class GlobalTrayDragger : MonoBehaviour
             int deltaCol = Mathf.RoundToInt((finalTargetPos.x - originalPosition.x) / gridCellSize);
             int deltaRow = Mathf.RoundToInt((finalAxis - startAxis) / gridCellSize) * rowSign;
 
-            spliter.UpdateGridPosition(deltaRow, deltaCol);
+          //  spliter.UpdateGridPosition(deltaRow, deltaCol);
         }
         // ==============================================================
 
