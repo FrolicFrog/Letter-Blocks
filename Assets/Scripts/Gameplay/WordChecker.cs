@@ -89,6 +89,7 @@ public class WordChecker : MonoBehaviour
     private int? cachedColumns = null;
     // Tracks words that have left the board but haven't reached the UI yet
     private Dictionary<string, int> flyingWordsPerCategory = new Dictionary<string, int>();
+
     private struct GravityMoveInfo
     {
         public Transform block;
@@ -139,9 +140,6 @@ public class WordChecker : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Enables BoxColliders for cubes in the bottom-most 3 rows and disables them for higher rows.
-    /// </summary>
     public void UpdateLastThreeRowsColliders()
     {
         var grid = TopGridManager.instance;
@@ -249,14 +247,8 @@ public class WordChecker : MonoBehaviour
 
     public void AnimateTrayBlockToGrid(Transform block, Transform slotTransform, Vector2Int matchedKey)
     {
-        // ==== PLAY JUMPING AUDIO ====
-        if (jumpingToGrid != null)
-        {
-            AudioSource.PlayClipAtPoint(jumpingToGrid, block.position);
-        }
-        // ============================
+        if (jumpingToGrid != null) AudioSource.PlayClipAtPoint(jumpingToGrid, block.position);
 
-        // ==== CHECK FOR SECOND CHILD (KEY) TO FLY TO LOCK ====
         if (block.childCount >= 2)
         {
             Transform secondChild = block.GetChild(1);
@@ -267,7 +259,6 @@ public class WordChecker : MonoBehaviour
                 GameObject targetLock = null;
                 float maxZ = float.MinValue;
 
-                // Find the Lock with the highest Z coordinate
                 foreach (GameObject l in locks)
                 {
                     if (l.transform.position.z > maxZ)
@@ -279,38 +270,25 @@ public class WordChecker : MonoBehaviour
 
                 if (targetLock != null)
                 {
-                    // Untag it so no other key targets this lock
                     targetLock.tag = "Untagged";
-
                     Sequence keySeq = DOTween.Sequence().SetLink(secondChild.gameObject);
-
-                    // Wait for the main block to land in the grid first
                     keySeq.AppendInterval(keyFlightDelay);
 
-                    // Fly to lock logic
                     keySeq.AppendCallback(() =>
                     {
                         if (secondChild == null || targetLock == null) return;
-
                         secondChild.SetParent(targetLock.transform);
                         Vector3 destination = targetLock.transform.position + keyOffset;
-
                         float distance = Vector3.Distance(secondChild.position, destination);
                         float duration = keySpeed > 0 ? distance / keySpeed : 0.5f;
-
                         Vector3 startScale = secondChild.localScale;
 
                         Sequence flightSeq = DOTween.Sequence();
-
-                        // Pop up slightly before taking off
                         flightSeq.Append(secondChild.DOScale(startScale * 1.3f, 0.15f).SetEase(Ease.OutBack));
-
-                        // Arc/Jump to lock while rotating and scaling down
                         flightSeq.Append(secondChild.DOJump(destination, keyJumpPower, 1, duration).SetEase(Ease.InOutSine));
                         flightSeq.Join(secondChild.DORotate(new Vector3(0, 0, 90), duration).SetEase(Ease.InOutSine));
                         flightSeq.Join(secondChild.DOScale(startScale * keyTargetScale, duration).SetEase(Ease.InCubic));
 
-                        // Snap perfectly to offset and trigger the lock bounce reaction
                         flightSeq.AppendCallback(() =>
                         {
                             if (secondChild != null)
@@ -318,39 +296,26 @@ public class WordChecker : MonoBehaviour
                                 secondChild.localPosition = keyOffset;
                                 secondChild.localEulerAngles = new Vector3(0, 0, 90);
                             }
-
-                            // Visual impact punch on the lock to match the video feel
                             if (targetLock != null)
                             {
                                 targetLock.transform.DOPunchScale(Vector3.one * 0.2f, 0.25f, 10, 1f);
                             }
                         });
 
-                        // Wait for the punch animation (0.25s) before turning the key
                         flightSeq.AppendInterval(0.25f);
-
-                        // Turn the key to 180 degrees
                         flightSeq.Append(secondChild.DOLocalRotate(new Vector3(0, 0, 180), keyTurnDuration).SetEase(Ease.InOutQuad));
-
-                        // Scale down the lock (which also scales down the key since it's a child)
                         flightSeq.Append(targetLock.transform.DOScale(Vector3.zero, lockDestroyDuration).SetEase(Ease.InBack));
 
-                        // Destroy the lock completely
                         flightSeq.OnComplete(() =>
                         {
-                            if (targetLock != null)
-                            {
-                                Destroy(targetLock);
-                            }
+                            if (targetLock != null) Destroy(targetLock);
                         });
                     });
                 }
             }
         }
-        // =====================================================
 
         block.SetParent(slotTransform.parent);
-
         MeshRenderer blockRenderer = block.GetComponent<MeshRenderer>();
         MeshRenderer slotRenderer = slotTransform.GetComponent<MeshRenderer>();
 
@@ -384,29 +349,24 @@ public class WordChecker : MonoBehaviour
         });
 
         block.DOKill();
-
         Sequence jumpSeq = DOTween.Sequence().SetLink(block.gameObject);
-
         jumpSeq.Append(block.DOJump(slotTransform.position, trayJumpPower, 1, trayJumpDuration).SetEase(trayJumpEase));
 
         Vector3 finalScale = new Vector3(.9f, 1f, .9f);
         Sequence scaleSeq = DOTween.Sequence();
-
         scaleSeq.Append(block.DOScale(finalScale * trayFlightScaleMultiplier, trayJumpDuration * 0.6f).SetEase(Ease.OutSine));
         scaleSeq.Append(block.DOScale(finalScale, trayJumpDuration * 0.4f).SetEase(Ease.InSine));
 
         jumpSeq.Join(scaleSeq);
-
         jumpSeq.OnComplete(() =>
         {
             block.localPosition = new Vector3(block.localPosition.x, block.localPosition.y, 0f);
             block.localRotation = Quaternion.identity;
-
             block.gameObject.layer = LayerMask.NameToLayer("Word");
             FreezeManager.DecreaseFreezeCount();
             reservedGridSlots.Remove(matchedKey);
             Taptic.Heavy();
-            // --- Register block into HintManager under the landed word ---
+
             var lvlManager = LevelManager.Instance;
             if (lvlManager != null && lvlManager.wordPositions != null)
             {
@@ -416,7 +376,6 @@ public class WordChecker : MonoBehaviour
                     if (kvp.Value.Contains(matchedKey))
                     {
                         targetWord = kvp.Key;
-                        // Strip unique ID suffixes (e.g. "COMEDY_0" -> "COMEDY")
                         if (targetWord.Contains("_")) targetWord = targetWord.Substring(0, targetWord.IndexOf('_'));
                         if (targetWord.Contains("#")) targetWord = targetWord.Substring(0, targetWord.IndexOf('#'));
                         break;
@@ -429,7 +388,6 @@ public class WordChecker : MonoBehaviour
                     {
                         HintManager.instance.wordChain[targetWord] = new();
                     }
-
                     if (!HintManager.instance.wordChain[targetWord].Key.Contains(block.gameObject))
                     {
                         HintManager.instance.wordChain[targetWord].Key.Add(block.gameObject);
@@ -438,11 +396,7 @@ public class WordChecker : MonoBehaviour
             }
 
             UpdateLastThreeRowsColliders();
-
-            if (TopGridManager.instance != null)
-            {
-                Check(TopGridManager.instance.columns);
-            }
+            if (TopGridManager.instance != null) Check(TopGridManager.instance.columns);
         });
     }
 
@@ -461,14 +415,12 @@ public class WordChecker : MonoBehaviour
             {
                 Vector2Int key = new Vector2Int(row, col);
 
-                if (lvlManager.excludedChar.Contains(key) && lvlManager.cellTexts[key] == letter)
+                if (lvlManager.excludedChar.Contains(key) && string.Equals(lvlManager.cellTexts[key].Trim(), letter.Trim(), System.StringComparison.OrdinalIgnoreCase))
                 {
                     int index = key.x * columns + key.y;
                     Transform candidateSlot = grid.transform.GetChild(index).GetChild(1);
-
                     lvlManager.excludedChar.Remove(key);
                     reservedGridSlots.Add(key);
-
                     slotTransform = candidateSlot;
                     matchedKey = key;
                     return true;
@@ -552,16 +504,13 @@ public class WordChecker : MonoBehaviour
                 if (gravityNeeded)
                 {
                     isShifting = true;
-
                     yield return StartCoroutine(WaitForGridStability());
                     Sequence gravitySeq = ApplyGravity(columns);
                     if (gravitySeq != null)
                     {
                         yield return gravitySeq.WaitForCompletion();
                     }
-
                     UpdateLastThreeRowsColliders();
-
                     isShifting = false;
                     gravityNeeded = false;
                 }
@@ -605,7 +554,6 @@ public class WordChecker : MonoBehaviour
     {
         activeDestructions++;
         var lvlManager = LevelManager.Instance;
-
         List<ArcBlockData> blocksInWord = new List<ArcBlockData>();
         List<GameObject> objectsToDestroy = new List<GameObject>();
 
@@ -614,7 +562,6 @@ public class WordChecker : MonoBehaviour
             foreach (var pos in lvlManager.wordPositions[word])
             {
                 bool stillNeeded = IsPositionStillNeeded(pos, word, lvlManager.wordPositions, wordsBeingDestroyedThisPass, out _);
-
                 if (!stillNeeded)
                 {
                     int linearIndex = pos.x * columns + pos.y;
@@ -624,10 +571,7 @@ public class WordChecker : MonoBehaviour
                         if (gridChild.childCount > 1)
                         {
                             string foundCategory = "";
-                            if (lvlManager.cellCategory.TryGetValue(pos, out string cat))
-                            {
-                                foundCategory = cat;
-                            }
+                            if (lvlManager.cellCategory.TryGetValue(pos, out string cat)) foundCategory = cat;
 
                             ArcBlockData blockData = new ArcBlockData
                             {
@@ -641,32 +585,24 @@ public class WordChecker : MonoBehaviour
                                 Transform child = gridChild.GetChild(1);
                                 child.DOKill();
                                 child.SetParent(null);
-
                                 blockData.elements.Add(child);
                                 objectsToDestroy.Add(child.gameObject);
                             }
                             blocksInWord.Add(blockData);
                         }
                     }
-
                     lvlManager.excludedChar.Remove(pos);
                     lvlManager.cellCategory.Remove(pos);
                     lvlManager.cellTexts.Remove(pos);
                 }
             }
-
             lvlManager.wordPositions.Remove(word);
         }
 
         Sequence destroySeq = DOTween.Sequence();
-
         if (blocksInWord.Count > 0)
         {
-            blocksInWord = blocksInWord
-                .OrderBy(b => b.originalWorldPos.x)
-                .ThenByDescending(b => b.originalWorldPos.y)
-                .ToList();
-
+            blocksInWord = blocksInWord.OrderBy(b => b.originalWorldPos.x).ThenByDescending(b => b.originalWorldPos.y).ToList();
             Vector3 centerPos = Vector3.zero;
             foreach (var b in blocksInWord) centerPos += b.originalWorldPos;
             centerPos /= blocksInWord.Count;
@@ -676,7 +612,7 @@ public class WordChecker : MonoBehaviour
                 Color targetColor = Color.white;
                 if (blocksInWord.Count > 0 && blocksInWord[0].elements.Count > 0)
                 {
-                    MeshRenderer mr = blocksInWord[0].elements[0].GetComponent<MeshRenderer>();
+                    MeshRenderer mr = blocksInWord[0].elements[0].GetComponentInChildren<MeshRenderer>();
                     if (mr != null) targetColor = mr.material.color;
                 }
 
@@ -696,9 +632,8 @@ public class WordChecker : MonoBehaviour
 
             int blockCount = blocksInWord.Count;
             float centerIndex = (blockCount - 1) / 2f;
-
-            // Find category for the entire word once
             string wordCategoryTarget = "";
+
             foreach (var b in blocksInWord)
             {
                 if (!string.IsNullOrEmpty(b.category))
@@ -751,7 +686,6 @@ public class WordChecker : MonoBehaviour
                 }
             }
 
-            // Animate the blocks
             for (int i = 0; i < blockCount; i++)
             {
                 float idx = i - centerIndex;
@@ -765,10 +699,8 @@ public class WordChecker : MonoBehaviour
                 {
                     Vector3 startScale = child.localScale;
                     Vector3 startRot = child.eulerAngles;
-
                     Vector3 targetPos = new Vector3(centerPos.x + offsetX, centerPos.y + arcHeightOffset, centerPos.z + offsetZ);
                     Vector3 targetRot = new Vector3(startRot.x, startRot.y + angleY, startRot.z);
-
                     Sequence blockSeq = DOTween.Sequence().SetLink(child.gameObject);
 
                     blockSeq.Append(child.DOMove(targetPos, popDuration).SetEase(Ease.OutQuad));
@@ -779,7 +711,7 @@ public class WordChecker : MonoBehaviour
                     {
                         if (child != null)
                         {
-                            MeshRenderer mr = child.GetComponent<MeshRenderer>();
+                            MeshRenderer mr = child.GetComponentInChildren<MeshRenderer>();
                             if (mr != null) mr.material.SetFloat("_Enable_Highlights", 1);
                         }
                     });
@@ -790,7 +722,7 @@ public class WordChecker : MonoBehaviour
                     {
                         if (child != null)
                         {
-                            MeshRenderer mr = child.GetComponent<MeshRenderer>();
+                            MeshRenderer mr = child.GetComponentInChildren<MeshRenderer>();
                             if (mr != null) mr.material.SetFloat("_Enable_Highlights", 0);
                         }
                     });
@@ -824,12 +756,10 @@ public class WordChecker : MonoBehaviour
                     {
                         blockSeq.Append(child.DOScale(Vector3.zero, flyToUIDuration).SetEase(destroyEase));
                     }
-
                     destroySeq.Insert(0, blockSeq);
                 }
             }
 
-            // Execute EXACTLY ONCE when the whole word finishes flying
             destroySeq.OnComplete(() =>
             {
                 if (wordUITransform != null && !string.IsNullOrEmpty(wordCategoryTarget))
@@ -851,9 +781,9 @@ public class WordChecker : MonoBehaviour
                     {
                         if (wordUITransform.childCount > 2)
                         {
-                            wordUITransform.GetChild(1).gameObject.SetActive(false); // Hide the counter
+                            wordUITransform.GetChild(1).gameObject.SetActive(false);
                             Transform checkmarkTransform = wordUITransform.GetChild(2);
-                            checkmarkTransform.gameObject.SetActive(true); // Show the tick
+                            checkmarkTransform.gameObject.SetActive(true);
 
                             if (confettiEffect != null)
                             {
@@ -869,7 +799,6 @@ public class WordChecker : MonoBehaviour
                                     ps.gameObject.layer = uiLayer;
                                     var main = ps.main;
                                     main.loop = false;
-
                                     var renderer = ps.GetComponent<ParticleSystemRenderer>();
                                     if (renderer != null)
                                     {
@@ -877,10 +806,8 @@ public class WordChecker : MonoBehaviour
                                         renderer.sortingOrder = 100;
                                     }
                                 }
-
                                 confettiInstance.Play();
-                                float destroyDelay = confettiInstance.main.duration + confettiInstance.main.startLifetime.constantMax;
-                                Destroy(confettiInstance.gameObject, destroyDelay);
+                                Destroy(confettiInstance.gameObject, confettiInstance.main.duration + confettiInstance.main.startLifetime.constantMax);
                             }
                         }
                     }
@@ -889,10 +816,7 @@ public class WordChecker : MonoBehaviour
                         if (wordUITransform.childCount > 1)
                         {
                             var tmp = wordUITransform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
-                            if (tmp != null)
-                            {
-                                tmp.text = remainingCount.ToString();
-                            }
+                            if (tmp != null) tmp.text = remainingCount.ToString();
                         }
                     }
                 }
@@ -907,9 +831,9 @@ public class WordChecker : MonoBehaviour
                 if (obj != null) Destroy(obj);
             }
         }
-
         activeDestructions--;
     }
+
     private IEnumerator WaitForGridStability()
     {
         bool stable = false;
@@ -919,7 +843,6 @@ public class WordChecker : MonoBehaviour
         while (!stable && timer < timeout)
         {
             stable = true;
-
             if (reservedGridSlots.Count > 0)
             {
                 stable = false;
@@ -1043,15 +966,12 @@ public class WordChecker : MonoBehaviour
 
         if (moves.Count == 0 && logicalMoves.Count == 0) return null;
 
-        // ==== PLAY SHIFTING AUDIO ====
-        // Plays once per gravity drop action instead of spamming per block
         if (shifting != null)
         {
             Vector3 soundPos = Camera.main != null ? Camera.main.transform.position : transform.position;
             AudioSource.PlayClipAtPoint(shifting, soundPos);
             Taptic.Heavy();
         }
-        // =============================
 
         foreach (var logicMove in logicalMoves)
         {
@@ -1104,17 +1024,11 @@ public class WordChecker : MonoBehaviour
 
                         if (m.shouldSpin)
                         {
-                            m.block.DORotate(spinAngle, spinDuration, RotateMode.FastBeyond360)
-                                   .SetRelative(true)
-                                   .SetEase(spinEase)
-                                   .SetLink(m.block.gameObject);
-
-                            MeshRenderer mr = m.block.GetComponent<MeshRenderer>();
+                            m.block.DORotate(spinAngle, spinDuration, RotateMode.FastBeyond360).SetRelative(true).SetEase(spinEase).SetLink(m.block.gameObject);
+                            MeshRenderer mr = m.block.GetComponentInChildren<MeshRenderer>();
                             if (mr != null && mr.materials.Length > 1)
                             {
-                                mr.materials[1].DOColor(Color.white, spinDuration)
-                                               .SetEase(spinEase)
-                                               .SetLink(m.block.gameObject);
+                                mr.materials[1].DOColor(Color.white, spinDuration).SetEase(spinEase).SetLink(m.block.gameObject);
                             }
                         }
                     }
@@ -1135,7 +1049,6 @@ public class WordChecker : MonoBehaviour
         {
             int linearIndex = row * columns + c;
             if (linearIndex >= transform.childCount) continue;
-
             if (transform.GetChild(linearIndex).childCount > 1) return false;
         }
         return true;
@@ -1148,7 +1061,6 @@ public class WordChecker : MonoBehaviour
             lvlManager.excludedChar.Remove(oldPos);
             lvlManager.excludedChar.Add(newPos);
         }
-
         MoveDictionaryEntry(lvlManager.cellCategory, oldPos, newPos);
         MoveDictionaryEntry(lvlManager.cellTexts, oldPos, newPos);
 
@@ -1193,5 +1105,284 @@ public class WordChecker : MonoBehaviour
             }
         }
         return false;
+    }
+
+    private void SilentlyDestroyWord(string word, int columns)
+    {
+        var lvlManager = LevelManager.Instance;
+        if (!lvlManager.wordPositions.ContainsKey(word)) return;
+
+        string wordCategoryTarget = "";
+        foreach (var pos in lvlManager.wordPositions[word])
+        {
+            if (lvlManager.cellCategory.TryGetValue(pos, out string cat))
+            {
+                wordCategoryTarget = cat;
+                break;
+            }
+        }
+
+        string baseWord = word;
+        if (baseWord.Contains("_")) baseWord = baseWord.Substring(0, baseWord.IndexOf('_'));
+        if (baseWord.Contains("#")) baseWord = baseWord.Substring(0, baseWord.IndexOf('#'));
+
+        foreach (var pos in lvlManager.wordPositions[word])
+        {
+            int linearIndex = pos.x * columns + pos.y;
+            if (linearIndex >= 0 && linearIndex < transform.childCount)
+            {
+                var gridChild = transform.GetChild(linearIndex);
+                while (gridChild.childCount > 1)
+                {
+                    Transform child = gridChild.GetChild(1);
+                    child.DOKill();
+                    child.SetParent(null); // FIXED INFINITE LOOP
+                    Destroy(child.gameObject);
+                }
+            }
+            lvlManager.excludedChar.Remove(pos);
+            lvlManager.cellCategory.Remove(pos);
+            lvlManager.cellTexts.Remove(pos);
+        }
+        lvlManager.wordPositions.Remove(word);
+
+        int remainingCount = 0;
+        if (lvlManager.wordsCategory != null && !string.IsNullOrEmpty(wordCategoryTarget))
+        {
+            string dictKey = lvlManager.wordsCategory.Keys.FirstOrDefault(k => k.Trim().Equals(wordCategoryTarget.Trim(), System.StringComparison.OrdinalIgnoreCase));
+            if (dictKey != null)
+            {
+                var wordList = lvlManager.wordsCategory[dictKey];
+                string matchedItem = wordList.FirstOrDefault(w => w.Trim().Equals(baseWord.Trim(), System.StringComparison.OrdinalIgnoreCase));
+                if (matchedItem != null) wordList.Remove(matchedItem);
+                remainingCount = wordList.Count;
+            }
+        }
+
+        if (categoryUIParent != null && !string.IsNullOrEmpty(wordCategoryTarget))
+        {
+            string searchCat = wordCategoryTarget.Trim().ToLower().Replace("\n", " ").Replace("\r", "");
+            Transform wordUITransform = null;
+
+            foreach (Transform categoryImage in categoryUIParent)
+            {
+                TextMeshProUGUI[] textComps = categoryImage.GetComponentsInChildren<TextMeshProUGUI>(true);
+                foreach (var tmpComp in textComps)
+                {
+                    if (tmpComp != null && tmpComp.text.Trim().ToLower().Replace("\n", " ").Replace("\r", "") == searchCat)
+                    {
+                        wordUITransform = categoryImage;
+                        break;
+                    }
+                }
+                if (wordUITransform != null) break;
+            }
+
+            if (wordUITransform != null)
+            {
+                if (remainingCount <= 0)
+                {
+                    if (wordUITransform.childCount > 2)
+                    {
+                        wordUITransform.GetChild(1).gameObject.SetActive(false);
+                        Transform checkmarkTransform = wordUITransform.GetChild(2);
+                        checkmarkTransform.gameObject.SetActive(true);
+
+                        if (confettiEffect != null)
+                        {
+                            ParticleSystem confettiInstance = Instantiate(confettiEffect, checkmarkTransform);
+                            confettiInstance.transform.localPosition = Vector3.zero;
+                            confettiInstance.transform.localRotation = Quaternion.identity;
+                            confettiInstance.transform.localScale = Vector3.one * 25;
+
+                            int uiLayer = LayerMask.NameToLayer("UI");
+                            ParticleSystem[] allPs = confettiInstance.GetComponentsInChildren<ParticleSystem>(true);
+                            foreach (ParticleSystem ps in allPs)
+                            {
+                                ps.gameObject.layer = uiLayer;
+                                var main = ps.main;
+                                main.loop = false;
+                                var renderer = ps.GetComponent<ParticleSystemRenderer>();
+                                if (renderer != null)
+                                {
+                                    renderer.sortingLayerName = "UI";
+                                    renderer.sortingOrder = 100;
+                                }
+                            }
+                            confettiInstance.Play();
+                            Destroy(confettiInstance.gameObject, confettiInstance.main.duration + confettiInstance.main.startLifetime.constantMax);
+                        }
+                    }
+                }
+                else
+                {
+                    if (wordUITransform.childCount > 1)
+                    {
+                        var tmp = wordUITransform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
+                        if (tmp != null) tmp.text = remainingCount.ToString();
+                    }
+                }
+            }
+        }
+    }
+
+    public bool TryPlaceVacuumedPiece(Transform blockTransform)
+    {
+        var grid = TopGridManager.instance;
+        var lvlManager = LevelManager.Instance;
+        int columns = grid != null ? grid.columns : (cachedColumns ?? 0);
+
+        if (columns <= 0 || transform.childCount == 0) return false;
+        int totalRows = transform.childCount / columns;
+
+        // --- NEW SNIPPET ---
+        // 1. Force the block itself to be active (in case it was a hidden nested letter)
+        blockTransform.gameObject.SetActive(true);
+
+        // 2. Find the TextMeshPro, including inactive children just in case
+        TextMeshPro tmp = blockTransform.GetComponentInChildren<TextMeshPro>(true);
+        if (tmp == null) return false;
+
+        // 3. Ensure the text object itself is also active
+        tmp.gameObject.SetActive(true);
+        // -------------------
+
+        // Trim for safety against hidden whitespace
+        string letter = tmp.text.Trim();
+
+        Vector2Int matchedKey = new Vector2Int(-1, -1);
+        bool found = false;
+
+        // 1. Search ANYWHERE in the grid (Bottom-Up)
+        for (int row = totalRows - 1; row >= 0; row--)
+        {
+            for (int col = 0; col < columns; col++)
+            {
+                Vector2Int key = new Vector2Int(row, col);
+
+                // Compare letters cleanly ignoring case and spaces
+                if (lvlManager.excludedChar.Contains(key) && lvlManager.cellTexts.ContainsKey(key))
+                {
+                    if (string.Equals(lvlManager.cellTexts[key].Trim(), letter, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (!reservedGridSlots.Contains(key))
+                        {
+                            matchedKey = key;
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (found) break;
+        }
+
+        if (!found) return false;
+
+        int index = matchedKey.x * columns + matchedKey.y;
+        if (index >= transform.childCount) return false;
+
+        Transform slotTransform = transform.GetChild(index);
+        Transform placeholder = null;
+
+        if (slotTransform.childCount > 1)
+        {
+            placeholder = slotTransform.GetChild(1);
+        }
+
+        // 2. Inherit Material Properties safely (even if mesh renderer is nested)
+        MeshRenderer blockRenderer = blockTransform.GetComponent<MeshRenderer>();
+        if (blockRenderer == null) blockRenderer = blockTransform.GetComponentInChildren<MeshRenderer>();
+
+        MeshRenderer slotRenderer = placeholder != null ? placeholder.GetComponent<MeshRenderer>() : null;
+        if (slotRenderer == null && placeholder != null) slotRenderer = placeholder.GetComponentInChildren<MeshRenderer>();
+
+        if (blockRenderer != null && slotRenderer != null)
+        {
+            Color targetColor = slotRenderer.material.color;
+            blockRenderer.material.color = targetColor;
+            blockRenderer.material.SetColor("_RimColor", slotRenderer.material.GetColor("_RimColor"));
+            blockRenderer.material.SetColor("_ShineColor", slotRenderer.material.GetColor("_ShineColor"));
+            blockRenderer.material.SetFloat("_ShineSize", slotRenderer.material.GetFloat("_ShineSize"));
+            blockRenderer.material.SetFloat("_ShineSoftness", slotRenderer.material.GetFloat("_ShineSoftness"));
+            blockRenderer.material.SetFloat("_ShineAngle", slotRenderer.material.GetFloat("_ShineAngle"));
+            blockRenderer.material.SetFloat("_FresnelPower", slotRenderer.material.GetFloat("_FresnelPower"));
+
+            if (slotRenderer.materials.Length > 1 && blockRenderer.materials.Length > 1)
+            {
+                blockRenderer.materials[1].color = Color.green;
+            }
+        }
+
+        if (placeholder != null)
+        {
+            placeholder.DOKill();
+            Destroy(placeholder.gameObject);
+        }
+
+        // 3. Snap block to the grid 
+        blockTransform.DOKill();
+        blockTransform.SetParent(slotTransform);
+        blockTransform.localPosition = Vector3.zero;
+        blockTransform.localRotation = Quaternion.identity;
+        blockTransform.localScale = new Vector3(0.9f, 1f, 0.9f);
+        blockTransform.gameObject.layer = LayerMask.NameToLayer("Word");
+
+        lvlManager.excludedChar.Remove(matchedKey);
+
+        HandlePotentialWordCompletion(matchedKey, columns, totalRows);
+        return true;
+    }
+
+    private void HandlePotentialWordCompletion(Vector2Int placedPos, int columns, int totalRows)
+    {
+        var lvlManager = LevelManager.Instance;
+        string targetWordKey = null;
+
+        foreach (var kvp in lvlManager.wordPositions)
+        {
+            if (kvp.Value.Contains(placedPos))
+            {
+                targetWordKey = kvp.Key;
+                break;
+            }
+        }
+
+        if (string.IsNullOrEmpty(targetWordKey)) return;
+
+        bool isComplete = true;
+        foreach (var pos in lvlManager.wordPositions[targetWordKey])
+        {
+            if (lvlManager.excludedChar.Contains(pos) || reservedGridSlots.Contains(pos))
+            {
+                isComplete = false;
+                break;
+            }
+        }
+
+        if (isComplete)
+        {
+            int startRow = Mathf.Max(0, totalRows - 3);
+            bool inLastThreeRows = false;
+
+            foreach (var pos in lvlManager.wordPositions[targetWordKey])
+            {
+                if (pos.x >= startRow)
+                {
+                    inLastThreeRows = true;
+                    break;
+                }
+            }
+
+            if (!inLastThreeRows)
+            {
+                SilentlyDestroyWord(targetWordKey, columns);
+                if (!isProcessing) Check(columns);
+            }
+            else
+            {
+                if (!isProcessing) Check(columns);
+            }
+        }
     }
 }

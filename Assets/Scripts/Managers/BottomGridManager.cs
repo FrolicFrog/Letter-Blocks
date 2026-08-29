@@ -822,7 +822,10 @@ public class BottomGridManager : MonoBehaviour
             bottomArrow.transform.localPosition = new Vector3(midX, arrowY, minZ - wallThickness - arrowOffset);
             bottomArrow.transform.localRotation = Quaternion.Euler(0, 180, 0);
         }
-
+        if(enableArrows)
+        {
+            trayObj.tag = "Vertical";
+        }
         return trayObj;
     }
 

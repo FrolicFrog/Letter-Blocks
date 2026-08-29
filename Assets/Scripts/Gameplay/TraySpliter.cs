@@ -6,16 +6,14 @@ public class TraySpliter : MonoBehaviour
 {
     [HideInInspector] public List<Vector2Int> trayPos;
     [HideInInspector] public Dictionary<Vector2Int, string> trayCells;
-    [HideInInspector] public bool horizontalLock = false;
+    public bool horizontalLock = false;
     public static Material trayMat;
 
     /// <summary>
-    /// Included for compatibility with TrayDragger.
-    /// Position rebuilding is handled dynamically on Split().
+    /// Included for compatibility with TrayDragger references.
     /// </summary>
     public void UpdateGridPosition(int deltaRow, int deltaCol)
     {
-        // Handled dynamically inside RebuildGridDataFromCurrentTiles on Split()
     }
 
     /// <summary>
@@ -47,7 +45,7 @@ public class TraySpliter : MonoBehaviour
             string letter = GetTileLetter(child);
             if (string.IsNullOrEmpty(letter)) continue;
 
-            // Find the closest grid slot in BottomGridManager to this tile's current position
+            // Find closest grid slot in BottomGridManager to this tile's current position
             int closestIndex = -1;
             float minDistance = float.MaxValue;
 
@@ -88,18 +86,49 @@ public class TraySpliter : MonoBehaviour
         Transform nestedTile = tile.Find("Tile letter");
         Transform text0 = tile.Find("Text 0");
 
-        // Double Letter: Check if nested top letter is still present
-        if (nestedTile != null && nestedTile.parent == tile && nestedTile.gameObject.activeSelf && nestedTile.name != "JumpingTile")
+        bool hasNestedTile = nestedTile != null &&
+                             nestedTile.parent == tile &&
+                             nestedTile.gameObject.activeSelf &&
+                             nestedTile.name != "JumpingTile";
+
+        // Double Letter: BOTH letters present (combines base Text 0 + top Tile letter)
+        if (hasNestedTile && text0 != null)
         {
-            var tm = nestedTile.GetComponentInChildren<TextMeshPro>(true);
-            if (tm != null && !string.IsNullOrEmpty(tm.text)) return tm.text;
+            // Read Text 0 with includeInactive = true since it stays inactive under the top tile
+            var tm0 = text0.GetComponentInChildren<TextMeshPro>(true);
+            var tm1 = nestedTile.GetComponentInChildren<TextMeshPro>(true);
+
+            string baseChar = (tm0 != null) ? tm0.text : "";
+            string topChar = (tm1 != null) ? tm1.text : "";
+
+            if (!string.IsNullOrEmpty(baseChar) && !string.IsNullOrEmpty(topChar))
+            {
+                return baseChar + topChar; // Full 2-character string
+            }
+            if (!string.IsNullOrEmpty(topChar)) return topChar;
+            if (!string.IsNullOrEmpty(baseChar)) return baseChar;
         }
 
-        // Double Letter: Check if base letter is exposed after top letter jumped
-        if (text0 != null && text0.gameObject.activeSelf)
+        // Double Letter Base: Top letter already jumped, expose and read Text 0
+        if (text0 != null)
         {
-            var tm = text0.GetComponent<TextMeshPro>();
-            if (tm != null && !string.IsNullOrEmpty(tm.text)) return tm.text;
+            text0.gameObject.SetActive(true);
+
+            var tm0 = text0.GetComponentInChildren<TextMeshPro>(true);
+            if (tm0 != null && !string.IsNullOrEmpty(tm0.text))
+            {
+                return tm0.text;
+            }
+        }
+
+        // Nested tile present without Text 0
+        if (hasNestedTile)
+        {
+            var tm1 = nestedTile.GetComponentInChildren<TextMeshPro>(true);
+            if (tm1 != null && !string.IsNullOrEmpty(tm1.text))
+            {
+                return tm1.text;
+            }
         }
 
         // Standard single tile letter
@@ -114,7 +143,6 @@ public class TraySpliter : MonoBehaviour
 
     public void Split()
     {
-        // Rebuild data to only include active, unjumped tiles at their current positions
         RebuildGridDataFromCurrentTiles();
 
         if (trayPos != null && trayPos.Count > 0)

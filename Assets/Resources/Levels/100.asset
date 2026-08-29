@@ -24,7 +24,6 @@ MonoBehaviour:
   categoryMaterial: {fileID: 0}
   words:
   - JFG
-  - KIWI
   - BREAD
   - BANANA
   - CEREALS
@@ -44,7 +43,6 @@ MonoBehaviour:
   - Tray 12
   horizontal: []
   excludedChar:
-  - {x: 5, y: 3}
   - {x: 7, y: 4}
   - {x: 9, y: 2}
   - {x: 6, y: 2}
@@ -56,15 +54,14 @@ MonoBehaviour:
   - Key: Family
     Value:
     - JFG
-  - Key: Food
-    Value:
-    - KIWI
-    - BANANA
-    - APPLE
   - Key: Breakfast
     Value:
     - BREAD
     - CEREALS
+  - Key: Food
+    Value:
+    - BANANA
+    - APPLE
   cellCategory:
   - Key: {x: 9, y: 0}
     Value: Food
@@ -87,14 +84,6 @@ MonoBehaviour:
   - Key: {x: 7, y: 5}
     Value: Food
   - Key: {x: 7, y: 6}
-    Value: Food
-  - Key: {x: 5, y: 4}
-    Value: Food
-  - Key: {x: 5, y: 5}
-    Value: Food
-  - Key: {x: 5, y: 6}
-    Value: Food
-  - Key: {x: 5, y: 3}
     Value: Food
   - Key: {x: 8, y: 1}
     Value: Breakfast
@@ -173,14 +162,6 @@ MonoBehaviour:
     Value: A
   - Key: {x: 6, y: 4}
     Value: D
-  - Key: {x: 5, y: 4}
-    Value: I
-  - Key: {x: 5, y: 5}
-    Value: W
-  - Key: {x: 5, y: 3}
-    Value: K
-  - Key: {x: 5, y: 6}
-    Value: I
   - Key: {x: 3, y: 2}
     Value: J
   - Key: {x: 3, y: 3}
@@ -433,12 +414,6 @@ MonoBehaviour:
     - {x: 3, y: 2}
     - {x: 3, y: 3}
     - {x: 3, y: 4}
-  - Key: KIWI
-    Value:
-    - {x: 5, y: 3}
-    - {x: 5, y: 4}
-    - {x: 5, y: 5}
-    - {x: 5, y: 6}
   - Key: BREAD
     Value:
     - {x: 6, y: 0}
@@ -475,3 +450,16 @@ MonoBehaviour:
     Value: 6
   - Key: Tray 3
     Value: 1
+  firstCharPos:
+  - Key: JFG
+    Value: 2
+  - Key: BREAD
+    Value: 0
+  - Key: BANANA
+    Value: 1
+  - Key: CEREALS
+    Value: 1
+  - Key: APPLE
+    Value: 0
+  levelMode: 0
+  lockedTray: []

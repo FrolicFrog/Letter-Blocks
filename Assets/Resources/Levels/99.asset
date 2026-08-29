@@ -21,9 +21,8 @@ MonoBehaviour:
   minutes: 1
   seconds: 30
   bottomGridSize: 0.121
-  categoryMaterial: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
-  - SODIUM
   - JUPITER
   - IRON
   - MARS
@@ -43,7 +42,6 @@ MonoBehaviour:
   - Tray 1
   - Tray 2
   excludedChar:
-  - {x: 0, y: 2}
   - {x: 1, y: 4}
   - {x: 2, y: 2}
   - {x: 3, y: 3}
@@ -57,13 +55,6 @@ MonoBehaviour:
   blockedCells:
   - {x: 6, y: 4}
   wordCategory:
-  - Key: Metals
-    Value:
-    - SODIUM
-    - IRON
-    - GOLD
-    - COPPER
-    - SILVER
   - Key: Space
     Value:
     - JUPITER
@@ -71,6 +62,12 @@ MonoBehaviour:
     - MERCURY
     - VENUS
     - EARTH
+  - Key: Metals
+    Value:
+    - IRON
+    - GOLD
+    - COPPER
+    - SILVER
   cellCategory:
   - Key: {x: 7, y: 0}
     Value: Space
@@ -167,18 +164,6 @@ MonoBehaviour:
   - Key: {x: 2, y: 3}
     Value: Metals
   - Key: {x: 2, y: 4}
-    Value: Metals
-  - Key: {x: 0, y: 1}
-    Value: Metals
-  - Key: {x: 0, y: 2}
-    Value: Metals
-  - Key: {x: 0, y: 3}
-    Value: Metals
-  - Key: {x: 0, y: 4}
-    Value: Metals
-  - Key: {x: 0, y: 5}
-    Value: Metals
-  - Key: {x: 0, y: 6}
     Value: Metals
   cellTexts:
   - Key: {x: 9, y: 1}
@@ -277,18 +262,6 @@ MonoBehaviour:
     Value: E
   - Key: {x: 1, y: 6}
     Value: R
-  - Key: {x: 0, y: 1}
-    Value: S
-  - Key: {x: 0, y: 2}
-    Value: O
-  - Key: {x: 0, y: 3}
-    Value: D
-  - Key: {x: 0, y: 4}
-    Value: I
-  - Key: {x: 0, y: 5}
-    Value: U
-  - Key: {x: 0, y: 6}
-    Value: M
   trayCells:
   - Key: {x: 4, y: 1}
     Value: M
@@ -342,14 +315,6 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: 52ec1ad848b342a4b99ffe2ac80da8bc, type: 2}
   trayColors: []
   wordPositions:
-  - Key: SODIUM
-    Value:
-    - {x: 0, y: 1}
-    - {x: 0, y: 2}
-    - {x: 0, y: 3}
-    - {x: 0, y: 4}
-    - {x: 0, y: 5}
-    - {x: 0, y: 6}
   - Key: JUPITER
     Value:
     - {x: 1, y: 0}
@@ -417,3 +382,24 @@ MonoBehaviour:
     - {x: 9, y: 4}
     - {x: 9, y: 5}
   freezedTray: []
+  firstCharPos:
+  - Key: JUPITER
+    Value: 0
+  - Key: IRON
+    Value: 1
+  - Key: MARS
+    Value: 3
+  - Key: GOLD
+    Value: 1
+  - Key: MERCURY
+    Value: 1
+  - Key: COPPER
+    Value: 1
+  - Key: VENUS
+    Value: 0
+  - Key: SILVER
+    Value: 2
+  - Key: EARTH
+    Value: 1
+  levelMode: 0
+  lockedTray: []

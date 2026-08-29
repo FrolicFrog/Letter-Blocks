@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
@@ -7,11 +8,7 @@ public class PowerUpManager : MonoBehaviour
 {
     public static PowerUpManager Instance { get; private set; }
 
-    [Header("References")]
-    [Tooltip("Prefab of the 3D hammer to spawn.")]
-    [SerializeField] private GameObject hammerPrefab;
-
-    [Header("WordChecker UI Coordinate Settings")]
+    [Header("<color=#90EE90>--- General & UI Settings ---</color>")]
     [Tooltip("Matches flightElevationOffset from WordChecker to pull the hammer closer to the camera in front of gameplay objects.")]
     [SerializeField] private float flightElevationOffset = 5.0f;
 
@@ -21,66 +18,57 @@ public class PowerUpManager : MonoBehaviour
     [Tooltip("Duration of the UI button bounce/pop animation.")]
     [SerializeField] private float uiPopDuration = 0.15f;
 
-    [Header("Flight Timing & Easing")]
-    [Tooltip("Flight time from UI button to hover position near the target.")]
+
+    [Header("<color=#FFA500>--- Hammer References & Settings ---</color>")]
+    [Tooltip("Prefab of the 3D hammer to spawn.")]
+    [SerializeField] private GameObject hammerPrefab;
+
     [SerializeField] private float flyInDuration = 0.35f;
-
-    [Tooltip("Easing when flying out from the UI button.")]
     [SerializeField] private Ease flyEase = Ease.OutQuad;
-
-    [Tooltip("Time to pull back and build momentum before smashing.")]
     [SerializeField] private float windUpDuration = 0.16f;
-
-    [Tooltip("Easing for the wind-up pull back.")]
     [SerializeField] private Ease windUpEase = Ease.OutBack;
-
-    [Tooltip("Time taken for the hammer to strike down on the target.")]
     [SerializeField] private float smashDuration = 0.09f;
-
-    [Tooltip("Easing for the downward smash acceleration.")]
     [SerializeField] private Ease smashEase = Ease.InCubic;
-
-    [Tooltip("Brief pause on the target after impact.")]
     [SerializeField] private float impactPauseDuration = 0.08f;
-
-    [Tooltip("Flight time from the target back to the UI button.")]
     [SerializeField] private float returnDuration = 0.35f;
-
-    [Tooltip("Easing when returning and shrinking into the UI button.")]
     [SerializeField] private Ease returnEase = Ease.InQuad;
 
-    [Header("Offsets Relative to Target")]
-    [Tooltip("Hover position beside the target tray before winding up.")]
+    [Space]
     [SerializeField] private Vector3 hoverOffset = new Vector3(0.5f, 1.2f, -0.4f);
-
-    [Tooltip("Pull-back position where hammer builds swing momentum.")]
     [SerializeField] private Vector3 windUpOffset = new Vector3(0.8f, 2.0f, -0.8f);
-
-    [Tooltip("Hit point on the target tray.")]
     [SerializeField] private Vector3 hitOffset = new Vector3(0f, 0.1f, -0.2f);
 
-    [Header("Rotations (Euler)")]
-    [Tooltip("Rotation when originating from / returning to the UI button.")]
+    [Space]
     [SerializeField] private Vector3 spawnRotation = new Vector3(-10f, 30f, -15f);
-
-    [Tooltip("Rotation when hovering near the target.")]
     [SerializeField] private Vector3 hoverRotation = new Vector3(-15f, 35f, -10f);
-
-    [Tooltip("Rotation at the peak of the wind-up momentum build.")]
     [SerializeField] private Vector3 windUpRotation = new Vector3(-60f, 45f, -25f);
-
-    [Tooltip("Rotation at the moment of impact.")]
     [SerializeField] private Vector3 smashRotation = new Vector3(65f, 15f, 0f);
 
-    [Header("Impact Feedback / Juice")]
-    [Tooltip("Scale multiplier for the active hammer.")]
+    [Space]
     [SerializeField] private float scaleMultiplier = 1.0f;
-
-    [Tooltip("Punch scale applied to the target tray on hit.")]
     [SerializeField] private Vector3 targetPunchScale = new Vector3(0.2f, -0.2f, 0.2f);
-
-    [Tooltip("Duration of the target tray squash/stretch.")]
     [SerializeField] private float targetPunchDuration = 0.18f;
+
+
+    [Header("<color=#00FFFF>--- Cleaner References & Settings ---</color>")]
+    [Tooltip("Prefab of the Vacuum Cleaner to spawn.")]
+    [SerializeField] private GameObject cleanerPrefab;
+
+    [Tooltip("Position offset relative to the tray when spawning the cleaner.")]
+    [SerializeField] private Vector3 cleanerSpawnOffset = new Vector3(0f, 2.5f, -0.5f);
+
+    [Tooltip("Initial rotation (Euler) of the cleaner when it spawns.")]
+    [SerializeField] private Vector3 cleanerSpawnRotation = new Vector3(0f, 0f, 0f);
+
+    [Tooltip("How many full 360-degree spins the cleaner does when spawning and leaving.")]
+    [SerializeField] private int cleanerSpinCount = 1;
+
+    [Tooltip("How high the items jump into the air before getting sucked in.")]
+    [SerializeField] private float suckJumpPower = 1.5f;
+
+    [SerializeField] private float cleanerSpawnDuration = 0.6f;
+    [SerializeField] private float vacuumSuckDuration = 0.5f;
+    [SerializeField] private float staggerDelayPerChild = 0.08f;
 
     private void Awake()
     {
@@ -92,12 +80,6 @@ public class PowerUpManager : MonoBehaviour
         Instance = this;
     }
 
-    /// <summary>
-    /// Launches hammer from UI button, smashes target tray, and flies back into the UI button.
-    /// </summary>
-    /// <param name="uiTransform">Transform/RectTransform of the UI Button toggle.</param>
-    /// <param name="trayGameObject">Target tray or pit GameObject to smash.</param>
-    /// <param name="onSmashHit">Callback invoked at the exact moment of impact.</param>
     public void HammerSmash(Transform uiTransform, GameObject trayGameObject, Action onSmashHit = null)
     {
         if (hammerPrefab == null || trayGameObject == null || uiTransform == null)
@@ -106,40 +88,31 @@ public class PowerUpManager : MonoBehaviour
             return;
         }
 
-        // 1. Calculate UI Origin using WordChecker projection logic
         Vector3 targetPos = trayGameObject.transform.position;
         Vector3 uiWorldPos = GetWorldPosFromUI(uiTransform, targetPos);
 
-        // 2. Setup trajectory positions
         Vector3 hoverPos = targetPos + hoverOffset;
         Vector3 windUpPos = targetPos + windUpOffset;
         Vector3 strikePos = targetPos + hitOffset;
 
-        // 3. Spawn hammer at UI button world point with zero scale
         GameObject activeHammer = Instantiate(hammerPrefab, uiWorldPos, Quaternion.Euler(spawnRotation));
         Vector3 targetScale = activeHammer.transform.localScale * scaleMultiplier;
         activeHammer.transform.localScale = Vector3.zero;
 
-        // Trigger UI pop upon takeoff
         PopUIElement(uiTransform);
 
-        // 4. Build Sequence
         Sequence smashSeq = DOTween.Sequence();
 
-        // PHASE 1: Fly out from UI button -> Hover near target
         smashSeq.Append(activeHammer.transform.DOMove(hoverPos, flyInDuration).SetEase(flyEase));
         smashSeq.Join(activeHammer.transform.DOScale(targetScale, flyInDuration).SetEase(Ease.OutBack));
         smashSeq.Join(activeHammer.transform.DORotate(hoverRotation, flyInDuration).SetEase(flyEase));
 
-        // PHASE 2: Wind-Up / Build Momentum
         smashSeq.Append(activeHammer.transform.DOMove(windUpPos, windUpDuration).SetEase(windUpEase));
         smashSeq.Join(activeHammer.transform.DORotate(windUpRotation, windUpDuration).SetEase(windUpEase));
 
-        // PHASE 3: Smash Down
         smashSeq.Append(activeHammer.transform.DOMove(strikePos, smashDuration).SetEase(smashEase));
         smashSeq.Join(activeHammer.transform.DORotate(smashRotation, smashDuration).SetEase(smashEase));
 
-        // PHASE 4: Impact Feedback & Split Callback
         smashSeq.AppendCallback(() =>
         {
             trayGameObject.transform.DOPunchScale(targetPunchScale, targetPunchDuration, 10, 1f);
@@ -149,12 +122,10 @@ public class PowerUpManager : MonoBehaviour
 
         smashSeq.AppendInterval(impactPauseDuration);
 
-        // PHASE 5: Return flight directly into the UI button & shrink to zero
         smashSeq.Append(activeHammer.transform.DOMove(uiWorldPos, returnDuration).SetEase(returnEase));
         smashSeq.Join(activeHammer.transform.DORotate(spawnRotation, returnDuration).SetEase(returnEase));
         smashSeq.Join(activeHammer.transform.DOScale(Vector3.zero, returnDuration).SetEase(Ease.InBack, 1.3f));
 
-        // PHASE 6: UI Impact Pop & Destroy
         smashSeq.OnComplete(() =>
         {
             PopUIElement(uiTransform);
@@ -163,9 +134,119 @@ public class PowerUpManager : MonoBehaviour
         });
     }
 
-    /// <summary>
-    /// Projects a 2D Canvas UI position into 3D World Space using WordChecker's camera projection formula.
-    /// </summary>
+    public void SuckTrays(GameObject tray, Action onComplete = null)
+    {
+        if (cleanerPrefab == null || tray == null)
+        {
+            Debug.LogError("[PowerUpManager] Cleaner Prefab or Tray is null!");
+            return;
+        }
+
+        Vector3 spawnPos = tray.transform.position + cleanerSpawnOffset;
+        GameObject activeCleaner = Instantiate(cleanerPrefab, spawnPos, Quaternion.Euler(cleanerSpawnRotation));
+
+        Vector3 cleanerTargetScale = activeCleaner.transform.localScale * scaleMultiplier;
+
+        Transform nozzle = activeCleaner.transform.childCount > 0 ? activeCleaner.transform.GetChild(0) : activeCleaner.transform;
+        Vector3 nozzleTargetPos = nozzle.position;
+
+        activeCleaner.transform.localScale = Vector3.zero;
+
+        Sequence vacuumSeq = DOTween.Sequence();
+
+        // 1. Cleaner Entrance Animation
+        vacuumSeq.Append(activeCleaner.transform.DOScale(cleanerTargetScale, cleanerSpawnDuration).SetEase(Ease.OutBack));
+        vacuumSeq.Join(activeCleaner.transform.DORotate(new Vector3(0, 360f * cleanerSpinCount, 0), cleanerSpawnDuration, RotateMode.FastBeyond360)
+            .SetEase(Ease.OutQuad)
+            .SetRelative(true));
+
+        // 2. Cache & Extract Children: Splits Double Letters apart so they are vacuumed independently!
+        List<Transform> trayChildren = new List<Transform>();
+        for (int i = tray.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform item = tray.transform.GetChild(i);
+            trayChildren.Add(item);
+
+            // Look for nested letter blocks
+            for (int j = item.childCount - 1; j >= 0; j--)
+            {
+                Transform subChild = item.GetChild(j);
+
+                // Use (true) to find inactive TextMeshPro components inside disabled objects
+                if (subChild.GetComponent<TMPro.TextMeshPro>() == null && subChild.GetComponentInChildren<TMPro.TextMeshPro>(true) != null)
+                {
+                    subChild.SetParent(tray.transform, true);
+                    trayChildren.Add(subChild);
+                }
+            }
+        }
+
+        float totalVacuumTime = cleanerSpawnDuration;
+
+        // 3. Animate each independent block flying into the nozzle
+        for (int i = 0; i < trayChildren.Count; i++)
+        {
+            Transform item = trayChildren[i];
+            float delay = cleanerSpawnDuration + (i * staggerDelayPerChild);
+            float pieceReachTime = delay + vacuumSuckDuration;
+
+            Vector3 randomSpin = new Vector3(
+                UnityEngine.Random.Range(-360, 360),
+                UnityEngine.Random.Range(-360, 360),
+                UnityEngine.Random.Range(-360, 360)
+            );
+
+            vacuumSeq.Insert(delay, item.DOJump(nozzleTargetPos, suckJumpPower, 1, vacuumSuckDuration).SetEase(Ease.InCubic));
+            vacuumSeq.Insert(delay, item.DORotate(randomSpin, vacuumSuckDuration, RotateMode.FastBeyond360).SetEase(Ease.InQuad));
+            vacuumSeq.Insert(delay, item.DOScale(Vector3.zero, vacuumSuckDuration).SetEase(Ease.InCirc));
+
+            // Evaluate placement exactly when it hits the nozzle
+            vacuumSeq.InsertCallback(pieceReachTime, () =>
+            {
+                if (item != null)
+                {
+                    bool placed = false;
+                    if (WordChecker.instance != null)
+                    {
+                        placed = WordChecker.instance.TryPlaceVacuumedPiece(item);
+                    }
+
+                    if (!placed) Destroy(item.gameObject);
+                }
+            });
+
+            totalVacuumTime = Mathf.Max(totalVacuumTime, pieceReachTime);
+        }
+
+        // 4. Animate the Tray base itself getting sucked up
+        float traySuckDelay = totalVacuumTime;
+        Vector3 traySpin = new Vector3(180, 360, 90);
+
+        vacuumSeq.Insert(traySuckDelay, tray.transform.DOJump(nozzleTargetPos, suckJumpPower * 0.75f, 1, vacuumSuckDuration).SetEase(Ease.InCubic));
+        vacuumSeq.Insert(traySuckDelay, tray.transform.DORotate(traySpin, vacuumSuckDuration, RotateMode.FastBeyond360).SetEase(Ease.InQuad));
+        vacuumSeq.Insert(traySuckDelay, tray.transform.DOScale(Vector3.zero, vacuumSuckDuration).SetEase(Ease.InCirc));
+
+        totalVacuumTime += vacuumSuckDuration;
+
+        vacuumSeq.InsertCallback(totalVacuumTime, () =>
+        {
+            if (tray != null) Destroy(tray);
+        });
+
+        // 5. Cleaner Inverse Exit Animation
+        float exitTime = totalVacuumTime + 0.15f;
+        vacuumSeq.Insert(exitTime, activeCleaner.transform.DOScale(Vector3.zero, cleanerSpawnDuration).SetEase(Ease.InBack));
+        vacuumSeq.Insert(exitTime, activeCleaner.transform.DORotate(new Vector3(0, -360f * cleanerSpinCount, 0), cleanerSpawnDuration, RotateMode.FastBeyond360)
+            .SetEase(Ease.InQuad)
+            .SetRelative(true));
+
+        vacuumSeq.OnComplete(() =>
+        {
+            Destroy(activeCleaner);
+            onComplete?.Invoke();
+        });
+    }
+
     private Vector3 GetWorldPosFromUI(Transform uiTransform, Vector3 referenceTargetPos)
     {
         Canvas canvas = uiTransform.GetComponentInParent<Canvas>();
@@ -177,9 +258,6 @@ public class PowerUpManager : MonoBehaviour
         return cam.ScreenToWorldPoint(new Vector3(targetScreenPos.x, targetScreenPos.y, distanceToCamera));
     }
 
-    /// <summary>
-    /// Applies WordChecker's punch scale feedback to the UI button.
-    /// </summary>
     private void PopUIElement(Transform uiTransform)
     {
         if (uiTransform == null) return;

@@ -75,10 +75,9 @@ public class GlobalTrayDragger : MonoBehaviour
     [Tooltip("Easing function for the return animation.")]
     public Ease snapBackEase = Ease.OutBack;
     public GameObject Panel, Hand;
-    [Header("Debug")]
-    [Tooltip("Draw wireframes of the physics overlap checks in the Scene view while dragging.")]
 
-    public List<Toggle> powerUps;
+
+    public Toggle pHammer, pCleaner;
     public bool showPhysicsGizmos = true;
     public ParticleSystem effect;
 
@@ -158,13 +157,21 @@ public class GlobalTrayDragger : MonoBehaviour
                 currentlyDraggedParent = hit.transform;
             }
            
-            if(powerUps.Any(x=>x.isOn))
+            if(pHammer.isOn)
             {
                 var ts = currentlyDraggedParent.GetComponent<TraySpliter>();
-                PowerUpManager.Instance.HammerSmash(powerUps[0].transform, currentlyDraggedParent.gameObject,()=>ts.Split());
+            
+                PowerUpManager.Instance.HammerSmash(pHammer.transform, currentlyDraggedParent.gameObject,()=> { ts.Split(); });
                
                 currentlyDraggedParent = null;
-                Debug.Log("Button Pressed");
+                Debug.Log("Hammer Pressed");
+                return;
+            }
+            else if(pCleaner.isOn)
+            {
+                PowerUpManager.Instance.SuckTrays(currentlyDraggedParent.gameObject,()=>pCleaner.isOn = false);
+                currentlyDraggedParent = null;
+                Debug.Log("Cleaner Pressed");
                 return;
             }
 
