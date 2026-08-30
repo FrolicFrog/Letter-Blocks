@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 29
   m_EditorClassIdentifier: 
-  timer: 0
+  timer: 1
   LevelNumber: 29
   rows: 30
   columns: 8
   height: 10
   width: 6
-  minutes: 1
+  minutes: 2
   seconds: 30
   bottomGridSize: 0.08
   categoryMaterial: {fileID: 0}
@@ -1040,3 +1040,4 @@ MonoBehaviour:
   - Key: CIRCLE
     Value: 2
   levelMode: 2
+  lockedTray: []

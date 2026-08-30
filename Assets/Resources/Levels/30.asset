@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 30
   m_EditorClassIdentifier: 
-  timer: 0
+  timer: 1
   LevelNumber: 30
   rows: 30
   columns: 8
@@ -1261,3 +1261,5 @@ MonoBehaviour:
     Value: 1
   - Key: CAMPUS
     Value: 2
+  levelMode: 0
+  lockedTray: []

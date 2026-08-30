@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 9
   m_EditorClassIdentifier: 
-  timer: 0
+  timer: 1
   LevelNumber: 9
   rows: 13
   columns: 8
   height: 5
   width: 5
-  minutes: 1
-  seconds: 30
+  minutes: 3
+  seconds: 0
   bottomGridSize: 0.13
-  categoryMaterial: {fileID: 0}
+  categoryMaterial: {fileID: 2100000, guid: 5037698df112d734c994abd6bc3cec97, type: 2}
   words:
   - BLUSH
   - ROMANTIC
@@ -596,3 +596,5 @@ MonoBehaviour:
     Value: 3
   - Key: COMEDY
     Value: 0
+  levelMode: 0
+  lockedTray: []

@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 39
   m_EditorClassIdentifier: 
-  timer: 0
+  timer: 1
   LevelNumber: 39
   rows: 30
   columns: 9
   height: 8
   width: 8
-  minutes: 1
+  minutes: 2
   seconds: 30
   bottomGridSize: 0.1
-  categoryMaterial: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - DRAMA
   - TANKER
@@ -1197,3 +1197,4 @@ MonoBehaviour:
   - Key: TUNA
     Value: 3
   levelMode: 0
+  lockedTray: []

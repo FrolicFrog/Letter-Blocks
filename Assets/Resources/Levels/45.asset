@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 45
   m_EditorClassIdentifier: 
-  timer: 0
+  timer: 1
   LevelNumber: 45
   rows: 30
   columns: 9
   height: 7
   width: 6
-  minutes: 1
+  minutes: 2
   seconds: 30
   bottomGridSize: 0.11
   categoryMaterial: {fileID: 0}

@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 32
   m_EditorClassIdentifier: 
-  timer: 0
+  timer: 1
   LevelNumber: 32
   rows: 30
   columns: 8
   height: 7
   width: 5
   minutes: 1
-  seconds: 30
+  seconds: 45
   bottomGridSize: 0.1
   categoryMaterial: {fileID: 0}
   words:
@@ -1219,3 +1219,4 @@ MonoBehaviour:
   - Key: LEMON
     Value: 2
   levelMode: 1
+  lockedTray: []

@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 46
   m_EditorClassIdentifier: 
-  timer: 0
+  timer: 1
   LevelNumber: 46
   rows: 30
   columns: 9
   height: 8
   width: 8
-  minutes: 1
-  seconds: 30
+  minutes: 2
+  seconds: 0
   bottomGridSize: 0.11
-  categoryMaterial: {fileID: 2100000, guid: a85476d5170cbbb42a1e05f13f1eda4b, type: 2}
+  categoryMaterial: {fileID: 0}
   words:
   - PERSIAN
   - SAUNA

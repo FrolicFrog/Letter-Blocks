@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
   m_Name: 48
   m_EditorClassIdentifier: 
-  timer: 0
+  timer: 1
   LevelNumber: 48
   rows: 30
   columns: 9
   height: 6
   width: 6
   minutes: 1
-  seconds: 30
+  seconds: 25
   bottomGridSize: 0.11
   categoryMaterial: {fileID: 0}
   words:

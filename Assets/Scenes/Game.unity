@@ -4012,7 +4012,7 @@ MonoBehaviour:
   trayEffect: {fileID: 19855088, guid: cc4edba986607ba48b17927b27d25e4e, type: 3}
   unfreeze: {fileID: 8300000, guid: 6c4768370c68a7340874edc1ae402191, type: 3}
   gridAnimator: {fileID: 1855233891}
-  TestLevelToLoad: 11
+  TestLevelToLoad: 50
   ticks: []
   hearts: 0
 --- !u!114 &558711660
@@ -7339,7 +7339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08e217bb807e55449b8036a6dff33450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inRadio: 0
+  inRadio: 1
   targetGraphic: {fileID: 784047212}
   onScale: {x: 0.75, y: 0.75, z: 1}
   offScale: {x: 1, y: 1, z: 1}
@@ -8048,7 +8048,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -78, y: -34}
+  m_AnchoredPosition: {x: -240.5, y: -38}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1457105257
@@ -9135,8 +9135,8 @@ MonoBehaviour:
   snapBackEase: 27
   Panel: {fileID: 327762497}
   Hand: {fileID: 537397412}
-  pHammer: {fileID: 1737923604}
-  pCleaner: {fileID: 40551596}
+  pHammer: {fileID: 0}
+  pCleaner: {fileID: 0}
   showPhysicsGizmos: 1
   effect: {fileID: 19855088, guid: cc4edba986607ba48b17927b27d25e4e, type: 3}
   select: {fileID: 8300000, guid: 8380380647057dc48a615aef8e96e323, type: 3}
@@ -9200,15 +9200,14 @@ MonoBehaviour:
   scaleMultiplier: 1
   targetPunchScale: {x: 0.2, y: -0.2, z: 0.2}
   targetPunchDuration: 0.18
-  cleanerPrefab: {fileID: 3374745825150245741, guid: 8b609b4f1c1234e4fba56a4085814cbd,
-    type: 3}
-  cleanerSpawnOffset: {x: 0, y: 5, z: -5.5}
-  cleanerSpawnRotation: {x: 0, y: -90, z: 0}
-  cleanerSpinCount: 3
-  suckJumpPower: 3
-  cleanerSpawnDuration: 1
-  vacuumSuckDuration: 0.55
-  staggerDelayPerChild: 0.12
+  cleanerPrefab: {fileID: 0}
+  cleanerSpawnOffset: {x: 0, y: 2.5, z: -0.5}
+  cleanerSpawnRotation: {x: 0, y: 0, z: 0}
+  cleanerSpinCount: 1
+  suckJumpPower: 1.5
+  cleanerSpawnDuration: 0.6
+  vacuumSuckDuration: 0.5
+  staggerDelayPerChild: 0.08
 --- !u!4 &1666533667 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 437938, guid: 9bcdb1b8180c1394ea37716601148607,
@@ -9878,7 +9877,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 462}
+  m_AnchoredPosition: {x: 140, y: 462}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1825650881
@@ -10550,8 +10549,8 @@ MonoBehaviour:
   timerSound: {fileID: 8300000, guid: e208c8656979fb346986b7b1bd5b6d5c, type: 3}
   failMenu: {fileID: 259769126}
   completeMenu: {fileID: 345656592}
-  freezeTime: {fileID: 1366820496}
-  freezeSlider: {fileID: 867230232}
+  freezeTime: {fileID: 0}
+  freezeSlider: {fileID: 0}
   complete: {fileID: 8300000, guid: 5561431be961e5144875503801e381ca, type: 3}
   timer: 0
   time: 0
