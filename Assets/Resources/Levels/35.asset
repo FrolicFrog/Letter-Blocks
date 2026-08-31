@@ -19,13 +19,10 @@ MonoBehaviour:
   height: 7
   width: 6
   minutes: 3
-  seconds: 0
+  seconds: 15
   bottomGridSize: 0.11
   categoryMaterial: {fileID: 0}
   words:
-  - LARVA
-  - BISON
-  - COLONY
   - CHEERS
   - SHEEP
   - POLLEN
@@ -111,31 +108,10 @@ MonoBehaviour:
   - {x: 8, y: 5}
   - {x: 6, y: 4}
   - {x: 6, y: 5}
-  - {x: 5, y: 2}
-  - {x: 5, y: 4}
-  - {x: 3, y: 2}
   - {x: 14, y: 3}
   - {x: 14, y: 6}
-  - {x: 4, y: 4}
   blockedCells: []
   wordCategory:
-  - Key: Bee
-    Value:
-    - LARVA
-    - COLONY
-    - POLLEN
-    - QUEEN
-    - NECTOR
-    - WAX
-    - STING
-  - Key: Woolly Animals
-    Value:
-    - BISON
-    - SHEEP
-    - ALPACA
-    - GOAT
-    - LLAMA
-    - CAMEL
   - Key: Party
     Value:
     - CHEERS
@@ -144,6 +120,20 @@ MonoBehaviour:
     - CONFETTI
     - MUSIC
     - DANCE
+  - Key: Woolly Animals
+    Value:
+    - SHEEP
+    - ALPACA
+    - GOAT
+    - LLAMA
+    - CAMEL
+  - Key: Bee
+    Value:
+    - POLLEN
+    - QUEEN
+    - NECTOR
+    - WAX
+    - STING
   - Key: Phone
     Value:
     - APPS
@@ -421,16 +411,6 @@ MonoBehaviour:
     Value: Woolly Animals
   - Key: {x: 7, y: 4}
     Value: Woolly Animals
-  - Key: {x: 4, y: 2}
-    Value: Woolly Animals
-  - Key: {x: 4, y: 3}
-    Value: Woolly Animals
-  - Key: {x: 4, y: 4}
-    Value: Woolly Animals
-  - Key: {x: 4, y: 5}
-    Value: Woolly Animals
-  - Key: {x: 4, y: 6}
-    Value: Woolly Animals
   - Key: {x: 8, y: 1}
     Value: Bee
   - Key: {x: 8, y: 2}
@@ -455,28 +435,6 @@ MonoBehaviour:
     Value: Party
   - Key: {x: 6, y: 7}
     Value: Party
-  - Key: {x: 5, y: 1}
-    Value: Bee
-  - Key: {x: 5, y: 2}
-    Value: Bee
-  - Key: {x: 5, y: 3}
-    Value: Bee
-  - Key: {x: 5, y: 4}
-    Value: Bee
-  - Key: {x: 5, y: 5}
-    Value: Bee
-  - Key: {x: 5, y: 6}
-    Value: Bee
-  - Key: {x: 3, y: 0}
-    Value: Bee
-  - Key: {x: 3, y: 1}
-    Value: Bee
-  - Key: {x: 3, y: 2}
-    Value: Bee
-  - Key: {x: 3, y: 3}
-    Value: Bee
-  - Key: {x: 3, y: 4}
-    Value: Bee
   cellTexts:
   - Key: {x: 29, y: 0}
     Value: C
@@ -738,16 +696,6 @@ MonoBehaviour:
     Value: E
   - Key: {x: 7, y: 4}
     Value: P
-  - Key: {x: 4, y: 2}
-    Value: B
-  - Key: {x: 4, y: 3}
-    Value: I
-  - Key: {x: 4, y: 4}
-    Value: S
-  - Key: {x: 4, y: 5}
-    Value: O
-  - Key: {x: 4, y: 6}
-    Value: N
   - Key: {x: 8, y: 1}
     Value: P
   - Key: {x: 8, y: 2}
@@ -772,28 +720,6 @@ MonoBehaviour:
     Value: R
   - Key: {x: 6, y: 7}
     Value: S
-  - Key: {x: 5, y: 1}
-    Value: C
-  - Key: {x: 5, y: 2}
-    Value: O
-  - Key: {x: 5, y: 3}
-    Value: L
-  - Key: {x: 5, y: 4}
-    Value: O
-  - Key: {x: 5, y: 5}
-    Value: N
-  - Key: {x: 5, y: 6}
-    Value: Y
-  - Key: {x: 3, y: 0}
-    Value: L
-  - Key: {x: 3, y: 1}
-    Value: A
-  - Key: {x: 3, y: 2}
-    Value: R
-  - Key: {x: 3, y: 3}
-    Value: V
-  - Key: {x: 3, y: 4}
-    Value: A
   trayCells:
   - Key: {x: 6, y: 3}
     Value: A
@@ -845,10 +771,6 @@ MonoBehaviour:
     Value: R
   - Key: {x: 2, y: 0}
     Value: C
-  - Key: {x: 1, y: 0}
-    Value: O
-  - Key: {x: 0, y: 0}
-    Value: O
   - Key: {x: 3, y: 1}
     Value: A
   - Key: {x: 2, y: 1}
@@ -861,14 +783,10 @@ MonoBehaviour:
     Value: H
   - Key: {x: 2, y: 2}
     Value: E
-  - Key: {x: 1, y: 2}
-    Value: R
   - Key: {x: 0, y: 5}
     Value: E
   - Key: {x: 6, y: 5}
     Value: D
-  - Key: {x: 6, y: 1}
-    Value: S
   trayName:
   - Key: {x: 6, y: 3}
     Value: Tray 1
@@ -920,10 +838,6 @@ MonoBehaviour:
     Value: Tray 9
   - Key: {x: 2, y: 0}
     Value: Tray 9
-  - Key: {x: 1, y: 0}
-    Value: Tray 10
-  - Key: {x: 0, y: 0}
-    Value: Tray 10
   - Key: {x: 3, y: 1}
     Value: Tray 11
   - Key: {x: 2, y: 1}
@@ -936,14 +850,10 @@ MonoBehaviour:
     Value: Tray 14
   - Key: {x: 2, y: 2}
     Value: Tray 15
-  - Key: {x: 1, y: 2}
-    Value: Tray 16
   - Key: {x: 0, y: 5}
     Value: Tray 17
   - Key: {x: 6, y: 5}
     Value: Tray 18
-  - Key: {x: 6, y: 1}
-    Value: Tray 19
   categoryColors:
   - Key: Phone
     Value: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}
@@ -959,28 +869,6 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: ddff074964e27c7458452699bc7f6f1f, type: 2}
   trayColors: []
   wordPositions:
-  - Key: LARVA
-    Value:
-    - {x: 3, y: 0}
-    - {x: 3, y: 1}
-    - {x: 3, y: 2}
-    - {x: 3, y: 3}
-    - {x: 3, y: 4}
-  - Key: BISON
-    Value:
-    - {x: 4, y: 2}
-    - {x: 4, y: 3}
-    - {x: 4, y: 4}
-    - {x: 4, y: 5}
-    - {x: 4, y: 6}
-  - Key: COLONY
-    Value:
-    - {x: 5, y: 1}
-    - {x: 5, y: 2}
-    - {x: 5, y: 3}
-    - {x: 5, y: 4}
-    - {x: 5, y: 5}
-    - {x: 5, y: 6}
   - Key: CHEERS
     Value:
     - {x: 6, y: 2}
@@ -1181,12 +1069,6 @@ MonoBehaviour:
     - {x: 29, y: 7}
   freezedTray: []
   firstCharPos:
-  - Key: LARVA
-    Value: 0
-  - Key: BISON
-    Value: 2
-  - Key: COLONY
-    Value: 1
   - Key: CHEERS
     Value: 2
   - Key: SHEEP

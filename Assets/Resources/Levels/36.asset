@@ -18,14 +18,11 @@ MonoBehaviour:
   columns: 9
   height: 8
   width: 8
-  minutes: 1
+  minutes: 3
   seconds: 45
   bottomGridSize: 0.09
   categoryMaterial: {fileID: 0}
   words:
-  - FLIGHT
-  - STAR
-  - GLACIER
   - RUNWAY
   - PESTO
   - LUGGAGE
@@ -118,37 +115,16 @@ MonoBehaviour:
   - {x: 5, y: 6}
   - {x: 4, y: 5}
   - {x: 3, y: 4}
-  - {x: 0, y: 3}
-  - {x: 1, y: 0}
-  - {x: 2, y: 5}
   blockedCells: []
   wordCategory:
   - Key: Airport
     Value:
-    - FLIGHT
     - RUNWAY
     - LUGGAGE
     - TERMINAL
     - PASSPORT
     - GATE
     - AIRPLANE
-  - Key: Christmas
-    Value:
-    - STAR
-    - ORNAMENT
-    - GIFT
-    - BELL
-    - TREE
-    - SANTA
-    - CANDLE
-  - Key: Polar
-    Value:
-    - GLACIER
-    - ICE
-    - TUNDRA
-    - ARCTIC
-    - PENGUIN
-    - IGLOO
   - Key: Sauce
     Value:
     - PESTO
@@ -158,6 +134,14 @@ MonoBehaviour:
     - SOY
     - BARBECUE
     - KETCHUP
+  - Key: Christmas
+    Value:
+    - ORNAMENT
+    - GIFT
+    - BELL
+    - TREE
+    - SANTA
+    - CANDLE
   - Key: Halloween
     Value:
     - ZOMBIE
@@ -166,6 +150,13 @@ MonoBehaviour:
     - COSTUME
     - SKELETON
     - CANDY
+  - Key: Polar
+    Value:
+    - ICE
+    - TUNDRA
+    - ARCTIC
+    - PENGUIN
+    - IGLOO
   cellCategory:
   - Key: {x: 29, y: 1}
     Value: Sauce
@@ -521,40 +512,6 @@ MonoBehaviour:
     Value: Airport
   - Key: {x: 3, y: 6}
     Value: Airport
-  - Key: {x: 0, y: 2}
-    Value: Airport
-  - Key: {x: 0, y: 3}
-    Value: Airport
-  - Key: {x: 0, y: 4}
-    Value: Airport
-  - Key: {x: 0, y: 5}
-    Value: Airport
-  - Key: {x: 0, y: 6}
-    Value: Airport
-  - Key: {x: 0, y: 7}
-    Value: Airport
-  - Key: {x: 1, y: 0}
-    Value: Christmas
-  - Key: {x: 1, y: 2}
-    Value: Christmas
-  - Key: {x: 1, y: 1}
-    Value: Christmas
-  - Key: {x: 1, y: 3}
-    Value: Christmas
-  - Key: {x: 2, y: 2}
-    Value: Polar
-  - Key: {x: 2, y: 3}
-    Value: Polar
-  - Key: {x: 2, y: 4}
-    Value: Polar
-  - Key: {x: 2, y: 5}
-    Value: Polar
-  - Key: {x: 2, y: 6}
-    Value: Polar
-  - Key: {x: 2, y: 7}
-    Value: Polar
-  - Key: {x: 2, y: 8}
-    Value: Polar
   cellTexts:
   - Key: {x: 29, y: 1}
     Value: K
@@ -910,40 +867,6 @@ MonoBehaviour:
     Value: A
   - Key: {x: 3, y: 6}
     Value: Y
-  - Key: {x: 0, y: 2}
-    Value: F
-  - Key: {x: 0, y: 3}
-    Value: L
-  - Key: {x: 0, y: 4}
-    Value: I
-  - Key: {x: 0, y: 5}
-    Value: G
-  - Key: {x: 0, y: 6}
-    Value: H
-  - Key: {x: 0, y: 7}
-    Value: T
-  - Key: {x: 1, y: 0}
-    Value: S
-  - Key: {x: 1, y: 2}
-    Value: A
-  - Key: {x: 1, y: 1}
-    Value: T
-  - Key: {x: 1, y: 3}
-    Value: R
-  - Key: {x: 2, y: 2}
-    Value: G
-  - Key: {x: 2, y: 3}
-    Value: L
-  - Key: {x: 2, y: 4}
-    Value: A
-  - Key: {x: 2, y: 5}
-    Value: C
-  - Key: {x: 2, y: 6}
-    Value: I
-  - Key: {x: 2, y: 7}
-    Value: E
-  - Key: {x: 2, y: 8}
-    Value: R
   trayCells:
   - Key: {x: 7, y: 1}
     Value: C
@@ -969,8 +892,6 @@ MonoBehaviour:
     Value: H
   - Key: {x: 6, y: 6}
     Value: T
-  - Key: {x: 7, y: 6}
-    Value: C
   - Key: {x: 7, y: 7}
     Value: N
   - Key: {x: 6, y: 7}
@@ -1002,8 +923,6 @@ MonoBehaviour:
   - Key: {x: 3, y: 0}
     Value: E
   - Key: {x: 2, y: 0}
-    Value: S
-  - Key: {x: 2, y: 1}
     Value: L
   - Key: {x: 5, y: 3}
     Value: U
@@ -1027,8 +946,6 @@ MonoBehaviour:
     Value: M
   - Key: {x: 1, y: 6}
     Value: E
-  - Key: {x: 1, y: 7}
-    Value: L
   - Key: {x: 1, y: 0}
     Value: U
   - Key: {x: 1, y: 2}
@@ -1059,8 +976,6 @@ MonoBehaviour:
   - Key: {x: 6, y: 5}
     Value: Tray 4
   - Key: {x: 6, y: 6}
-    Value: Tray 4
-  - Key: {x: 7, y: 6}
     Value: Tray 4
   - Key: {x: 7, y: 7}
     Value: Tray 5
@@ -1094,8 +1009,6 @@ MonoBehaviour:
     Value: Tray 9
   - Key: {x: 2, y: 0}
     Value: Tray 9
-  - Key: {x: 2, y: 1}
-    Value: Tray 9
   - Key: {x: 5, y: 3}
     Value: Tray 10
   - Key: {x: 5, y: 4}
@@ -1118,8 +1031,6 @@ MonoBehaviour:
     Value: Tray 13
   - Key: {x: 1, y: 6}
     Value: Tray 14
-  - Key: {x: 1, y: 7}
-    Value: Tray 14
   - Key: {x: 1, y: 0}
     Value: Tray 15
   - Key: {x: 1, y: 2}
@@ -1139,29 +1050,6 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: ebb9fe172d729a549b16d9c064c9d62f, type: 2}
   trayColors: []
   wordPositions:
-  - Key: FLIGHT
-    Value:
-    - {x: 0, y: 2}
-    - {x: 0, y: 3}
-    - {x: 0, y: 4}
-    - {x: 0, y: 5}
-    - {x: 0, y: 6}
-    - {x: 0, y: 7}
-  - Key: STAR
-    Value:
-    - {x: 1, y: 0}
-    - {x: 1, y: 1}
-    - {x: 1, y: 2}
-    - {x: 1, y: 3}
-  - Key: GLACIER
-    Value:
-    - {x: 2, y: 2}
-    - {x: 2, y: 3}
-    - {x: 2, y: 4}
-    - {x: 2, y: 5}
-    - {x: 2, y: 6}
-    - {x: 2, y: 7}
-    - {x: 2, y: 8}
   - Key: RUNWAY
     Value:
     - {x: 3, y: 1}
@@ -1401,12 +1289,6 @@ MonoBehaviour:
     - {x: 29, y: 7}
   freezedTray: []
   firstCharPos:
-  - Key: FLIGHT
-    Value: 2
-  - Key: STAR
-    Value: 0
-  - Key: GLACIER
-    Value: 2
   - Key: RUNWAY
     Value: 1
   - Key: PESTO

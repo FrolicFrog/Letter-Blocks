@@ -19,7 +19,7 @@ MonoBehaviour:
   height: 8
   width: 6
   minutes: 3
-  seconds: 0
+  seconds: 50
   bottomGridSize: 0.095
   categoryMaterial: {fileID: 0}
   words:

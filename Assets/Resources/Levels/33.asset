@@ -18,7 +18,7 @@ MonoBehaviour:
   columns: 8
   height: 7
   width: 7
-  minutes: 1
+  minutes: 3
   seconds: 30
   bottomGridSize: 0.1
   categoryMaterial: {fileID: 0}

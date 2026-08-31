@@ -18,15 +18,11 @@ MonoBehaviour:
   columns: 8
   height: 7
   width: 5
-  minutes: 1
-  seconds: 45
+  minutes: 3
+  seconds: 0
   bottomGridSize: 0.1
   categoryMaterial: {fileID: 0}
   words:
-  - TRIM
-  - EARPLUG
-  - RAZOR
-  - TOWEL
   - BLEACH
   - SNORKEL
   - KOALA
@@ -114,25 +110,17 @@ MonoBehaviour:
   - {x: 10, y: 3}
   - {x: 10, y: 7}
   - {x: 8, y: 4}
-  - {x: 6, y: 5}
   - {x: 9, y: 5}
-  - {x: 7, y: 4}
-  - {x: 5, y: 4}
-  - {x: 4, y: 2}
   blockedCells: []
   wordCategory:
   - Key: Hair Salon
     Value:
-    - TRIM
-    - RAZOR
     - BLEACH
     - DYE
     - CURL
     - BARBER
   - Key: Swimming
     Value:
-    - EARPLUG
-    - TOWEL
     - SNORKEL
     - GOGGLES
     - FLIPPER
@@ -421,16 +409,6 @@ MonoBehaviour:
     Value: Hair Salon
   - Key: {x: 8, y: 5}
     Value: Hair Salon
-  - Key: {x: 6, y: 3}
-    Value: Hair Salon
-  - Key: {x: 6, y: 4}
-    Value: Hair Salon
-  - Key: {x: 6, y: 5}
-    Value: Hair Salon
-  - Key: {x: 6, y: 6}
-    Value: Hair Salon
-  - Key: {x: 6, y: 7}
-    Value: Hair Salon
   - Key: {x: 9, y: 0}
     Value: Swimming
   - Key: {x: 9, y: 1}
@@ -445,38 +423,6 @@ MonoBehaviour:
     Value: Swimming
   - Key: {x: 9, y: 6}
     Value: Swimming
-  - Key: {x: 7, y: 2}
-    Value: Swimming
-  - Key: {x: 7, y: 3}
-    Value: Swimming
-  - Key: {x: 7, y: 4}
-    Value: Swimming
-  - Key: {x: 7, y: 5}
-    Value: Swimming
-  - Key: {x: 7, y: 6}
-    Value: Swimming
-  - Key: {x: 5, y: 0}
-    Value: Swimming
-  - Key: {x: 5, y: 1}
-    Value: Swimming
-  - Key: {x: 5, y: 2}
-    Value: Swimming
-  - Key: {x: 5, y: 3}
-    Value: Swimming
-  - Key: {x: 5, y: 4}
-    Value: Swimming
-  - Key: {x: 5, y: 5}
-    Value: Swimming
-  - Key: {x: 5, y: 6}
-    Value: Swimming
-  - Key: {x: 4, y: 1}
-    Value: Hair Salon
-  - Key: {x: 4, y: 2}
-    Value: Hair Salon
-  - Key: {x: 4, y: 3}
-    Value: Hair Salon
-  - Key: {x: 4, y: 4}
-    Value: Hair Salon
   cellTexts:
   - Key: {x: 29, y: 2}
     Value: L
@@ -736,16 +682,6 @@ MonoBehaviour:
     Value: C
   - Key: {x: 8, y: 5}
     Value: H
-  - Key: {x: 6, y: 3}
-    Value: R
-  - Key: {x: 6, y: 4}
-    Value: A
-  - Key: {x: 6, y: 5}
-    Value: Z
-  - Key: {x: 6, y: 6}
-    Value: O
-  - Key: {x: 6, y: 7}
-    Value: R
   - Key: {x: 9, y: 0}
     Value: S
   - Key: {x: 9, y: 1}
@@ -760,38 +696,6 @@ MonoBehaviour:
     Value: E
   - Key: {x: 9, y: 6}
     Value: L
-  - Key: {x: 7, y: 2}
-    Value: T
-  - Key: {x: 7, y: 3}
-    Value: O
-  - Key: {x: 7, y: 4}
-    Value: W
-  - Key: {x: 7, y: 5}
-    Value: E
-  - Key: {x: 7, y: 6}
-    Value: L
-  - Key: {x: 5, y: 0}
-    Value: E
-  - Key: {x: 5, y: 1}
-    Value: A
-  - Key: {x: 5, y: 2}
-    Value: R
-  - Key: {x: 5, y: 3}
-    Value: P
-  - Key: {x: 5, y: 4}
-    Value: L
-  - Key: {x: 5, y: 5}
-    Value: U
-  - Key: {x: 5, y: 6}
-    Value: G
-  - Key: {x: 4, y: 1}
-    Value: T
-  - Key: {x: 4, y: 2}
-    Value: R
-  - Key: {x: 4, y: 3}
-    Value: I
-  - Key: {x: 4, y: 4}
-    Value: M
   trayCells:
   - Key: {x: 0, y: 3}
     Value: Y
@@ -841,12 +745,8 @@ MonoBehaviour:
     Value: I
   - Key: {x: 3, y: 2}
     Value: O
-  - Key: {x: 1, y: 0}
-    Value: WZ
   - Key: {x: 1, y: 1}
     Value: O
-  - Key: {x: 1, y: 2}
-    Value: L
   - Key: {x: 2, y: 2}
     Value: A
   - Key: {x: 2, y: 4}
@@ -856,7 +756,7 @@ MonoBehaviour:
   - Key: {x: 4, y: 0}
     Value: O
   - Key: {x: 0, y: 4}
-    Value: RC
+    Value: C
   trayName:
   - Key: {x: 0, y: 3}
     Value: Tray 1
@@ -906,12 +806,8 @@ MonoBehaviour:
     Value: Tray 15
   - Key: {x: 3, y: 2}
     Value: Tray 16
-  - Key: {x: 1, y: 0}
-    Value: Tray 17
   - Key: {x: 1, y: 1}
     Value: Tray 18
-  - Key: {x: 1, y: 2}
-    Value: Tray 19
   - Key: {x: 2, y: 2}
     Value: Tray 20
   - Key: {x: 2, y: 4}
@@ -935,35 +831,6 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
   trayColors: []
   wordPositions:
-  - Key: TRIM
-    Value:
-    - {x: 4, y: 1}
-    - {x: 4, y: 2}
-    - {x: 4, y: 3}
-    - {x: 4, y: 4}
-  - Key: EARPLUG
-    Value:
-    - {x: 5, y: 0}
-    - {x: 5, y: 1}
-    - {x: 5, y: 2}
-    - {x: 5, y: 3}
-    - {x: 5, y: 4}
-    - {x: 5, y: 5}
-    - {x: 5, y: 6}
-  - Key: RAZOR
-    Value:
-    - {x: 6, y: 3}
-    - {x: 6, y: 4}
-    - {x: 6, y: 5}
-    - {x: 6, y: 6}
-    - {x: 6, y: 7}
-  - Key: TOWEL
-    Value:
-    - {x: 7, y: 2}
-    - {x: 7, y: 3}
-    - {x: 7, y: 4}
-    - {x: 7, y: 5}
-    - {x: 7, y: 6}
   - Key: BLEACH
     Value:
     - {x: 8, y: 0}
@@ -1156,14 +1023,6 @@ MonoBehaviour:
     - {x: 29, y: 6}
   freezedTray: []
   firstCharPos:
-  - Key: TRIM
-    Value: 1
-  - Key: EARPLUG
-    Value: 0
-  - Key: RAZOR
-    Value: 3
-  - Key: TOWEL
-    Value: 2
   - Key: BLEACH
     Value: 0
   - Key: SNORKEL
