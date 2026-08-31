@@ -180,6 +180,7 @@ public class ResultManager : MonoBehaviour
         freezeSlider.gameObject.SetActive(true);
         freezeSlider.value = freezeSlider.maxValue;
         freezeSlider.GetComponentInChildren<TextMeshProUGUI>().text = freezeSlider.maxValue.ToString();
+        PowerUpLockManager.Instance.UpdatePowerUpQuantity(9, -1);
 
         // 3. DOTween Enabling Animation (Juicy Pop In)
         freezeSlider.transform.DOKill(); // Prevent overlapping tweens
