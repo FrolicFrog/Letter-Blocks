@@ -161,16 +161,16 @@ public class GlobalTrayDragger : MonoBehaviour
             {
                 var ts = currentlyDraggedParent.GetComponent<TraySpliter>();
             
-                PowerUpManager.Instance.HammerSmash(pHammer.transform, currentlyDraggedParent.gameObject,()=> { ts.Split(); });
-                PowerUpLockManager.Instance.UpdatePowerUpQuantity(7, -1);
+                PowerUpManager.Instance.HammerSmash(pHammer.transform, currentlyDraggedParent.gameObject,()=> { ts.Split(); PowerUpLockManager.Instance.UpdatePowerUpQuantity(7, -1); });
+               
                 currentlyDraggedParent = null;
                 Debug.Log("Hammer Pressed");
                 return;
             }
             else if(pCleaner.isOn)
             {
-                PowerUpManager.Instance.SuckTrays(currentlyDraggedParent.gameObject,()=>pCleaner.isOn = false);
-                PowerUpLockManager.Instance.UpdatePowerUpQuantity(13, -1);
+                PowerUpManager.Instance.SuckTrays(currentlyDraggedParent.gameObject,()=> { pCleaner.isOn = false;  PowerUpLockManager.Instance.UpdatePowerUpQuantity(13, -1); });
+              
                 currentlyDraggedParent = null;
                 Debug.Log("Cleaner Pressed");
                 return;

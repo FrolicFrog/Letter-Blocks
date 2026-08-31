@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class TraySpliter : MonoBehaviour
@@ -10,17 +9,41 @@ public class TraySpliter : MonoBehaviour
     public static Material trayMat;
 
     /// <summary>
-    /// Included for compatibility with TrayDragger references.
+    /// Shifts internal grid coordinates and dictionary keys by row and column deltas.
+    /// Leaves all string values ("T*", "AB", etc.) completely untouched.
     /// </summary>
+    public void UpdateGridPosition(int deltaRow, int deltaCol)
+    {
+        if (deltaRow == 0 && deltaCol == 0) return;
 
+        Vector2Int offset = new Vector2Int(deltaRow, deltaCol);
+
+        if (trayPos != null)
+        {
+            for (int i = 0; i < trayPos.Count; i++)
+            {
+                trayPos[i] += offset;
+            }
+        }
+
+        if (trayCells != null)
+        {
+            Dictionary<Vector2Int, string> updatedCells = new Dictionary<Vector2Int, string>();
+            foreach (var kvp in trayCells)
+            {
+                updatedCells[kvp.Key + offset] = kvp.Value;
+            }
+            trayCells = updatedCells;
+        }
+    }
 
     /// <summary>
-    /// Scans the remaining children on the tray, discards jumped tiles,
-    /// and recalculates exact grid coordinates based on current tile world positions.
+    /// Compares the physical world position of the tray against BottomGridManager
+    /// to ensure Vector2Int keys perfectly match where the tray currently sits before splitting.
     /// </summary>
-    public void RebuildGridDataFromCurrentTiles()
+    private void SyncGridCoordinatesToCurrentWorldPosition()
     {
-        if (BottomGridManager.Instance == null) return;
+        if (BottomGridManager.Instance == null || trayPos == null || trayPos.Count == 0) return;
 
         Transform gridTransform = BottomGridManager.Instance.transform;
         int width = BottomGridManager.Instance.width;
@@ -29,120 +52,58 @@ public class TraySpliter : MonoBehaviour
 
         if (width <= 0 || gridTransform.childCount == 0) return;
 
-        List<Vector2Int> freshTrayPos = new List<Vector2Int>();
-        Dictionary<Vector2Int, string> freshTrayCells = new Dictionary<Vector2Int, string>();
+        // Find the first valid active tile representing trayPos[0]
+        Transform referenceTile = null;
+        foreach (Transform child in transform)
+        {
+            if (child.name == "JumpingTile" || !child.gameObject.activeSelf) continue;
+            if (child.name.Contains("Wall") || child.name.Contains("Arrow") || child.name.Contains("Border")) continue;
+            referenceTile = child;
+            break;
+        }
+
+        Vector3 currentWorldPos = referenceTile != null ? referenceTile.position : transform.position;
 
         bool is2D = (GlobalTrayDragger.Instance != null &&
                      GlobalTrayDragger.Instance.planeMode == GlobalTrayDragger.PlaneAxisMode.XY_FrontalPlane_2D);
 
-        foreach (Transform child in transform)
+        // Find closest slot in BottomGridManager to current position
+        int closestIndex = -1;
+        float minDistance = float.MaxValue;
+
+        for (int i = 0; i < totalSlots && i < gridTransform.childCount; i++)
         {
-            // Skip tiles that have jumped/are jumping or non-letter decorative objects
-            if (child.name == "JumpingTile" || !child.gameObject.activeSelf) continue;
+            Transform slot = gridTransform.GetChild(i);
+            float dist = is2D
+                ? Vector2.Distance(new Vector2(currentWorldPos.x, currentWorldPos.y), new Vector2(slot.position.x, slot.position.y))
+                : Vector2.Distance(new Vector2(currentWorldPos.x, currentWorldPos.z), new Vector2(slot.position.x, slot.position.z));
 
-            string letter = GetTileLetter(child);
-            if (string.IsNullOrEmpty(letter)) continue;
-
-            // Find closest grid slot in BottomGridManager to this tile's current position
-            int closestIndex = -1;
-            float minDistance = float.MaxValue;
-
-            for (int i = 0; i < totalSlots && i < gridTransform.childCount; i++)
+            if (dist < minDistance)
             {
-                Transform slot = gridTransform.GetChild(i);
-                float dist = is2D
-                    ? Vector2.Distance(new Vector2(child.position.x, child.position.y), new Vector2(slot.position.x, slot.position.y))
-                    : Vector2.Distance(new Vector2(child.position.x, child.position.z), new Vector2(slot.position.x, slot.position.z));
-
-                if (dist < minDistance)
-                {
-                    minDistance = dist;
-                    closestIndex = i;
-                }
-            }
-
-            if (closestIndex != -1)
-            {
-                int row = closestIndex / width;
-                int col = closestIndex % width;
-                Vector2Int coord = new Vector2Int(row, col);
-
-                if (!freshTrayPos.Contains(coord))
-                {
-                    freshTrayPos.Add(coord);
-                }
-                freshTrayCells[coord] = letter;
+                minDistance = dist;
+                closestIndex = i;
             }
         }
 
-        trayPos = freshTrayPos;
-        trayCells = freshTrayCells;
-    }
-
-    private string GetTileLetter(Transform tile)
-    {
-        Transform nestedTile = tile.Find("Tile letter");
-        Transform text0 = tile.Find("Text 0");
-
-        bool hasNestedTile = nestedTile != null &&
-                             nestedTile.parent == tile &&
-                             nestedTile.gameObject.activeSelf &&
-                             nestedTile.name != "JumpingTile";
-
-        // Double Letter: BOTH letters present (combines base Text 0 + top Tile letter)
-        if (hasNestedTile && text0 != null)
+        if (closestIndex != -1)
         {
-            // Read Text 0 with includeInactive = true since it stays inactive under the top tile
-            var tm0 = text0.GetComponentInChildren<TextMeshPro>(true);
-            var tm1 = nestedTile.GetComponentInChildren<TextMeshPro>(true);
+            int currentGridRow = closestIndex / width;
+            int currentGridCol = closestIndex % width;
 
-            string baseChar = (tm0 != null) ? tm0.text : "";
-            string topChar = (tm1 != null) ? tm1.text : "";
+            // Calculate exact delta between current grid slot and original trayPos[0]
+            int deltaRow = currentGridRow - trayPos[0].x;
+            int deltaCol = currentGridCol - trayPos[0].y;
 
-            if (!string.IsNullOrEmpty(baseChar) && !string.IsNullOrEmpty(topChar))
-            {
-                return baseChar + topChar; // Full 2-character string
-            }
-            if (!string.IsNullOrEmpty(topChar)) return topChar;
-            if (!string.IsNullOrEmpty(baseChar)) return baseChar;
+            UpdateGridPosition(deltaRow, deltaCol);
         }
-
-        // Double Letter Base: Top letter already jumped, expose and read Text 0
-        if (text0 != null)
-        {
-            text0.gameObject.SetActive(true);
-
-            var tm0 = text0.GetComponentInChildren<TextMeshPro>(true);
-            if (tm0 != null && !string.IsNullOrEmpty(tm0.text))
-            {
-                return tm0.text;
-            }
-        }
-
-        // Nested tile present without Text 0
-        if (hasNestedTile)
-        {
-            var tm1 = nestedTile.GetComponentInChildren<TextMeshPro>(true);
-            if (tm1 != null && !string.IsNullOrEmpty(tm1.text))
-            {
-                return tm1.text;
-            }
-        }
-
-        // Standard single tile letter
-        var directTm = tile.GetComponentInChildren<TextMeshPro>(true);
-        if (directTm != null && !string.IsNullOrEmpty(directTm.text))
-        {
-            return directTm.text;
-        }
-
-        return null;
     }
 
     public void Split()
     {
-        RebuildGridDataFromCurrentTiles();
+        // 1. Re-align Vector2Int keys with the current physical position in the grid
+        SyncGridCoordinatesToCurrentWorldPosition();
 
+        // 2. Re-create trays at the updated coordinates
         if (trayPos != null && trayPos.Count > 0)
         {
             if (horizontalLock)

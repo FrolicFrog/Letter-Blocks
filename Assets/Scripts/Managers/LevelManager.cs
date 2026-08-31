@@ -26,7 +26,7 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private List<KeyValueGroup<Material, Sprite>> colorSprite;
     [SerializeField] private FocusCutOut panel;
     [SerializeField] private Renderer halfArea;
-    [SerializeField] private GameObject hand;
+    [SerializeField] private GameObject hand,Toggles;
     [SerializeField] private TutorialPopup tutorialPopup;
     [SerializeField] private GameObject hardPanel,superHardPanel;
     [SerializeField] private ParticleSystem frostEffect,trayEffect;
@@ -426,6 +426,7 @@ public class LevelManager : Manager<LevelManager>
             Destroy(categoryHeadingParent.GetChild(i).gameObject);
         }
         GridLayoutTweener.instance.ResetToOriginal();
+        Toggles.SetActive(false);
     }
 
     void ResetWords()

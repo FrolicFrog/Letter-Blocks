@@ -167,12 +167,10 @@ public class PowerUpManager : MonoBehaviour
             Transform item = tray.transform.GetChild(i);
             trayChildren.Add(item);
 
-            // Look for nested letter blocks
             for (int j = item.childCount - 1; j >= 0; j--)
             {
                 Transform subChild = item.GetChild(j);
 
-                // Use (true) to find inactive TextMeshPro components inside disabled objects
                 if (subChild.GetComponent<TMPro.TextMeshPro>() == null && subChild.GetComponentInChildren<TMPro.TextMeshPro>(true) != null)
                 {
                     subChild.SetParent(tray.transform, true);
@@ -205,6 +203,9 @@ public class PowerUpManager : MonoBehaviour
             {
                 if (item != null)
                 {
+                    // Spits the key out of the nozzle to the lock (if it exists)
+                    ExtractAndFlyKeyFromNozzle(item, nozzleTargetPos);
+
                     bool placed = false;
                     if (WordChecker.instance != null)
                     {
@@ -245,6 +246,96 @@ public class PowerUpManager : MonoBehaviour
             Destroy(activeCleaner);
             onComplete?.Invoke();
         });
+    }
+
+    /// <summary>
+    /// Looks for a Key child, unparents it exactly at the nozzle, and flies it to the lock using WordChecker's timing.
+    /// </summary>
+    private void ExtractAndFlyKeyFromNozzle(Transform block, Vector3 nozzlePos)
+    {
+        if (block == null || block.childCount < 1) return;
+
+        Transform keyChild = null;
+        for (int i = 0; i < block.childCount; i++)
+        {
+            if (block.GetChild(i).name.Contains("Key"))
+            {
+                keyChild = block.GetChild(i);
+                break;
+            }
+        }
+
+        if (keyChild == null) return;
+
+        GameObject[] locks = GameObject.FindGameObjectsWithTag("Lock");
+        if (locks != null && locks.Length > 0)
+        {
+            GameObject targetLock = null;
+            float maxZ = float.MinValue;
+
+            foreach (GameObject l in locks)
+            {
+                if (l.transform.position.z > maxZ)
+                {
+                    maxZ = l.transform.position.z;
+                    targetLock = l;
+                }
+            }
+
+            if (targetLock != null)
+            {
+                targetLock.tag = "Untagged";
+
+                // Detach from the letter block so WordChecker.TryPlaceVacuumedPiece doesn't touch it
+                keyChild.SetParent(null);
+                keyChild.position = nozzlePos;
+                keyChild.localScale = Vector3.zero; // Start invisible inside the nozzle
+
+                // Pull settings from WordChecker dynamically
+                var wc = WordChecker.instance;
+                float keySpeed = wc != null ? wc.keySpeed : 15f;
+                Vector3 keyOffset = wc != null ? wc.keyOffset : Vector3.zero;
+                float keyJumpPower = wc != null ? wc.keyJumpPower : 2.0f;
+                float keyTargetScale = wc != null ? wc.keyTargetScale : 0.6f;
+                float keyTurnDuration = wc != null ? wc.keyTurnDuration : 0.3f;
+                float lockDestroyDuration = wc != null ? wc.lockDestroyDuration : 0.3f;
+
+                Vector3 destination = targetLock.transform.position + keyOffset;
+                float distance = Vector3.Distance(keyChild.position, destination);
+                float duration = keySpeed > 0 ? distance / keySpeed : 0.5f;
+
+                Sequence flightSeq = DOTween.Sequence();
+
+                // Scale up instantly from 0 (making it look like the vacuum spat it out)
+                flightSeq.Append(keyChild.DOScale(Vector3.one * 1.3f, 0.15f).SetEase(Ease.OutBack));
+                flightSeq.Append(keyChild.DOJump(destination, keyJumpPower, 1, duration).SetEase(Ease.InOutSine));
+                flightSeq.Join(keyChild.DORotate(new Vector3(0, 0, 90), duration).SetEase(Ease.InOutSine));
+                flightSeq.Join(keyChild.DOScale(Vector3.one * keyTargetScale, duration).SetEase(Ease.InCubic));
+
+                flightSeq.AppendCallback(() =>
+                {
+                    if (keyChild != null)
+                    {
+                        keyChild.SetParent(targetLock.transform);
+                        keyChild.localPosition = keyOffset;
+                        keyChild.localEulerAngles = new Vector3(0, 0, 90);
+                    }
+                    if (targetLock != null)
+                    {
+                        targetLock.transform.DOPunchScale(Vector3.one * 0.2f, 0.25f, 10, 1f);
+                    }
+                });
+
+                flightSeq.AppendInterval(0.25f);
+                flightSeq.Append(keyChild.DOLocalRotate(new Vector3(0, 0, 180), keyTurnDuration).SetEase(Ease.InOutQuad));
+                flightSeq.Append(targetLock.transform.DOScale(Vector3.zero, lockDestroyDuration).SetEase(Ease.InBack));
+
+                flightSeq.OnComplete(() =>
+                {
+                    if (targetLock != null) Destroy(targetLock);
+                });
+            }
+        }
     }
 
     private Vector3 GetWorldPosFromUI(Transform uiTransform, Vector3 referenceTargetPos)

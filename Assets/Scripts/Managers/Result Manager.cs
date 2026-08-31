@@ -11,7 +11,7 @@ public class ResultManager : MonoBehaviour
     public Image timerImage;
     public float flashSpeed = 2f;
     public AudioClip failSound, timerSound;
-    public GameObject failMenu, completeMenu;
+    public GameObject failMenu, completeMenu,freezePanel;
     public Toggle freezeTime;
     public Slider freezeSlider;
     public AudioClip complete;
@@ -88,6 +88,7 @@ public class ResultManager : MonoBehaviour
                         {
                             freezeSlider.gameObject.SetActive(false);
                             freezeTime.interactable = true;
+                               freezePanel.gameObject.SetActive(false);
                         });
             }
         }
@@ -181,7 +182,7 @@ public class ResultManager : MonoBehaviour
         freezeSlider.value = freezeSlider.maxValue;
         freezeSlider.GetComponentInChildren<TextMeshProUGUI>().text = freezeSlider.maxValue.ToString();
         PowerUpLockManager.Instance.UpdatePowerUpQuantity(9, -1);
-
+        freezePanel.gameObject.SetActive(true);
         // 3. DOTween Enabling Animation (Juicy Pop In)
         freezeSlider.transform.DOKill(); // Prevent overlapping tweens
         freezeSlider.transform.localScale = Vector3.zero; // Start small

@@ -66,7 +66,7 @@ public class GridLayoutTweener : MonoBehaviour
 
     [Header("Completion Events")]
     public bool enableSecondChildOnComplete = true;
-
+    public GameObject toggles;
     public static GridLayoutTweener instance;
 
     // --- Cached Original Values ---
@@ -493,6 +493,7 @@ public class GridLayoutTweener : MonoBehaviour
                 gridChild.GetChild(1).gameObject.SetActive(true);
             }
         }
+        toggles.SetActive(true);
         Taptic.Vibrate();
     }
 
