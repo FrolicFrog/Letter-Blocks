@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening; // 1. Added DOTween namespace
+using DG.Tweening;
 
 public class ResultManager : MonoBehaviour
 {
@@ -11,7 +11,7 @@ public class ResultManager : MonoBehaviour
     public Image timerImage;
     public float flashSpeed = 2f;
     public AudioClip failSound, timerSound;
-    public GameObject failMenu, completeMenu,freezePanel;
+    public GameObject failMenu, completeMenu, freezePanel;
     public Toggle freezeTime;
     public Slider freezeSlider;
     public AudioClip complete;
@@ -70,7 +70,7 @@ public class ResultManager : MonoBehaviour
         else if (freezeTime.isOn)
         {
             freezeSlider.value -= Time.deltaTime;
-            freezeSlider.GetComponentInChildren<TextMeshProUGUI>().text = ((int)freezeSlider.value).ToString();
+            freezeSlider.GetComponentInChildren<TextMeshProUGUI>().text = (((int)freezeSlider.value) + "s");
 
             if (freezeSlider.value <= 0)
             {
@@ -82,14 +82,24 @@ public class ResultManager : MonoBehaviour
                 Sequence closeSeq = DOTween.Sequence();
                 // 1. Squish it slightly (Anticipation)
                 closeSeq.Append(freezeSlider.transform.DOPunchScale(new Vector3(0.2f, -0.2f, 0f), 0.2f, 2, 0.5f));
+
                 // 2. Shrink it away with an exaggerated InBack
-                closeSeq.Append(freezeSlider.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBack, 1.5f))
-                        .OnComplete(() =>
-                        {
-                            freezeSlider.gameObject.SetActive(false);
-                            freezeTime.interactable = true;
-                               freezePanel.gameObject.SetActive(false);
-                        });
+                closeSeq.Append(freezeSlider.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBack, 1.5f));
+
+                // 3. Fade out the freezePanel Image simultaneously (Join plays it at the same time as the previous Append)
+                Image freezeBg = freezePanel.GetComponent<Image>();
+                if (freezeBg != null)
+                {
+                    freezeBg.DOKill();
+                    closeSeq.Join(freezeBg.DOFade(0f, 0.3f));
+                }
+
+                closeSeq.OnComplete(() =>
+                {
+                    freezeSlider.gameObject.SetActive(false);
+                    freezeTime.interactable = true;
+                    freezePanel.gameObject.SetActive(false);
+                });
             }
         }
 
@@ -182,7 +192,19 @@ public class ResultManager : MonoBehaviour
         freezeSlider.value = freezeSlider.maxValue;
         freezeSlider.GetComponentInChildren<TextMeshProUGUI>().text = freezeSlider.maxValue.ToString();
         PowerUpLockManager.Instance.UpdatePowerUpQuantity(9, -1);
+
+        // Enable panel and animate Alpha from 0 to 0.9f
         freezePanel.gameObject.SetActive(true);
+        Image freezeBg = freezePanel.GetComponent<Image>();
+        if (freezeBg != null)
+        {
+            freezeBg.DOKill(); // Prevent conflicts if activated while already fading
+            Color c = freezeBg.color;
+            c.a = 0f;
+            freezeBg.color = c;
+            freezeBg.DOFade(0.9f, 0.4f); // Matches the pop-in duration below
+        }
+
         // 3. DOTween Enabling Animation (Juicy Pop In)
         freezeSlider.transform.DOKill(); // Prevent overlapping tweens
         freezeSlider.transform.localScale = Vector3.zero; // Start small

@@ -70,6 +70,10 @@ public class PowerUpManager : MonoBehaviour
     [SerializeField] private float vacuumSuckDuration = 0.5f;
     [SerializeField] private float staggerDelayPerChild = 0.08f;
 
+    // --- Active State Flags ---
+    private bool isHammerActive = false;
+    private bool isCleanerActive = false;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -82,11 +86,17 @@ public class PowerUpManager : MonoBehaviour
 
     public void HammerSmash(Transform uiTransform, GameObject trayGameObject, Action onSmashHit = null)
     {
+        // 1. Check if hammer is already active to prevent duplicates
+        if (isHammerActive) return;
+
         if (hammerPrefab == null || trayGameObject == null || uiTransform == null)
         {
             Debug.LogError("[PowerUpManager] Missing reference!");
             return;
         }
+
+        // 2. Lock the hammer state
+        isHammerActive = true;
 
         Vector3 targetPos = trayGameObject.transform.position;
         Vector3 uiWorldPos = GetWorldPosFromUI(uiTransform, targetPos);
@@ -130,17 +140,28 @@ public class PowerUpManager : MonoBehaviour
         {
             PopUIElement(uiTransform);
             Destroy(activeHammer);
-            uiTransform.GetComponent<Toggle>().isOn = false;
+
+            Toggle toggle = uiTransform.GetComponent<Toggle>();
+            if (toggle != null) toggle.isOn = false;
+
+            // 3. Unlock the hammer state so it can be used again
+            isHammerActive = false;
         });
     }
 
     public void SuckTrays(GameObject tray, Action onComplete = null)
     {
+        // 1. Check if cleaner is already active to prevent duplicates
+        if (isCleanerActive) return;
+
         if (cleanerPrefab == null || tray == null)
         {
             Debug.LogError("[PowerUpManager] Cleaner Prefab or Tray is null!");
             return;
         }
+
+        // 2. Lock the cleaner state
+        isCleanerActive = true;
 
         Vector3 spawnPos = tray.transform.position + cleanerSpawnOffset;
         GameObject activeCleaner = Instantiate(cleanerPrefab, spawnPos, Quaternion.Euler(cleanerSpawnRotation));
@@ -210,6 +231,7 @@ public class PowerUpManager : MonoBehaviour
                     if (WordChecker.instance != null)
                     {
                         placed = WordChecker.instance.TryPlaceVacuumedPiece(item);
+
                     }
 
                     if (!placed) Destroy(item.gameObject);
@@ -245,6 +267,9 @@ public class PowerUpManager : MonoBehaviour
         {
             Destroy(activeCleaner);
             onComplete?.Invoke();
+
+            // 3. Unlock the cleaner state so it can be used again
+            isCleanerActive = false;
         });
     }
 

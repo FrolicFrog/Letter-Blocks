@@ -1327,7 +1327,7 @@ public class WordChecker : MonoBehaviour
         blockTransform.localRotation = Quaternion.identity;
         blockTransform.localScale = new Vector3(0.9f, 1f, 0.9f);
         blockTransform.gameObject.layer = LayerMask.NameToLayer("Word");
-
+        FreezeManager.DecreaseFreezeCount();
         lvlManager.excludedChar.Remove(matchedKey);
 
         HandlePotentialWordCompletion(matchedKey, columns, totalRows);
