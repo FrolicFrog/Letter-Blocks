@@ -4938,7 +4938,7 @@ MonoBehaviour:
   trayEffect: {fileID: 19855088, guid: cc4edba986607ba48b17927b27d25e4e, type: 3}
   unfreeze: {fileID: 8300000, guid: 6c4768370c68a7340874edc1ae402191, type: 3}
   gridAnimator: {fileID: 1855233891}
-  TestLevelToLoad: 16
+  TestLevelToLoad: 28
   ticks: []
   hearts: 0
 --- !u!114 &558711660
@@ -11750,9 +11750,9 @@ MonoBehaviour:
   impactPauseDuration: 0.05
   returnDuration: 0.32
   returnEase: 8
-  hoverOffset: {x: 7, y: 2, z: 6}
-  windUpOffset: {x: 9, y: 5, z: 8}
-  hitOffset: {x: 2, y: 0.9, z: -3}
+  hoverOffset: {x: 5, y: 6, z: 6}
+  windUpOffset: {x: 6.2, y: 5, z: 8}
+  hitOffset: {x: 2, y: 2.5, z: -3}
   spawnRotation: {x: 35, y: -65, z: -20}
   hoverRotation: {x: 30, y: -70, z: -25}
   windUpRotation: {x: -30, y: -60, z: 15}
@@ -11760,6 +11760,10 @@ MonoBehaviour:
   scaleMultiplier: 1
   targetPunchScale: {x: 0.2, y: -0.2, z: 0.2}
   targetPunchDuration: 0.18
+  baseHammerSize: 0.7
+  windUpSizeMultiplier: 1.2
+  squashYMultiplier: 0.5
+  stretchXZMultiplier: 1.2
   cleanerPrefab: {fileID: 3374745825150245741, guid: 8b609b4f1c1234e4fba56a4085814cbd,
     type: 3}
   cleanerSpawnOffset: {x: 0, y: 5, z: -5}

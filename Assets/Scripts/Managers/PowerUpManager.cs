@@ -49,6 +49,18 @@ public class PowerUpManager : MonoBehaviour
     [SerializeField] private Vector3 targetPunchScale = new Vector3(0.2f, -0.2f, 0.2f);
     [SerializeField] private float targetPunchDuration = 0.18f;
 
+    [Header("<color=#FF1493>--- Exaggerated Smash Scale Settings ---</color>")]
+    [Tooltip("The overall base size multiplier of the hammer.")]
+    [SerializeField] private float baseHammerSize = 1.0f;
+
+    [Tooltip("How massive the hammer gets during the hang-time/wind-up phase.")]
+    [SerializeField] private float windUpSizeMultiplier = 3.5f;
+
+    [Tooltip("How flat the hammer squashes on the Y-axis upon impact.")]
+    [SerializeField] private float squashYMultiplier = 0.4f;
+
+    [Tooltip("How wide the hammer stretches on the X and Z axes upon impact.")]
+    [SerializeField] private float stretchXZMultiplier = 4.5f;
 
     [Header("<color=#00FFFF>--- Cleaner References & Settings ---</color>")]
     [Tooltip("Prefab of the Vacuum Cleaner to spawn.")]
@@ -101,40 +113,84 @@ public class PowerUpManager : MonoBehaviour
         Vector3 targetPos = trayGameObject.transform.position;
         Vector3 uiWorldPos = GetWorldPosFromUI(uiTransform, targetPos);
 
+        // EXAGGERATED OFFSETS: Pull it way higher and further back for a huge swing
         Vector3 hoverPos = targetPos + hoverOffset;
-        Vector3 windUpPos = targetPos + windUpOffset;
+        Vector3 windUpPos = targetPos + windUpOffset + new Vector3(0, 3.5f, -1.5f);
         Vector3 strikePos = targetPos + hitOffset;
 
         GameObject activeHammer = Instantiate(hammerPrefab, uiWorldPos, Quaternion.Euler(spawnRotation));
-        Vector3 targetScale = activeHammer.transform.localScale * scaleMultiplier;
+
+        // Apply your new base size control
+        Vector3 baseScale = activeHammer.transform.localScale * scaleMultiplier * baseHammerSize;
         activeHammer.transform.localScale = Vector3.zero;
 
         PopUIElement(uiTransform);
 
         Sequence smashSeq = DOTween.Sequence();
 
-        smashSeq.Append(activeHammer.transform.DOMove(hoverPos, flyInDuration).SetEase(flyEase));
-        smashSeq.Join(activeHammer.transform.DOScale(targetScale, flyInDuration).SetEase(Ease.OutBack));
-        smashSeq.Join(activeHammer.transform.DORotate(hoverRotation, flyInDuration).SetEase(flyEase));
+        // --- PHASE 1: FLY IN (With a crazy 360 spin and elastic pop) ---
+        smashSeq.Append(activeHammer.transform.DOMove(hoverPos, flyInDuration).SetEase(Ease.OutBack, 1.5f));
+        smashSeq.Join(activeHammer.transform.DOScale(baseScale * 1.5f, flyInDuration).SetEase(Ease.OutElastic, 1.2f));
+        smashSeq.Join(activeHammer.transform.DORotate(hoverRotation + new Vector3(0, 360f, 0), flyInDuration, RotateMode.FastBeyond360).SetEase(Ease.OutCubic));
 
-        smashSeq.Append(activeHammer.transform.DOMove(windUpPos, windUpDuration).SetEase(windUpEase));
-        smashSeq.Join(activeHammer.transform.DORotate(windUpRotation, windUpDuration).SetEase(windUpEase));
+        // --- PHASE 2: WIND UP & HANG TIME (Anticipation) ---
+        // Grow based on your windUpSizeMultiplier and tilt way back
+        smashSeq.Append(activeHammer.transform.DOMove(windUpPos, windUpDuration * 1.5f).SetEase(Ease.OutSine));
+        smashSeq.Join(activeHammer.transform.DORotate(windUpRotation + new Vector3(-45f, 0, 0), windUpDuration * 1.5f).SetEase(Ease.OutBack));
+        smashSeq.Join(activeHammer.transform.DOScale(baseScale * windUpSizeMultiplier, windUpDuration * 1.5f).SetEase(Ease.OutCubic));
 
-        smashSeq.Append(activeHammer.transform.DOMove(strikePos, smashDuration).SetEase(smashEase));
-        smashSeq.Join(activeHammer.transform.DORotate(smashRotation, smashDuration).SetEase(smashEase));
+        // Add a tiny dramatic pause at the absolute peak of the swing
+        smashSeq.AppendInterval(0.12f);
 
+        // --- PHASE 3: THE SMASH (Violent speed + Squash and Stretch) ---
+        float hyperSmashSpeed = smashDuration * 0.7f; // Faster than normal
+        smashSeq.Append(activeHammer.transform.DOMove(strikePos, hyperSmashSpeed).SetEase(Ease.InExpo));
+        smashSeq.Join(activeHammer.transform.DORotate(smashRotation + new Vector3(25f, 0, 0), hyperSmashSpeed).SetEase(Ease.InExpo));
+
+        // Squash flat and stretch wide using your custom multipliers
+        Vector3 squashStretchScale = new Vector3(
+            baseScale.x * stretchXZMultiplier,
+            baseScale.y * squashYMultiplier,
+            baseScale.z * stretchXZMultiplier
+        );
+        smashSeq.Join(activeHammer.transform.DOScale(squashStretchScale, hyperSmashSpeed).SetEase(Ease.InExpo));
+
+        // --- PHASE 4: THE IMPACT JUICE ---
         smashSeq.AppendCallback(() =>
         {
-            trayGameObject.transform.DOPunchScale(targetPunchScale, targetPunchDuration, 10, 1f);
-            activeHammer.transform.DOPunchScale(new Vector3(-0.1f, 0.12f, -0.1f), 0.12f, 6, 0.8f);
+            // Massive tray punch
+            if (trayGameObject != null)
+                trayGameObject.transform.DOPunchScale(targetPunchScale * 2.5f, targetPunchDuration * 1.5f, 15, 1f);
+
+            // Snap the hammer back from its squashed state into a wobble (slightly bigger than base scale for emphasis)
+            if (activeHammer != null)
+            {
+                activeHammer.transform.DOScale(baseScale * 1.2f, 0.2f).SetEase(Ease.OutElastic, 2f);
+                activeHammer.transform.DOPunchPosition(new Vector3(0, 0.6f, 0), 0.2f, 20, 1f);
+            }
+
+            // EXAGGERATION: Add Camera Shake! (Requires Camera.main to be tagged "MainCamera")
+            if (Camera.main != null)
+            {
+                Camera.main.transform.DOShakePosition(0.25f, new Vector3(0.3f, 0.3f, 0f), 25, 90f, false, true);
+            }
+        });
+
+        // 4. WAIT for the tray punch animation to complete
+        smashSeq.AppendInterval(targetPunchDuration);
+
+        // 5. NOW invoke the hit logic (which will destroy the tray)
+        smashSeq.AppendCallback(() =>
+        {
             onSmashHit?.Invoke();
         });
 
         smashSeq.AppendInterval(impactPauseDuration);
 
-        smashSeq.Append(activeHammer.transform.DOMove(uiWorldPos, returnDuration).SetEase(returnEase));
-        smashSeq.Join(activeHammer.transform.DORotate(spawnRotation, returnDuration).SetEase(returnEase));
-        smashSeq.Join(activeHammer.transform.DOScale(Vector3.zero, returnDuration).SetEase(Ease.InBack, 1.3f));
+        // --- PHASE 5: RETURN (Shrink away quickly) ---
+        smashSeq.Append(activeHammer.transform.DOMove(uiWorldPos, returnDuration).SetEase(Ease.InBack));
+        smashSeq.Join(activeHammer.transform.DORotate(spawnRotation, returnDuration).SetEase(Ease.InBack));
+        smashSeq.Join(activeHammer.transform.DOScale(Vector3.zero, returnDuration).SetEase(Ease.InBack, 1.5f));
 
         smashSeq.OnComplete(() =>
         {
@@ -144,11 +200,10 @@ public class PowerUpManager : MonoBehaviour
             Toggle toggle = uiTransform.GetComponent<Toggle>();
             if (toggle != null) toggle.isOn = false;
 
-            // 3. Unlock the hammer state so it can be used again
+            // 6. Unlock the hammer state
             isHammerActive = false;
         });
     }
-
     public void SuckTrays(GameObject tray, Action onComplete = null)
     {
         // 1. Check if cleaner is already active to prevent duplicates
