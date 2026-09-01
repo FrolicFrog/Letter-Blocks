@@ -3,36 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-
 [RequireComponent(typeof(Image))]
 [ExecuteAlways]
 public class FocusCutOut : MonoBehaviour
 {
-
     [Serializable]
     public class CutoutGroup
     {
-        [Tooltip("Custom label for clarity in Inspector (e.g., 'Apple Target', 'NL Target')")]
+        [Tooltip("Custom label for clarity in Inspector")]
         public string groupName = "Cutout";
-
         [Tooltip("Renderers belonging to this specific hole")]
         public List<Renderer> renderers = new List<Renderer>();
-
         [Header("Group Offsets")]
         [Range(-0.5f, 0.5f)] public float offsetX = 0.0f;
         [Range(-0.5f, 0.5f)] public float offsetY = 0.0f;
         [Range(0.5f, 2.5f)] public float sizeMultiplier = 1.0f;
     }
+
     [Header("References")]
     [SerializeField] private Camera targetCamera;
 
     [Header("Cutout Groups")]
-    [Tooltip("Add multiple groups to create separate holes")]
     [SerializeField] public List<CutoutGroup> cutoutGroups = new List<CutoutGroup>();
 
     [Header("Global Settings")]
-    [Tooltip("Extra space around all mesh bounds (in Viewport ratio)")]
     [SerializeField] private Vector2 padding = new Vector2(0.015f, 0.015f);
     public RectTransform textBox;
     private Material _matInstance;
@@ -42,9 +36,13 @@ public class FocusCutOut : MonoBehaviour
     private static readonly int CentersProp = Shader.PropertyToID("_Centers");
     private static readonly int HalfSizesProp = Shader.PropertyToID("_HalfSizes");
     private static readonly int AspectProp = Shader.PropertyToID("_Aspect");
+
     public static FocusCutOut instance;
-    private readonly Vector4[] _centersArray = new Vector4[8];
-    private readonly Vector4[] _halfSizesArray = new Vector4[8];
+
+    // INCREASED LIMIT TO 64
+    private const int MAX_CUTOUTS = 64;
+    private readonly Vector4[] _centersArray = new Vector4[MAX_CUTOUTS];
+    private readonly Vector4[] _halfSizesArray = new Vector4[MAX_CUTOUTS];
 
     void Awake()
     {
@@ -88,7 +86,8 @@ public class FocusCutOut : MonoBehaviour
     {
         int validGroupCount = 0;
 
-        for (int g = 0; g < cutoutGroups.Count && validGroupCount < 8; g++)
+        // UPDATED LOOP CONDITION TO CHECK AGAINST MAX_CUTOUTS
+        for (int g = 0; g < cutoutGroups.Count && validGroupCount < MAX_CUTOUTS; g++)
         {
             CutoutGroup group = cutoutGroups[g];
             if (group == null || group.renderers == null || group.renderers.Count == 0) continue;
@@ -129,7 +128,6 @@ public class FocusCutOut : MonoBehaviour
 
             if (!hasValidRenderer) continue;
 
-            // Compute center & half size for this group
             Vector2 center = (minViewport + maxViewport) * 0.5f;
             center.x += group.offsetX;
             center.y += group.offsetY;
@@ -144,7 +142,6 @@ public class FocusCutOut : MonoBehaviour
 
         float aspect = (float)Screen.width / Mathf.Max(Screen.height, 1);
 
-        // Upload arrays to Shader
         _matInstance.SetInt(CutoutCountProp, validGroupCount);
         _matInstance.SetVectorArray(CentersProp, _centersArray);
         _matInstance.SetVectorArray(HalfSizesProp, _halfSizesArray);

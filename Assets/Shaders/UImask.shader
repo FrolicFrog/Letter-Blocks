@@ -33,8 +33,9 @@ Shader "UI/AdaptiveMultiCutout"
             #pragma fragment frag
             #include "UnityCG.cginc"
             #include "UnityUI.cginc"
-
-            #define MAX_CUTOUTS 8
+            
+            // INCREASED LIMIT TO 64
+            #define MAX_CUTOUTS 64
 
             struct appdata_t
             {
@@ -54,8 +55,8 @@ Shader "UI/AdaptiveMultiCutout"
             float _Aspect;
 
             int _CutoutCount;
-            float4 _Centers[MAX_CUTOUTS];   // xy = Center Viewport Pos
-            float4 _HalfSizes[MAX_CUTOUTS]; // xy = Half Dimensions
+            float4 _Centers[MAX_CUTOUTS];   
+            float4 _HalfSizes[MAX_CUTOUTS]; 
 
             v2f vert(appdata_t v)
             {
@@ -65,7 +66,6 @@ Shader "UI/AdaptiveMultiCutout"
                 return OUT;
             }
 
-            // Signed Distance Function for 2D Rounded Box
             float sdRoundedBox(float2 p, float2 b, float r)
             {
                 float2 q = abs(p) - b + r;
@@ -76,7 +76,6 @@ Shader "UI/AdaptiveMultiCutout"
             {
                 float minDistance = 1000.0;
 
-                // Loop through all active cutouts and punch holes
                 for (int i = 0; i < _CutoutCount; i++)
                 {
                     float2 p = (IN.uv - _Centers[i].xy);
@@ -89,7 +88,6 @@ Shader "UI/AdaptiveMultiCutout"
                     minDistance = min(minDistance, dist);
                 }
 
-                // If no cutouts, draw full overlay
                 if (_CutoutCount <= 0)
                 {
                     minDistance = 1.0;
