@@ -82,6 +82,8 @@ public class PowerUpManager : MonoBehaviour
     [SerializeField] private float vacuumSuckDuration = 0.5f;
     [SerializeField] private float staggerDelayPerChild = 0.08f;
 
+    public LayerMask frozenLayer;
+
     // --- Active State Flags ---
     private bool isHammerActive = false;
     private bool isCleanerActive = false;
@@ -96,6 +98,30 @@ public class PowerUpManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (!ResultManager.levelFailed && Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, frozenLayer))
+            {
+                if (hit.transform != null)
+                {
+                    GlobalTrayDragger.Instance.hammerOptions.gameObject.SetActive(false);
+                    var currentTray = hit.transform;
+                    if (GlobalTrayDragger.Instance.pHammer.isOn)
+                    {
+                       HammerSmash(GlobalTrayDragger.Instance.pHammer.transform, currentTray.gameObject, () => { PowerUpLockManager.Instance.UpdatePowerUpQuantity(7, -1);
+                           FreezeManager.DecreaseFreezeCount(currentTray.GetComponent<FreezeManager>());
+                          
+                       });
+                    }
+                }
+                
+            }
+        }
+    }
     public void HammerSmash(Transform uiTransform, GameObject trayGameObject, Action onSmashHit = null)
     {
         // 1. Check if hammer is already active to prevent duplicates

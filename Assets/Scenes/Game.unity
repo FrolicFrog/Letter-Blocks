@@ -710,6 +710,98 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &64822393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 64822397}
+  - component: {fileID: 64822396}
+  - component: {fileID: 64822395}
+  - component: {fileID: 64822394}
+  m_Layer: 5
+  m_Name: Hammer Target Highlight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &64822394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64822393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4bd3b4b0b1a55b4ebd44e249171f678, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetCamera: {fileID: 330585545}
+  cutoutGroups: []
+  padding: {x: 0, y: 0}
+  textBox: {fileID: 0}
+--- !u!114 &64822395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64822393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 09ffb7a4de230954ea7685cfa03bf696, type: 2}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.79607844}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &64822396
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64822393}
+  m_CullTransparentMesh: 1
+--- !u!224 &64822397
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64822393}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.01, y: 1.01, z: 1.01}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1999973097}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &88770631
 GameObject:
   m_ObjectHideFlags: 0
@@ -3101,7 +3193,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2015
+    m_Bits: 6111
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -4938,7 +5030,7 @@ MonoBehaviour:
   trayEffect: {fileID: 19855088, guid: cc4edba986607ba48b17927b27d25e4e, type: 3}
   unfreeze: {fileID: 8300000, guid: 6c4768370c68a7340874edc1ae402191, type: 3}
   gridAnimator: {fileID: 1855233891}
-  TestLevelToLoad: 28
+  TestLevelToLoad: 8
   ticks: []
   hearts: 0
 --- !u!114 &558711660
@@ -11673,10 +11765,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trayLayer:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 4288
   blockLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 4352
   snapLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -11695,6 +11787,7 @@ MonoBehaviour:
   snapBackEase: 27
   Panel: {fileID: 327762497}
   Hand: {fileID: 537397412}
+  hammerOptions: {fileID: 64822394}
   pHammer: {fileID: 1737923604}
   pCleaner: {fileID: 40551596}
   showPhysicsGizmos: 1
@@ -11773,6 +11866,9 @@ MonoBehaviour:
   cleanerSpawnDuration: 0.6
   vacuumSuckDuration: 0.5
   staggerDelayPerChild: 0.12
+  frozenLayer:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!1 &1663071603
 GameObject:
   m_ObjectHideFlags: 0
@@ -12298,7 +12394,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1661794641}
+        m_TargetAssemblyTypeName: GlobalTrayDragger, Assembly-CSharp
+        m_MethodName: EnableHighlights
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!114 &1737923605
 MonoBehaviour:
@@ -14059,6 +14167,7 @@ RectTransform:
   - {fileID: 1457105256}
   - {fileID: 1726348918}
   - {fileID: 1855233887}
+  - {fileID: 64822397}
   - {fileID: 1100140743}
   - {fileID: 345656593}
   - {fileID: 259769127}

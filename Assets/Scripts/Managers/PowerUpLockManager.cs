@@ -25,20 +25,24 @@ public class PowerUpLockManager : MonoBehaviour
     {
         foreach(var lvl in lockedObjectDict.Keys)
         {
-            if(LevelManager.Instance.CurLevelNumber >= lvl && lockedObjectDict[lvl].Key.activeSelf)
+            if(LevelManager.Instance.CurLevelNumber >= lvl)
             {
-                lockedObjectDict[lvl].Key.SetActive(false);
-                lockedObjectDict[lvl].Key.GetComponentInParent<Toggle>().interactable = true;
-                lockedObjectDict[lvl].Value.SetActive(true);
+                if (lockedObjectDict[lvl].Key.activeSelf)
+                {
+                    lockedObjectDict[lvl].Key.SetActive(false);
+                    lockedObjectDict[lvl].Key.GetComponentInParent<Toggle>().interactable = true;
+                    lockedObjectDict[lvl].Value.SetActive(true);
+                }
+                if (lockedObjectDict[lvl].Value.GetComponentInChildren<TextMeshProUGUI>().text == "0")
+                {
+                    lockedObjectDict[lvl].Key.GetComponentInParent<Toggle>().interactable = false;
+                }
+                else
+                {
+                    lockedObjectDict[lvl].Key.GetComponentInParent<Toggle>().interactable = true;
+                }
             }
-            if (lockedObjectDict[lvl].Value.GetComponentInChildren<TextMeshProUGUI>().text == "0")
-            {
-                lockedObjectDict[lvl].Key.GetComponentInParent<Toggle>().interactable = false;
-            }
-            else
-            {
-                lockedObjectDict[lvl].Key.GetComponentInParent<Toggle>().interactable = true;
-            }
+            
         }
 
     }

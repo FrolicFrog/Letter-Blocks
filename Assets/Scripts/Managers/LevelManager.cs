@@ -329,7 +329,7 @@ public class LevelManager : Manager<LevelManager>
             if (freezedTray.ContainsKey(tray))
             {
                 var trayMesh = letterGridManager.CreateTray(trayPos[tray], 2.4f, freezeTray, new Vector3(.995f, .988f, .988f), false);
-                trayMesh.layer = LayerMask.NameToLayer("Block");
+                trayMesh.layer = LayerMask.NameToLayer("Frozen");
                 var tmp = Instantiate(freezeCount, trayMesh.transform);
                 tmp.transform.localPosition = new Vector3(0, 2.75f, 0);
                 tmp.transform.localScale = Vector3.one;

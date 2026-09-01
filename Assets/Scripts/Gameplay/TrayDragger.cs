@@ -76,6 +76,7 @@ public class GlobalTrayDragger : MonoBehaviour
     public Ease snapBackEase = Ease.OutBack;
     public GameObject Panel, Hand;
 
+    public FocusCutOut hammerOptions;
 
     public Toggle pHammer, pCleaner;
     public bool showPhysicsGizmos = true;
@@ -157,12 +158,17 @@ public class GlobalTrayDragger : MonoBehaviour
                 currentlyDraggedParent = hit.transform;
             }
            
+            if(hit.transform.gameObject.layer == LayerMask.NameToLayer("Frozen"))
+            {
+                currentlyDraggedParent = null;
+                return;
+            }
             if(pHammer.isOn)
             {
                 var ts = currentlyDraggedParent.GetComponent<TraySpliter>();
             
                 PowerUpManager.Instance.HammerSmash(pHammer.transform, currentlyDraggedParent.gameObject,()=> { ts.Split(); PowerUpLockManager.Instance.UpdatePowerUpQuantity(7, -1); });
-               
+                hammerOptions.gameObject.SetActive(false);
                 currentlyDraggedParent = null;
                 Debug.Log("Hammer Pressed");
                 return;
@@ -368,6 +374,33 @@ public class GlobalTrayDragger : MonoBehaviour
             {
                 currentlyDraggedParent.position = targetStepPos;
                 ReleaseAndSnapBack();
+            }
+        }
+    }
+
+    public void EnableHighlights()
+    {
+        if (!pHammer.isOn)
+        {
+            hammerOptions.cutoutGroups.Clear();
+            hammerOptions.gameObject.SetActive(false);
+        }
+        else
+        {
+            hammerOptions.gameObject.SetActive(true);
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                var curChild = transform.GetChild(i);
+                if (curChild.name.Contains("Procedural_Tray"))
+                {
+                    if (curChild.childCount > 1 || (curChild.childCount == 1 && curChild.GetChild(0).name.Contains("Freeze Count")))
+                    {
+                        var group = new FocusCutOut.CutoutGroup();
+                        group.renderers.Add(curChild.GetComponent<Renderer>());
+                        hammerOptions.cutoutGroups.Add(group);
+                    }
+                }
             }
         }
     }

@@ -68,4 +68,48 @@ public class FreezeManager : MonoBehaviour
             }
         }
     }
+
+    public static void DecreaseFreezeCount(FreezeManager instance)
+    {
+  
+            var tmps = instance.GetComponentsInChildren<TextMeshPro>();
+            instance.totalCount--;
+            if (instance.totalCount <= 0)
+            {
+
+                if (instance.horizontalLock)
+                {
+
+                    var letterContainer = BottomGridManager.Instance.CreateTray(instance.trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, instance.trayCells, true);
+                    letterContainer.tag = "Vertical";
+                    var ts = letterContainer.AddComponent<TraySpliter>();
+                    ts.trayCells = instance.trayCells;
+                    ts.trayPos = instance.trayPos;
+                    ts.horizontalLock = instance.horizontalLock;
+                }
+                else
+                {
+                    var letterContainer = BottomGridManager.Instance.CreateTray(instance.trayPos, 2.4f, trayMat, new Vector3(.995f, .988f, .988f), true, instance.trayCells);
+                    var ts = letterContainer.AddComponent<TraySpliter>();
+                    ts.trayCells = instance.trayCells;
+                    ts.trayPos = instance.trayPos;
+                    ts.horizontalLock = instance.horizontalLock;
+                }
+                Instantiate(effect, instance.transform.position + new Vector3(0, 5, 0), Quaternion.identity);
+                AudioSource.PlayClipAtPoint(clip, Vector3.up);
+                Destroy(instance.gameObject);
+                Taptic.Heavy();
+                instances.Remove(instance);
+            }
+            else
+            {
+                foreach (var tmp in tmps)
+                {
+
+                    tmp.text = instance.totalCount.ToString();
+
+                }
+            }
+        }
+    
 }
