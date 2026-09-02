@@ -479,7 +479,7 @@ public class GlobalTrayDragger : MonoBehaviour
             if (LevelManager.Instance.CurLevelNumber == 13 && !cleanerFirstClick)
             {
                 cleanerFirstClick = true;
-                pHammer.GetComponent<UIElementScaler>().StopScaling();
+                pCleaner. GetComponent<UIElementScaler>().StopScaling();
                 pointer.gameObject.SetActive(true);
                 pointer.GetComponent<ScaleCycleDOTween>().StartScalingCycle();
                 pointer.transform.position = cleanerOptions.cutoutGroups[0].renderers[0].transform.position + new Vector3(0, 6, -2);
