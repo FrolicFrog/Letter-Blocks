@@ -76,7 +76,7 @@ public class GlobalTrayDragger : MonoBehaviour
     public Ease snapBackEase = Ease.OutBack;
     public GameObject Panel, Hand;
 
-    public FocusCutOut hammerOptions;
+    public FocusCutOut hammerOptions,cleanerOptions;
 
     public Toggle pHammer, pCleaner;
     public bool showPhysicsGizmos = true;
@@ -99,7 +99,7 @@ public class GlobalTrayDragger : MonoBehaviour
     private bool isReadyToJump = false;
     private bool canAutoRelease = true;
     private Dictionary<Transform, Coroutine> activeJumpRoutines = new Dictionary<Transform, Coroutine>();
-    private bool hammerFirstClick = false;
+    private bool hammerFirstClick = false,cleanerFirstClick = false;
     // Dynamically calculated boundaries
     private float bMinX, bMaxX, bMinAxis, bMaxAxis, bTopWallTriggerThreshold;
 
@@ -175,8 +175,9 @@ public class GlobalTrayDragger : MonoBehaviour
             }
             else if(pCleaner.isOn)
             {
+                cleanerOptions.gameObject.SetActive(false);
                 PowerUpManager.Instance.SuckTrays(currentlyDraggedParent.gameObject,()=> { pCleaner.isOn = false;  PowerUpLockManager.Instance.UpdatePowerUpQuantity(13, -1); });
-              
+                pointer.SetActive(false);
                 currentlyDraggedParent = null;
                 Debug.Log("Cleaner Pressed");
                 return;
@@ -378,12 +379,13 @@ public class GlobalTrayDragger : MonoBehaviour
         }
     }
 
-    public void EnableHighlights()
+    public void EnableHammerHighlights()
     {
         if (!pHammer.isOn)
         {
             hammerOptions.cutoutGroups.Clear();
             hammerOptions.gameObject.SetActive(false);
+            pointer.gameObject.SetActive(false);
         }
         else
         {
@@ -424,13 +426,68 @@ public class GlobalTrayDragger : MonoBehaviour
                 pHammer.GetComponent<UIElementMover>().StopMovement();
                 pointer.gameObject.SetActive(true);
                 pointer.GetComponent<ScaleCycleDOTween>().StartScalingCycle();
-                pointer.transform.position = hammerOptions.cutoutGroups[0].renderers[0].transform.position+new Vector3(0,6,0);
+                pointer.transform.position = hammerOptions.cutoutGroups[0].renderers[0].transform.position+new Vector3(0,6,-1);
 
 
             }
         }
     }
+    public void EnableCleanerHighlights()
+    {
+        if (!pCleaner.isOn)
+        {
+            cleanerOptions.cutoutGroups.Clear();
+            cleanerOptions.gameObject.SetActive(false);
+            pointer.gameObject.SetActive(false);
+        }
+        else
+        {
+            cleanerOptions.gameObject.SetActive(true);
+            PowerUpLockManager.Instance.panel.SetActive(false);
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                var curChild = transform.GetChild(i);
+                if (curChild.name.Contains("Procedural_Tray"))
+                {
+                    if (LevelManager.Instance.CurLevelNumber == 13 && !cleanerFirstClick)
+                    {
+                        if (curChild.childCount == 4)
+                        {
+                            Debug.Log(curChild.childCount);
+                            var group = new FocusCutOut.CutoutGroup();
+                            group.offsetY = 0.013f;
+                            group.renderers.Add(curChild.GetComponent<Renderer>());
+                            if (cleanerOptions.cutoutGroups.Count == 0)
+                            {
+                                cleanerOptions.cutoutGroups.Add(group);
+                            }
 
+                        }
+                    }
+                    else
+                    {
+                        if ( !curChild.GetChild(0).name.Contains("Freeze Count") && !curChild.GetChild(0).name.Contains("Lock"))
+                        {
+                            var group = new FocusCutOut.CutoutGroup();
+                            group.offsetY = 0.013f;
+                            group.renderers.Add(curChild.GetComponent<Renderer>());
+                            cleanerOptions.cutoutGroups.Add(group);
+                        }
+                    }
+                }
+            }
+            if (LevelManager.Instance.CurLevelNumber == 13 && !cleanerFirstClick)
+            {
+                cleanerFirstClick = true;
+                pHammer.GetComponent<UIElementMover>().StopMovement();
+                pointer.gameObject.SetActive(true);
+                pointer.GetComponent<ScaleCycleDOTween>().StartScalingCycle();
+                pointer.transform.position = cleanerOptions.cutoutGroups[0].renderers[0].transform.position + new Vector3(0, 6, -2);
+
+
+            }
+        }
+    }
     #endregion
 
     #region Movement & Collision Resolution
