@@ -81,7 +81,7 @@ public class GlobalTrayDragger : MonoBehaviour
     public Toggle pHammer, pCleaner;
     public bool showPhysicsGizmos = true;
     public ParticleSystem effect;
-
+    public GameObject pointer;
     public AudioClip select, deselect, snap;
     #endregion
 
@@ -99,7 +99,7 @@ public class GlobalTrayDragger : MonoBehaviour
     private bool isReadyToJump = false;
     private bool canAutoRelease = true;
     private Dictionary<Transform, Coroutine> activeJumpRoutines = new Dictionary<Transform, Coroutine>();
-
+    private bool hammerFirstClick = false;
     // Dynamically calculated boundaries
     private float bMinX, bMaxX, bMinAxis, bMaxAxis, bTopWallTriggerThreshold;
 
@@ -166,11 +166,11 @@ public class GlobalTrayDragger : MonoBehaviour
             if(pHammer.isOn)
             {
                 var ts = currentlyDraggedParent.GetComponent<TraySpliter>();
-            
-                PowerUpManager.Instance.HammerSmash(pHammer.transform, currentlyDraggedParent.gameObject,()=> { ts.Split(); PowerUpLockManager.Instance.UpdatePowerUpQuantity(7, -1); });
+                
+                PowerUpManager.Instance.HammerSmash(pHammer.transform, currentlyDraggedParent.gameObject,()=> { ts.Split(); PowerUpLockManager.Instance.UpdatePowerUpQuantity(7, -1);});
                 hammerOptions.gameObject.SetActive(false);
                 currentlyDraggedParent = null;
-                Debug.Log("Hammer Pressed");
+                pointer.SetActive(false);
                 return;
             }
             else if(pCleaner.isOn)
@@ -388,19 +388,45 @@ public class GlobalTrayDragger : MonoBehaviour
         else
         {
             hammerOptions.gameObject.SetActive(true);
-
+            PowerUpLockManager.Instance.panel.SetActive(false);
             for (int i = 0; i < transform.childCount; i++)
             {
                 var curChild = transform.GetChild(i);
                 if (curChild.name.Contains("Procedural_Tray"))
                 {
-                    if (curChild.childCount > 1 || (curChild.childCount == 1 && curChild.GetChild(0).name.Contains("Freeze Count")))
+                    if (LevelManager.Instance.CurLevelNumber == 7 && !hammerFirstClick)
                     {
-                        var group = new FocusCutOut.CutoutGroup();
-                        group.renderers.Add(curChild.GetComponent<Renderer>());
-                        hammerOptions.cutoutGroups.Add(group);
+                        if (curChild.childCount ==4 )
+                        {
+                            Debug.Log(curChild.childCount);
+                            var group = new FocusCutOut.CutoutGroup();
+                            group.offsetY = 0.013f;
+                            group.renderers.Add(curChild.GetComponent<Renderer>());
+                            hammerOptions.cutoutGroups.Add(group);
+                          
+                        }
+                    }
+                    else
+                    {
+                        if (curChild.childCount > 1 || (curChild.childCount == 1 && curChild.GetChild(0).name.Contains("Freeze Count")))
+                        {
+                            var group = new FocusCutOut.CutoutGroup();
+                            group.offsetY = 0.013f;
+                            group.renderers.Add(curChild.GetComponent<Renderer>());
+                            hammerOptions.cutoutGroups.Add(group);
+                        }
                     }
                 }
+            }
+            if(LevelManager.Instance.CurLevelNumber == 7 && !hammerFirstClick)
+            {
+                hammerFirstClick = true;
+                pHammer.GetComponent<UIElementMover>().StopMovement();
+                pointer.gameObject.SetActive(true);
+                pointer.GetComponent<ScaleCycleDOTween>().StartScalingCycle();
+                pointer.transform.position = hammerOptions.cutoutGroups[0].renderers[0].transform.position+new Vector3(0,6,0);
+
+
             }
         }
     }

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class PowerUpLockManager : MonoBehaviour
 {
+    public GameObject panel;
     public List<KeyValueGroup<int, KeyValueGroup<GameObject,GameObject>>> lockObject;
     private Dictionary<int, KeyValueGroup<GameObject, GameObject>> lockedObjectDict =  new();
     public static PowerUpLockManager Instance;
@@ -32,6 +33,11 @@ public class PowerUpLockManager : MonoBehaviour
                     lockedObjectDict[lvl].Key.SetActive(false);
                     lockedObjectDict[lvl].Key.GetComponentInParent<Toggle>().interactable = true;
                     lockedObjectDict[lvl].Value.SetActive(true);
+                    if(LevelManager.Instance.CurLevelNumber == lvl)
+                    {
+                        lockedObjectDict[lvl].Key.GetComponentInParent<UIElementMover>().StartMovement();
+                        panel.SetActive(true);
+                    }
                 }
                 if (lockedObjectDict[lvl].Value.GetComponentInChildren<TextMeshProUGUI>().text == "0")
                 {

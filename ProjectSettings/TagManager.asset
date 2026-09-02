@@ -8,6 +8,7 @@ TagManager:
   - Cube
   - Vertical
   - Lock
+  - Pointer
   layers:
   - Default
   - TransparentFX

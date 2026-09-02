@@ -192,7 +192,8 @@ public class ResultManager : MonoBehaviour
         freezeSlider.value = freezeSlider.maxValue;
         freezeSlider.GetComponentInChildren<TextMeshProUGUI>().text = freezeSlider.maxValue.ToString();
         PowerUpLockManager.Instance.UpdatePowerUpQuantity(9, -1);
-
+        freezeTime.GetComponent<UIElementMover>().StopMovement();
+        PowerUpLockManager.Instance.panel.SetActive(false);
         // Enable panel and animate Alpha from 0 to 0.9f
         freezePanel.gameObject.SetActive(true);
         Image freezeBg = freezePanel.GetComponent<Image>();

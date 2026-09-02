@@ -110,6 +110,7 @@ public class PowerUpManager : MonoBehaviour
                 {
                     GlobalTrayDragger.Instance.hammerOptions.gameObject.SetActive(false);
                     var currentTray = hit.transform;
+                    GlobalTrayDragger.Instance.pointer.SetActive(false);
                     if (GlobalTrayDragger.Instance.pHammer.isOn)
                     {
                        HammerSmash(GlobalTrayDragger.Instance.pHammer.transform, currentTray.gameObject, () => { PowerUpLockManager.Instance.UpdatePowerUpQuantity(7, -1);

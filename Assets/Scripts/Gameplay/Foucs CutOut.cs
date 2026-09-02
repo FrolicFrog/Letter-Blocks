@@ -16,7 +16,7 @@ public class FocusCutOut : MonoBehaviour
         public List<Renderer> renderers = new List<Renderer>();
         [Header("Group Offsets")]
         [Range(-0.5f, 0.5f)] public float offsetX = 0.0f;
-        [Range(-0.5f, 0.5f)] public float offsetY = 0.0f;
+        [Range(-0.5f, 0.5f)] public float offsetY = 0f;
         [Range(0.5f, 2.5f)] public float sizeMultiplier = 1.0f;
     }
 
