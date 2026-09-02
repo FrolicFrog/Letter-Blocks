@@ -1,4 +1,4 @@
-Shader "Custom/UI/IceCrystalsTwinkleBloom"
+Shader "Custom/UI/IceCrystalsSafeZone"
 {
     Properties
     {
@@ -7,6 +7,11 @@ Shader "Custom/UI/IceCrystalsTwinkleBloom"
         [HDR] _SnowColor ("Crystal Color", Color) = (1, 1, 2, 1)
         _GlowIntensity ("Core Brightness", Range(1, 10)) = 3.0
         _BloomSpread ("Fake Bloom Radius", Range(1, 6)) = 3.0
+        
+        // Center Safe Zone Properties
+        _ClearWidth ("Center Clear Width", Range(0.0, 1.0)) = 0.75
+        _ClearHeight ("Center Clear Height", Range(0.0, 1.0)) = 0.75
+        _ClearSoftness ("Clear Edge Softness", Range(0.01, 1.0)) = 0.2
         
         _SnowSpeed ("Drift Speed", Range(0, 5)) = 0.5
         _SnowDensity ("Grid Density", Range(1, 20)) = 4.0
@@ -43,7 +48,6 @@ Shader "Custom/UI/IceCrystalsTwinkleBloom"
             WriteMask [_StencilWriteMask]
         }
 
-        // Standard UI blending
         Cull Off
         Lighting Off
         ZWrite Off
@@ -81,6 +85,11 @@ Shader "Custom/UI/IceCrystalsTwinkleBloom"
             fixed4 _SnowColor;
             float _GlowIntensity;
             float _BloomSpread;
+            
+            float _ClearWidth;
+            float _ClearHeight;
+            float _ClearSoftness;
+            
             float _SnowSpeed;
             float _SnowDensity;
             float _ParticleSize;
@@ -99,7 +108,6 @@ Shader "Custom/UI/IceCrystalsTwinkleBloom"
                 return o;
             }
 
-            // High-performance hash for mobile deployment
             float hash(float2 p)
             {
                 return frac(sin(dot(p, float2(12.9898, 78.233))) * 43758.5453);
@@ -115,18 +123,14 @@ Shader "Custom/UI/IceCrystalsTwinkleBloom"
             float getCrystal(float2 uv, float size, float rotAngle)
             {
                 uv = rotate(uv, rotAngle);
-                
                 float angle = atan2(uv.y, uv.x);
                 float radius = length(uv);
                 
                 float spikes = cos(angle * 6.0) * 0.5 + 0.5;
                 float shapeDist = size * (0.2 + spikes * 0.8); 
                 
-                // Harder core and branches
                 float core = smoothstep(size * 0.3, 0.0, radius);
                 float branches = smoothstep(shapeDist, shapeDist * 0.1, radius);
-                
-                // Wide, soft radial gradient for fake bloom without post-processing
                 float fakeBloom = smoothstep(shapeDist * _BloomSpread, 0.0, radius) * 0.5; 
                 
                 return saturate(core + branches) + fakeBloom; 
@@ -147,12 +151,10 @@ Shader "Custom/UI/IceCrystalsTwinkleBloom"
                 float size = (h * 0.3 + 0.1) * globalSize / density;
                 float rotAngle = _Time.y * _RotationSpeed * (h > 0.5 ? 1.0 : -1.0) + h * 6.28;
                 
-                // Desynchronized twinkle using the cell's unique hash
                 float twinkle = sin(_Time.y * _TwinkleSpeed + h * 31.4) * 0.5 + 0.5;
-                twinkle = lerp(0.3, 1.0, twinkle); // Prevent going entirely black
+                twinkle = lerp(0.3, 1.0, twinkle); 
                 
                 float crystal = getCrystal(f - cellPos, size, rotAngle) * twinkle;
-                
                 float mask = step(0.7, h); 
                 return crystal * mask;
             }
@@ -161,19 +163,25 @@ Shader "Custom/UI/IceCrystalsTwinkleBloom"
             {
                 half4 baseColor = tex2D(_MainTex, i.texcoord) * i.color;
                 
+                // Procedural Vignette Mask calculation (0 in center, 1 at edges)
+                float2 distFromCenter = abs(i.texcoord - 0.5) * 2.0;
+                float maskX = smoothstep(_ClearWidth - _ClearSoftness, _ClearWidth, distFromCenter.x);
+                float maskY = smoothstep(_ClearHeight - _ClearSoftness, _ClearHeight, distFromCenter.y);
+                float safeZoneMask = saturate(maskX + maskY);
+                
                 float layer1 = getCrystalLayer(i.localPos, _SnowDensity, _SnowSpeed, 0.0, _ParticleSize);
                 float layer2 = getCrystalLayer(i.localPos, _SnowDensity * 1.5, _SnowSpeed * 0.6, 5.0, _ParticleSize);
                 
-                // Allow the combined intensity to exceed 1.0 for a brighter, blown-out core
                 float totalCrystals = (layer1 + layer2) * _GlowIntensity;
 
+                // Combine original alpha inversion with the new safe zone mask
                 float inverseAlpha = 1.0 - baseColor.a;
-                float crystalAlpha = saturate(totalCrystals) * inverseAlpha;
-                float crystalEmission = totalCrystals * inverseAlpha;
+                float finalParticleMask = inverseAlpha * safeZoneMask;
+                
+                float crystalAlpha = saturate(totalCrystals) * finalParticleMask;
+                float crystalEmission = totalCrystals * finalParticleMask;
 
                 fixed4 finalColor = baseColor;
-                
-                // Add the emission directly to the RGB channels
                 finalColor.rgb = finalColor.rgb + (_SnowColor.rgb * crystalEmission);
                 finalColor.a = saturate(baseColor.a + crystalAlpha);
                 

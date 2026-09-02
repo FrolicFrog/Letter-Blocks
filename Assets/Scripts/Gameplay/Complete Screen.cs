@@ -78,7 +78,7 @@ public class CompleteScreen : MonoBehaviour
                     if (curLevel == minLevel)
                     {
                         startPercent = 0f;
-                        targetPercent = 10f;
+                        targetPercent = 5f;
                     }
                     else
                     {
@@ -91,7 +91,7 @@ public class CompleteScreen : MonoBehaviour
                         // If the previous level was the minLevel, we forced it to 10%
                         if (prevLevel == minLevel)
                         {
-                            startPercent = 10f;
+                            startPercent = 5f;
                         }
                         else
                         {
@@ -153,5 +153,10 @@ public class CompleteScreen : MonoBehaviour
                 break;
             }
         }
+        if(LevelManager.Instance.CurLevelNumber >39)
+        {
+            tmpMessage.text = "";
+        }
     }
+    
 }

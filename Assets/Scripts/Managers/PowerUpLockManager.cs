@@ -35,7 +35,7 @@ public class PowerUpLockManager : MonoBehaviour
                     lockedObjectDict[lvl].Value.SetActive(true);
                     if(LevelManager.Instance.CurLevelNumber == lvl)
                     {
-                        lockedObjectDict[lvl].Key.GetComponentInParent<UIElementMover>().StartMovement();
+                        lockedObjectDict[lvl].Key.GetComponentInParent<UIElementScaler>().StartScaling();
                         panel.SetActive(true);
                     }
                 }

@@ -329,7 +329,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 6
   m_fontSizeMax: 18
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -380,7 +380,7 @@ MonoBehaviour:
   minFontSize: 6
   maxFontSize: 25
   forceStackWords: 1
-  margin: 8
+  margin: 5
 --- !u!1 &8678158912313709650
 GameObject:
   m_ObjectHideFlags: 0

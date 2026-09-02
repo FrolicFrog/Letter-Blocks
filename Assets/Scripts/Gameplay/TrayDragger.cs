@@ -423,7 +423,7 @@ public class GlobalTrayDragger : MonoBehaviour
             if(LevelManager.Instance.CurLevelNumber == 7 && !hammerFirstClick)
             {
                 hammerFirstClick = true;
-                pHammer.GetComponent<UIElementMover>().StopMovement();
+                pHammer.GetComponent<UIElementScaler>().StopScaling();
                 pointer.gameObject.SetActive(true);
                 pointer.GetComponent<ScaleCycleDOTween>().StartScalingCycle();
                 pointer.transform.position = hammerOptions.cutoutGroups[0].renderers[0].transform.position+new Vector3(0,6,-1);
@@ -479,7 +479,7 @@ public class GlobalTrayDragger : MonoBehaviour
             if (LevelManager.Instance.CurLevelNumber == 13 && !cleanerFirstClick)
             {
                 cleanerFirstClick = true;
-                pHammer.GetComponent<UIElementMover>().StopMovement();
+                pHammer.GetComponent<UIElementScaler>().StopScaling();
                 pointer.gameObject.SetActive(true);
                 pointer.GetComponent<ScaleCycleDOTween>().StartScalingCycle();
                 pointer.transform.position = cleanerOptions.cutoutGroups[0].renderers[0].transform.position + new Vector3(0, 6, -2);

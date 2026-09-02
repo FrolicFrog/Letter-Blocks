@@ -1,58 +1,63 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class UIElementMover : MonoBehaviour
+public class UIElementScaler : MonoBehaviour
 {
-    [Header("Movement Settings")]
-    [Tooltip("The UI element that will be moving.")]
-    public RectTransform movingElement;
+    [Header("Transform Settings")]
+    [Tooltip("The UI element that will be scaling.")]
+    public RectTransform scalingElement;
 
-    [Tooltip("The starting position (local space).")]
-    public Vector3 startLocalPosition;
+    [Tooltip("The position to snap to when scaling starts (local space).")]
+    public Vector3 startLocalPosition = Vector3.zero;
 
-    [Tooltip("The destination position (local space) to move towards.")]
-    public Vector3 destinationLocalPosition;
+    [Header("Scale Settings")]
+    [Tooltip("The starting scale.")]
+    public Vector3 startScale = Vector3.one;
 
-    [Tooltip("Time it takes to move one way.")]
-    public float moveDuration = 0.5f;
+    [Tooltip("The destination scale to animate towards.")]
+    public Vector3 destinationScale = new Vector3(1.2f, 1.2f, 1.2f);
 
-    private Tween moveTween;
+    [Tooltip("Time it takes to scale one way.")]
+    public float scaleDuration = 0.5f;
+
+    private Tween scaleTween;
 
     /// <summary>
-    /// Enables the moving element, snaps it to the start vector, and moves it to the destination vector.
+    /// Enables the element, snaps its position and start scale, and pulses it to the destination scale.
     /// </summary>
-    public void StartMovement()
+    public void StartScaling()
     {
-        if (movingElement == null) return;
+        if (scalingElement == null) return;
 
-        // 1. Enable the object and snap it to the starting position
-        movingElement.gameObject.SetActive(true);
-        movingElement.localPosition = startLocalPosition;
+        // 1. Enable the object, snap it to the starting position and starting scale
+        scalingElement.gameObject.SetActive(true);
+        scalingElement.localPosition = startLocalPosition;
+        scalingElement.localScale = startScale;
 
         // Kill any existing tween to avoid overlapping animations
-        moveTween?.Kill();
+        scaleTween?.Kill();
 
-        // 2. Move towards the specific destination Vector3 in local space
-        moveTween = movingElement.DOLocalMove(destinationLocalPosition, moveDuration)
+        // 2. Scale towards the specific destination Vector3
+        scaleTween = scalingElement.DOScale(destinationScale, scaleDuration)
                                  .SetEase(Ease.InOutSine)
                                  .SetLoops(-1, LoopType.Yoyo)
                                  .SetUpdate(true);
     }
 
     /// <summary>
-    /// Kills the movement animation and disables the moving element.
+    /// Kills the scale animation and disables the element.
     /// </summary>
-    public void StopMovement()
+    public void StopScaling()
     {
-        if (movingElement == null) return;
-        Debug.Log("Stoping");
-        moveTween?.Kill();
-        movingElement.gameObject.SetActive(false);
+        if (scalingElement == null) return;
+        Debug.Log("Stopping Scale");
+        scaleTween?.Kill();
+        scalingElement.gameObject.SetActive(false);
     }
 
     void OnDestroy()
     {
         // Clean up the tween when this object is destroyed
-        moveTween?.Kill();
+        scaleTween?.Kill();
     }
 }

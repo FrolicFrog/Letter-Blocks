@@ -220,7 +220,7 @@ public class ResultManager : MonoBehaviour
         freezeSlider.value = freezeSlider.maxValue;
         freezeSlider.GetComponentInChildren<TextMeshProUGUI>().text = freezeSlider.maxValue.ToString();
         PowerUpLockManager.Instance.UpdatePowerUpQuantity(9, -1);
-        freezeTime.GetComponent<UIElementMover>().StopMovement();
+        freezeTime.GetComponent<UIElementScaler>().StopScaling();
         PowerUpLockManager.Instance.panel.SetActive(false);
         // Enable panel and animate Alpha from 0 to 0.9f
         freezePanel.gameObject.SetActive(true);
@@ -231,7 +231,7 @@ public class ResultManager : MonoBehaviour
             Color c = freezeBg.color;
             c.a = 0f;
             freezeBg.color = c;
-            freezeBg.DOFade(0.9f, 0.4f); // Matches the pop-in duration below
+            freezeBg.DOFade(0.82f, 0.4f); // Matches the pop-in duration below
         }
 
         // 3. DOTween Enabling Animation (Juicy Pop In)
