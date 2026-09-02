@@ -275,6 +275,7 @@ public class PowerUpManager : MonoBehaviour
         if (suctionEffect != null)
         {
             vacuumSeq.InsertCallback(cleanerSpawnDuration, () => suctionEffect.SetActive(true));
+            activeCleaner.GetComponent<AudioSource>().Play();
         }
 
         // 2. Cache & Extract Children: Splits Double Letters apart so they are vacuumed independently!

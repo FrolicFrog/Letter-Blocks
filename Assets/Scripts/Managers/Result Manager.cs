@@ -10,7 +10,7 @@ public class ResultManager : MonoBehaviour
     public TextMeshProUGUI tmp;
     public Image timerImage;
     public float flashSpeed = 2f;
-    public AudioClip failSound, timerSound;
+   public AudioClip failSound, timerSound, freezingSound;
     public GameObject failMenu, completeMenu, freezePanel;
     public Toggle freezeTime;
     public Slider freezeSlider;
@@ -78,7 +78,7 @@ public class ResultManager : MonoBehaviour
         {
             freezeSlider.value -= Time.deltaTime;
             freezeSlider.GetComponentInChildren<TextMeshProUGUI>().text = (((int)freezeSlider.value) + "s");
-
+            freezeTime.interactable = false;
             if (freezeSlider.value <= 0)
             {
                 freezeTime.isOn = false; // Stop updating immediately
@@ -214,6 +214,7 @@ public class ResultManager : MonoBehaviour
         {
             return;
         }
+        GetComponent<AudioSource>().PlayOneShot(freezingSound);
         freezeTime.interactable = false;
         freezeSlider.gameObject.SetActive(true);
         freezeSlider.value = freezeSlider.maxValue;
