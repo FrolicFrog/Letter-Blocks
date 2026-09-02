@@ -19,7 +19,7 @@ MonoBehaviour:
   height: 7
   width: 5
   minutes: 1
-  seconds: 30
+  seconds: 50
   bottomGridSize: 0.11
   categoryMaterial: {fileID: 0}
   words:
@@ -618,7 +618,7 @@ MonoBehaviour:
   - Key: {x: 3, y: 3}
     Value: A
   - Key: {x: 5, y: 2}
-    Value: I
+    Value: O
   - Key: {x: 6, y: 2}
     Value: O
   - Key: {x: 5, y: 1}
@@ -626,11 +626,11 @@ MonoBehaviour:
   - Key: {x: 6, y: 1}
     Value: J
   - Key: {x: 5, y: 3}
-    Value: B
+    Value: K
   - Key: {x: 6, y: 3}
     Value: E
   - Key: {x: 5, y: 0}
-    Value: O
+    Value: I
   - Key: {x: 6, y: 0}
     Value: A
   - Key: {x: 5, y: 4}
@@ -642,7 +642,7 @@ MonoBehaviour:
   - Key: {x: 2, y: 0}
     Value: N
   - Key: {x: 3, y: 4}
-    Value: K
+    Value: B
   - Key: {x: 2, y: 4}
     Value: A
   - Key: {x: 4, y: 4}
