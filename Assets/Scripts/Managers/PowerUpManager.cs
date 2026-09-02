@@ -253,6 +253,14 @@ public class PowerUpManager : MonoBehaviour
         Transform nozzle = activeCleaner.transform.childCount > 0 ? activeCleaner.transform.GetChild(0) : activeCleaner.transform;
         Vector3 nozzleTargetPos = nozzle.position;
 
+        // --- NEW: Find the grandchild suction effect and disable it initially ---
+        GameObject suctionEffect = null;
+        if (activeCleaner.transform.childCount > 0 && activeCleaner.transform.GetChild(0).childCount > 0)
+        {
+            suctionEffect = activeCleaner.transform.GetChild(0).GetChild(0).gameObject;
+            suctionEffect.SetActive(false);
+        }
+
         activeCleaner.transform.localScale = Vector3.zero;
 
         Sequence vacuumSeq = DOTween.Sequence();
@@ -262,6 +270,12 @@ public class PowerUpManager : MonoBehaviour
         vacuumSeq.Join(activeCleaner.transform.DORotate(new Vector3(0, 360f * cleanerSpinCount, 0), cleanerSpawnDuration, RotateMode.FastBeyond360)
             .SetEase(Ease.OutQuad)
             .SetRelative(true));
+
+        // --- NEW: Enable the suction effect exactly when the entrance animation finishes ---
+        if (suctionEffect != null)
+        {
+            vacuumSeq.InsertCallback(cleanerSpawnDuration, () => suctionEffect.SetActive(true));
+        }
 
         // 2. Cache & Extract Children: Splits Double Letters apart so they are vacuumed independently!
         List<Transform> trayChildren = new List<Transform>();
@@ -340,6 +354,13 @@ public class PowerUpManager : MonoBehaviour
 
         // 5. Cleaner Inverse Exit Animation
         float exitTime = totalVacuumTime + 0.15f;
+
+        // --- NEW: Disable the suction effect exactly as the exit animation starts ---
+        if (suctionEffect != null)
+        {
+            vacuumSeq.InsertCallback(exitTime, () => suctionEffect.SetActive(false));
+        }
+
         vacuumSeq.Insert(exitTime, activeCleaner.transform.DOScale(Vector3.zero, cleanerSpawnDuration).SetEase(Ease.InBack));
         vacuumSeq.Insert(exitTime, activeCleaner.transform.DORotate(new Vector3(0, -360f * cleanerSpinCount, 0), cleanerSpawnDuration, RotateMode.FastBeyond360)
             .SetEase(Ease.InQuad)
@@ -354,6 +375,7 @@ public class PowerUpManager : MonoBehaviour
             isCleanerActive = false;
         });
     }
+    
 
     /// <summary>
     /// Looks for a Key child, unparents it exactly at the nozzle, and flies it to the lock using WordChecker's timing.

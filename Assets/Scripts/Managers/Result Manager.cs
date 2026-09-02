@@ -20,16 +20,23 @@ public class ResultManager : MonoBehaviour
     [HideInInspector] public bool startTimer = false;
     public static ResultManager Instance;
     public static bool levelFailed = false;
-
+    private bool isTimerPulsing = false;
+    private Vector3 originalTextScale = Vector3.one;
     void Start()
     {
         Instance = this;
+
+        // Capture the starting scale so we can return to it when the timer stops
+        if (tmp != null)
+        {
+            originalTextScale = tmp.transform.localScale;
+        }
+
         if (timer)
             UpdateTimerDisplay();
         else
             tmp.text = "";
     }
-
     void Update()
     {
         if (timer && startTimer && !freezeTime.isOn)
@@ -123,13 +130,33 @@ public class ResultManager : MonoBehaviour
         float minutes = Mathf.FloorToInt(time / 60);
         float seconds = Mathf.FloorToInt(time % 60);
 
-        if (time <= 10)
+        // time > 0 ensures the animation stops if the timer hits exactly 0
+        if (time <= 10 && time > 0)
         {
             tmp.color = Color.red;
+
+            // Start the pulsing DOTween animation if it isn't already playing
+            if (!isTimerPulsing)
+            {
+                isTimerPulsing = true;
+
+                // Scales up to 1.3x over 0.5s, then shrinks back, looping endlessly
+                tmp.transform.DOScale(originalTextScale * 1.3f, 0.5f)
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetEase(Ease.InOutSine);
+            }
         }
         else
         {
             tmp.color = Color.white;
+
+            // Stop the animation and snap the text back to its original size
+            if (isTimerPulsing)
+            {
+                isTimerPulsing = false;
+                tmp.transform.DOKill();
+                tmp.transform.localScale = originalTextScale;
+            }
         }
 
         tmp.text = string.Format("{0:00}:{1:00}", minutes, seconds);
