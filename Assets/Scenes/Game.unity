@@ -5515,7 +5515,7 @@ MonoBehaviour:
   trayEffect: {fileID: 19855088, guid: cc4edba986607ba48b17927b27d25e4e, type: 3}
   unfreeze: {fileID: 8300000, guid: 6c4768370c68a7340874edc1ae402191, type: 3}
   gridAnimator: {fileID: 1855233891}
-  TestLevelToLoad: 39
+  TestLevelToLoad: 15
   ticks: []
   hearts: 0
 --- !u!114 &558711660
@@ -8710,7 +8710,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hammer
+  m_text: Tap on tray you want to break!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1b09ccbc39690044b9f131ccff05ab4b, type: 2}
   m_sharedMaterial: {fileID: -2067335636005849856, guid: 1b09ccbc39690044b9f131ccff05ab4b,
@@ -8721,7 +8721,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4293154047
-  m_fontColor: {r: 1, g: 0.33018857, b: 0.8942538, a: 1}
+  m_fontColor: {r: 0.6862745, g: 0.21176471, b: 0.8784314, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8738,8 +8738,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -13592,7 +13592,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Cleaner
+  m_text: 'Tap on letters you want vacuum to disappear!
 
 '
   m_isRightToLeft: 0
@@ -13605,7 +13605,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4293154047
-  m_fontColor: {r: 1, g: 0.33018857, b: 0.8942538, a: 1}
+  m_fontColor: {r: 0.6876492, g: 0.21106264, b: 0.8773585, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -13622,8 +13622,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -14435,7 +14435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e1e030db6db2e4c8501bbf659c2a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnvironmentMode: 0
+  EnvironmentMode: 1
 --- !u!114 &1887342594
 MonoBehaviour:
   m_ObjectHideFlags: 0
