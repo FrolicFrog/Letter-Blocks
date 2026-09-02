@@ -18,8 +18,8 @@ MonoBehaviour:
   columns: 9
   height: 6
   width: 6
-  minutes: 3
-  seconds: 0
+  minutes: 1
+  seconds: 50
   bottomGridSize: 0.11
   categoryMaterial: {fileID: 0}
   words:
