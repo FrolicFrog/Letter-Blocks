@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
-  m_Name: 51
+  m_Name: 59
   m_EditorClassIdentifier: 
   timer: 1
-  LevelNumber: 51
+  LevelNumber: 59
   rows: 10
   columns: 8
   height: 5
@@ -23,16 +23,16 @@ MonoBehaviour:
   bottomGridSize: 0.12
   categoryMaterial: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
   words:
-  - PASTA
-  - CHICKEN
-  - BURGER
-  - EGG
-  - SANDWICH
-  - BARBECUE
   - STEAK
   - LOBSTER
   - WAFFLES
   - BACON
+  - SANDWICH
+  - BARBECUE
+  - PIZZA
+  - BURGER
+  - CHICKEN
+  - EGG
   tray:
   - Tray 1
   - Tray 2
@@ -48,39 +48,36 @@ MonoBehaviour:
   - Tray 12
   horizontal: []
   excludedChar:
-  - {x: 6, y: 2}
-  - {x: 8, y: 1}
-  - {x: 3, y: 3}
-  - {x: 9, y: 4}
-  - {x: 7, y: 6}
-  - {x: 2, y: 3}
+  - {x: 9, y: 3}
+  - {x: 7, y: 1}
+  - {x: 3, y: 4}
+  - {x: 1, y: 6}
+  - {x: 6, y: 5}
+  - {x: 8, y: 5}
+  - {x: 2, y: 1}
   - {x: 4, y: 5}
   - {x: 5, y: 3}
-  - {x: 0, y: 3}
-  - {x: 1, y: 5}
-  blockedCells:
-  - {x: 2, y: 2}
-  - {x: 0, y: 1}
-  - {x: 4, y: 1}
+  - {x: 0, y: 2}
+  blockedCells: []
   wordCategory:
   - Key: Food
     Value:
-    - PASTA
-    - CHICKEN
-    - BURGER
-    - EGG
-    - SANDWICH
-    - BARBECUE
     - STEAK
     - LOBSTER
     - WAFFLES
     - BACON
+    - SANDWICH
+    - BARBECUE
+    - PIZZA
+    - BURGER
+    - CHICKEN
+    - EGG
   cellCategory:
-  - Key: {x: 6, y: 1}
+  - Key: {x: 9, y: 3}
     Value: Food
-  - Key: {x: 6, y: 0}
+  - Key: {x: 9, y: 2}
     Value: Food
-  - Key: {x: 6, y: 2}
+  - Key: {x: 9, y: 4}
     Value: Food
   - Key: {x: 2, y: 1}
     Value: Food
@@ -102,21 +99,23 @@ MonoBehaviour:
     Value: Food
   - Key: {x: 2, y: 0}
     Value: Food
-  - Key: {x: 8, y: 2}
+  - Key: {x: 7, y: 0}
     Value: Food
-  - Key: {x: 8, y: 3}
+  - Key: {x: 7, y: 1}
     Value: Food
-  - Key: {x: 8, y: 4}
+  - Key: {x: 7, y: 2}
     Value: Food
-  - Key: {x: 8, y: 5}
+  - Key: {x: 7, y: 3}
     Value: Food
-  - Key: {x: 8, y: 6}
+  - Key: {x: 7, y: 4}
     Value: Food
-  - Key: {x: 9, y: 5}
+  - Key: {x: 7, y: 5}
     Value: Food
-  - Key: {x: 9, y: 4}
+  - Key: {x: 6, y: 4}
     Value: Food
-  - Key: {x: 9, y: 3}
+  - Key: {x: 6, y: 5}
+    Value: Food
+  - Key: {x: 6, y: 6}
     Value: Food
   - Key: {x: 4, y: 1}
     Value: Food
@@ -126,13 +125,13 @@ MonoBehaviour:
     Value: Food
   - Key: {x: 5, y: 7}
     Value: Food
-  - Key: {x: 9, y: 1}
+  - Key: {x: 6, y: 2}
     Value: Food
-  - Key: {x: 9, y: 2}
+  - Key: {x: 6, y: 3}
     Value: Food
-  - Key: {x: 7, y: 6}
+  - Key: {x: 8, y: 6}
     Value: Food
-  - Key: {x: 7, y: 7}
+  - Key: {x: 8, y: 7}
     Value: Food
   - Key: {x: 5, y: 0}
     Value: Food
@@ -146,29 +145,31 @@ MonoBehaviour:
     Value: Food
   - Key: {x: 5, y: 5}
     Value: Food
+  - Key: {x: 3, y: 1}
+    Value: Food
   - Key: {x: 3, y: 2}
     Value: Food
   - Key: {x: 3, y: 3}
     Value: Food
   - Key: {x: 3, y: 4}
     Value: Food
-  - Key: {x: 8, y: 0}
+  - Key: {x: 3, y: 5}
+    Value: Food
+  - Key: {x: 8, y: 2}
+    Value: Food
+  - Key: {x: 8, y: 3}
+    Value: Food
+  - Key: {x: 8, y: 4}
     Value: Food
   - Key: {x: 8, y: 1}
     Value: Food
-  - Key: {x: 7, y: 2}
-    Value: Food
-  - Key: {x: 7, y: 3}
-    Value: Food
-  - Key: {x: 7, y: 4}
-    Value: Food
-  - Key: {x: 7, y: 1}
-    Value: Food
-  - Key: {x: 7, y: 5}
+  - Key: {x: 8, y: 5}
     Value: Food
   - Key: {x: 2, y: 4}
     Value: Food
   - Key: {x: 2, y: 5}
+    Value: Food
+  - Key: {x: 2, y: 6}
     Value: Food
   - Key: {x: 1, y: 1}
     Value: Food
@@ -194,23 +195,19 @@ MonoBehaviour:
     Value: Food
   - Key: {x: 0, y: 4}
     Value: Food
-  - Key: {x: 6, y: 3}
-    Value: Food
-  - Key: {x: 6, y: 4}
-    Value: Food
   cellTexts:
-  - Key: {x: 6, y: 1}
-    Value: T
-  - Key: {x: 6, y: 0}
-    Value: S
-  - Key: {x: 6, y: 2}
-    Value: E
-  - Key: {x: 2, y: 1}
-    Value: U
-  - Key: {x: 2, y: 2}
-    Value: R
-  - Key: {x: 2, y: 3}
+  - Key: {x: 9, y: 3}
     Value: G
+  - Key: {x: 9, y: 2}
+    Value: E
+  - Key: {x: 9, y: 4}
+    Value: G
+  - Key: {x: 2, y: 1}
+    Value: A
+  - Key: {x: 2, y: 2}
+    Value: F
+  - Key: {x: 2, y: 3}
+    Value: F
   - Key: {x: 4, y: 2}
     Value: N
   - Key: {x: 4, y: 3}
@@ -224,23 +221,25 @@ MonoBehaviour:
   - Key: {x: 4, y: 7}
     Value: H
   - Key: {x: 2, y: 0}
+    Value: W
+  - Key: {x: 7, y: 0}
     Value: B
-  - Key: {x: 8, y: 2}
-    Value: F
-  - Key: {x: 8, y: 3}
-    Value: F
-  - Key: {x: 8, y: 4}
-    Value: L
-  - Key: {x: 8, y: 5}
+  - Key: {x: 7, y: 1}
+    Value: U
+  - Key: {x: 7, y: 2}
+    Value: R
+  - Key: {x: 7, y: 3}
+    Value: G
+  - Key: {x: 7, y: 4}
     Value: E
-  - Key: {x: 8, y: 6}
-    Value: S
-  - Key: {x: 9, y: 5}
-    Value: N
-  - Key: {x: 9, y: 4}
-    Value: O
-  - Key: {x: 9, y: 3}
-    Value: C
+  - Key: {x: 7, y: 5}
+    Value: R
+  - Key: {x: 6, y: 4}
+    Value: Z
+  - Key: {x: 6, y: 5}
+    Value: Z
+  - Key: {x: 6, y: 6}
+    Value: A
   - Key: {x: 4, y: 1}
     Value: A
   - Key: {x: 4, y: 0}
@@ -249,14 +248,14 @@ MonoBehaviour:
     Value: U
   - Key: {x: 5, y: 7}
     Value: E
-  - Key: {x: 9, y: 1}
-    Value: B
-  - Key: {x: 9, y: 2}
-    Value: A
-  - Key: {x: 7, y: 6}
+  - Key: {x: 6, y: 2}
+    Value: P
+  - Key: {x: 6, y: 3}
+    Value: I
+  - Key: {x: 8, y: 6}
     Value: E
-  - Key: {x: 7, y: 7}
-    Value: R
+  - Key: {x: 8, y: 7}
+    Value: N
   - Key: {x: 5, y: 0}
     Value: B
   - Key: {x: 5, y: 1}
@@ -269,61 +268,59 @@ MonoBehaviour:
     Value: E
   - Key: {x: 5, y: 5}
     Value: C
-  - Key: {x: 3, y: 2}
-    Value: E
-  - Key: {x: 3, y: 3}
-    Value: G
-  - Key: {x: 3, y: 4}
-    Value: G
-  - Key: {x: 8, y: 0}
-    Value: W
-  - Key: {x: 8, y: 1}
-    Value: A
-  - Key: {x: 7, y: 2}
-    Value: O
-  - Key: {x: 7, y: 3}
+  - Key: {x: 3, y: 1}
     Value: B
-  - Key: {x: 7, y: 4}
-    Value: S
-  - Key: {x: 7, y: 1}
-    Value: L
-  - Key: {x: 7, y: 5}
-    Value: T
-  - Key: {x: 2, y: 4}
-    Value: E
-  - Key: {x: 2, y: 5}
-    Value: R
-  - Key: {x: 1, y: 1}
+  - Key: {x: 3, y: 2}
+    Value: A
+  - Key: {x: 3, y: 3}
     Value: C
-  - Key: {x: 1, y: 2}
+  - Key: {x: 3, y: 4}
+    Value: O
+  - Key: {x: 3, y: 5}
+    Value: N
+  - Key: {x: 8, y: 2}
     Value: H
-  - Key: {x: 1, y: 3}
+  - Key: {x: 8, y: 3}
     Value: I
-  - Key: {x: 1, y: 4}
+  - Key: {x: 8, y: 4}
     Value: C
-  - Key: {x: 1, y: 5}
+  - Key: {x: 8, y: 1}
+    Value: C
+  - Key: {x: 8, y: 5}
     Value: K
+  - Key: {x: 2, y: 4}
+    Value: L
+  - Key: {x: 2, y: 5}
+    Value: E
+  - Key: {x: 2, y: 6}
+    Value: S
+  - Key: {x: 1, y: 1}
+    Value: L
+  - Key: {x: 1, y: 2}
+    Value: O
+  - Key: {x: 1, y: 3}
+    Value: B
+  - Key: {x: 1, y: 4}
+    Value: S
+  - Key: {x: 1, y: 5}
+    Value: T
   - Key: {x: 1, y: 6}
     Value: E
   - Key: {x: 1, y: 7}
-    Value: N
+    Value: R
   - Key: {x: 0, y: 0}
-    Value: P
-  - Key: {x: 0, y: 1}
-    Value: A
-  - Key: {x: 0, y: 2}
     Value: S
-  - Key: {x: 0, y: 3}
+  - Key: {x: 0, y: 1}
     Value: T
+  - Key: {x: 0, y: 2}
+    Value: E
+  - Key: {x: 0, y: 3}
+    Value: A
   - Key: {x: 0, y: 4}
-    Value: A
-  - Key: {x: 6, y: 3}
-    Value: A
-  - Key: {x: 6, y: 4}
     Value: K
   trayCells:
   - Key: {x: 2, y: 0}
-    Value: T
+    Value: U
   - Key: {x: 3, y: 0}
     Value: G
   - Key: {x: 3, y: 1}
@@ -332,16 +329,16 @@ MonoBehaviour:
     Value: O
   - Key: {x: 2, y: 3}
     Value: A
-  - Key: {x: 4, y: 0}
-    Value: B
+  - Key: {x: 2, y: 2}
+    Value: Z
   - Key: {x: 3, y: 2}
     Value: K
   - Key: {x: 3, y: 3}
     Value: E
   - Key: {x: 2, y: 1}
     Value: I
-  - Key: {x: 4, y: 3}
-    Value: G
+  - Key: {x: 4, y: 1}
+    Value: B
   trayName:
   - Key: {x: 2, y: 0}
     Value: Tray 1
@@ -353,15 +350,15 @@ MonoBehaviour:
     Value: Tray 5
   - Key: {x: 2, y: 3}
     Value: Tray 8
-  - Key: {x: 4, y: 0}
-    Value: Tray 11
+  - Key: {x: 2, y: 2}
+    Value: Tray 2
   - Key: {x: 3, y: 2}
     Value: Tray 4
   - Key: {x: 3, y: 3}
     Value: Tray 10
   - Key: {x: 2, y: 1}
     Value: Tray 7
-  - Key: {x: 4, y: 3}
+  - Key: {x: 4, y: 1}
     Value: Tray 6
   categoryColors:
   - Key: Vehicles
@@ -372,14 +369,14 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
   trayColors: []
   wordPositions:
-  - Key: PASTA
+  - Key: STEAK
     Value:
     - {x: 0, y: 0}
     - {x: 0, y: 1}
     - {x: 0, y: 2}
     - {x: 0, y: 3}
     - {x: 0, y: 4}
-  - Key: CHICKEN
+  - Key: LOBSTER
     Value:
     - {x: 1, y: 1}
     - {x: 1, y: 2}
@@ -388,7 +385,7 @@ MonoBehaviour:
     - {x: 1, y: 5}
     - {x: 1, y: 6}
     - {x: 1, y: 7}
-  - Key: BURGER
+  - Key: WAFFLES
     Value:
     - {x: 2, y: 0}
     - {x: 2, y: 1}
@@ -396,11 +393,14 @@ MonoBehaviour:
     - {x: 2, y: 3}
     - {x: 2, y: 4}
     - {x: 2, y: 5}
-  - Key: EGG
+    - {x: 2, y: 6}
+  - Key: BACON
     Value:
+    - {x: 3, y: 1}
     - {x: 3, y: 2}
     - {x: 3, y: 3}
     - {x: 3, y: 4}
+    - {x: 3, y: 5}
   - Key: SANDWICH
     Value:
     - {x: 4, y: 0}
@@ -421,52 +421,37 @@ MonoBehaviour:
     - {x: 5, y: 5}
     - {x: 5, y: 6}
     - {x: 5, y: 7}
-  - Key: STEAK
+  - Key: PIZZA
     Value:
-    - {x: 6, y: 0}
-    - {x: 6, y: 1}
     - {x: 6, y: 2}
     - {x: 6, y: 3}
     - {x: 6, y: 4}
-  - Key: LOBSTER
+    - {x: 6, y: 5}
+    - {x: 6, y: 6}
+  - Key: BURGER
     Value:
+    - {x: 7, y: 0}
     - {x: 7, y: 1}
     - {x: 7, y: 2}
     - {x: 7, y: 3}
     - {x: 7, y: 4}
     - {x: 7, y: 5}
-    - {x: 7, y: 6}
-    - {x: 7, y: 7}
-  - Key: WAFFLES
+  - Key: CHICKEN
     Value:
-    - {x: 8, y: 0}
     - {x: 8, y: 1}
     - {x: 8, y: 2}
     - {x: 8, y: 3}
     - {x: 8, y: 4}
     - {x: 8, y: 5}
     - {x: 8, y: 6}
-  - Key: BACON
+    - {x: 8, y: 7}
+  - Key: EGG
     Value:
-    - {x: 9, y: 1}
     - {x: 9, y: 2}
     - {x: 9, y: 3}
     - {x: 9, y: 4}
-    - {x: 9, y: 5}
   freezedTray: []
   firstCharPos:
-  - Key: PASTA
-    Value: 0
-  - Key: CHICKEN
-    Value: 1
-  - Key: BURGER
-    Value: 0
-  - Key: EGG
-    Value: 2
-  - Key: SANDWICH
-    Value: 0
-  - Key: BARBECUE
-    Value: 0
   - Key: STEAK
     Value: 0
   - Key: LOBSTER
@@ -475,5 +460,17 @@ MonoBehaviour:
     Value: 0
   - Key: BACON
     Value: 1
+  - Key: SANDWICH
+    Value: 0
+  - Key: BARBECUE
+    Value: 0
+  - Key: PIZZA
+    Value: 2
+  - Key: BURGER
+    Value: 0
+  - Key: CHICKEN
+    Value: 1
+  - Key: EGG
+    Value: 2
   levelMode: 0
   lockedTray: []
