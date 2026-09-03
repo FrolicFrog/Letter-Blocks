@@ -25,7 +25,7 @@ public class LevelManager : Manager<LevelManager>
     [SerializeField] private Material borderMaterial,trayMaterial,boxMaterial,trayOutlineMat,freezeTray,freezeBox,greyOut;
     [SerializeField] private List<KeyValueGroup<Material, Sprite>> colorSprite;
     [SerializeField] private FocusCutOut panel;
-    [SerializeField] private Renderer halfArea;
+    [SerializeField] private Renderer halfArea,halfArea1,halfArea2;
     [SerializeField] private GameObject hand,Toggles;
     [SerializeField] private TutorialPopup tutorialPopup;
     [SerializeField] private GameObject hardPanel,superHardPanel;
@@ -261,9 +261,9 @@ public class LevelManager : Manager<LevelManager>
             panel.cutoutGroups.Add(group);
             halfArea.gameObject.SetActive(true);
             panel.gameObject.SetActive(true);
-          
+
         }
-        else if(_CurrentLevelNumber ==2)
+        else if (_CurrentLevelNumber == 2)
         {
             panel.cutoutGroups.Clear();
             halfArea.gameObject.SetActive(false);
@@ -281,6 +281,25 @@ public class LevelManager : Manager<LevelManager>
         {
             halfArea.gameObject.SetActive(false);
         }
+
+        if (_LevelData.LevelNumber == 51 ||  _LevelData.LevelNumber == 53)
+        {
+            halfArea1.gameObject.SetActive(true);
+        }
+        else
+        {
+            halfArea1.gameObject.SetActive(false);
+        }
+
+        if (_LevelData.LevelNumber == 52)
+        {
+            halfArea2.gameObject.SetActive(true);
+        }
+        else
+        {
+            halfArea2.gameObject.SetActive(false);
+        }
+
     }
     void ManageAlphabets()
     {

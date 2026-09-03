@@ -20,7 +20,7 @@ MonoBehaviour:
   width: 7
   minutes: 1
   seconds: 30
-  bottomGridSize: 0.08
+  bottomGridSize: 0.104
   categoryMaterial: {fileID: 0}
   words: []
   tray:
