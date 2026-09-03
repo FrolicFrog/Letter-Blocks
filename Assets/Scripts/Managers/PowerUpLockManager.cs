@@ -43,17 +43,18 @@ public class PowerUpLockManager : MonoBehaviour
                 {
                     lockedObjectDict[lvl].Key.GetComponentInParent<Toggle>(true).interactable = false;
                    
-                    lockedObjectDict[lvl].Value.SetActive(false);
-                    lockedObjectDict[lvl].Value.transform.parent.GetChild(1).gameObject.SetActive(false);
+                    lockedObjectDict[lvl].Value.transform.GetChild(1).gameObject.SetActive(true);
+                  //  lockedObjectDict[lvl].Value.transform.parent.GetChild(1).gameObject.SetActive(false);
                     lockedObjectDict[lvl].Value.transform.parent.GetChild(2).gameObject.SetActive(true);
                 }
                 else
                 {
 
-                    lockedObjectDict[lvl].Value.SetActive(true);
+                    lockedObjectDict[lvl].Value.transform.GetChild(1).gameObject.SetActive(false);
                     lockedObjectDict[lvl].Key.GetComponentInParent<Toggle>(true).interactable = true;
-                    lockedObjectDict[lvl].Value.transform.parent.GetChild(1).gameObject.SetActive(true);
+                  //  lockedObjectDict[lvl].Value.transform.parent.GetChild(1).gameObject.SetActive(true);
                     lockedObjectDict[lvl].Value.transform.parent.GetChild(2).gameObject.SetActive(false);
+
                 }
             }
             
