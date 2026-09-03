@@ -23,6 +23,8 @@ MonoBehaviour:
   bottomGridSize: 0.14
   categoryMaterial: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
   words:
+  - APPLEPIE
+  - HOTDOG
   - BURGER
   tray:
   - Tray 1
@@ -40,10 +42,14 @@ MonoBehaviour:
   horizontal: []
   excludedChar:
   - {x: 9, y: 4}
+  - {x: 8, y: 3}
+  - {x: 7, y: 5}
   blockedCells: []
   wordCategory:
   - Key: Food
     Value:
+    - APPLEPIE
+    - HOTDOG
     - BURGER
   cellCategory:
   - Key: {x: 9, y: 2}
@@ -58,6 +64,34 @@ MonoBehaviour:
     Value: Food
   - Key: {x: 9, y: 4}
     Value: Food
+  - Key: {x: 8, y: 1}
+    Value: Food
+  - Key: {x: 8, y: 2}
+    Value: Food
+  - Key: {x: 8, y: 3}
+    Value: Food
+  - Key: {x: 8, y: 5}
+    Value: Food
+  - Key: {x: 8, y: 6}
+    Value: Food
+  - Key: {x: 7, y: 0}
+    Value: Food
+  - Key: {x: 7, y: 1}
+    Value: Food
+  - Key: {x: 7, y: 2}
+    Value: Food
+  - Key: {x: 7, y: 3}
+    Value: Food
+  - Key: {x: 7, y: 4}
+    Value: Food
+  - Key: {x: 7, y: 5}
+    Value: Food
+  - Key: {x: 7, y: 6}
+    Value: Food
+  - Key: {x: 7, y: 7}
+    Value: Food
+  - Key: {x: 8, y: 4}
+    Value: Food
   cellTexts:
   - Key: {x: 9, y: 2}
     Value: U
@@ -71,12 +105,48 @@ MonoBehaviour:
     Value: R
   - Key: {x: 9, y: 4}
     Value: G
+  - Key: {x: 8, y: 1}
+    Value: H
+  - Key: {x: 8, y: 2}
+    Value: O
+  - Key: {x: 8, y: 3}
+    Value: T
+  - Key: {x: 8, y: 5}
+    Value: O
+  - Key: {x: 8, y: 6}
+    Value: G
+  - Key: {x: 7, y: 0}
+    Value: A
+  - Key: {x: 7, y: 1}
+    Value: P
+  - Key: {x: 7, y: 2}
+    Value: P
+  - Key: {x: 7, y: 3}
+    Value: L
+  - Key: {x: 7, y: 4}
+    Value: E
+  - Key: {x: 7, y: 5}
+    Value: P
+  - Key: {x: 7, y: 6}
+    Value: I
+  - Key: {x: 7, y: 7}
+    Value: E
+  - Key: {x: 8, y: 4}
+    Value: D
   trayCells:
   - Key: {x: 2, y: 1}
     Value: G
+  - Key: {x: 3, y: 3}
+    Value: T
+  - Key: {x: 3, y: 0}
+    Value: P
   trayName:
   - Key: {x: 2, y: 1}
     Value: Tray 1
+  - Key: {x: 3, y: 3}
+    Value: Tray 2
+  - Key: {x: 3, y: 0}
+    Value: Tray 3
   categoryColors:
   - Key: Vehicles
     Value: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
@@ -86,6 +156,24 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
   trayColors: []
   wordPositions:
+  - Key: APPLEPIE
+    Value:
+    - {x: 7, y: 0}
+    - {x: 7, y: 1}
+    - {x: 7, y: 2}
+    - {x: 7, y: 3}
+    - {x: 7, y: 4}
+    - {x: 7, y: 5}
+    - {x: 7, y: 6}
+    - {x: 7, y: 7}
+  - Key: HOTDOG
+    Value:
+    - {x: 8, y: 1}
+    - {x: 8, y: 2}
+    - {x: 8, y: 3}
+    - {x: 8, y: 4}
+    - {x: 8, y: 5}
+    - {x: 8, y: 6}
   - Key: BURGER
     Value:
     - {x: 9, y: 1}
@@ -96,6 +184,10 @@ MonoBehaviour:
     - {x: 9, y: 6}
   freezedTray: []
   firstCharPos:
+  - Key: APPLEPIE
+    Value: 0
+  - Key: HOTDOG
+    Value: 1
   - Key: BURGER
     Value: 1
   levelMode: 0
