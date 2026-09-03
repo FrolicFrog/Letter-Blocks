@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166031d059357e7428305e0cddadd15d, type: 3}
+  m_Name: 52
+  m_EditorClassIdentifier: 
+  timer: 1
+  LevelNumber: 52
+  rows: 10
+  columns: 8
+  height: 7
+  width: 7
+  minutes: 1
+  seconds: 30
+  bottomGridSize: 0.08
+  categoryMaterial: {fileID: 0}
+  words: []
+  tray:
+  - Tray 1
+  horizontal: []
+  excludedChar: []
+  blockedCells: []
+  wordCategory: []
+  cellCategory: []
+  cellTexts: []
+  trayCells: []
+  trayName: []
+  categoryColors: []
+  trayColors: []
+  wordPositions: []
+  freezedTray: []
+  firstCharPos: []
+  levelMode: 0
+  lockedTray: []
