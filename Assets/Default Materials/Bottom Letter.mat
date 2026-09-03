@@ -34,7 +34,7 @@ Material:
     - _Enable_Sweep: 1
     - _FresnelPower: 3
     - _ShineAngle: 288
-    - _ShineSize: 0.27
+    - _ShineSize: 0.278
     - _ShineSoftness: 0.5
     - _SideDarkness: 0.556
     - _Sweep: 1
@@ -49,7 +49,7 @@ Material:
     - _Transparency: 1
     - _UseSweep: 0
     m_Colors:
-    - _Color: {r: 1, g: 0.77412665, b: 0, a: 1}
+    - _Color: {r: 1, g: 0.7944628, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 0.5}
     - _ShineColor: {r: 1, g: 1, b: 1, a: 0.4}
     - _SweepColor: {r: 1, g: 1, b: 1, a: 0.6}
