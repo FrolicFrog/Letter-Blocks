@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using TreeEditor;
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class UnlockTray : MonoBehaviour
 {
