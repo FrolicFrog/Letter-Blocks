@@ -18,15 +18,16 @@ MonoBehaviour:
   columns: 8
   height: 5
   width: 4
-  minutes: 4
-  seconds: 0
+  minutes: 0
+  seconds: 30
   bottomGridSize: 0.12
   categoryMaterial: {fileID: 2100000, guid: ba9443b69d58c1f44ae2c07aaa6c28e5, type: 2}
   words:
-  - PASTA
+  - PASTAHAM
   - CHICKEN
   - BURGER
   - EGG
+  - TACO
   - SANDWICH
   - BARBECUE
   - STEAK
@@ -51,11 +52,13 @@ MonoBehaviour:
   - Tray 15
   - Tray 16
   - Tray 17
+  - Tray 18
+  - Tray 19
   horizontal: []
   excludedChar:
   - {x: 6, y: 2}
   - {x: 8, y: 1}
-  - {x: 3, y: 3}
+  - {x: 3, y: 1}
   - {x: 9, y: 4}
   - {x: 7, y: 6}
   - {x: 2, y: 3}
@@ -69,14 +72,17 @@ MonoBehaviour:
   - {x: 0, y: 1}
   - {x: 1, y: 7}
   - {x: 2, y: 2}
+  - {x: 0, y: 7}
+  - {x: 3, y: 7}
   blockedCells: []
   wordCategory:
   - Key: Food
     Value:
-    - PASTA
+    - PASTAHAM
     - CHICKEN
     - BURGER
     - EGG
+    - TACO
     - SANDWICH
     - BARBECUE
     - STEAK
@@ -154,11 +160,11 @@ MonoBehaviour:
     Value: Food
   - Key: {x: 5, y: 5}
     Value: Food
+  - Key: {x: 3, y: 1}
+    Value: Food
+  - Key: {x: 3, y: 0}
+    Value: Food
   - Key: {x: 3, y: 2}
-    Value: Food
-  - Key: {x: 3, y: 3}
-    Value: Food
-  - Key: {x: 3, y: 4}
     Value: Food
   - Key: {x: 8, y: 0}
     Value: Food
@@ -205,6 +211,20 @@ MonoBehaviour:
   - Key: {x: 6, y: 3}
     Value: Food
   - Key: {x: 6, y: 4}
+    Value: Food
+  - Key: {x: 0, y: 5}
+    Value: Food
+  - Key: {x: 0, y: 6}
+    Value: Food
+  - Key: {x: 0, y: 7}
+    Value: Food
+  - Key: {x: 3, y: 4}
+    Value: Food
+  - Key: {x: 3, y: 5}
+    Value: Food
+  - Key: {x: 3, y: 6}
+    Value: Food
+  - Key: {x: 3, y: 7}
     Value: Food
   cellTexts:
   - Key: {x: 6, y: 1}
@@ -277,11 +297,11 @@ MonoBehaviour:
     Value: E
   - Key: {x: 5, y: 5}
     Value: C
-  - Key: {x: 3, y: 2}
-    Value: E
-  - Key: {x: 3, y: 3}
+  - Key: {x: 3, y: 1}
     Value: G
-  - Key: {x: 3, y: 4}
+  - Key: {x: 3, y: 0}
+    Value: E
+  - Key: {x: 3, y: 2}
     Value: G
   - Key: {x: 8, y: 0}
     Value: W
@@ -329,9 +349,23 @@ MonoBehaviour:
     Value: A
   - Key: {x: 6, y: 4}
     Value: K
+  - Key: {x: 0, y: 5}
+    Value: H
+  - Key: {x: 0, y: 6}
+    Value: A
+  - Key: {x: 0, y: 7}
+    Value: M
+  - Key: {x: 3, y: 4}
+    Value: T
+  - Key: {x: 3, y: 5}
+    Value: A
+  - Key: {x: 3, y: 6}
+    Value: C
+  - Key: {x: 3, y: 7}
+    Value: O
   trayCells:
   - Key: {x: 2, y: 0}
-    Value: T
+    Value: E
   - Key: {x: 3, y: 0}
     Value: G
   - Key: {x: 3, y: 1}
@@ -345,7 +379,7 @@ MonoBehaviour:
   - Key: {x: 3, y: 2}
     Value: K
   - Key: {x: 3, y: 3}
-    Value: E
+    Value: O
   - Key: {x: 2, y: 1}
     Value: I
   - Key: {x: 4, y: 3}
@@ -357,11 +391,15 @@ MonoBehaviour:
   - Key: {x: 1, y: 2}
     Value: U
   - Key: {x: 1, y: 1}
-    Value: S
+    Value: A
   - Key: {x: 1, y: 3}
     Value: N
   - Key: {x: 1, y: 0}
     Value: R
+  - Key: {x: 0, y: 2}
+    Value: M
+  - Key: {x: 0, y: 1}
+    Value: T
   trayName:
   - Key: {x: 2, y: 0}
     Value: Tray 1
@@ -395,6 +433,10 @@ MonoBehaviour:
     Value: Tray 15
   - Key: {x: 1, y: 0}
     Value: Tray 16
+  - Key: {x: 0, y: 2}
+    Value: Tray 17
+  - Key: {x: 0, y: 1}
+    Value: Tray 19
   categoryColors:
   - Key: Vehicles
     Value: {fileID: 2100000, guid: 5b8866cef9ceea44f8bdc7f8a69cc76f, type: 2}
@@ -404,13 +446,16 @@ MonoBehaviour:
     Value: {fileID: 2100000, guid: 7b3ea12bbfd9e8940b10780443fc6601, type: 2}
   trayColors: []
   wordPositions:
-  - Key: PASTA
+  - Key: PASTAHAM
     Value:
     - {x: 0, y: 0}
     - {x: 0, y: 1}
     - {x: 0, y: 2}
     - {x: 0, y: 3}
     - {x: 0, y: 4}
+    - {x: 0, y: 5}
+    - {x: 0, y: 6}
+    - {x: 0, y: 7}
   - Key: CHICKEN
     Value:
     - {x: 1, y: 1}
@@ -430,9 +475,15 @@ MonoBehaviour:
     - {x: 2, y: 5}
   - Key: EGG
     Value:
+    - {x: 3, y: 0}
+    - {x: 3, y: 1}
     - {x: 3, y: 2}
-    - {x: 3, y: 3}
+  - Key: TACO
+    Value:
     - {x: 3, y: 4}
+    - {x: 3, y: 5}
+    - {x: 3, y: 6}
+    - {x: 3, y: 7}
   - Key: SANDWICH
     Value:
     - {x: 4, y: 0}
@@ -487,14 +538,16 @@ MonoBehaviour:
     - {x: 9, y: 5}
   freezedTray: []
   firstCharPos:
-  - Key: PASTA
+  - Key: PASTAHAM
     Value: 0
   - Key: CHICKEN
     Value: 1
   - Key: BURGER
     Value: 0
   - Key: EGG
-    Value: 2
+    Value: 0
+  - Key: TACO
+    Value: 4
   - Key: SANDWICH
     Value: 0
   - Key: BARBECUE
