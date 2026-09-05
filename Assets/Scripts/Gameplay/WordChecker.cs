@@ -321,14 +321,9 @@ public class WordChecker : MonoBehaviour
 
         if (blockRenderer != null && slotRenderer != null)
         {
-            Color targetColor = slotRenderer.material.color;
-            blockRenderer.material.DOColor(targetColor, trayJumpDuration / 2).SetEase(Ease.InOutQuad).SetLink(block.gameObject);
-            blockRenderer.material.SetColor("_RimColor", slotRenderer.material.GetColor("_RimColor"));
-            blockRenderer.material.SetColor("_ShineColor", slotRenderer.material.GetColor("_ShineColor"));
-            blockRenderer.material.SetFloat("_ShineSize", slotRenderer.material.GetFloat("_ShineSize"));
-            blockRenderer.material.SetFloat("_ShineSoftness", slotRenderer.material.GetFloat("_ShineSoftness"));
-            blockRenderer.material.SetFloat("_ShineAngle", slotRenderer.material.GetFloat("_ShineAngle"));
-            blockRenderer.material.SetFloat("_FresnelPower", slotRenderer.material.GetFloat("_FresnelPower"));
+
+            blockRenderer.material = slotRenderer.material;
+  
             if (slotRenderer.materials.Length > 1)
             {
                 slotRenderer.materials[1].DOColor(Color.green, trayJumpDuration / 2f).SetEase(Ease.InOutBack);
